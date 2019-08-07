@@ -9,6 +9,7 @@ export default class Campgrounds extends Component {
   state = {
     campgrounds: [],
     alertMessage: null,
+    search: ''
   };
 
   componentDidMount() {
@@ -51,18 +52,30 @@ export default class Campgrounds extends Component {
         </Alert>
       );
     }
-
     return null;
+  }
+
+  onFormChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
   }
 
   render() {
     const { loggedInAs } = this.props;
-    const { campgrounds } = this.state;
-    const campgroundComponents = campgrounds.map(campground => (
-      <Col key={campground.id} md={3} sm={6}>
-        <Campground campground={campground} />
-      </Col>
-    ));
+    const { campgrounds, search } = this.state;
+    const searchLC = search.toLowerCase();
+    const campgroundComponents = campgrounds.map((campground) => {
+      const campgroundName = campground.name.toLowerCase();
+      if (search === '' || campgroundName.indexOf(searchLC) !== -1) {
+        return (
+          <Col key={campground.id} md={3} sm={6}>
+            <Campground campground={campground} />
+          </Col>
+        );
+      }
+      return null;
+    });
     return (
       <div>
         <Container>
@@ -82,6 +95,19 @@ export default class Campgrounds extends Component {
                     <Button variant="primary" size="lg">Login to Add New Campground</Button>
                   </Link>
                 )}
+              <br />
+              <br />
+              <form className="form-inline">
+                <input
+                  className="form-control col-md-3"
+                  type="text"
+                  name="search"
+                  placeholder="Search campgrounds..."
+                  value={search}
+                  onChange={this.onFormChange}
+                  autoComplete="off"
+                />
+              </form>
             </Jumbotron>
           </Container>
           <Container>
