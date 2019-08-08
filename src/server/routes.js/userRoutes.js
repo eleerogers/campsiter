@@ -4,12 +4,10 @@ const async = require('async');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
+const connectionString = process.env.CONNECTION_STRING;
+
 const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432,
+  connectionString
 });
 
 

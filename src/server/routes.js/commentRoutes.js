@@ -1,13 +1,10 @@
 const { Pool } = require('pg');
 
-const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432,
-});
+const connectionString = process.env.CONNECTION_STRING;
 
+const pool = new Pool({
+  connectionString
+});
 
 const getComments = (request, response) => {
   const campgroundId = request.params.campground_id;

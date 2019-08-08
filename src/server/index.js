@@ -24,7 +24,7 @@ const middleware = require('./middleware');
 const app = express();
 
 app.use(expressSession({
-  secret: 'no tan lines!',
+  secret: process.env.EXPRESS_SECRET,
   resave: false,
   saveUninitialized: false
 }));

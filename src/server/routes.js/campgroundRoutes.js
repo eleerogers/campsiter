@@ -1,11 +1,9 @@
 const { Pool } = require('pg');
 
+const connectionString = process.env.CONNECTION_STRING;
+
 const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432,
+  connectionString
 });
 
 const NodeGeocoder = require('node-geocoder');
