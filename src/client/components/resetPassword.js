@@ -21,11 +21,9 @@ class Reset extends Component {
     const { match } = this.props;
     const { params } = match;
     const { reset_password_token } = params;
-    console.log('componentdidmount resetpwtoken', reset_password_token);
     fetch(`/api/ycusers/token/${reset_password_token}`)
       .then(res => res.json())
       .then((res) => {
-        console.log('RES: ', res);
         const { email } = res.user;
         this.setState({
           email

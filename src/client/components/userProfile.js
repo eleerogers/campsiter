@@ -3,7 +3,9 @@ import {
   Link,
   withRouter
 } from 'react-router-dom';
-import { Col, Container, Row, Button } from 'react-bootstrap';
+import {
+  Col, Container, Row, Button
+} from 'react-bootstrap';
 import Campground from './campground';
 import '../app.css';
 
@@ -14,7 +16,7 @@ class UserProfile extends Component {
   }
 
   componentDidMount() {
-    const { location } = this.props;
+    const { location, loggedInAs } = this.props;
     const { state } = location;
     const { author } = state;
     this.setState({ author });
@@ -71,7 +73,7 @@ class UserProfile extends Component {
           </h2>
           {' '}
           <div className="thumbnail">
-            <img className="img-fluid" src={author.avatar} alt={author.email} />
+            <img className="img-fluid" src={author.image} alt={author.email} />
             <div className="caption float-right">
               <i>
                 email:
@@ -85,7 +87,7 @@ class UserProfile extends Component {
           {this.renderEditButton()}
         </div>
         <div className="col-md-8">
-        <Container>
+          <Container>
             <Row key={1}>
               {campgroundComponents}
             </Row>

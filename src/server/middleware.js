@@ -1,13 +1,83 @@
 const { Pool } = require('pg');
+const multer = require('multer');
+const path = require('path');
+const cloudinary = require('cloudinary').v2;
+
+const connectionString = process.env.CONNECTION_STRING;
 
 const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432,
+  connectionString
 });
 
+cloudinary.config({
+  cloud_name: 'eleerogers',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const imageFilter = (req, file, cb) => {
+  // accept image files only
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+    return cb(new Error('Only image files are allowed!'), false);
+  }
+  return cb(null, true);
+};
+
+const storage = multer.diskStorage({
+  destination: './public/uploads/',
+  filename(req, file, cb) {
+    cb(null, `IMAGE-${Date.now()}${path.extname(file.originalname)}`);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 1000000 },
+  fileFilter: imageFilter
+}).single('image');
+
+const uploader = (req, res, next) => {
+  upload(req, res, (err) => {
+    if (err) { console.log('ERROR: ', err); }
+    if (req.file) {
+      cloudinary.uploader.upload(req.file.path, (error, result) => {
+        if (error) {
+          console.log('ERROR: ', error);
+        }
+        const image = result.secure_url;
+        const image_id = result.public_id;
+        req.body.image = image;
+        req.body.image_id = image_id;
+        next();
+      });
+    } else {
+      next();
+    }
+  });
+};
+
+const picReplacer = (req, res, next) => {
+  upload(req, res, (err) => {
+    if (err) { console.log('ERROR: ', err); }
+    if (req.file && req.body.image_id !== 'tg6i3wamwkkevynyqaoe') {
+      cloudinary.uploader.destroy(req.body.image_id);
+    }
+    if (req.file) {
+      cloudinary.uploader.upload(req.file.path, (error, result) => {
+        if (error) {
+          console.log('ERROR: ', error);
+        }
+        const image = result.secure_url;
+        const image_id = result.public_id;
+        req.body.image = image;
+        req.body.image_id = image_id;
+        next();
+      });
+    } else {
+      next();
+    }
+  });
+};
 
 const validUser = (req, res, next) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() != '';
@@ -15,19 +85,16 @@ const validUser = (req, res, next) => {
   if (validEmail && validPassword) {
     next();
   } else {
-    console.log('400 on the backend')
     res.status(400).send(new Error('invalid login information!'));
   }
 };
 
 const getUserByEmail = (req, res, next) => {
-  console.log('getUserByEmail');
   pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email], (error, results) => {
     if (error || results.rows.length === 0) {
       res.status(404).send(new Error('user not found'));
     } else {
       [req.body.user] = results.rows;
-      console.log('req.body.user', req.body.user);
       next();
     }
   });
@@ -76,9 +143,8 @@ const checkIfUsernameInUse = (req, res, next) => {
 
 function allowAccess(req, res, next) {
   const cookieId = parseInt(req.signedCookies.user_id, 10);
-  const userId = parseInt(req.body.user.id, 10);
+  const userId = parseInt(req.body.user_id, 10);
   if (cookieId !== userId && !req.body.adminBool) {
-    req.flash('error', 'You need to be logged in to do that.');
     res.status(401).send(new Error('Un-authorized'));
   } else {
     next();
@@ -126,6 +192,8 @@ const checkTokenExpiration = (req, res, next) => {
 
 
 module.exports = {
+  uploader,
+  picReplacer,
   validUser,
   getUserByEmail,
   getUserByToken,

@@ -6,6 +6,8 @@ import {
 import { Button, Container, Alert } from 'react-bootstrap';
 import '../app.css';
 
+const axios = require('axios'); 
+
 
 class Signup extends Component {
   state = {
@@ -15,12 +17,20 @@ class Signup extends Component {
     email: '',
     password: '',
     adminCode: '',
-    errorMessage: null
+    errorMessage: null,
+    image: '',
+    message: 'Select avatar image (optional)'
   }
 
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
+    });
+  }
+
+  handleSelectFile = (event) => {
+    this.setState({
+      image: event.target.files[0]
     });
   }
 
@@ -36,54 +46,63 @@ class Signup extends Component {
     return null;
   }
 
+  getUploadedFileName = (e) => {
+    const { files } = e.target;
+    const { value } = e.target;
+    let message;
+    if (files && files.length > 1) message = `${files.length} files selected`;
+    else message = value.split('\\').pop();
+
+    if (message) this.setState({ ...this.state, message });
+    this.setState({
+      image: e.target.files[0]
+    });
+  }
+
   submitForm = (event) => {
     event.preventDefault();
+    const { history } = this.props;
     const {
       username,
       password,
       first_name,
       last_name,
       email,
-      avatar,
+      image,
       adminCode
     } = this.state;
-    const data = {
-      username,
-      password,
-      first_name,
-      last_name,
-      email,
-      avatar,
-      adminCode
-    };
-    const { history } = this.props;
-    let response = {};
+    const fd = new FormData();
+    fd.append('username', username);
+    fd.append('password', password);
+    fd.append('first_name', first_name);
+    fd.append('last_name', last_name);
+    fd.append('email', email);
+    fd.append('image', image);
+    fd.append('adminCode', adminCode);
 
-    fetch('/api/ycusers', {
-      method: 'POST',
-      body: JSON.stringify(data),
+    // let response = {};
+    const config = {
       headers: {
-        'Content-Type': 'application/json'
+        'content-type': 'multipart/form-data'
       }
-    })
-      .then((res) => {
-        response = res;
-        if (res.status === 409) {
+    };
+    axios.post('/api/ycusers', fd, config)
+      .catch((error) => {
+        if (error.response.status === 409) {
           this.setState({
             errorMessage: 'Email address or user name already in use'
           });
         }
-        if (res.status === 400) {
+        if (error.response.status === 400) {
           this.setState({
             errorMessage: 'Invalid email and/or password'
           });
         }
-        return res;
+        return error;
       })
-      .then(res => res.json())
       .then((res) => {
-        const { ok } = response;
-        if (ok) {
+        const { status } = res;
+        if (status === 201) {
           const { correctAdminCode } = res;
           let text = '';
           if (correctAdminCode) {
@@ -106,6 +125,7 @@ class Signup extends Component {
   }
 
   render() {
+    const { message } = this.state;
     return (
       <div className="margin-top-50">
         {this.renderAlert()}
@@ -157,7 +177,7 @@ class Signup extends Component {
                 onChange={this.onChange}
               />
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <input
                 className="form-control"
                 type="text"
@@ -165,6 +185,42 @@ class Signup extends Component {
                 placeholder="Avatar URL (optional)"
                 onChange={this.onChange}
               />
+            </div> */}
+            {/* <div className="form-group">
+              <label
+                className="btn btn-outline-primary btn-block"
+                id="file"
+                htmlFor="file"
+              >
+                <input
+                  className="hidden"
+                  type="file"
+                  id="file"
+                  name="image"
+                  accept="image/*"
+                  placeholder="Upload Avatar (optional)"
+                  onChange={this.handleSelectFile}
+                />
+                  Select Image File
+              </label>
+            </div> */}
+            <div className="form-group">
+              <input
+                id="file-upload"
+                type="file"
+                name="image"
+                  // className="km-btn-file"
+                data-multiple-caption={message}
+                  // multiple={multiple}
+                onChange={this.getUploadedFileName}
+              />
+              <label
+                htmlFor="file-upload"
+                className="btn btn-outline-primary btn-block"
+                id="file-upload"
+              >
+                <span>{message}</span>
+              </label>
             </div>
             <div className="form-group">
               <input

@@ -38,7 +38,7 @@ class CampgroundPage extends React.Component {
     const { id, user_id } = campground;
     const data = {
       adminBool,
-      user: { id: user_id },
+      user_id,
     };
     fetch(`/api/campgrounds/${id}`, {
       method: 'DELETE',
@@ -47,15 +47,25 @@ class CampgroundPage extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(() => { history.push({
-        pathname: '/campgrounds',
-        state: {
-          alertMessage: {
-            text: 'Successfully deleted campground',
-            variant: 'success'
-          }
+      .then((results) => {
+        if (results.status === 401) {
+          this.setState({
+            alertMessage: {
+              text: 'Permission denied',
+              variant: 'danger'
+            }
+          })
+        } else {
+          history.push({
+            pathname: '/campgrounds',
+            state: {
+              alertMessage: {
+                text: 'Successfully deleted campground',
+                variant: 'success'
+              }
+            }
+          });
         }
-      });
       })
       .catch(error => console.error('Error:', error));
   }
@@ -152,7 +162,9 @@ class CampgroundPage extends React.Component {
   }
 
   renderAlert = () => {
-    const { alertMessage } = this.state;
+    const { history } = this.props;
+    const { alertMessage, campground } = this.state;
+    const { id } = campground;
     if (alertMessage) {
       const { text, variant } = alertMessage;
       return (
@@ -161,6 +173,8 @@ class CampgroundPage extends React.Component {
           <span className="float-right">
             <Button
               onClick={() => {
+              
+                history.replace(`${id}`, { campground, alertMessage: null });
                 this.setState({
                   alertMessage: null
                 });
@@ -182,7 +196,6 @@ class CampgroundPage extends React.Component {
       campground, comments, author
     } = this.state;
     const { loggedInAs } = this.props;
-    console.log('author: ', author);
     const {
       name, image, description, price, id, created_at
     } = campground;
@@ -190,19 +203,19 @@ class CampgroundPage extends React.Component {
       <div className="container">
         <div className="row my-3">
           <div className="col-md-3">
-            <div className="list-group">
+            {/* <div className="list-group">
               <li className="list-group-item active">Info 1</li>
               <li className="list-group-item">Info 2</li>
               <li className="list-group-item">Info 3</li>
-            </div>
-            <div className="map col-md-12 mt-3">
+            </div> */}
+            <div className="map col-md-12">
               <MapContainer campground={campground} />
             </div>
           </div>
           <div className="col-md-9">
             {this.renderAlert()}
             <div className="card mb-3">
-              <img className="img-responsive" alt={name} src={image} />
+              <img className="img-responsive cover" alt={name} src={image} />
               <div className="card-body">
                 <h6 className="float-right">
                   $

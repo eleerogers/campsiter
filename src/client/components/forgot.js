@@ -44,8 +44,6 @@ class Forgot extends Component {
       }
     })
       .then((res) => {
-        console.log('res.status: ', res.status);
-        //response = res;
         if (res.status === 404) {
           this.setState({
             alertMessage: 'Email address not found',

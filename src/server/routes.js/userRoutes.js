@@ -3,12 +3,28 @@ const bcrypt = require('bcrypt');
 const async = require('async');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+// const multer = require('multer');
+// const cloudinary = require('cloudinary');
+// const path = require('path');
 
 const connectionString = process.env.CONNECTION_STRING;
 
 const pool = new Pool({
   connectionString
 });
+
+
+// const storage = multer.diskStorage({
+//   destination: './public/uploads/',
+//   filename(req, file, cb) {
+//     cb(null, `IMAGE-${Date.now()}${path.extname(file.originalname)}`);
+//   }
+// });
+
+// const upload = multer({
+//   storage,
+//   limits: { fileSize: 1000000 },
+// }).single('image');
 
 
 const getYCUsers = (request, response) => {
@@ -28,6 +44,7 @@ const getYCUserById = (request, response) => {
       response.status(404).json({
         error: 'YC user not found'
       });
+      return;
     }
     response.status(200).json(results.rows[0]);
   });
@@ -39,21 +56,23 @@ const ycRegister = (req, res) => {
     first_name,
     last_name,
     email,
-    avatar,
     adminCode
   } = req.body;
+  let {
+    image,
+    image_id,
+  } = req.body;
+  if (image.length === 0) {
+    image = 'https://res.cloudinary.com/eleerogers/image/upload/v1565769595/tg6i3wamwkkevynyqaoe.jpg';
+    image_id = 'tg6i3wamwkkevynyqaoe';
+  }
   const correctAdminCode = adminCode === process.env.ADMIN_PASSWORD;
+
   bcrypt.hash(req.body.password, 10)
     .then((password) => {
-      let queryString;
-      let valueArr;
-      if (avatar.length > 0) {
-        queryString = 'INSERT INTO ycusers (username, password, first_name, last_name, email, avatar, admin) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id';
-        valueArr = [username, password, first_name, last_name, email, avatar, correctAdminCode];
-      } else {
-        queryString = 'INSERT INTO ycusers (username, password, first_name, last_name, email, admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
-        valueArr = [username, password, first_name, last_name, email, correctAdminCode];
-      }
+      const queryString = 'INSERT INTO ycusers (username, password, first_name, last_name, email, image, image_id, admin) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id';
+      const valueArr = [username, password, first_name, last_name, email, image, image_id, correctAdminCode];
+
       pool.query(queryString, valueArr, (error, results) => {
         if (error) {
           throw error;
@@ -67,6 +86,62 @@ const ycRegister = (req, res) => {
     });
 };
 
+// const ycRegister2 = (request, response) => {
+//   console.log('REQ.BODY.password: ', request.body.password);
+//   upload(request, response, (err) => {
+//     if (err) { console.log('ERROR: ', err); }
+//     const {
+//       username,
+//       first_name,
+//       last_name,
+//       email,
+//       adminCode
+//     } = request.body;
+//     console.log('inside upload req.body.password: ', request.body.password);
+//     const correctAdminCode = adminCode === process.env.ADMIN_PASSWORD;
+
+//     bcrypt.hash(request.body.password, 10)
+//       .then((password) => {
+//         let queryString;
+//         let valueArr;
+
+//         if (request.file) {
+//           cloudinary.uploader.upload(request.file.path, (result) => {
+//             const avatar = result.secure_url;
+//             queryString = 'INSERT INTO ycusers (username, password, first_name, last_name, email, avatar, admin) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id';
+//             valueArr = [username, password, first_name, last_name, email, avatar, correctAdminCode];
+
+//             pool.query(queryString, valueArr, (error, results) => {
+//               if (error) {
+//                 throw error;
+//               }
+//               const message = `YC User added with ID: ${results.rows[0].id}`;
+//               response.status(201).json({
+//                 message,
+//                 correctAdminCode
+//               });
+//             });
+//           });
+//         } else {
+//           queryString = 'INSERT INTO ycusers (username, password, first_name, last_name, email, admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
+//           valueArr = [username, password, first_name, last_name, email, correctAdminCode];
+
+//           pool.query(queryString, valueArr, (error, results) => {
+//             if (error) {
+//               throw error;
+//             }
+//             const message = `YC User added with ID: ${results.rows[0].id}`;
+//             response.status(201).json({
+//               message,
+//               correctAdminCode
+//             });
+//           });
+//         }
+//       })
+//       .catch(error => console.log(error));
+//   });
+// };
+
 const ycUpdate = (req, res) => {
   const {
     id,
@@ -74,20 +149,21 @@ const ycUpdate = (req, res) => {
     first_name,
     last_name,
     email,
-    avatar,
+    image,
+    image_id,
     admin,
     adminCode
   } = req.body;
   const correctAdminCode = adminCode === process.env.ADMIN_PASSWORD || admin;
   let queryString;
   let valueArr;
-  if (avatar.length > 0) {
-    queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, avatar=$4, admin=$5 WHERE id=$6 RETURNING *';
-    valueArr = [first_name, last_name, email, avatar, correctAdminCode, id];
-  } else {
-    queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, admin=$4) WHERE id=$5 RETURNING *';
-    valueArr = [first_name, last_name, email, correctAdminCode, id];
-  }
+  // if (image.length > 0) {
+    queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, image=$4, image_id=$5, admin=$6 WHERE id=$7 RETURNING *';
+    valueArr = [first_name, last_name, email, image, image_id, correctAdminCode, id];
+  // } else {
+  //   queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, admin=$4) WHERE id=$5 RETURNING *';
+  //   valueArr = [first_name, last_name, email, correctAdminCode, id];
+  // }
   pool.query(queryString, valueArr, (error, results) => {
     if (error) {
       throw error;
@@ -102,7 +178,8 @@ const ycUpdate = (req, res) => {
       first_name,
       last_name,
       email,
-      avatar,
+      image,
+      image_id
     });
   });
 };
@@ -110,7 +187,6 @@ const ycUpdate = (req, res) => {
 
 const ycLogin = (req, res) => {
   const { password, user } = req.body;
-
   if (!user) {
     res.status(400).send(new Error('Invalid email'));
   } else {
@@ -126,7 +202,12 @@ const ycLogin = (req, res) => {
           res.json({
             id: user.id,
             email: user.email,
-            admin: user.admin
+            admin: user.admin,
+            image: user.image,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            username: user.username,
+            image_id: user.image_id
           });
         } else {
           res.status(400).send(new Error('Incorrect password'));
@@ -145,20 +226,14 @@ const ycLogout = (req, res) => {
 const resetPassword = (req, res, next) => {
   async.waterfall([
     function createToken(done) {
-      console.log('createToken');
       crypto.randomBytes(20, (err, buf) => {
         const token = buf.toString('hex');
         done(err, token);
       });
     },
     function addToken(token, done) {
-      console.log('token: ', token);
       const tokenExpires = Date.now() + 3600000;
-      console.log('tokenExpires: ', tokenExpires);
       pool.query('UPDATE ycusers SET reset_password_token=$1, reset_password_expires=$2 WHERE email=$3 RETURNING *', [token, tokenExpires, req.body.email], (err, results) => {
-        console.log('ERR: ', err);
-        console.log('req.body.email: ', req.body.email);
-        console.log('results.rows[0]: ', results.rows[0]);
         if (err) {
           throw err;
         }
@@ -189,8 +264,6 @@ const resetPassword = (req, res, next) => {
           + 'http://'}${req.headers.host}/reset/${token}\n\n`
           + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       });
-
-      console.log('Message sent: %s', info.messageId);
       // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     }
   ], (err) => {
@@ -221,7 +294,6 @@ const getUserByToken = (req, res, next) => {
       res.status(404).send(new Error('not found'));
     } else {
       const [user] = results.rows;
-      console.log('user: ', user);
       res.json({
         user
       });
@@ -234,6 +306,7 @@ module.exports = {
   getYCUsers,
   getYCUserById,
   ycRegister,
+  // ycRegister2,
   ycUpdate,
   ycLogin,
   ycLogout,

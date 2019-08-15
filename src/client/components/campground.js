@@ -11,8 +11,6 @@ function Campground(props) {
   return (
     <div>
       <Figure className="centered">
-        <Figure.Image alt={name} src={image} thumbnail />
-        <Figure.Caption className="text-center">{name}</Figure.Caption>
         <Link to={{
           pathname: `/campgrounds/${id}`,
           state: {
@@ -20,6 +18,8 @@ function Campground(props) {
           }
         }}
         >
+          <Figure.Image alt={name} src={image} thumbnail />
+          <Figure.Caption className="text-center">{name}</Figure.Caption>
           <Button size="sm" variant="outline-primary">More Info</Button>
         </Link>
       </Figure>

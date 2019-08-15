@@ -1,16 +1,33 @@
 require('dotenv').config();
 
 const express = require('express');
-const NodeGeocoder = require('node-geocoder');
+// const NodeGeocoder = require('node-geocoder');
+// const multer = require('multer');
 
-const options = {
-  provider: 'google',
-  httpAdapter: 'https',
-  apiKey: process.env.GEOCODER_API_KEY,
-  formatter: null
-};
+// const storage = multer.diskStorage({
+//   filename(req, file, callback) {
+//     callback(null, Date.now() + file.originalname);
+//   }
+// });
 
-const geocoder = NodeGeocoder(options);
+// const imageFilter = (req, file, cb) => {
+//   // accept image files only
+//   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+//     return cb(new Error('Only image files are allowed!'), false);
+//   }
+//   return cb(null, true);
+// };
+
+// const upload = multer({ storage, fileFilter: imageFilter });
+
+// const options = {
+//   provider: 'google',
+//   httpAdapter: 'https',
+//   apiKey: process.env.GEOCODER_API_KEY,
+//   formatter: null
+// };
+
+// const geocoder = NodeGeocoder(options);
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
@@ -47,10 +64,12 @@ app.get('/api/campgrounds/ycuser/:id',
 app.get('/api/campgrounds/:id',
   campgroundRoutes.getCampgroundById);
 app.post('/api/campgrounds',
+  middleware.uploader,
   middleware.allowAccess,
   middleware.validCampground,
   campgroundRoutes.createCampground);
 app.put('/api/campgrounds/:id',
+  middleware.picReplacer,
   middleware.allowAccess,
   middleware.validCampground,
   campgroundRoutes.updateCampground);
@@ -81,6 +100,7 @@ app.post('/api/ycusers/login',
   middleware.getUserByEmail,
   userRoutes.ycLogin);
 app.post('/api/ycusers',
+  middleware.uploader,
   middleware.validUser,
   middleware.checkIfUsernameInUse,
   middleware.checkIfEmailInUse,
@@ -90,6 +110,7 @@ app.get('/api/ycusers/logout',
 app.get('/api/ycusers/:id',
   userRoutes.getYCUserById);
 app.put('/api/ycusers',
+  middleware.picReplacer,
   middleware.onUpdateCheckIfEmailInUse,
   userRoutes.ycUpdate);
 app.post('/api/forgot',

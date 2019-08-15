@@ -8,6 +8,7 @@ function Landing() {
     <div className="landing-outer">
       <div className="landing-header">
         <h1>Welcome to YelpCamp2!</h1>
+        <br />
         <ul>
           <Link to="/campgrounds">
             <Button variant="primary">Get Started</Button>

@@ -15,6 +15,7 @@ export default class Campgrounds extends Component {
   componentDidMount() {
     const { location } = this.props;
     const { state } = location;
+    
     if (state) {
       const { alertMessage } = state;
       this.setState({ alertMessage });
@@ -28,8 +29,10 @@ export default class Campgrounds extends Component {
   }
 
   renderAlert = () => {
-    const space = '    ';
+    const space = '    '; 
     const { alertMessage } = this.state;
+    const { history } = this.props 
+    
     if (alertMessage) {
       const { text, variant } = alertMessage;
       return (
@@ -39,6 +42,7 @@ export default class Campgrounds extends Component {
             {space}
             <Button
               onClick={() => {
+                history.replace('/campgrounds', null);
                 this.setState({
                   alertMessage: null
                 });

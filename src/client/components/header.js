@@ -35,7 +35,7 @@ const Header = ({ loggedInAs, logout }) => {
                     </Link>
                     {' '}
                     {loggedInAs.admin && '(admin)'}
-                    <Button size="sm" className="float-right" onClick={logout}>Logout</Button>
+                    <Button size="sm" className="float-right ml-3" onClick={logout}>Logout</Button>
                   </div>
                 )
                 : (

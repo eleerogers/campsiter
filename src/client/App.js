@@ -28,7 +28,8 @@ export default class App extends Component {
       email: '',
       created_at: '',
       admin: false,
-      avatar: '',
+      image: '',
+      image_id: '',
       first_name: '',
       last_name: '',
       username: ''
@@ -44,7 +45,8 @@ export default class App extends Component {
           this.setState({
             loggedInAs: res,
           });
-        });
+        })
+        .then(() => { console.log('loggedInAs1: ', this.state.loggedInAs); });
     }
   }
 
@@ -55,11 +57,9 @@ export default class App extends Component {
   }
 
   updateLoggedinasState = (item) => {
-    console.log('inside updateState!')
     this.setState({
       loggedInAs: item
     });
-    console.log('STATE: ', this.state)
   }
 
   submitLogin = (event, history) => {
