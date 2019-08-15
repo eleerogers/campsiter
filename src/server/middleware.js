@@ -79,6 +79,20 @@ const picReplacer = (req, res, next) => {
   });
 };
 
+const picDeleter = (req, res, next) => {
+  if (req.body.image_id !== 'tg6i3wamwkkevynyqaoe') {
+    cloudinary.uploader.destroy(req.body.image_id, (error, result) => {
+      if (error) {
+        console.log('ERROR: ', error);
+        res.status(400).send(new Error(error));
+      }
+      next();
+    });
+  } else {
+    next();
+  }
+};
+
 const validUser = (req, res, next) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() != '';
   const validPassword = typeof req.body.password === 'string' && req.body.password.trim() != '';
@@ -194,6 +208,7 @@ const checkTokenExpiration = (req, res, next) => {
 module.exports = {
   uploader,
   picReplacer,
+  picDeleter,
   validUser,
   getUserByEmail,
   getUserByToken,

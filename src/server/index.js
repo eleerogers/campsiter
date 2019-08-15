@@ -75,6 +75,7 @@ app.put('/api/campgrounds/:id',
   campgroundRoutes.updateCampground);
 app.delete('/api/campgrounds/:id',
   middleware.allowAccess,
+  middleware.picDeleter,
   campgroundRoutes.deleteCampground);
 
 // COMMENT ROUTES

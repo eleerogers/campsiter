@@ -35,10 +35,11 @@ class CampgroundPage extends React.Component {
 
   deleteCampgroundAndRedirect = (adminBool) => {
     const { campground, history } = this.state;
-    const { id, user_id } = campground;
+    const { id, user_id, image_id } = campground;
     const data = {
       adminBool,
       user_id,
+      image_id
     };
     fetch(`/api/campgrounds/${id}`, {
       method: 'DELETE',
@@ -54,7 +55,14 @@ class CampgroundPage extends React.Component {
               text: 'Permission denied',
               variant: 'danger'
             }
-          })
+          });
+        } else if (results.status === 400) {
+          this.setState({
+            alertMessage: {
+              text: 'Error deleting picture',
+              variant: 'danger'
+            }
+          });
         } else {
           history.push({
             pathname: '/campgrounds',
