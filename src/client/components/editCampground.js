@@ -32,6 +32,7 @@ class EditCampground extends Component {
     const {
       name, image, image_id, description, price, id, user_id
     } = campground;
+    console.log('componentdidmount image_id:', image_id);
     const { admin } = loggedInAs;
     const campLocation = campground.location;
     this.setState({
@@ -110,16 +111,22 @@ class EditCampground extends Component {
     fd.append('admin', admin);
 
     axios.put(url, fd, config)
-      .then((response) => {
-        if (response.status === 401) {
+      .catch((error) => {
+        // response = res;
+        if (error.response.status === 401) {
           this.setState({
             errorMessage: 'You need to be logged in.'
           });
-        } else if (response.status === 400) {
+        }
+        if (error.response.status === 400) {
           this.setState({
             errorMessage: 'Invalid campground info.'
           });
-        } else if (response.status === 200) {
+        }
+        return error;
+      })
+      .then((response) => {
+        if (response.status === 200) {
           const campground = response.data;
           history.push({
             pathname: `/campgrounds/${id}`,

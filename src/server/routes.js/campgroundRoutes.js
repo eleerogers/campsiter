@@ -138,7 +138,7 @@ const createCampground = (request, response) => {
 const updateCampground = (request, response) => {
   const id = parseInt(request.params.id, 10);
   const {
-    name, image, description, price, campLocation
+    name, image, image_id, description, price, campLocation
   } = request.body;
   geocoder.geocode(campLocation, (err, data) => {
     if (err) {
@@ -148,8 +148,8 @@ const updateCampground = (request, response) => {
     const lng = data[0].longitude;
     const location = data[0].formattedAddress;
     pool.query(
-      'UPDATE campgrounds SET name = $1, image = $2, description = $3, price = $4, lat = $5, lng = $6, location = $7 WHERE id = $8 RETURNING *',
-      [name, image, description, price, lat, lng, location, id],
+      'UPDATE campgrounds SET name = $1, image = $2, image_id = $3, description = $4, price = $5, lat = $6, lng = $7, location = $8 WHERE id = $9 RETURNING *',
+      [name, image, image_id, description, price, lat, lng, location, id],
       (error, results) => {
         if (error) {
           console.log('ERROR: ', error);

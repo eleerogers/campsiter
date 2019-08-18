@@ -79,6 +79,19 @@ class NewCampground extends Component {
     fd.append('user_id', user.id);
 
     axios.post(url, fd, config)
+      .catch((error) => {
+        if (error.response.status === 401) {
+          this.setState({
+            errorMessage: 'Must be logged in.'
+          });
+        }
+        if (error.response.status === 400) {
+          this.setState({
+            errorMessage: 'Invalid campground info.'
+          });
+        }
+        return error;
+      })
       .then((res) => {
         if (res.status === 201) {
           history.push({
@@ -90,20 +103,8 @@ class NewCampground extends Component {
               }
             }
           });
-        } else {
-          if (res.status === 401) {
-            this.setState({
-              errorMessage: 'You need to be logged in.'
-            });
-          }
-          if (res.status === 400) {
-            this.setState({
-              errorMessage: 'Invalid campground info.'
-            });
-          }
         }
-      })
-      .catch(error => console.error('Error:', error));
+      });
   }
 
 

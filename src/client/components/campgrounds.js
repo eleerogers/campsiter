@@ -29,7 +29,8 @@ export default class Campgrounds extends Component {
   }
 
   renderAlert = () => {
-    const space = '    '; 
+    const space = '    ';
+    console.log('renderAlert'); 
     const { alertMessage } = this.state;
     const { history } = this.props 
     

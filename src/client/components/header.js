@@ -6,12 +6,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
-const Header = ({ loggedInAs, logout }) => {
+const Header = ({ loggedInAs, logout, history }) => {
   return (
     <Navbar className="mb-3" bg="light" variant="light">
       <Container className="d-flex justify-content-between">
         <Col>
-          <Link to="/">
+          <Link to="/campgrounds">
             <Navbar.Brand>YelpCamp2</Navbar.Brand>
           </Link>
         </Col>
@@ -35,7 +35,7 @@ const Header = ({ loggedInAs, logout }) => {
                     </Link>
                     {' '}
                     {loggedInAs.admin && '(admin)'}
-                    <Button size="sm" className="float-right ml-3" onClick={logout}>Logout</Button>
+                    <Button size="sm" className="float-right ml-3" onClick={() => logout(history)}>Logout</Button>
                   </div>
                 )
                 : (

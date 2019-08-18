@@ -1,33 +1,6 @@
 require('dotenv').config();
 
 const express = require('express');
-// const NodeGeocoder = require('node-geocoder');
-// const multer = require('multer');
-
-// const storage = multer.diskStorage({
-//   filename(req, file, callback) {
-//     callback(null, Date.now() + file.originalname);
-//   }
-// });
-
-// const imageFilter = (req, file, cb) => {
-//   // accept image files only
-//   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-//     return cb(new Error('Only image files are allowed!'), false);
-//   }
-//   return cb(null, true);
-// };
-
-// const upload = multer({ storage, fileFilter: imageFilter });
-
-// const options = {
-//   provider: 'google',
-//   httpAdapter: 'https',
-//   apiKey: process.env.GEOCODER_API_KEY,
-//   formatter: null
-// };
-
-// const geocoder = NodeGeocoder(options);
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
@@ -64,14 +37,16 @@ app.get('/api/campgrounds/ycuser/:id',
 app.get('/api/campgrounds/:id',
   campgroundRoutes.getCampgroundById);
 app.post('/api/campgrounds',
-  middleware.uploader,
+  middleware.fileConverter,
   middleware.allowAccess,
   middleware.validCampground,
+  middleware.picUploader,
   campgroundRoutes.createCampground);
 app.put('/api/campgrounds/:id',
-  middleware.picReplacer,
+  middleware.fileConverter,
   middleware.allowAccess,
   middleware.validCampground,
+  middleware.picReplacer,
   campgroundRoutes.updateCampground);
 app.delete('/api/campgrounds/:id',
   middleware.allowAccess,
@@ -97,22 +72,23 @@ app.delete('/api/campgrounds/:campgroundId/comments',
 app.get('/api/ycusers',
   userRoutes.getYCUsers);
 app.post('/api/ycusers/login',
-  middleware.validUser,
   middleware.getUserByEmail,
   userRoutes.ycLogin);
 app.post('/api/ycusers',
-  middleware.uploader,
+  middleware.fileConverter,
   middleware.validUser,
   middleware.checkIfUsernameInUse,
   middleware.checkIfEmailInUse,
+  middleware.picUploader,
   userRoutes.ycRegister);
 app.get('/api/ycusers/logout',
   userRoutes.ycLogout);
 app.get('/api/ycusers/:id',
   userRoutes.getYCUserById);
 app.put('/api/ycusers',
-  middleware.picReplacer,
+  middleware.fileConverter,
   middleware.onUpdateCheckIfEmailInUse,
+  middleware.picReplacer,
   userRoutes.ycUpdate);
 app.post('/api/forgot',
   middleware.getUserByEmail,

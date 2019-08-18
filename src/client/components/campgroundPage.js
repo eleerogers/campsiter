@@ -175,6 +175,7 @@ class CampgroundPage extends React.Component {
     const { id } = campground;
     if (alertMessage) {
       const { text, variant } = alertMessage;
+      const btnVariant = `outline-${alertMessage.variant}`;
       return (
         <Alert variant={variant}>
           <span>{text}</span>
@@ -187,7 +188,7 @@ class CampgroundPage extends React.Component {
                   alertMessage: null
                 });
               }}
-              variant="outline-success"
+              variant={btnVariant}
               size="sm"
             >
             X

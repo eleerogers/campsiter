@@ -80,6 +80,7 @@ export default class App extends Component {
         if (
           res.status === 400 || res.status === 404
         ) {
+          console.log('status: ', res.status);
           this.setState({
             errorMessage: 'Invalid login'
           });
@@ -102,7 +103,7 @@ export default class App extends Component {
       });
   }
 
-  logout = () => {
+  logout = (history) => {
     fetch('/api/ycusers/logout')
       .then(res => res.json())
       .then(() => {
@@ -114,6 +115,9 @@ export default class App extends Component {
             id: '', password: '', email: '', created_at: ''
           },
         });
+      })
+      .then(() => {
+        history.push('/campgrounds');
       })
       .catch(error => console.error('Error:', error));
   }

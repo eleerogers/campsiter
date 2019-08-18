@@ -18,7 +18,8 @@ cloudinary.config({
 const imageFilter = (req, file, cb) => {
   // accept image files only
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-    return cb(new Error('Only image files are allowed!'), false);
+    req.fileValidationError = 'Only image files are allowed!';
+    return cb(null, false, new Error('Only image files are allowed!'));
   }
   return cb(null, true);
 };
@@ -32,51 +33,62 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 1000000 },
-  fileFilter: imageFilter
+  limits: { fileSize: 10000000 },
+  fileFilter: imageFilter,
+  onError: (err, next) => {
+    console.log('error', err);
+    next(err);
+  }
 }).single('image');
 
-const uploader = (req, res, next) => {
+const fileConverter = (req, res, next) => {
+  console.log('fileConverter');
   upload(req, res, (err) => {
-    if (err) { console.log('ERROR: ', err); }
-    if (req.file) {
-      cloudinary.uploader.upload(req.file.path, (error, result) => {
-        if (error) {
-          console.log('ERROR: ', error);
-        }
-        const image = result.secure_url;
-        const image_id = result.public_id;
-        req.body.image = image;
-        req.body.image_id = image_id;
-        next();
-      });
-    } else {
-      next();
+    if (req.fileValidationError || err) {
+      return res.status(400).send(req.fileValidationError);
     }
+    next();
   });
 };
 
-const picReplacer = (req, res, next) => {
-  upload(req, res, (err) => {
-    if (err) { console.log('ERROR: ', err); }
-    if (req.file && req.body.image_id !== 'tg6i3wamwkkevynyqaoe') {
-      cloudinary.uploader.destroy(req.body.image_id);
-    }
-    if (req.file) {
-      cloudinary.uploader.upload(req.file.path, (error, result) => {
-        if (error) {
-          console.log('ERROR: ', error);
-        }
-        const image = result.secure_url;
-        const image_id = result.public_id;
-        req.body.image = image;
-        req.body.image_id = image_id;
-        next();
-      });
-    } else {
+const picUploader = (req, res, next) => {
+  console.log('picUploader');
+  if (req.file) {
+    cloudinary.uploader.upload(req.file.path, (error, result) => {
+      if (error) {
+        console.log('ERROR2: ', error);
+      }
+      const image = result.secure_url;
+      const image_id = result.public_id;
+      req.body.image = image;
+      req.body.image_id = image_id;
       next();
-    }
-  });
+    });
+  } else {
+    next();
+  }
+};
+
+const picReplacer = (req, res, next) => {
+  console.log('req.file: ', req.file);
+  console.log('req.body.image_id: ', req.body.image_id);
+  if (req.file && req.body.image_id !== 'tg6i3wamwkkevynyqaoe') {
+    cloudinary.uploader.destroy(req.body.image_id);
+  }
+  if (req.file) {
+    cloudinary.uploader.upload(req.file.path, (error, result) => {
+      if (error) {
+        console.log('ERROR: ', error);
+      }
+      const image = result.secure_url;
+      const image_id = result.public_id;
+      req.body.image = image;
+      req.body.image_id = image_id;
+      next();
+    });
+  } else {
+    next();
+  }
 };
 
 const picDeleter = (req, res, next) => {
@@ -96,7 +108,17 @@ const picDeleter = (req, res, next) => {
 const validUser = (req, res, next) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() != '';
   const validPassword = typeof req.body.password === 'string' && req.body.password.trim() != '';
-  if (validEmail && validPassword) {
+  const validUsername = typeof req.body.username === 'string' && req.body.username.trim() != '';
+  const validFirstName = typeof req.body.first_name === 'string' && req.body.first_name.trim() != '';
+  const validLastName = typeof req.body.last_name === 'string' && req.body.last_name.trim() != '';
+  console.log()
+  if (
+    validEmail
+    && validPassword
+    && validUsername
+    && validFirstName
+    && validLastName
+  ) {
     next();
   } else {
     res.status(400).send(new Error('invalid login information!'));
@@ -156,6 +178,7 @@ const checkIfUsernameInUse = (req, res, next) => {
 };
 
 function allowAccess(req, res, next) {
+  console.log('allowAccess');
   const cookieId = parseInt(req.signedCookies.user_id, 10);
   const userId = parseInt(req.body.user_id, 10);
   if (cookieId !== userId && !req.body.adminBool) {
@@ -167,7 +190,7 @@ function allowAccess(req, res, next) {
 
 const validCampground = (req, res, next) => {
   const validName = typeof req.body.name === 'string' && req.body.name.trim() != '';
-  const validImage = typeof req.body.image === 'string' && req.body.image.trim() != '';
+  const validImage = req.body.image_id || req.file && typeof req.file.path === 'string' && req.file.path.trim() != '';
   const validDescription = typeof req.body.description === 'string' && req.body.description.trim() != '';
   const validLocation = typeof req.body.campLocation === 'string' && req.body.campLocation.trim() != '';
   const validPrice = typeof req.body.price === 'string' && req.body.price.trim() != '';
@@ -206,7 +229,8 @@ const checkTokenExpiration = (req, res, next) => {
 
 
 module.exports = {
-  uploader,
+  fileConverter,
+  picUploader,
   picReplacer,
   picDeleter,
   validUser,
