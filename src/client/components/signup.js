@@ -132,7 +132,10 @@ class Signup extends Component {
         <Container>
           <h1 className="text-center">Create your account</h1>
           <br />
-          <div className="entryBox centered">
+          <form
+            className="entryBox centered"
+            onSubmit={this.submitForm}
+          >
             <div className="form-group">
               <input
                 className="form-control"
@@ -238,7 +241,6 @@ class Signup extends Component {
                 className="btn-block"
                 variant="primary"
                 type="submit"
-                onClick={this.submitForm}
               >
               Submit
               </Button>
@@ -246,7 +248,7 @@ class Signup extends Component {
             <Link to="/campgrounds" className="float-left">
               <Button size="sm" variant="link">Go Back</Button>
             </Link>
-          </div>
+          </form>
         </Container>
       </div>
     );

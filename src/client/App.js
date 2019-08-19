@@ -104,6 +104,11 @@ export default class App extends Component {
   }
 
   logout = (history) => {
+    const { location } = history;
+    const { pathname } = location;
+    const pathArr = pathname.split('/');
+    const pathLast = pathArr.pop();
+
     fetch('/api/ycusers/logout')
       .then(res => res.json())
       .then(() => {
@@ -117,7 +122,14 @@ export default class App extends Component {
         });
       })
       .then(() => {
-        history.push('/campgrounds');
+        if (
+          pathLast === 'new'
+          || pathLast === 'edit'
+          || pathLast === 'newCampground'
+          || pathLast === 'editCampground'
+        ) {
+          history.push('/campgrounds');
+        }
       })
       .catch(error => console.error('Error:', error));
   }

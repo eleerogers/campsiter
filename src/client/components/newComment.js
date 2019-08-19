@@ -86,13 +86,18 @@ class NewComment extends Component {
   }
 
   render() {
+    const { campground } = this.state;
+    const { id } = campground;
     return (
       <div className="margin-top-50">
         {this.renderAlert()}
         <Container>
           <h1 className="text-center">Comment on This Campground</h1>
           <br />
-          <div className="entryBox centered">
+          <form
+            className="entryBox centered"
+            onSubmit={this.submitForm}
+          >
             <div className="form-group">
               <input
                 className="form-control"
@@ -108,15 +113,20 @@ class NewComment extends Component {
                 className="btn-block"
                 variant="primary"
                 type="submit"
-                onClick={this.submitForm}
               >
               Submit
               </Button>
             </div>
-            <Link to="/campgrounds">
+            <Link to={{
+              pathname: `/campgrounds/${id}`,
+              state: {
+                campground
+              }
+            }}
+            >
               <Button size="sm" variant="link">Go Back</Button>
             </Link>
-          </div>
+          </form>
         </Container>
       </div>
     );

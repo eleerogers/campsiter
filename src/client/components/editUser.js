@@ -309,7 +309,10 @@ class EditUser extends Component {
             {username}
           </h1>
           <br />
-          <div className="entryBox centered">
+          <form
+            className="entryBox centered"
+            onSubmit={this.submitForm}
+          >
             {/* <div className="form-group">
               <input
                 className="form-control"
@@ -384,7 +387,6 @@ class EditUser extends Component {
                 className="btn-block"
                 variant="primary"
                 type="submit"
-                onClick={this.submitForm}
               >
               Submit
               </Button>
@@ -393,7 +395,7 @@ class EditUser extends Component {
             <Link to="/campgrounds">
               <Button size="sm" variant="link">Go Back</Button>
             </Link>
-          </div>
+          </form>
         </Container>
       </div>
     );

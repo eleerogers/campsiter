@@ -178,12 +178,8 @@ const checkIfUsernameInUse = (req, res, next) => {
 };
 
 function allowAccess(req, res, next) {
-  console.log('allowAccess');
   const cookieId = parseInt(req.signedCookies.user_id, 10);
   const userId = parseInt(req.body.user_id, 10);
-  console.log('userId: ', userId);
-  console.log('cookieId: ', cookieId);
-  console.log('req.body.adminBool: ', req.body.adminBool);
   if (cookieId !== userId && !req.body.adminBool) {
     res.status(401).send(new Error('Un-authorized'));
   } else {

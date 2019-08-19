@@ -62,7 +62,10 @@ class Login extends Component {
         <Container>
           <h1 className="text-center">Login to your account</h1>
           <br />
-          <div className="entryBox centered">
+          <form
+            className="entryBox centered"
+            onSubmit={e => submitLogin(e, history)}
+          >
             <div className="form-group">
               <input
                 className="form-control"
@@ -93,7 +96,6 @@ class Login extends Component {
                 className="btn-block"
                 variant="primary"
                 type="submit"
-                onClick={e => submitLogin(e, history)}
               >
               Submit
               </Button>
@@ -101,7 +103,7 @@ class Login extends Component {
             <Link to="/campgrounds">
               <Button className="float-left" size="sm" variant="link">Go Back</Button>
             </Link>
-          </div>
+          </form>
         </Container>
       </div>
     );

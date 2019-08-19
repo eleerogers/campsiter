@@ -118,7 +118,10 @@ class EditComment extends Component {
         <Container>
           <h1 className="text-center">Edit Your Comment</h1>
           <br />
-          <div className="entryBox centered">
+          <form
+            className="entryBox centered"
+            onSubmit={this.submitForm}
+          >
             <div className="form-group">
               <input
                 value={comment}
@@ -134,7 +137,6 @@ class EditComment extends Component {
                 className="btn-block"
                 variant="primary"
                 type="submit"
-                onClick={this.submitForm}
               >
               Submit
               </Button>
@@ -148,7 +150,7 @@ class EditComment extends Component {
             >
               <Button size="sm" variant="link">Go Back</Button>
             </Link>
-          </div>
+          </form>
         </Container>
       </div>
     );

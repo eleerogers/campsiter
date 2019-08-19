@@ -79,7 +79,11 @@ class Forgot extends Component {
         {this.renderAlert()}
         <Container>
           <h1 className="text-center">Forgot Password</h1>
-          <div className="entryBox centered">
+          <br />
+          <form
+            className="entryBox centered"
+            onSubmit={e => this.submitEmailReset(e)}
+          >
             <div className="form-group">
               <input
                 className="form-control"
@@ -90,12 +94,12 @@ class Forgot extends Component {
                 onChange={this.onFormChange}
               />
             </div>
+            <br />
             <div className="form-group">
               <Button
                 className="btn-block"
                 variant="primary"
                 type="submit"
-                onClick={e => this.submitEmailReset(e)}
               >
               Reset Password
               </Button>
@@ -103,7 +107,7 @@ class Forgot extends Component {
             <Link to="/login">
               <Button size="sm" variant="link">Go Back</Button>
             </Link>
-          </div>
+          </form>
         </Container>
       </div>
     );

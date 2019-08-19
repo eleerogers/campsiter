@@ -195,7 +195,6 @@ class NewCampground extends Component {
                   className="btn-block"
                   variant="primary"
                   type="submit"
-                  // onClick={this.submitForm}
                   size="lg"
                 >
                 Submit

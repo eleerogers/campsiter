@@ -138,7 +138,10 @@ class Reset extends Component {
           </h2>
           <h4 className="text-center">{ email }</h4>
           <br />
-          <div className="entryBox centered">
+          <form
+            className="entryBox centered"
+            onSubmit={e => this.submitEmailReset(e)}
+          >
             <div className="form-group">
               {/* <h6 className="float-left">New Password:</h6> */}
               <input
@@ -168,12 +171,11 @@ class Reset extends Component {
                 className="btn-block"
                 variant="primary"
                 type="submit"
-                onClick={e => this.submitEmailReset(e)}
               >
               Reset Password
               </Button>
             </div>
-          </div>
+          </form>
         </Container>
       </div>
     );
