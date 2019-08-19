@@ -30,9 +30,8 @@ class EditCampground extends Component {
     const { state } = location;
     const { campground, loggedInAs } = state;
     const {
-      name, image, image_id, description, price, id, user_id
+      name, image, image_id, description, price, id, user_id, lat, lng
     } = campground;
-    console.log('componentdidmount image_id:', image_id);
     const { admin } = loggedInAs;
     const campLocation = campground.location;
     this.setState({
@@ -44,7 +43,9 @@ class EditCampground extends Component {
       price,
       id,
       user_id,
-      admin
+      admin,
+      lat,
+      lng
     });
   }
 
@@ -90,7 +91,7 @@ class EditCampground extends Component {
       price,
       id,
       user_id,
-      admin
+      admin,
     } = this.state;
     const url = `/api/campgrounds/${id}`;
     const { history } = this.props;
@@ -158,10 +159,10 @@ class EditCampground extends Component {
 
   render() {
     const {
-      name, image, description, campLocation, price, id, user_id, message
+      name, image, description, campLocation, price, id, user_id, message, lat, lng
     } = this.state;
     const campground = {
-      name, image, description, campLocation, price, id, user_id
+      name, image, description, campLocation, price, id, user_id, lat, lng
     };
     return (
       <div className="margin-top-50">

@@ -22,8 +22,9 @@ class EditComment extends Component {
     const { state } = location;
     const { commentObj, campground, adminBool } = state;
     const {
-      comment_id, user_id, campground_id, comment
+      comment_id, user_id, comment
     } = commentObj;
+    const campground_id = campground.id;
     this.setState({
       comment_id,
       user_id,
@@ -110,7 +111,7 @@ class EditComment extends Component {
   }
 
   render() {
-    const { comment } = this.state;
+    const { comment, campground, campground_id } = this.state;
     return (
       <div className="margin-top-50">
         {this.renderAlert()}
@@ -138,7 +139,13 @@ class EditComment extends Component {
               Submit
               </Button>
             </div>
-            <Link to="/campgrounds">
+            <Link to={{
+              pathname: `/campgrounds/${campground_id}`,
+              state: {
+                campground
+              }
+            }}
+            >
               <Button size="sm" variant="link">Go Back</Button>
             </Link>
           </div>

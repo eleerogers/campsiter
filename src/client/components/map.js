@@ -12,6 +12,7 @@ class MapContainer extends React.Component {
 
   render() {
     const { campground } = this.props;
+    console.log('map campground: ', campground);
     const {
       lat, lng, location, name, description
     } = campground;
