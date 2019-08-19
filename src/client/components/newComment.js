@@ -45,8 +45,11 @@ class NewComment extends Component {
     const url = `/api/campgrounds/${id}/comments`;
     const { history, user } = this.props;
     const { comment } = this.state;
+    console.log('USER: ', user);
     const data = {
-      comment, user
+      comment,
+      // user,
+      user_id: user.id
     };
     fetch(url, {
       method: 'POST',
@@ -88,6 +91,7 @@ class NewComment extends Component {
         {this.renderAlert()}
         <Container>
           <h1 className="text-center">Comment on This Campground</h1>
+          <br />
           <div className="entryBox centered">
             <div className="form-group">
               <input
@@ -98,6 +102,7 @@ class NewComment extends Component {
                 onChange={this.onChange}
               />
             </div>
+            <br />
             <div className="form-group">
               <Button
                 className="btn-block"

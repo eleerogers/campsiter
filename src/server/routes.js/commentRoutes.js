@@ -21,11 +21,11 @@ const createComment = (request, response) => {
     campgroundId
   } = request.params;
   const {
-    user, comment
+    user_id, comment
   } = request.body;
   pool.query(
     'INSERT INTO comments (user_id, campground_id, comment) VALUES ($1, $2, $3)',
-    [user.id, campgroundId, comment],
+    [user_id, campgroundId, comment],
     (error) => {
       if (error) {
         throw error;

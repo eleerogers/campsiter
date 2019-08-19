@@ -15,10 +15,10 @@ const Header = ({ loggedInAs, logout, history }) => {
             <Navbar.Brand>YelpCamp2</Navbar.Brand>
           </Link>
         </Col>
-        <Col />
+
         <Col>
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
+            <Nav className="ml-auto">
               {loggedInAs.email.length > 0
                 ? (
                   <div>

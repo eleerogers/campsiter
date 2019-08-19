@@ -131,6 +131,7 @@ class Signup extends Component {
         {this.renderAlert()}
         <Container>
           <h1 className="text-center">Create your account</h1>
+          <br />
           <div className="entryBox centered">
             <div className="form-group">
               <input
@@ -231,6 +232,7 @@ class Signup extends Component {
                 onChange={this.onChange}
               />
             </div>
+            <br />
             <div className="form-group">
               <Button
                 className="btn-block"
@@ -241,7 +243,7 @@ class Signup extends Component {
               Submit
               </Button>
             </div>
-            <Link to="/campgrounds">
+            <Link to="/campgrounds" className="float-left">
               <Button size="sm" variant="link">Go Back</Button>
             </Link>
           </div>

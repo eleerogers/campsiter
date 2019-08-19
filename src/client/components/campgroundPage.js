@@ -143,9 +143,7 @@ class CampgroundPage extends React.Component {
     const data = {
       adminBool,
       comment_id,
-      user: {
-        id: user_id
-      }
+      user_id
     };
     fetch(url, {
       method: 'DELETE',
@@ -182,7 +180,6 @@ class CampgroundPage extends React.Component {
           <span className="float-right">
             <Button
               onClick={() => {
-              
                 history.replace(`${id}`, { campground, alertMessage: null });
                 this.setState({
                   alertMessage: null
@@ -212,11 +209,6 @@ class CampgroundPage extends React.Component {
       <div className="container">
         <div className="row my-3">
           <div className="col-md-3">
-            {/* <div className="list-group">
-              <li className="list-group-item active">Info 1</li>
-              <li className="list-group-item">Info 2</li>
-              <li className="list-group-item">Info 3</li>
-            </div> */}
             <div className="map col-md-12">
               <MapContainer campground={campground} />
             </div>
@@ -280,20 +272,26 @@ class CampgroundPage extends React.Component {
                 }
               </div>
               <hr />
-              {comments.map(comment => (
-                <div className="row" key={comment.comment_id}>
-                  <div className="col-md-12">
-                    <strong>{comment.email}</strong>
-                    <span className="float-right">
-                      {moment(comment.created_at).fromNow()}
-                    </span>
-                    <br />
-                    {comment.comment}
-                    {this.renderCommentButtons(comment, loggedInAs.admin)}
+              <div className="row">
+                {comments.map(comment => (
+                  <div className="col-md-12 mb-2" key={comment.comment_id}>
+                    <div className="card">
+                      <div className="card-body">
+                        <p className="card-title">
+                          <strong>{comment.email}</strong>
+                          <span className="float-right">
+                            {moment(comment.created_at).fromNow()}
+                          </span>
+                        </p>
+                        <p className="card-text float-left">{comment.comment}</p>
+                        <div className="float-right">
+                          {this.renderCommentButtons(comment, loggedInAs.admin)}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
-
+                ))}
+              </div>
             </div>
           </div>
         </div>

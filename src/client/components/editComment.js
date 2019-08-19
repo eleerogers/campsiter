@@ -116,6 +116,7 @@ class EditComment extends Component {
         {this.renderAlert()}
         <Container>
           <h1 className="text-center">Edit Your Comment</h1>
+          <br />
           <div className="entryBox centered">
             <div className="form-group">
               <input
@@ -126,6 +127,7 @@ class EditComment extends Component {
                 onChange={this.onChange}
               />
             </div>
+            <br />
             <div className="form-group">
               <Button
                 className="btn-block"

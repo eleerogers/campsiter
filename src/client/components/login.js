@@ -22,14 +22,6 @@ class Login extends Component {
     }
   }
 
-  submitLoginThenRedirect = (e) => {
-    const { submitLogin, history } = this.props;
-    submitLogin(e, history);
-    // .then(() => {
-    //   history.push('/campgrounds');
-    // });
-  }
-
   renderAlert = () => {
     const { errorMessage } = this.props;
     if (errorMessage) {
@@ -60,6 +52,8 @@ class Login extends Component {
       emailForm,
       passwordForm,
       onFormChange,
+      submitLogin,
+      history
     } = this.props;
     return (
       <div className="margin-top-50">
@@ -67,6 +61,7 @@ class Login extends Component {
         {this.renderSucessAlert()}
         <Container>
           <h1 className="text-center">Login to your account</h1>
+          <br />
           <div className="entryBox centered">
             <div className="form-group">
               <input
@@ -78,7 +73,7 @@ class Login extends Component {
                 onChange={onFormChange}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group mb-1">
               <input
                 className="form-control"
                 type="password"
@@ -88,23 +83,23 @@ class Login extends Component {
                 onChange={onFormChange}
               />
             </div>
-            <div className="form-group">
-              <Button
-                className="btn-block"
-                variant="primary"
-                type="submit"
-                onClick={e => this.submitLoginThenRedirect(e)}
-              >
-              Submit
-              </Button>
-            </div>
             <Link to="/forgot">
               <Button size="sm" variant="link">Forgot Password</Button>
             </Link>
             <br />
             <br />
+            <div className="form-group">
+              <Button
+                className="btn-block"
+                variant="primary"
+                type="submit"
+                onClick={e => submitLogin(e, history)}
+              >
+              Submit
+              </Button>
+            </div>
             <Link to="/campgrounds">
-              <Button size="sm" variant="link">Go Back</Button>
+              <Button className="float-left" size="sm" variant="link">Go Back</Button>
             </Link>
           </div>
         </Container>
