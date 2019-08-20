@@ -16,7 +16,7 @@ export default class Campgrounds extends Component {
   componentDidMount() {
     const { location } = this.props;
     const { state } = location;
-    
+
     if (state) {
       const { alertMessage } = state;
       this.setState({ alertMessage });
@@ -33,7 +33,7 @@ export default class Campgrounds extends Component {
     const space = '    ';
     const { alertMessage } = this.state;
     const { history } = this.props;
-    
+
     if (alertMessage) {
       const { text, variant } = alertMessage;
       return (

@@ -80,10 +80,9 @@ class EditComment extends Component {
       },
       adminBool
     };
-    console.log('editComment submitForm data: ', data);
     fetch(url, {
       method: 'PUT',
-      body: JSON.stringify(data), // data can be `string` or {object}!
+      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       }

@@ -11,15 +11,14 @@ import '../app.css';
 
 class UserProfile extends Component {
   state = {
-    author: {},
     campgrounds: [],
   }
 
   componentDidMount() {
-    const { location, loggedInAs } = this.props;
+    const { location } = this.props;
     const { state } = location;
     const { author } = state;
-    this.setState({ author });
+
     fetch(`/api/campgrounds/ycuser/${author.id}`)
       .then(res => res.json())
       .then((campgrounds) => {
@@ -28,18 +27,20 @@ class UserProfile extends Component {
   }
 
   renderEditButton = () => {
-    const { campground, author } = this.state;
-    const { loggedInAs } = this.props;
+    const { loggedInAs, location } = this.props;
+    const { state } = location;
+    const { author } = state;
     if (
-      loggedInAs
+      (loggedInAs
       && author
-      && loggedInAs.id === author.id
+      && loggedInAs.id === author.id)
       || loggedInAs.admin
     ) {
       return (
         <React.Fragment>
           <Link to={{
             pathname: '/editUser',
+            state: { author }
           }}
           >
             <Button size="sm" variant="warning" className="mr-2">Edit User</Button>
@@ -51,7 +52,9 @@ class UserProfile extends Component {
   }
 
   render() {
-    const { author } = this.state;
+    const { location } = this.props;
+    const { state } = location;
+    const { author } = state;
     const { campgrounds } = this.state;
     const campgroundComponents = campgrounds.map(campground => (
       <Col key={campground.id} md={3} sm={6}>

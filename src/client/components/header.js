@@ -7,6 +7,28 @@ import PropTypes from 'prop-types';
 
 
 const Header = ({ loggedInAs, logout, history }) => {
+  const {
+    id,
+    username,
+    firstName,
+    lastName,
+    email,
+    image,
+    imageId,
+    admin,
+    message
+  } = loggedInAs;
+  const author = {
+    id,
+    username,
+    first_name: firstName,
+    last_name: lastName,
+    email,
+    image,
+    image_id: imageId,
+    admin,
+    message
+  };
   return (
     <Navbar className="mb-3" bg="light" variant="light">
       <Container className="d-flex justify-content-between">
@@ -27,7 +49,7 @@ const Header = ({ loggedInAs, logout, history }) => {
                     <Link to={{
                       pathname: `/ycusers/${loggedInAs.id}`,
                       state: {
-                        author: loggedInAs
+                        author
                       }
                     }}
                     >

@@ -37,11 +37,11 @@ class EditCampground extends Component {
       price,
       id,
       user_id: userId,
+      location: campLocation,
       lat,
       lng
     } = campground;
     const { admin } = loggedInAs;
-    const campLocation = campground.location;
     this.setState({
       name,
       image,
@@ -81,8 +81,7 @@ class EditCampground extends Component {
     let message;
     if (files && files.length > 1) message = `${files.length} files selected`;
     else message = value.split('\\').pop();
-
-    if (message) this.setState({ ...this.state, message });
+    if (message) this.setState(prevState => ({ ...prevState, message }));
     this.setState({
       image: e.target.files[0]
     });
@@ -121,7 +120,6 @@ class EditCampground extends Component {
 
     axios.put(url, fd, config)
       .catch((error) => {
-        // response = res;
         if (error.response.status === 401) {
           this.setState({
             errorMessage: 'You need to be logged in.'
@@ -154,10 +152,29 @@ class EditCampground extends Component {
 
   render() {
     const {
-      name, image, description, campLocation, price, id, userId, message, lat, lng
+      name,
+      image,
+      imageId,
+      description,
+      campLocation,
+      price,
+      id,
+      userId,
+      message,
+      lat,
+      lng
     } = this.state;
     const campground = {
-      name, image, description, campLocation, price, id, userId, lat, lng
+      name,
+      image,
+      image_id: imageId,
+      description,
+      location: campLocation,
+      price,
+      id,
+      user_id: userId,
+      lat,
+      lng
     };
     return (
       <div className="margin-top-50">
@@ -212,18 +229,17 @@ class EditCampground extends Component {
                 />
               </div>
               <div className="form-group">
-                <input
-                  id="file-upload"
-                  type="file"
-                  name="image"
-                  data-multiple-caption={message}
-                  onChange={this.getUploadedFileName}
-                />
                 <label
                   htmlFor="file-upload"
                   className="btn btn-outline-primary btn-block"
-                  id="file-upload"
                 >
+                  <input
+                    id="file-upload"
+                    type="file"
+                    name="image"
+                    data-multiple-caption={message}
+                    onChange={this.getUploadedFileName}
+                  />
                   <span>{message}</span>
                 </label>
               </div>
@@ -233,7 +249,6 @@ class EditCampground extends Component {
                   className="btn-block"
                   variant="primary"
                   type="submit"
-                  // onClick={this.submitForm}
                   size="lg"
                 >
                 Submit

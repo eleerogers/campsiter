@@ -16,11 +16,11 @@ function Landing() {
         </ul>
       </div>
       <ul className="slideshow">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
+        <li />
+        <li />
+        <li />
+        <li />
+        <li />
       </ul>
     </div>
   );

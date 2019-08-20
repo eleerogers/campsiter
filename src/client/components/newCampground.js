@@ -51,10 +51,9 @@ class NewCampground extends Component {
     let message;
     if (files && files.length > 1) message = `${files.length} files selected`;
     else message = value.split('\\').pop();
-
-    if (message) this.setState({ ...this.state, message });
+    if (message) this.setState(prevState => ({ ...prevState, message }));
     this.setState({
-      image: e.target.files[0]
+      imageFile: e.target.files[0]
     });
   }
 

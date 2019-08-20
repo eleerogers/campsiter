@@ -7,7 +7,6 @@ import { Button, Container, Alert } from 'react-bootstrap';
 import '../app.css';
 
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Forgot extends Component {
   state = {
     alertMessage: null,

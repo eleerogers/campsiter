@@ -6,8 +6,7 @@ import {
 import { Button, Container, Alert } from 'react-bootstrap';
 import '../app.css';
 import PropTypes from 'prop-types';
-// can axios be imported?:
-const axios = require('axios');
+import axios from 'axios';
 
 
 class EditUser extends Component {
@@ -19,6 +18,7 @@ class EditUser extends Component {
     email: '',
     image: '',
     imageId: '',
+    imageFile: {},
     admin: '',
     adminCode: '',
     errorMessage: null,
@@ -26,17 +26,19 @@ class EditUser extends Component {
   }
 
   componentDidMount() {
-    const { loggedInAs } = this.props;
+    const { location } = this.props;
+    const { state } = location;
+    const { author } = state;
     const {
       id,
       username,
-      firstName,
-      lastName,
+      first_name: firstName,
+      last_name: lastName,
       email,
       image,
-      imageId,
+      image_id: imageId,
       admin
-    } = loggedInAs;
+    } = author;
     this.setState({
       id,
       username,
@@ -67,16 +69,16 @@ class EditUser extends Component {
     return null;
   }
 
+  // this identical function appears 4 places:
   getUploadedFileName = (e) => {
     const { files } = e.target;
     const { value } = e.target;
     let message;
     if (files && files.length > 1) message = `${files.length} files selected`;
     else message = value.split('\\').pop();
-
     if (message) this.setState(prevState => ({ ...prevState, message }));
     this.setState({
-      image: e.target.files[0]
+      imageFile: e.target.files[0]
     });
   }
 
@@ -89,7 +91,7 @@ class EditUser extends Component {
       firstName,
       lastName,
       email,
-      image,
+      imageFile,
       imageId,
       adminCode
     } = this.state;
@@ -100,7 +102,7 @@ class EditUser extends Component {
     fd.append('firstName', firstName);
     fd.append('lastName', lastName);
     fd.append('email', email);
-    fd.append('image', image);
+    fd.append('image', imageFile);
     fd.append('imageId', imageId);
     fd.append('adminCode', adminCode);
 
@@ -111,7 +113,6 @@ class EditUser extends Component {
     };
     axios.put('/api/ycusers', fd, config)
       .catch((error) => {
-        // response = res;
         if (error.response.status === 409) {
           this.setState({
             errorMessage: 'Email address or user name already in use'
@@ -130,6 +131,8 @@ class EditUser extends Component {
           admin,
           password,
           createdAt,
+          image: newImageLink,
+          image_id: newImageId
         } = res.data;
         const { status } = res;
         if (status === 201) {
@@ -141,8 +144,8 @@ class EditUser extends Component {
             firstName,
             lastName,
             email,
-            image,
-            imageId,
+            image: newImageLink,
+            imageId: newImageId,
             createdAt,
           });
           const { correctAdminCode } = res;
@@ -163,11 +166,11 @@ class EditUser extends Component {
                 admin,
                 id,
                 username,
-                firstName,
-                lastName,
+                first_name: firstName,
+                last_name: lastName,
                 email,
-                image,
-                imageId
+                image: newImageLink,
+                image_id: newImageId,
               }
             }
           });
@@ -197,18 +200,35 @@ class EditUser extends Component {
 
   render() {
     const {
+      id,
       username,
       firstName,
       lastName,
       email,
+      image,
+      imageId,
+      originalImage,
+      admin,
       message
     } = this.state;
+    const author = {
+      id,
+      username,
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      image,
+      image_id: imageId,
+      originalImage,
+      admin,
+      message
+    };
     return (
       <div className="margin-top-50">
         {this.renderAlert()}
         <Container>
           <h1 className="text-center">
-            Edit your account details:
+            Edit account details:
             {' '}
             {username}
           </h1>
@@ -222,7 +242,7 @@ class EditUser extends Component {
                 className="form-control"
                 type="text"
                 name="firstName"
-                value={firstName}
+                value={firstName || ''}
                 placeholder="First Name"
                 onChange={this.onChange}
               />
@@ -232,7 +252,7 @@ class EditUser extends Component {
                 className="form-control"
                 type="text"
                 name="lastName"
-                value={lastName}
+                value={lastName || ''}
                 placeholder="Last Name"
                 onChange={this.onChange}
               />
@@ -248,18 +268,17 @@ class EditUser extends Component {
               />
             </div>
             <div className="form-group">
-              <input
-                id="file-upload"
-                type="file"
-                name="image"
-                data-multiple-caption={message}
-                onChange={this.getUploadedFileName}
-              />
               <label
                 htmlFor="file-upload"
                 className="btn btn-outline-primary btn-block"
-                id="file-upload"
               >
+                <input
+                  id="file-upload"
+                  type="file"
+                  name="image"
+                  data-multiple-caption={message}
+                  onChange={this.getUploadedFileName}
+                />
                 <span>{message}</span>
               </label>
             </div>
@@ -273,8 +292,13 @@ class EditUser extends Component {
               Submit
               </Button>
             </div>
-            {/* fix below to go back to profile */}
-            <Link to="/campgrounds">
+            <Link to={{
+              pathname: `/ycusers/${id}`,
+              state: {
+                author
+              }
+            }}
+            >
               <Button size="sm" variant="link">Go Back</Button>
             </Link>
           </form>
@@ -289,17 +313,21 @@ EditUser.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    username: PropTypes.string,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    image: PropTypes.string.isRequired,
-    imageId: PropTypes.string.isRequired,
-    admin: PropTypes.bool,
-  }).isRequired,
-  updateLoggedinasState: PropTypes.func.isRequired
+  updateLoggedinasState: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      author: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        username: PropTypes.string,
+        first_name: PropTypes.string,
+        last_name: PropTypes.string,
+        image: PropTypes.string.isRequired,
+        image_id: PropTypes.string.isRequired,
+        admin: PropTypes.bool,
+      })
+    })
+  }).isRequired
 };
 
 export default withRouter(EditUser);
