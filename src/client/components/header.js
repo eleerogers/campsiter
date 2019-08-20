@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 
 
 const Header = ({ loggedInAs, logout, history }) => {
-  console.log('loggedInAs8: ', loggedInAs);
   return (
     <Navbar className="mb-3" bg="light" variant="light">
       <Container className="d-flex justify-content-between">

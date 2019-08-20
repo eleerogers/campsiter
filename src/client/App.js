@@ -42,7 +42,6 @@ export default class App extends Component {
       fetch(`/api/ycusers/${localStorage.userId}`)
         .then(res => res.json())
         .then((res) => {
-          console.log('app.js componentdidmount res: ', res);
           const {
             admin,
             created_at: createdAt,
@@ -70,8 +69,7 @@ export default class App extends Component {
           this.setState({
             loggedInAs
           });
-        })
-        .then(() => { console.log('loggedInAs1: ', this.state.loggedInAs); });
+        });
     }
   }
 

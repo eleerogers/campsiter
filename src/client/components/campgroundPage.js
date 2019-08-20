@@ -76,14 +76,13 @@ class CampgroundPage extends React.Component {
       .catch(error => console.error('Error:', error));
   }
 
-  // this is actually for edit AND delete buttons... need to fix
-  renderEditButton = () => {
+  renderEditDeleteBtns = () => {
     const { campground, author } = this.state;
     const { loggedInAs } = this.props;
     if (
-      loggedInAs
+      (loggedInAs
       && author
-      && loggedInAs.id === author.id
+      && loggedInAs.id === author.id)
       || loggedInAs.admin
     ) {
       return (
@@ -109,9 +108,11 @@ class CampgroundPage extends React.Component {
     const { loggedInAs } = this.props;
     const { campground } = this.state;
     const { id } = campground;
+    const loggedInAsId = parseInt(loggedInAs.id, 10);
+    const commentUserId = parseInt(commentObj.user_id, 10);
     if (
-      loggedInAs
-      && loggedInAs.id == commentObj.user_id
+      (loggedInAs
+      && loggedInAsId === commentUserId)
       || loggedInAs.admin
     ) {
       return (
@@ -242,7 +243,7 @@ class CampgroundPage extends React.Component {
                     {moment(createdAt).fromNow()}
                   </em>
                 </p>
-                {this.renderEditButton()}
+                {this.renderEditDeleteBtns()}
               </div>
             </div>
             <div className="card card-body bg-light">
@@ -293,16 +294,27 @@ class CampgroundPage extends React.Component {
             </div>
           </div>
         </div>
-
       </div>
     );
   }
 }
 
-
 CampgroundPage.propTypes = {
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      campground: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        user_id: PropTypes.number.isRequired
+      }).isRequired,
+      alertMessage: PropTypes.shape({
+        text: PropTypes.string,
+        variant: PropTypes.string
+      }),
+    }),
+  }).isRequired,
   loggedInAs: PropTypes.shape({
     id: PropTypes.string,
     password: PropTypes.string,

@@ -117,7 +117,7 @@ class EditCampground extends Component {
     fd.append('campLocation', campLocation);
     fd.append('price', price);
     fd.append('userId', userId);
-    fd.append('admin', admin);
+    fd.append('adminBool', admin);
 
     axios.put(url, fd, config)
       .catch((error) => {
@@ -149,19 +149,6 @@ class EditCampground extends Component {
           });
         }
       })
-      // .then((response) => {
-      //   const campground = response;
-      //   history.push({
-      //     pathname: `/campgrounds/${id}`,
-      //     state: {
-      //       campground,
-      //       alertMessage: {
-      //         text: 'Successfully edited campground',
-      //         variant: 'success'
-      //       }
-      //     }
-      //   });
-      // })
       .catch(error => console.error('Error:', error));
   }
 
@@ -194,15 +181,6 @@ class EditCampground extends Component {
                   placeholder="Name of Campground"
                 />
               </div>
-              {/* <div className="form-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  name="image"
-                  value={image}
-                  onChange={this.onChange}
-                />
-              </div> */}
               <div className="form-group">
                 <input
                   className="form-control"
@@ -238,9 +216,7 @@ class EditCampground extends Component {
                   id="file-upload"
                   type="file"
                   name="image"
-                    // className="km-btn-file"
                   data-multiple-caption={message}
-                    // multiple={multiple}
                   onChange={this.getUploadedFileName}
                 />
                 <label
@@ -279,4 +255,34 @@ class EditCampground extends Component {
     );
   }
 }
+
+EditCampground.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      campground: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        user_id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        image: PropTypes.string.isRequired,
+        image_id: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        price: PropTypes.string.isRequired,
+        location: PropTypes.string.isRequired,
+        lat: PropTypes.number.isRequired,
+        lng: PropTypes.number.isRequired
+      }).isRequired,
+      alertMessage: PropTypes.shape({
+        text: PropTypes.string,
+        variant: PropTypes.string
+      }),
+    }).isRequired,
+  }).isRequired,
+  loggedInAs: PropTypes.shape({
+    admin: PropTypes.bool,
+  }).isRequired,
+};
+
 export default withRouter(EditCampground);

@@ -5,7 +5,8 @@ import {
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
 import '../app.css';
-
+import PropTypes from 'prop-types';
+// can axios be imported?:
 const axios = require('axios');
 
 
@@ -16,7 +17,6 @@ class EditUser extends Component {
     firstName: '',
     lastName: '',
     email: '',
-    // password: '',
     image: '',
     imageId: '',
     admin: '',
@@ -26,9 +26,6 @@ class EditUser extends Component {
   }
 
   componentDidMount() {
-    // const { location } = this.props;
-    // const { state } = location;
-    // const { loggedInAs } = state;
     const { loggedInAs } = this.props;
     const {
       id,
@@ -36,7 +33,6 @@ class EditUser extends Component {
       firstName,
       lastName,
       email,
-      // password,
       image,
       imageId,
       admin
@@ -47,7 +43,6 @@ class EditUser extends Component {
       firstName,
       lastName,
       email,
-      // password,
       image,
       imageId,
       admin
@@ -79,7 +74,7 @@ class EditUser extends Component {
     if (files && files.length > 1) message = `${files.length} files selected`;
     else message = value.split('\\').pop();
 
-    if (message) this.setState({ ...this.state, message });
+    if (message) this.setState(prevState => ({ ...prevState, message }));
     this.setState({
       image: e.target.files[0]
     });
@@ -91,25 +86,22 @@ class EditUser extends Component {
     const {
       id,
       username,
-      // password,
       firstName,
       lastName,
       email,
       image,
       imageId,
-      // admin,
       adminCode
     } = this.state;
+
     const fd = new FormData();
     fd.append('id', id);
     fd.append('username', username);
-    // fd.append('password', password);
     fd.append('firstName', firstName);
     fd.append('lastName', lastName);
     fd.append('email', email);
     fd.append('image', image);
     fd.append('imageId', imageId);
-    // fd.append('admin', admin);
     fd.append('adminCode', adminCode);
 
     const config = {
@@ -136,14 +128,7 @@ class EditUser extends Component {
         const { updateLoggedinasState } = this.props;
         const {
           admin,
-          // id,
-          // username,
           password,
-          // first_name: firstName,
-          // last_name: lastName,
-          // email,
-          // image,
-          // image_id: imageId,
           createdAt,
         } = res.data;
         const { status } = res;
@@ -216,10 +201,6 @@ class EditUser extends Component {
       firstName,
       lastName,
       email,
-      password,
-      image,
-      imageId,
-      adminCode,
       message
     } = this.state;
     return (
@@ -236,26 +217,6 @@ class EditUser extends Component {
             className="entryBox centered"
             onSubmit={this.submitForm}
           >
-            {/* <div className="form-group">
-              <input
-                className="form-control"
-                type="text"
-                name="username"
-                value={username}
-                placeholder="Username"
-                onChange={this.onChange}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                className="form-control"
-                type="text"
-                name="password"
-                value={password}
-                placeholder="Password"
-                onChange={this.onChange}
-              />
-            </div> */}
             <div className="form-group">
               <input
                 className="form-control"
@@ -291,9 +252,7 @@ class EditUser extends Component {
                 id="file-upload"
                 type="file"
                 name="image"
-                  // className="km-btn-file"
                 data-multiple-caption={message}
-                  // multiple={multiple}
                 onChange={this.getUploadedFileName}
               />
               <label
@@ -324,4 +283,23 @@ class EditUser extends Component {
     );
   }
 }
+
+
+EditUser.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  loggedInAs: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    username: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    image: PropTypes.string.isRequired,
+    imageId: PropTypes.string.isRequired,
+    admin: PropTypes.bool,
+  }).isRequired,
+  updateLoggedinasState: PropTypes.func.isRequired
+};
+
 export default withRouter(EditUser);

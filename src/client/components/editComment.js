@@ -5,6 +5,8 @@ import {
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
 import '../app.css';
+import PropTypes from 'prop-types';
+
 
 class EditComment extends Component {
   state = {
@@ -55,7 +57,9 @@ class EditComment extends Component {
 
   submitForm = (event) => {
     event.preventDefault();
-    const { id } = this.props.match.params;
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;
     const { history } = this.props;
     const url = `/api/campgrounds/${id}/comments`;
     const {
@@ -157,5 +161,32 @@ class EditComment extends Component {
     );
   }
 }
+
+EditComment.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      campground: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+      }).isRequired,
+      commentObj: PropTypes.shape({
+        comment_id: PropTypes.number.isRequired,
+        user_id: PropTypes.number.isRequired,
+        comment: PropTypes.string.isRequired,
+      }),
+      adminBool: PropTypes.bool.isRequired
+    }).isRequired,
+  }).isRequired,
+  loggedInAs: PropTypes.shape({
+    admin: PropTypes.bool.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired
+    })
+  }).isRequired
+};
 
 export default withRouter(EditComment);

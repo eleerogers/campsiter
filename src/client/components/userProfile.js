@@ -20,7 +20,6 @@ class UserProfile extends Component {
     const { state } = location;
     const { author } = state;
     this.setState({ author });
-    console.log('author: ', author);
     fetch(`/api/campgrounds/ycuser/${author.id}`)
       .then(res => res.json())
       .then((campgrounds) => {

@@ -3,6 +3,7 @@ import {
   Button, Jumbotron, Container, Row, Col, Alert
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Campground from './campground';
 
 export default class Campgrounds extends Component {
@@ -30,9 +31,8 @@ export default class Campgrounds extends Component {
 
   renderAlert = () => {
     const space = '    ';
-    console.log('renderAlert'); 
     const { alertMessage } = this.state;
-    const { history } = this.props 
+    const { history } = this.props;
     
     if (alertMessage) {
       const { text, variant } = alertMessage;
@@ -125,3 +125,20 @@ export default class Campgrounds extends Component {
     );
   }
 }
+
+Campgrounds.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      alertMessage: PropTypes.shape({
+        text: PropTypes.string,
+        variant: PropTypes.string
+      }),
+    })
+  }).isRequired,
+  loggedInAs: PropTypes.shape({
+    email: PropTypes.string,
+  }).isRequired,
+};
