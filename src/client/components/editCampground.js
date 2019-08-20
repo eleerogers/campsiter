@@ -14,12 +14,12 @@ class EditCampground extends Component {
   state = {
     name: '',
     image: '',
-    image_id: '',
+    imageId: '',
     description: '',
     campLocation: '',
     price: '',
     id: null,
-    user_id: null,
+    userId: null,
     errorMessage: null,
     admin: false,
     message: 'Change Campground Image'
@@ -30,22 +30,30 @@ class EditCampground extends Component {
     const { state } = location;
     const { campground, loggedInAs } = state;
     const {
-      name, image, image_id, description, price, id, user_id, lat, lng
+      name,
+      image,
+      image_id: imageId,
+      description,
+      price,
+      id,
+      user_id: userId,
+      lat,
+      lng
     } = campground;
     const { admin } = loggedInAs;
     const campLocation = campground.location;
     this.setState({
       name,
       image,
-      image_id,
+      imageId,
       description,
       campLocation,
       price,
       id,
-      user_id,
-      admin,
+      userId,
       lat,
-      lng
+      lng,
+      admin
     });
   }
 
@@ -85,12 +93,12 @@ class EditCampground extends Component {
     const {
       name,
       image,
-      image_id,
+      imageId,
       description,
       campLocation,
       price,
       id,
-      user_id,
+      userId,
       admin,
     } = this.state;
     const url = `/api/campgrounds/${id}`;
@@ -103,12 +111,12 @@ class EditCampground extends Component {
       }
     };
     fd.append('image', image);
-    fd.append('image_id', image_id);
+    fd.append('imageId', imageId);
     fd.append('name', name);
     fd.append('description', description);
     fd.append('campLocation', campLocation);
     fd.append('price', price);
-    fd.append('user_id', user_id);
+    fd.append('userId', userId);
     fd.append('admin', admin);
 
     axios.put(url, fd, config)
@@ -159,10 +167,10 @@ class EditCampground extends Component {
 
   render() {
     const {
-      name, image, description, campLocation, price, id, user_id, message, lat, lng
+      name, image, description, campLocation, price, id, userId, message, lat, lng
     } = this.state;
     const campground = {
-      name, image, description, campLocation, price, id, user_id, lat, lng
+      name, image, description, campLocation, price, id, userId, lat, lng
     };
     return (
       <div className="margin-top-50">

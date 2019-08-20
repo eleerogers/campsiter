@@ -76,7 +76,7 @@ class NewCampground extends Component {
     fd.append('description', description);
     fd.append('campLocation', campLocation);
     fd.append('price', price);
-    fd.append('user_id', user.id);
+    fd.append('userId', user.id);
 
     axios.post(url, fd, config)
       .catch((error) => {

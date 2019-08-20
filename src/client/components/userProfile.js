@@ -20,7 +20,7 @@ class UserProfile extends Component {
     const { state } = location;
     const { author } = state;
     this.setState({ author });
-
+    console.log('author: ', author);
     fetch(`/api/campgrounds/ycuser/${author.id}`)
       .then(res => res.json())
       .then((campgrounds) => {
@@ -41,10 +41,6 @@ class UserProfile extends Component {
         <React.Fragment>
           <Link to={{
             pathname: '/editUser',
-            // state: {
-            //   loggedInAs,
-            //   author
-            // }
           }}
           >
             <Button size="sm" variant="warning" className="mr-2">Edit User</Button>
@@ -67,9 +63,9 @@ class UserProfile extends Component {
       <div className="row">
         <div className="col-md-4">
           <h2>
-            {author.first_name}
+            {author.firstName}
             {' '}
-            {author.last_name}
+            {author.lastName}
           </h2>
           {' '}
           <div className="thumbnail">

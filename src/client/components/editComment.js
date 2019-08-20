@@ -8,9 +8,9 @@ import '../app.css';
 
 class EditComment extends Component {
   state = {
-    comment_id: null,
-    user_id: null,
-    campground_id: null,
+    commentId: null,
+    userId: null,
+    campgroundId: null,
     comment: '',
     campground: {},
     errorMessage: null,
@@ -22,13 +22,13 @@ class EditComment extends Component {
     const { state } = location;
     const { commentObj, campground, adminBool } = state;
     const {
-      comment_id, user_id, comment
+      comment_id: commentId, user_id: userId, comment
     } = commentObj;
-    const campground_id = campground.id;
+    const campgroundId = campground.id;
     this.setState({
-      comment_id,
-      user_id,
-      campground_id,
+      commentId,
+      userId,
+      campgroundId,
       comment,
       campground,
       adminBool
@@ -59,23 +59,24 @@ class EditComment extends Component {
     const { history } = this.props;
     const url = `/api/campgrounds/${id}/comments`;
     const {
-      comment_id,
-      user_id,
-      campground_id,
+      commentId,
+      userId,
+      campgroundId,
       comment,
       campground,
       adminBool
     } = this.state;
     const data = {
-      comment_id,
-      user_id,
-      campground_id,
+      commentId,
+      userId,
+      campgroundId,
       comment,
       user: {
-        id: user_id
+        id: userId
       },
       adminBool
     };
+    console.log('editComment submitForm data: ', data);
     fetch(url, {
       method: 'PUT',
       body: JSON.stringify(data), // data can be `string` or {object}!
@@ -111,7 +112,7 @@ class EditComment extends Component {
   }
 
   render() {
-    const { comment, campground, campground_id } = this.state;
+    const { comment, campground, campgroundId } = this.state;
     return (
       <div className="margin-top-50">
         {this.renderAlert()}
@@ -142,7 +143,7 @@ class EditComment extends Component {
               </Button>
             </div>
             <Link to={{
-              pathname: `/campgrounds/${campground_id}`,
+              pathname: `/campgrounds/${campgroundId}`,
               state: {
                 campground
               }

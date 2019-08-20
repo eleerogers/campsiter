@@ -18,7 +18,7 @@ class CampgroundPage extends React.Component {
     const { location, history } = this.props;
     const { state } = location;
     const { campground, alertMessage } = state;
-    const { id, user_id } = campground;
+    const { id, user_id: userId } = campground;
 
     this.setState({ campground, history, alertMessage });
 
@@ -26,18 +26,18 @@ class CampgroundPage extends React.Component {
       .then(results => results.json())
       .then(comments => this.setState({ comments }));
 
-    fetch(`/api/ycusers/${user_id}`)
+    fetch(`/api/ycusers/${userId}`)
       .then(results => results.json())
       .then(author => this.setState({ author }));
   }
 
   deleteCampgroundAndRedirect = (adminBool) => {
     const { campground, history } = this.state;
-    const { id, user_id, image_id } = campground;
+    const { id, user_id: userId, image_id: imageId } = campground;
     const data = {
       adminBool,
-      user_id,
-      image_id
+      userId,
+      imageId
     };
     fetch(`/api/campgrounds/${id}`, {
       method: 'DELETE',
@@ -137,11 +137,11 @@ class CampgroundPage extends React.Component {
     const { campground } = this.state;
     const { id } = campground;
     const url = `/api/campgrounds/${id}/comments`;
-    const { comment_id, user_id } = commentObj;
+    const { comment_id: commentId, user_id: userId } = commentObj;
     const data = {
       adminBool,
-      comment_id,
-      user_id
+      commentId,
+      userId
     };
     fetch(url, {
       method: 'DELETE',
@@ -201,7 +201,7 @@ class CampgroundPage extends React.Component {
     } = this.state;
     const { loggedInAs } = this.props;
     const {
-      name, image, description, price, id, created_at
+      name, image, description, price, id, created_at: createdAt
     } = campground;
     return (
       <div className="container">
@@ -239,7 +239,7 @@ class CampgroundPage extends React.Component {
                       {author.email}
                     </Link>
                     {' '}
-                    {moment(created_at).fromNow()}
+                    {moment(createdAt).fromNow()}
                   </em>
                 </p>
                 {this.renderEditButton()}

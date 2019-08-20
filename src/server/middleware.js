@@ -59,9 +59,9 @@ const picUploader = (req, res, next) => {
         console.log('ERROR2: ', error);
       }
       const image = result.secure_url;
-      const image_id = result.public_id;
+      const imageId = result.public_id;
       req.body.image = image;
-      req.body.image_id = image_id;
+      req.body.imageId = imageId;
       next();
     });
   } else {
@@ -71,9 +71,9 @@ const picUploader = (req, res, next) => {
 
 const picReplacer = (req, res, next) => {
   console.log('req.file: ', req.file);
-  console.log('req.body.image_id: ', req.body.image_id);
-  if (req.file && req.body.image_id !== 'tg6i3wamwkkevynyqaoe') {
-    cloudinary.uploader.destroy(req.body.image_id);
+  console.log('req.body.imageId: ', req.body.imageId);
+  if (req.file && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
+    cloudinary.uploader.destroy(req.body.imageId);
   }
   if (req.file) {
     cloudinary.uploader.upload(req.file.path, (error, result) => {
@@ -81,9 +81,9 @@ const picReplacer = (req, res, next) => {
         console.log('ERROR: ', error);
       }
       const image = result.secure_url;
-      const image_id = result.public_id;
+      const imageId = result.public_id;
       req.body.image = image;
-      req.body.image_id = image_id;
+      req.body.imageId = imageId;
       next();
     });
   } else {
@@ -92,8 +92,8 @@ const picReplacer = (req, res, next) => {
 };
 
 const picDeleter = (req, res, next) => {
-  if (req.body.image_id !== 'tg6i3wamwkkevynyqaoe') {
-    cloudinary.uploader.destroy(req.body.image_id, (error, result) => {
+  if (req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
+    cloudinary.uploader.destroy(req.body.imageId, (error, result) => {
       if (error) {
         console.log('ERROR: ', error);
         res.status(400).send(new Error(error));
@@ -109,8 +109,8 @@ const validUser = (req, res, next) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() != '';
   const validPassword = typeof req.body.password === 'string' && req.body.password.trim() != '';
   const validUsername = typeof req.body.username === 'string' && req.body.username.trim() != '';
-  const validFirstName = typeof req.body.first_name === 'string' && req.body.first_name.trim() != '';
-  const validLastName = typeof req.body.last_name === 'string' && req.body.last_name.trim() != '';
+  const validFirstName = typeof req.body.firstName === 'string' && req.body.first_name.trim() != '';
+  const validLastName = typeof req.body.lastName === 'string' && req.body.lastName.trim() != '';
   console.log()
   if (
     validEmail
@@ -178,8 +178,8 @@ const checkIfUsernameInUse = (req, res, next) => {
 };
 
 function allowAccess(req, res, next) {
-  const cookieId = parseInt(req.signedCookies.user_id, 10);
-  const userId = parseInt(req.body.user_id, 10);
+  const cookieId = parseInt(req.signedCookies.userId, 10);
+  const userId = parseInt(req.body.userId, 10);
   if (cookieId !== userId && !req.body.adminBool) {
     res.status(401).send(new Error('Un-authorized'));
   } else {
@@ -189,7 +189,7 @@ function allowAccess(req, res, next) {
 
 const validCampground = (req, res, next) => {
   const validName = typeof req.body.name === 'string' && req.body.name.trim() != '';
-  const validImage = req.body.image_id || req.file && typeof req.file.path === 'string' && req.file.path.trim() != '';
+  const validImage = req.body.imageId || req.file && typeof req.file.path === 'string' && req.file.path.trim() != '';
   const validDescription = typeof req.body.description === 'string' && req.body.description.trim() != '';
   const validLocation = typeof req.body.campLocation === 'string' && req.body.campLocation.trim() != '';
   const validPrice = typeof req.body.price === 'string' && req.body.price.trim() != '';

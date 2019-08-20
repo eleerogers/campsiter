@@ -13,12 +13,12 @@ class EditUser extends Component {
   state = {
     id: null,
     username: '',
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     // password: '',
     image: '',
-    image_id: '',
+    imageId: '',
     admin: '',
     adminCode: '',
     errorMessage: null,
@@ -33,23 +33,23 @@ class EditUser extends Component {
     const {
       id,
       username,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       email,
       // password,
       image,
-      image_id,
+      imageId,
       admin
     } = loggedInAs;
     this.setState({
       id,
       username,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       email,
       // password,
       image,
-      image_id,
+      imageId,
       admin
     });
   }
@@ -92,11 +92,11 @@ class EditUser extends Component {
       id,
       username,
       // password,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       email,
       image,
-      image_id,
+      imageId,
       // admin,
       adminCode
     } = this.state;
@@ -104,11 +104,11 @@ class EditUser extends Component {
     fd.append('id', id);
     fd.append('username', username);
     // fd.append('password', password);
-    fd.append('first_name', first_name);
-    fd.append('last_name', last_name);
+    fd.append('firstName', firstName);
+    fd.append('lastName', lastName);
     fd.append('email', email);
     fd.append('image', image);
-    fd.append('image_id', image_id);
+    fd.append('imageId', imageId);
     // fd.append('admin', admin);
     fd.append('adminCode', adminCode);
 
@@ -136,15 +136,15 @@ class EditUser extends Component {
         const { updateLoggedinasState } = this.props;
         const {
           admin,
-          id,
-          username,
+          // id,
+          // username,
           password,
-          first_name,
-          last_name,
-          email,
-          image,
-          image_id,
-          created_at,
+          // first_name: firstName,
+          // last_name: lastName,
+          // email,
+          // image,
+          // image_id: imageId,
+          createdAt,
         } = res.data;
         const { status } = res;
         if (status === 201) {
@@ -153,12 +153,12 @@ class EditUser extends Component {
             id,
             username,
             password,
-            first_name,
-            last_name,
+            firstName,
+            lastName,
             email,
             image,
-            image_id,
-            created_at,
+            imageId,
+            createdAt,
           });
           const { correctAdminCode } = res;
           let text = '';
@@ -178,11 +178,11 @@ class EditUser extends Component {
                 admin,
                 id,
                 username,
-                first_name,
-                last_name,
+                firstName,
+                lastName,
                 email,
                 image,
-                image_id
+                imageId
               }
             }
           });
@@ -190,84 +190,7 @@ class EditUser extends Component {
       })
       .catch(error => console.error('Error:', error));
   }
-  //   fetch('/api/ycusers', {
-  //     method: 'PUT',
-  //     body: JSON.stringify(data),
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //   })
-  //     .then((res) => {
-  //       response = res;
-  //       if (res.status === 409) {
-  //         this.setState({
-  //           errorMessage: 'Email address already in use'
-  //         });
-  //       }
-  //       if (res.status === 400) {
-  //         console.log('yep 400!');
-  //         this.setState({
-  //           errorMessage: 'Invalid email and/or password'
-  //         });
-  //       }
-  //       return res;
-  //     })
-  //     .then(res => res.json())
-  //     .then((res) => {
-  //       const { updateLoggedinasState } = this.props;
-  //       const {
-  //         admin,
-  //         id,
-  //         username,
-  //         password,
-  //         first_name,
-  //         last_name,
-  //         email,
-  //         image,
-  //         created_at,
-  //       } = res;
-  //       const { ok } = response;
-  //       if (ok) {
-  //         const { correctAdminCode } = res;
-  //         let text = '';
-  //         if (correctAdminCode) {
-  //           text = 'Succesfully updated admin account.';
-  //         } else {
-  //           text = 'Succesfully updated account (non-admin).';
-  //         }
-  //         updateLoggedinasState({
-  //           admin,
-  //           id,
-  //           username,
-  //           password,
-  //           first_name,
-  //           last_name,
-  //           email,
-  //           image,
-  //           created_at,
-  //         });
-  //         history.push({
-  //           pathname: `/ycusers/${id}`,
-  //           state: {
-  //             alertMessage: {
-  //               text,
-  //               variant: 'success'
-  //             },
-  //             author: {
-  //               admin,
-  //               id,
-  //               username,
-  //               first_name,
-  //               last_name,
-  //               email,
-  //               image
-  //             }
-  //           }
-  //         });
-  //       }
-  //     })
-  //     .catch(error => console.error('Error:', error));
-  // }
+
 
   renderAdminBox = () => {
     const { admin } = this.state;
@@ -290,12 +213,12 @@ class EditUser extends Component {
   render() {
     const {
       username,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       email,
       password,
       image,
-      image_id,
+      imageId,
       adminCode,
       message
     } = this.state;
@@ -337,8 +260,8 @@ class EditUser extends Component {
               <input
                 className="form-control"
                 type="text"
-                name="first_name"
-                value={first_name}
+                name="firstName"
+                value={firstName}
                 placeholder="First Name"
                 onChange={this.onChange}
               />
@@ -347,8 +270,8 @@ class EditUser extends Component {
               <input
                 className="form-control"
                 type="text"
-                name="last_name"
-                value={last_name}
+                name="lastName"
+                value={lastName}
                 placeholder="Last Name"
                 onChange={this.onChange}
               />

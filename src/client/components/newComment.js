@@ -48,8 +48,7 @@ class NewComment extends Component {
     console.log('USER: ', user);
     const data = {
       comment,
-      // user,
-      user_id: user.id
+      userId: user.id
     };
     fetch(url, {
       method: 'POST',

@@ -54,7 +54,7 @@ app.delete('/api/campgrounds/:id',
   campgroundRoutes.deleteCampground);
 
 // COMMENT ROUTES
-app.get('/api/campgrounds/:campground_id/comments',
+app.get('/api/campgrounds/:campgroundId/comments',
   commentRoutes.getComments);
 app.post('/api/campgrounds/:campgroundId/comments',
   middleware.allowAccess,

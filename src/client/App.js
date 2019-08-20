@@ -29,21 +29,46 @@ export default class App extends Component {
       created_at: '',
       admin: false,
       image: '',
-      image_id: '',
-      first_name: '',
-      last_name: '',
+      imageId: '',
+      firstName: '',
+      lastName: '',
       username: ''
     },
     errorMessage: null
   }
 
   componentDidMount() {
-    if (localStorage.user_id) {
-      fetch(`/api/ycusers/${localStorage.user_id}`)
+    if (localStorage.userId) {
+      fetch(`/api/ycusers/${localStorage.userId}`)
         .then(res => res.json())
         .then((res) => {
+          console.log('app.js componentdidmount res: ', res);
+          const {
+            admin,
+            created_at: createdAt,
+            email,
+            first_name: firstName,
+            last_name: lastName,
+            id,
+            image,
+            image_id: imageId,
+            password,
+            username
+          } = res;
+          const loggedInAs = {
+            admin,
+            createdAt,
+            email,
+            firstName,
+            lastName,
+            id,
+            image,
+            imageId,
+            password,
+            username
+          };
           this.setState({
-            loggedInAs: res,
+            loggedInAs
           });
         })
         .then(() => { console.log('loggedInAs1: ', this.state.loggedInAs); });
@@ -80,7 +105,6 @@ export default class App extends Component {
         if (
           res.status === 400 || res.status === 404
         ) {
-          console.log('status: ', res.status);
           this.setState({
             errorMessage: 'Invalid login'
           });
@@ -90,7 +114,7 @@ export default class App extends Component {
         throw Error;
       })
       .then((res) => {
-        localStorage.user_id = res.id;
+        localStorage.userId = res.id;
         this.setState({
           loggedInAs: res
         });
@@ -112,7 +136,7 @@ export default class App extends Component {
     fetch('/api/ycusers/logout')
       .then(res => res.json())
       .then(() => {
-        localStorage.removeItem('user_id');
+        localStorage.removeItem('userId');
         this.setState({
           emailForm: '',
           passwordForm: '',
