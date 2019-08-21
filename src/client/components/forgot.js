@@ -61,10 +61,6 @@ class Forgot extends Component {
               }
             }
           });
-          // this.setState({
-          //   alertMessage: `An e-mail has been sent to ${email} with further instructions.`,
-          //   variant: 'success'
-          // });
         }
         return res;
       });
