@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-
 import {
   Link,
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import '../app.css';
-
-const axios = require('axios');
+import axios from 'axios';
 
 
 class NewCampground extends Component {
   state = {
     name: '',
-    image: null,
+    imageFile: null,
     description: '',
     campLocation: '',
     price: '',
@@ -27,11 +26,11 @@ class NewCampground extends Component {
     });
   }
 
-  handleSelectFile = (event) => {
-    this.setState({
-      image: event.target.files[0]
-    });
-  }
+  // handleSelectFile = (event) => {
+  //   this.setState({
+  //     image: event.target.files[0]
+  //   });
+  // }
 
   renderAlert = () => {
     const { errorMessage } = this.state;
@@ -61,7 +60,7 @@ class NewCampground extends Component {
     event.preventDefault();
     const url = '/api/campgrounds';
     const {
-      name, image, description, campLocation, price
+      name, imageFile, description, campLocation, price
     } = this.state;
     const { history, user } = this.props;
     const fd = new FormData();
@@ -70,7 +69,7 @@ class NewCampground extends Component {
         'content-type': 'multipart/form-data'
       }
     };
-    fd.append('image', image);
+    fd.append('image', imageFile);
     fd.append('name', name);
     fd.append('description', description);
     fd.append('campLocation', campLocation);
@@ -153,38 +152,18 @@ class NewCampground extends Component {
                   onChange={this.onChange}
                 />
               </div>
-              {/* <div className="form-group">
+              <div className="form-group">
                 <label
+                  htmlFor="file-upload"
                   className="btn btn-outline-primary btn-block"
-                  id="file"
-                  htmlFor="file"
                 >
                   <input
-                    className="hidden"
+                    id="file-upload"
                     type="file"
-                    id="file"
                     name="image"
-                    accept="image/*"
-                    placeholder="Image URL"
-                    onChange={this.handleSelectFile}
+                    data-multiple-caption={message}
+                    onChange={this.getUploadedFileName}
                   />
-                  Select Image File
-                </label>
-              </div> */}
-              <div className="form-group">
-                <input
-                  id="file-upload"
-                  type="file"
-                  name="image"
-                  // className="km-btn-file"
-                  data-multiple-caption={message}
-                  // multiple={multiple}
-                  onChange={this.getUploadedFileName}
-                />
-                <label
-                  htmlFor="file-upload" 
-                  className="btn btn-outline-primary btn-block" 
-                  id="file-upload">
                   <span>{message}</span>
                 </label>
               </div>
@@ -209,4 +188,14 @@ class NewCampground extends Component {
     );
   }
 }
+
+NewCampground.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
 export default withRouter(NewCampground);

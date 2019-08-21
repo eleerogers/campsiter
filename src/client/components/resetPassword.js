@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import {
-  Link,
-  withRouter
-} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import '../app.css';
 
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Reset extends Component {
   state = {
     alertMessage: null,
@@ -20,8 +17,10 @@ class Reset extends Component {
   componentDidMount() {
     const { match } = this.props;
     const { params } = match;
-    const { reset_password_token } = params;
-    fetch(`/api/ycusers/token/${reset_password_token}`)
+    const {
+      reset_password_token: resetPasswordToken
+    } = params;
+    fetch(`/api/ycusers/token/${resetPasswordToken}`)
       .then(res => res.json())
       .then((res) => {
         const { email } = res.user;
@@ -39,14 +38,17 @@ class Reset extends Component {
 
   submitEmailReset = (event) => {
     event.preventDefault();
-    const { history } = this.props;
+    const { history, match } = this.props;
+    const { params } = match;
+    const {
+      reset_password_token: resetPasswordToken
+    } = params;
     const { password1, password2 } = this.state;
-    const { reset_password_token } = this.props.match.params;
     if (password1 !== '') {
       if (password1 === password2) {
         const data = {
           password: password1,
-          reset_password_token
+          reset_password_token: resetPasswordToken
         };
         fetch('/api/reset', {
           method: 'POST',
@@ -86,33 +88,6 @@ class Reset extends Component {
         variant: 'danger'
       });
     }
-    // const data = {
-    //   email
-    // }
-    // fetch('api/reset', {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    //   .then((res) => {
-    //     console.log('res.status: ', res.status);
-    //     //response = res;
-    //     if (res.status === 404) {
-    // this.setState({
-    //   alertMessage: 'Email address not found',
-    //   variant: 'danger'
-    // });
-    //     }
-    //     if (res.status === 200) {
-    //       this.setState({
-    //         alertMessage: `An e-mail has been sent to ${email} with further instructions.`,
-    //         variant: 'success'
-    //       });
-    //     }
-    //     return res;
-    //   });
   }
 
   renderAlert = () => {
@@ -143,29 +118,25 @@ class Reset extends Component {
             onSubmit={e => this.submitEmailReset(e)}
           >
             <div className="form-group">
-              {/* <h6 className="float-left">New Password:</h6> */}
               <input
                 className="form-control"
-                type="text"
+                type="password"
                 name="password1"
                 placeholder="New Password"
                 value={password1}
                 onChange={this.onFormChange}
               />
             </div>
-            {/* <br /> */}
             <div className="form-group">
-              {/* <h6 className="float-left">Confirm Password</h6> */}
               <input
                 className="form-control"
-                type="text"
+                type="password"
                 name="password2"
                 placeholder="Confirm Password"
                 value={password2}
                 onChange={this.onFormChange}
               />
             </div>
-            {/* <br /> */}
             <div className="form-group">
               <Button
                 className="btn-block"
@@ -181,4 +152,16 @@ class Reset extends Component {
     );
   }
 }
+
+Reset.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      reset_password_token: PropTypes.string.isRequired
+    })
+  }).isRequired
+};
+
 export default withRouter(Reset);

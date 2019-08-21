@@ -4,21 +4,21 @@ import {
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import '../app.css';
-
-const axios = require('axios'); 
+import axios from 'axios';
 
 
 class Signup extends Component {
   state = {
     username: '',
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     adminCode: '',
     errorMessage: null,
-    image: '',
+    imageFile: {},
     message: 'Select avatar image (optional)'
   }
 
@@ -64,22 +64,22 @@ class Signup extends Component {
     const {
       username,
       password,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       email,
-      image,
+      imageFile,
       adminCode
     } = this.state;
+
     const fd = new FormData();
     fd.append('username', username);
     fd.append('password', password);
-    fd.append('first_name', first_name);
-    fd.append('last_name', last_name);
+    fd.append('firstName', firstName);
+    fd.append('lastName', lastName);
     fd.append('email', email);
-    fd.append('image', image);
+    fd.append('image', imageFile);
     fd.append('adminCode', adminCode);
 
-    // let response = {};
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
@@ -147,7 +147,7 @@ class Signup extends Component {
             <div className="form-group">
               <input
                 className="form-control"
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Password"
                 onChange={this.onChange}
@@ -157,7 +157,7 @@ class Signup extends Component {
               <input
                 className="form-control"
                 type="text"
-                name="first_name"
+                name="firstName"
                 placeholder="First Name"
                 onChange={this.onChange}
               />
@@ -166,7 +166,7 @@ class Signup extends Component {
               <input
                 className="form-control"
                 type="text"
-                name="last_name"
+                name="lastName"
                 placeholder="Last Name"
                 onChange={this.onChange}
               />
@@ -180,48 +180,18 @@ class Signup extends Component {
                 onChange={this.onChange}
               />
             </div>
-            {/* <div className="form-group">
-              <input
-                className="form-control"
-                type="text"
-                name="avatar"
-                placeholder="Avatar URL (optional)"
-                onChange={this.onChange}
-              />
-            </div> */}
-            {/* <div className="form-group">
-              <label
-                className="btn btn-outline-primary btn-block"
-                id="file"
-                htmlFor="file"
-              >
-                <input
-                  className="hidden"
-                  type="file"
-                  id="file"
-                  name="image"
-                  accept="image/*"
-                  placeholder="Upload Avatar (optional)"
-                  onChange={this.handleSelectFile}
-                />
-                  Select Image File
-              </label>
-            </div> */}
             <div className="form-group">
-              <input
-                id="file-upload"
-                type="file"
-                name="image"
-                  // className="km-btn-file"
-                data-multiple-caption={message}
-                  // multiple={multiple}
-                onChange={this.getUploadedFileName}
-              />
               <label
                 htmlFor="file-upload"
                 className="btn btn-outline-primary btn-block"
-                id="file-upload"
               >
+                <input
+                  id="file-upload"
+                  type="file"
+                  name="image"
+                  data-multiple-caption={message}
+                  onChange={this.getUploadedFileName}
+                />
                 <span>{message}</span>
               </label>
             </div>
@@ -253,4 +223,11 @@ class Signup extends Component {
     );
   }
 }
+
+Signup.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+};
+
 export default withRouter(Signup);

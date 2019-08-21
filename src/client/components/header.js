@@ -77,6 +77,9 @@ const Header = ({ loggedInAs, logout, history }) => {
 
 
 Header.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
   loggedInAs: PropTypes.shape({
     id: PropTypes.string,
     password: PropTypes.string,

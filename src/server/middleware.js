@@ -36,27 +36,25 @@ const upload = multer({
   limits: { fileSize: 10000000 },
   fileFilter: imageFilter,
   onError: (err, next) => {
-    console.log('error', err);
+    console.error(err);
     next(err);
   }
 }).single('image');
 
 const fileConverter = (req, res, next) => {
-  console.log('fileConverter');
   upload(req, res, (err) => {
     if (req.fileValidationError || err) {
       return res.status(400).send(req.fileValidationError);
     }
-    next();
+    return next();
   });
 };
 
 const picUploader = (req, res, next) => {
-  console.log('picUploader');
   if (req.file) {
     cloudinary.uploader.upload(req.file.path, (error, result) => {
       if (error) {
-        console.log('ERROR2: ', error);
+        console.error(error);
       }
       const image = result.secure_url;
       const imageId = result.public_id;
@@ -70,15 +68,13 @@ const picUploader = (req, res, next) => {
 };
 
 const picReplacer = (req, res, next) => {
-  console.log('req.file: ', req.file);
-  console.log('req.body.imageId: ', req.body.imageId);
   if (req.file && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
     cloudinary.uploader.destroy(req.body.imageId);
   }
   if (req.file) {
     cloudinary.uploader.upload(req.file.path, (error, result) => {
       if (error) {
-        console.log('ERROR: ', error);
+        console.error(error);
       }
       const image = result.secure_url;
       const imageId = result.public_id;
@@ -93,9 +89,9 @@ const picReplacer = (req, res, next) => {
 
 const picDeleter = (req, res, next) => {
   if (req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
-    cloudinary.uploader.destroy(req.body.imageId, (error, result) => {
+    cloudinary.uploader.destroy(req.body.imageId, (error) => {
       if (error) {
-        console.log('ERROR: ', error);
+        console.error(error);
         res.status(400).send(new Error(error));
       }
       next();
@@ -106,12 +102,11 @@ const picDeleter = (req, res, next) => {
 };
 
 const validUser = (req, res, next) => {
-  const validEmail = typeof req.body.email === 'string' && req.body.email.trim() != '';
-  const validPassword = typeof req.body.password === 'string' && req.body.password.trim() != '';
-  const validUsername = typeof req.body.username === 'string' && req.body.username.trim() != '';
-  const validFirstName = typeof req.body.firstName === 'string' && req.body.first_name.trim() != '';
-  const validLastName = typeof req.body.lastName === 'string' && req.body.lastName.trim() != '';
-  console.log()
+  const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
+  const validPassword = typeof req.body.password === 'string' && req.body.password.trim() !== '';
+  const validUsername = typeof req.body.username === 'string' && req.body.username.trim() !== '';
+  const validFirstName = typeof req.body.firstName === 'string' && req.body.firstName.trim() !== '';
+  const validLastName = typeof req.body.lastName === 'string' && req.body.lastName.trim() !== '';
   if (
     validEmail
     && validPassword
@@ -121,9 +116,28 @@ const validUser = (req, res, next) => {
   ) {
     next();
   } else {
-    res.status(400).send(new Error('invalid login information!'));
+    res.status(400).send(new Error('invalid account information!'));
   }
 };
+
+
+const validEditUser = (req, res, next) => {
+  const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
+  // const validUsername = typeof req.body.username === 'string' && req.body.username.trim() !== '';
+  const validFirstName = typeof req.body.firstName === 'string' && req.body.firstName.trim() !== '';
+  const validLastName = typeof req.body.lastName === 'string' && req.body.lastName.trim() !== '';
+  if (
+    validEmail
+    // && validUsername
+    && validFirstName
+    && validLastName
+  ) {
+    next();
+  } else {
+    res.status(400).send(new Error('invalid account information!'));
+  }
+};
+
 
 const getUserByEmail = (req, res, next) => {
   pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email], (error, results) => {
@@ -136,6 +150,7 @@ const getUserByEmail = (req, res, next) => {
   });
 };
 
+
 const getUserByToken = (req, res, next) => {
   pool.query('SELECT * FROM ycusers WHERE reset_password_token = $1', [req.body.reset_password_token], (error, results) => {
     if (error || results.rows.length === 0) {
@@ -147,6 +162,7 @@ const getUserByToken = (req, res, next) => {
   });
 };
 
+
 const checkIfEmailInUse = (req, res, next) => {
   pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email], (error, results) => {
     if (error || results.rows.length > 0) {
@@ -156,6 +172,7 @@ const checkIfEmailInUse = (req, res, next) => {
     }
   });
 };
+
 
 const onUpdateCheckIfEmailInUse = (req, res, next) => {
   pool.query('SELECT * FROM ycusers WHERE email = $1 AND id != $2', [req.body.email, req.body.id], (error, results) => {
@@ -167,6 +184,7 @@ const onUpdateCheckIfEmailInUse = (req, res, next) => {
   });
 };
 
+
 const checkIfUsernameInUse = (req, res, next) => {
   pool.query('SELECT * FROM ycusers WHERE username = $1', [req.body.username], (error, results) => {
     if (error || results.rows.length > 0) {
@@ -176,6 +194,7 @@ const checkIfUsernameInUse = (req, res, next) => {
     }
   });
 };
+
 
 function allowAccess(req, res, next) {
   const cookieId = parseInt(req.signedCookies.userId, 10);
@@ -187,12 +206,13 @@ function allowAccess(req, res, next) {
   }
 }
 
+
 const validCampground = (req, res, next) => {
-  const validName = typeof req.body.name === 'string' && req.body.name.trim() != '';
-  const validImage = req.body.imageId || req.file && typeof req.file.path === 'string' && req.file.path.trim() != '';
-  const validDescription = typeof req.body.description === 'string' && req.body.description.trim() != '';
-  const validLocation = typeof req.body.campLocation === 'string' && req.body.campLocation.trim() != '';
-  const validPrice = typeof req.body.price === 'string' && req.body.price.trim() != '';
+  const validName = typeof req.body.name === 'string' && req.body.name.trim() !== '';
+  const validImage = req.body.imageId || (req.file && typeof req.file.path === 'string' && req.file.path.trim() !== '');
+  const validDescription = typeof req.body.description === 'string' && req.body.description.trim() !== '';
+  const validLocation = typeof req.body.campLocation === 'string' && req.body.campLocation.trim() !== '';
+  const validPrice = typeof req.body.price === 'string' && req.body.price.trim() !== '';
   if (
     validName
     && validImage
@@ -206,16 +226,18 @@ const validCampground = (req, res, next) => {
   }
 };
 
+
 const validComment = (req, res, next) => {
   if (
     typeof req.body.comment === 'string'
-    && req.body.comment.trim() != ''
+    && req.body.comment.trim() !== ''
   ) {
     next();
   } else {
     res.status(400).send(new Error('invalid comment'));
   }
 };
+
 
 const checkTokenExpiration = (req, res, next) => {
   const currentTime = Date.now();
@@ -233,6 +255,7 @@ module.exports = {
   picReplacer,
   picDeleter,
   validUser,
+  validEditUser,
   getUserByEmail,
   getUserByToken,
   checkIfEmailInUse,

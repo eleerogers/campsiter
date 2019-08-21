@@ -3,7 +3,7 @@ import './app.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Header from './components/header';
-import Footer from './components/footer';
+// import Footer from './components/footer';
 import Landing from './components/landing';
 import Campgrounds from './components/campgrounds';
 import NewCampground from './components/newCampground';

@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  Map, InfoWindow, Marker, GoogleApiWrapper
+  Map, GoogleApiWrapper
 } from 'google-maps-react';
+import PropTypes from 'prop-types';
 
-// ...
 
 class MapContainer extends React.Component {
   componentDidMount() {
@@ -11,9 +11,9 @@ class MapContainer extends React.Component {
   }
 
   render() {
-    const { campground } = this.props;
+    const { campground, google } = this.props;
     const {
-      lat, lng, location, name, description
+      lat, lng
     } = campground;
     const center = { lat, lng };
     const style = {
@@ -22,7 +22,7 @@ class MapContainer extends React.Component {
     };
     return (
       <Map
-        google={this.props.google}
+        google={google}
         style={style}
         center={center}
         zoom={15}
@@ -32,6 +32,18 @@ class MapContainer extends React.Component {
     );
   }
 }
+
+MapContainer.propTypes = {
+  campground: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired
+  }).isRequired,
+  google: PropTypes.shape({
+    maps: PropTypes.shape({
+      Map: PropTypes.func.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyCzu35XTda9FLYoYkDRnHGoNVU6bVukyio'

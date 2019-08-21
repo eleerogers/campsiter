@@ -4,6 +4,7 @@ import {
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import '../app.css';
 
 
@@ -108,4 +109,30 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      alertMessage: PropTypes.shape({
+        text: PropTypes.string,
+        variant: PropTypes.string
+      }),
+    })
+  }).isRequired,
+  errorMessage: PropTypes.string,
+  emailForm: PropTypes.string,
+  passwordForm: PropTypes.string,
+  onFormChange: PropTypes.func.isRequired,
+  submitLogin: PropTypes.func.isRequired
+};
+
+Login.defaultProps = {
+  errorMessage: null,
+  emailForm: '',
+  passwordForm: ''
+};
+
 export default withRouter(Login);

@@ -4,6 +4,7 @@ import {
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import '../app.css';
 
 
@@ -112,4 +113,16 @@ class Forgot extends Component {
     );
   }
 }
+
+Forgot.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      alertMessage: PropTypes.shape({
+        text: PropTypes.string,
+        variant: PropTypes.string
+      }),
+    }),
+  }).isRequired,
+};
+
 export default withRouter(Forgot);

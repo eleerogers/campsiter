@@ -18,7 +18,7 @@ class EditUser extends Component {
     email: '',
     image: '',
     imageId: '',
-    imageFile: {},
+    imageFile: null,
     admin: '',
     adminCode: '',
     errorMessage: null,
@@ -69,7 +69,7 @@ class EditUser extends Component {
     return null;
   }
 
-  // this identical function appears 4 places:
+
   getUploadedFileName = (e) => {
     const { files } = e.target;
     const { value } = e.target;
@@ -91,6 +91,7 @@ class EditUser extends Component {
       firstName,
       lastName,
       email,
+      image,
       imageFile,
       imageId,
       adminCode
@@ -102,9 +103,13 @@ class EditUser extends Component {
     fd.append('firstName', firstName);
     fd.append('lastName', lastName);
     fd.append('email', email);
-    fd.append('image', imageFile);
-    fd.append('imageId', imageId);
     fd.append('adminCode', adminCode);
+    fd.append('imageId', imageId);
+    if (imageFile) {
+      fd.append('image', imageFile);
+    } else {
+      fd.append('image', image);
+    }
 
     const config = {
       headers: {
@@ -112,19 +117,6 @@ class EditUser extends Component {
       }
     };
     axios.put('/api/ycusers', fd, config)
-      .catch((error) => {
-        if (error.response.status === 409) {
-          this.setState({
-            errorMessage: 'Email address or user name already in use'
-          });
-        }
-        if (error.response.status === 400) {
-          this.setState({
-            errorMessage: 'Invalid email'
-          });
-        }
-        return error;
-      })
       .then((res) => {
         const { updateLoggedinasState } = this.props;
         const {
@@ -176,7 +168,19 @@ class EditUser extends Component {
           });
         }
       })
-      .catch(error => console.error('Error:', error));
+      .catch((error) => {
+        if (error.response.status === 409) {
+          this.setState({
+            errorMessage: 'Email address or user name already in use'
+          });
+        }
+        if (error.response.status === 400) {
+          this.setState({
+            errorMessage: 'Invalid account information.'
+          });
+        }
+        return error;
+      });
   }
 
 

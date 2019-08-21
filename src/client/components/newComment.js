@@ -4,6 +4,7 @@ import {
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import '../app.css';
 
 class NewComment extends Component {
@@ -40,19 +41,18 @@ class NewComment extends Component {
 
   submitForm = (event) => {
     event.preventDefault();
-    const { campground } = this.state;
-    const { id } = this.props.match.params;
+    const { campground, comment } = this.state;
+    const { history, user, match } = this.props;
+    const { params } = match;
+    const { id } = params;
     const url = `/api/campgrounds/${id}/comments`;
-    const { history, user } = this.props;
-    const { comment } = this.state;
-    console.log('USER: ', user);
     const data = {
       comment,
       userId: user.id
     };
     fetch(url, {
       method: 'POST',
-      body: JSON.stringify(data), // data can be `string` or {object}!
+      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -131,5 +131,26 @@ class NewComment extends Component {
     );
   }
 }
+
+NewComment.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      campground: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired
+    })
+  }).isRequired
+};
 
 export default withRouter(NewComment);

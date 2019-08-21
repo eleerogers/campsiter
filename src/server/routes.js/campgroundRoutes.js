@@ -22,7 +22,8 @@ const geocoder = NodeGeocoder(options);
 const getCampgrounds = (request, response) => {
   pool.query('SELECT * FROM campgrounds ORDER BY id ASC', (error, results) => {
     if (error) {
-      response.status(404).send('uh oh');
+      console.error(error);
+      response.status(404).send();
       return;
     }
     response.status(200).json(results.rows);
@@ -34,6 +35,7 @@ const getCampgroundsByUser = (request, response) => {
   const id = parseInt(request.params.id, 10);
   pool.query('SELECT * FROM campgrounds WHERE user_id = $1 ORDER BY id ASC', [id], (error, results) => {
     if (error) {
+      console.error(error);
       throw new Error(error);
     }
     response.status(200).json(results.rows);
@@ -46,11 +48,13 @@ const getCampgroundById = (request, response) => {
 
   pool.query('SELECT * FROM campgrounds WHERE id = $1', [id], (error, results) => {
     if (error) {
+      console.error(error);
       throw error;
     }
     response.status(200).json(results.rows);
   });
 };
+
 
 const createCampground = (request, response) => {
   const {
@@ -63,9 +67,9 @@ const createCampground = (request, response) => {
     campLocation,
   } = request.body;
 
-  geocoder.geocode(campLocation, (error, data) => {
-    if (error) {
-      console.log(error);
+  geocoder.geocode(campLocation, (err, data) => {
+    if (err) {
+      console.error(err);
     }
     const lat = data[0].latitude;
     const lng = data[0].longitude;
@@ -73,12 +77,14 @@ const createCampground = (request, response) => {
 
     pool.query('INSERT INTO campgrounds (name, image, image_id, description, user_id, price, lat, lng, location) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id', [name, image, imageId, description, userId, price, lat, lng, location], (error, results) => {
       if (error) {
+        console.error(error);
         throw error;
       }
       response.status(201).send(`Campground added with ID: ${results.rows[0].id}`);
     });
   });
 };
+
 
 const updateCampground = (request, response) => {
   const id = parseInt(request.params.id, 10);
@@ -87,7 +93,7 @@ const updateCampground = (request, response) => {
   } = request.body;
   geocoder.geocode(campLocation, (err, data) => {
     if (err) {
-      console.log(err);
+      console.error(err);
     }
     const lat = data[0].latitude;
     const lng = data[0].longitude;
@@ -97,7 +103,7 @@ const updateCampground = (request, response) => {
       [name, image, imageId, description, price, lat, lng, location, id],
       (error, results) => {
         if (error) {
-          console.log('ERROR: ', error);
+          console.error(error);
           throw error;
         }
         response.status(200).json(results.rows[0]);
@@ -109,8 +115,9 @@ const updateCampground = (request, response) => {
 
 const deleteCampground = (request, response) => {
   const id = parseInt(request.params.id, 10);
-  pool.query('DELETE FROM campgrounds WHERE id = $1', [id], (error, results) => {
+  pool.query('DELETE FROM campgrounds WHERE id = $1', [id], (error) => {
     if (error) {
+      console.error(error);
       throw error;
     }
     response.status(200).send(`Campground deleted with ID: ${id}`);

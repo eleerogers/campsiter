@@ -3,9 +3,6 @@ const bcrypt = require('bcrypt');
 const async = require('async');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-// const multer = require('multer');
-// const cloudinary = require('cloudinary');
-// const path = require('path');
 
 const connectionString = process.env.CONNECTION_STRING;
 
@@ -14,33 +11,22 @@ const pool = new Pool({
 });
 
 
-// const storage = multer.diskStorage({
-//   destination: './public/uploads/',
-//   filename(req, file, cb) {
-//     cb(null, `IMAGE-${Date.now()}${path.extname(file.originalname)}`);
-//   }
-// });
-
-// const upload = multer({
-//   storage,
-//   limits: { fileSize: 1000000 },
-// }).single('image');
-
-
 const getYCUsers = (request, response) => {
   pool.query('SELECT * FROM ycusers ORDER BY id ASC', (error, results) => {
     if (error) {
+      console.error(error);
       throw error;
     }
     response.status(200).json(results.rows);
   });
 };
 
+
 const getYCUserById = (request, response) => {
   const id = parseInt(request.params.id, 10);
   pool.query('SELECT * FROM ycusers WHERE id = $1', [id], (error, results) => {
     if (error) {
-      // throw error;
+      console.error(error);
       response.status(404).json({
         error: 'YC user not found'
       });
@@ -49,6 +35,7 @@ const getYCUserById = (request, response) => {
     response.status(200).json(results.rows[0]);
   });
 };
+
 
 const ycRegister = (req, res) => {
   const {
@@ -71,10 +58,13 @@ const ycRegister = (req, res) => {
   bcrypt.hash(req.body.password, 10)
     .then((password) => {
       const queryString = 'INSERT INTO ycusers (username, password, first_name, last_name, email, image, image_id, admin) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id';
-      const valueArr = [username, password, firstName, lastName, email, image, imageId, correctAdminCode];
+      const valueArr = [
+        username, password, firstName, lastName, email, image, imageId, correctAdminCode
+      ];
 
       pool.query(queryString, valueArr, (error, results) => {
         if (error) {
+          console.error(error);
           throw error;
         }
         const message = `YC User added with ID: ${results.rows[0].id}`;
@@ -99,6 +89,7 @@ const ycUpdate = (req, res) => {
     admin,
     adminCode
   } = req.body;
+
   const correctAdminCode = adminCode === process.env.ADMIN_PASSWORD || admin;
 
   const queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, image=$4, image_id=$5, admin=$6 WHERE id=$7 RETURNING *';
@@ -106,6 +97,7 @@ const ycUpdate = (req, res) => {
 
   pool.query(queryString, valueArr, (error, results) => {
     if (error) {
+      console.error(error);
       throw error;
     }
     const message = `YC User added with ID: ${results.rows[0].id}`;
@@ -136,7 +128,6 @@ const ycLogin = (req, res) => {
         if (result) {
           res.cookie('userId', user.id, {
             httpOnly: true,
-            // secure: true, //when in production
             signed: true
           });
           res.json({
@@ -156,12 +147,14 @@ const ycLogin = (req, res) => {
   }
 };
 
+
 const ycLogout = (req, res) => {
   res.clearCookie('userId');
   res.json({
     message: 'userId cookie cleared',
   });
 };
+
 
 const resetPassword = (req, res, next) => {
   async.waterfall([
@@ -173,16 +166,15 @@ const resetPassword = (req, res, next) => {
     },
     function addToken(token, done) {
       const tokenExpires = Date.now() + 3600000;
-      pool.query('UPDATE ycusers SET reset_password_token=$1, reset_password_expires=$2 WHERE email=$3 RETURNING *', [token, tokenExpires, req.body.email], (err, results) => {
+      pool.query('UPDATE ycusers SET reset_password_token=$1, reset_password_expires=$2 WHERE email=$3 RETURNING *', [token, tokenExpires, req.body.email], (err) => {
         if (err) {
+          console.error(err);
           throw err;
         }
-        const message = `User with email ${results.rows[0].email} given a taken of ${results.rows[0].reset_password_token} and expiration of ${results.rows[0].reset_password_expires}`;
-        // res.status(201).send(message);
         done(err, token, req.body);
       });
     },
-    async function emailLink(token, user, done) {
+    async function emailLink(token, user) {
       // create reusable transporter object using the default SMTP transport
       const transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -195,7 +187,7 @@ const resetPassword = (req, res, next) => {
       });
 
       // send mail with defined transport object
-      const info = await transporter.sendMail({
+      await transporter.sendMail({
         to: user.email,
         from: 'yelpcamp2@example.com',
         subject: 'YelpCamp2 Password Reset',
@@ -208,11 +200,11 @@ const resetPassword = (req, res, next) => {
     }
   ], (err) => {
     if (err) return next(err);
-    res.redirect('/forgot');
+    return res.redirect('/forgot');
   });
 };
 
-const updatePassword = (req, res, next) => {
+const updatePassword = (req, res) => {
   bcrypt.hash(req.body.password, 10)
     .then((password) => {
       pool.query('UPDATE ycusers SET password = $1 WHERE id = $2 RETURNING id', [password, req.body.user.id], (error, results) => {
@@ -227,7 +219,7 @@ const updatePassword = (req, res, next) => {
     });
 };
 
-const getUserByToken = (req, res, next) => {
+const getUserByToken = (req, res) => {
   const resetPasswordToken = req.params.reset_password_token;
   pool.query('SELECT * FROM ycusers WHERE reset_password_token = $1', [resetPasswordToken], (error, results) => {
     if (error || results.rows.length === 0) {
@@ -246,7 +238,6 @@ module.exports = {
   getYCUsers,
   getYCUserById,
   ycRegister,
-  // ycRegister2,
   ycUpdate,
   ycLogin,
   ycLogout,

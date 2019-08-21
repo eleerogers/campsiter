@@ -87,6 +87,7 @@ app.get('/api/ycusers/:id',
   userRoutes.getYCUserById);
 app.put('/api/ycusers',
   middleware.fileConverter,
+  middleware.validEditUser,
   middleware.onUpdateCheckIfEmailInUse,
   middleware.picReplacer,
   userRoutes.ycUpdate);

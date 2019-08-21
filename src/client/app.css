@@ -110,10 +110,6 @@ input {
   outline:none;
 }
 
-/* .hidden {
-  display: none
-} */
-
 input[type="file"] {
   display: none;
 }
@@ -137,7 +133,6 @@ a:hover {
   width: 100%;
   height: 100%;
 }
-
 
 
 .km-button--primary {
