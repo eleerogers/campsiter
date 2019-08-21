@@ -32,6 +32,7 @@ class Forgot extends Component {
 
   submitEmailReset = (event) => {
     event.preventDefault();
+    const { history } = this.props;
     const { email } = this.state;
     const data = {
       email
@@ -51,10 +52,19 @@ class Forgot extends Component {
           });
         }
         if (res.status === 200) {
-          this.setState({
-            alertMessage: `An e-mail has been sent to ${email} with further instructions.`,
-            variant: 'success'
+          history.push({
+            pathname: '/campgrounds',
+            state: {
+              alertMessage: {
+                text: `An e-mail has been sent to ${email} with further instructions.`,
+                variant: 'success'
+              }
+            }
           });
+          // this.setState({
+          //   alertMessage: `An e-mail has been sent to ${email} with further instructions.`,
+          //   variant: 'success'
+          // });
         }
         return res;
       });
@@ -115,6 +125,9 @@ class Forgot extends Component {
 }
 
 Forgot.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
       alertMessage: PropTypes.shape({

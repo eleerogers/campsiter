@@ -101,7 +101,7 @@ class Login extends Component {
               </Button>
             </div>
             <Link to="/campgrounds">
-              <Button className="float-left" size="sm" variant="link">Go Back</Button>
+              <Button className="float-left" size="sm" variant="link">Back to Campgrounds</Button>
             </Link>
           </form>
         </Container>
