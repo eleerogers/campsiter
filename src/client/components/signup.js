@@ -22,6 +22,11 @@ class Signup extends Component {
     message: 'Select avatar image (optional)'
   }
 
+  goBack = () => {
+    const { history } = this.props;
+    history.goBack();
+  }
+
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
@@ -214,9 +219,7 @@ class Signup extends Component {
               Submit
               </Button>
             </div>
-            <Link to="/campgrounds" className="float-left">
-              <Button size="sm" variant="link">Go Back</Button>
-            </Link>
+            <Button onClick={this.goBack} className="float-left" size="sm" variant="link">Go Back</Button>
           </form>
         </Container>
       </div>

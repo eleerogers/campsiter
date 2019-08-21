@@ -47,6 +47,11 @@ class Login extends Component {
     return null;
   }
 
+  goBack = () => {
+    const { history } = this.props;
+    history.goBack();
+  }
+
   render() {
     const {
       emailForm,
@@ -100,9 +105,7 @@ class Login extends Component {
               Submit
               </Button>
             </div>
-            <Link to="/campgrounds">
-              <Button className="float-left" size="sm" variant="link">Back to Campgrounds</Button>
-            </Link>
+            <Button onClick={this.goBack} className="float-left" size="sm" variant="link">Go Back</Button>
           </form>
         </Container>
       </div>
