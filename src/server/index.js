@@ -6,20 +6,12 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const cors = require('cors');
-const path = require('path');
 const campgroundRoutes = require('./routes.js/campgroundRoutes');
 const userRoutes = require('./routes.js/userRoutes');
 const commentRoutes = require('./routes.js/commentRoutes');
 const middleware = require('./middleware');
 
 const app = express();
-
-
-app.use(express.static("client/build"));
-app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
-
 
 app.use(expressSession({
   secret: process.env.EXPRESS_SECRET,
