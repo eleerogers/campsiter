@@ -62,7 +62,13 @@ const Header = ({ loggedInAs, logout, history }) => {
                 )
                 : (
                   <React.Fragment>
-                    <Nav.Link href="/login">Login</Nav.Link>
+                    <Link to={{
+                      pathname: '/login',
+                    }}
+                    >
+                      Login
+                    </Link>
+                    {/* <Nav.Link href="/login">Login</Nav.Link> */}
                     <Nav.Link href="/signup">Signup</Nav.Link>
                   </React.Fragment>
                 )
