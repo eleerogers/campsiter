@@ -70,6 +70,7 @@ const createCampground = (request, response) => {
   geocoder.geocode(campLocation, (err, data) => {
     if (err) {
       console.error(err);
+      console.log('GEOCODER ERROR: ', err);
     }
     const lat = data[0].latitude;
     const lng = data[0].longitude;
