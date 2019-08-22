@@ -68,8 +68,6 @@ const Header = ({ loggedInAs, logout, history }) => {
                     >
                       Login
                     </Link>
-                    {/* <Nav.Link href="/login">Login</Nav.Link> */}
-                    {/* <Nav.Link href="/signup">Signup</Nav.Link> */}
                     <Link
                       className="nav-link"
                       to={{ pathname: '/signup' }}
