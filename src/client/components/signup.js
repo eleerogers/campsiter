@@ -86,8 +86,10 @@ class Signup extends Component {
       fd.append('firstName', firstName);
       fd.append('lastName', lastName);
       fd.append('email', email);
-      fd.append('image', imageFile);
       fd.append('adminCode', adminCode);
+      if (imageFile) {
+        fd.append('image', imageFile);
+      }
 
       const config = {
         headers: {

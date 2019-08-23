@@ -49,7 +49,7 @@ const ycRegister = (req, res) => {
     image,
     imageId,
   } = req.body;
-  if (image.length === 0) {
+  if (!image) {
     image = 'https://res.cloudinary.com/eleerogers/image/upload/v1565769595/tg6i3wamwkkevynyqaoe.jpg';
     imageId = 'tg6i3wamwkkevynyqaoe';
   }

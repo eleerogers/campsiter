@@ -63,6 +63,7 @@ const picUploader = (req, res, next) => {
       next();
     });
   } else {
+    req.body.image = null;
     next();
   }
 };

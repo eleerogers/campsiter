@@ -20,7 +20,6 @@ const geocoder = NodeGeocoder(options);
 
 
 const getCampgrounds = (request, response) => {
-  console.log('API KEY: ', process.env.GEOCODER_API_KEY);
   pool.query('SELECT * FROM campgrounds ORDER BY id ASC', (error, results) => {
     if (error) {
       console.error(error);
