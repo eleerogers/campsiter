@@ -101,4 +101,6 @@ app.post('/api/reset',
 app.get('/api/ycusers/token/:reset_password_token',
   userRoutes.getUserByToken);
 
+app.get('*', express.static('dist'));
+
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
