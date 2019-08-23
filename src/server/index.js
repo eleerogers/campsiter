@@ -103,7 +103,7 @@ app.get('/api/ycusers/token/:reset_password_token',
   userRoutes.getUserByToken);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './index.html'));
+  res.sendFile(path.join(__dirname, '/index.html'));
 });
 
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
