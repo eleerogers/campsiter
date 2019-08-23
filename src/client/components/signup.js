@@ -95,23 +95,11 @@ class Signup extends Component {
         }
       };
       axios.post('/api/ycusers', fd, config)
-        .catch((error) => {
-          if (error.response.status === 409) {
-            this.setState({
-              errorMessage: 'Email address or user name already in use'
-            });
-          }
-          if (error.response.status === 400) {
-            this.setState({
-              errorMessage: 'Invalid email and/or password'
-            });
-          }
-          return error;
-        })
         .then((res) => {
           const { status } = res;
           if (status === 201) {
-            const { correctAdminCode } = res;
+            const { data } = res;
+            const { correctAdminCode } = data;
             let text = '';
             if (correctAdminCode) {
               text = 'Succesfully created new admin account. Please login.';
@@ -129,7 +117,19 @@ class Signup extends Component {
             });
           }
         })
-        .catch(error => console.error('Error:', error));
+        .catch((error) => {
+          if (error.response.status === 409) {
+            this.setState({
+              errorMessage: 'Email address or user name already in use'
+            });
+          }
+          if (error.response.status === 400) {
+            this.setState({
+              errorMessage: 'Invalid email and/or password'
+            });
+          }
+          return error;
+        });
     } else {
       this.setState({
         errorMessage: 'Passwords do not match.'
