@@ -7,6 +7,7 @@ import { Button, Container, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../app.css';
 import axios from 'axios';
+import { match } from 'minimatch';
 
 
 class Signup extends Component {
@@ -15,7 +16,8 @@ class Signup extends Component {
     firstName: '',
     lastName: '',
     email: '',
-    password: '',
+    password1: '',
+    password2: '',
     adminCode: '',
     errorMessage: null,
     imageFile: {},
@@ -68,7 +70,8 @@ class Signup extends Component {
     const { history } = this.props;
     const {
       username,
-      password,
+      password1,
+      password2,
       firstName,
       lastName,
       email,
@@ -76,60 +79,68 @@ class Signup extends Component {
       adminCode
     } = this.state;
 
-    const fd = new FormData();
-    fd.append('username', username);
-    fd.append('password', password);
-    fd.append('firstName', firstName);
-    fd.append('lastName', lastName);
-    fd.append('email', email);
-    fd.append('image', imageFile);
-    fd.append('adminCode', adminCode);
+    if (password1 === password2) {
+      const fd = new FormData();
+      fd.append('username', username);
+      fd.append('password', password1);
+      fd.append('firstName', firstName);
+      fd.append('lastName', lastName);
+      fd.append('email', email);
+      fd.append('image', imageFile);
+      fd.append('adminCode', adminCode);
 
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }
-    };
-    axios.post('/api/ycusers', fd, config)
-      .catch((error) => {
-        if (error.response.status === 409) {
-          this.setState({
-            errorMessage: 'Email address or user name already in use'
-          });
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
         }
-        if (error.response.status === 400) {
-          this.setState({
-            errorMessage: 'Invalid email and/or password'
-          });
-        }
-        return error;
-      })
-      .then((res) => {
-        const { status } = res;
-        if (status === 201) {
-          const { correctAdminCode } = res;
-          let text = '';
-          if (correctAdminCode) {
-            text = 'Succesfully created new admin account. Please login.';
-          } else {
-            text = 'Succesfully created new account (non-admin). Please login.';
+      };
+      axios.post('/api/ycusers', fd, config)
+        .catch((error) => {
+          if (error.response.status === 409) {
+            this.setState({
+              errorMessage: 'Email address or user name already in use'
+            });
           }
-          history.push({
-            pathname: '/login',
-            state: {
-              alertMessage: {
-                text,
-                variant: 'success'
-              }
+          if (error.response.status === 400) {
+            this.setState({
+              errorMessage: 'Invalid email and/or password'
+            });
+          }
+          return error;
+        })
+        .then((res) => {
+          const { status } = res;
+          if (status === 201) {
+            const { correctAdminCode } = res;
+            let text = '';
+            if (correctAdminCode) {
+              text = 'Succesfully created new admin account. Please login.';
+            } else {
+              text = 'Succesfully created new account (non-admin). Please login.';
             }
-          });
-        }
-      })
-      .catch(error => console.error('Error:', error));
+            history.push({
+              pathname: '/login',
+              state: {
+                alertMessage: {
+                  text,
+                  variant: 'success'
+                }
+              }
+            });
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+      this.setState({
+        errorMessage: 'Passwords do not match.'
+      });
+    }
   }
 
   render() {
-    const { message } = this.state;
+    const {
+      message, username, password1, password2, email, firstName, lastName, adminCode
+    } = this.state;
     return (
       <div className="margin-top-50">
         {this.renderAlert()}
@@ -146,6 +157,7 @@ class Signup extends Component {
                 type="text"
                 name="username"
                 placeholder="Username"
+                value={username}
                 onChange={this.onChange}
               />
             </div>
@@ -153,8 +165,19 @@ class Signup extends Component {
               <input
                 className="form-control"
                 type="password"
-                name="password"
+                name="password1"
                 placeholder="Password"
+                value={password1}
+                onChange={this.onChange}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                className="form-control"
+                type="password"
+                name="password2"
+                placeholder="Verify Password"
+                value={password2}
                 onChange={this.onChange}
               />
             </div>
@@ -164,6 +187,7 @@ class Signup extends Component {
                 type="text"
                 name="firstName"
                 placeholder="First Name"
+                value={firstName}
                 onChange={this.onChange}
               />
             </div>
@@ -173,6 +197,7 @@ class Signup extends Component {
                 type="text"
                 name="lastName"
                 placeholder="Last Name"
+                value={lastName}
                 onChange={this.onChange}
               />
             </div>
@@ -182,6 +207,7 @@ class Signup extends Component {
                 type="text"
                 name="email"
                 placeholder="Email"
+                value={email}
                 onChange={this.onChange}
               />
             </div>
@@ -206,6 +232,7 @@ class Signup extends Component {
                 type="text"
                 name="adminCode"
                 placeholder="Admin Code (if applicable)"
+                value={adminCode}
                 onChange={this.onChange}
               />
             </div>
