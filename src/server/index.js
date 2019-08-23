@@ -6,6 +6,7 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const cors = require('cors');
+const path = require('path');
 const campgroundRoutes = require('./routes.js/campgroundRoutes');
 const userRoutes = require('./routes.js/userRoutes');
 const commentRoutes = require('./routes.js/commentRoutes');
@@ -100,5 +101,9 @@ app.post('/api/reset',
   userRoutes.updatePassword);
 app.get('/api/ycusers/token/:reset_password_token',
   userRoutes.getUserByToken);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './index.html'));
+});
 
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
