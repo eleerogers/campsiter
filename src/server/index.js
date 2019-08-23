@@ -103,6 +103,7 @@ app.get('/api/ycusers/token/:reset_password_token',
   userRoutes.getUserByToken);
 
 app.get('*', (req, res) => {
+  res.send(__dirname + '/index.html');
   res.sendFile(__dirname + '/index.html');
 });
 
