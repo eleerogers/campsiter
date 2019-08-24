@@ -62,6 +62,7 @@ class NewCampground extends Component {
     const {
       name, imageFile, description, campLocation, price
     } = this.state;
+    const priceNoDollarSign = price.replace(/\$/gi, '');
     const { history, user } = this.props;
     const fd = new FormData();
     const config = {
@@ -73,7 +74,7 @@ class NewCampground extends Component {
     fd.append('name', name);
     fd.append('description', description);
     fd.append('campLocation', campLocation);
-    fd.append('price', price);
+    fd.append('price', priceNoDollarSign);
     fd.append('userId', user.id);
 
     axios.post(url, fd, config)

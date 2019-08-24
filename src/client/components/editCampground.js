@@ -100,6 +100,7 @@ class EditCampground extends Component {
       userId,
       admin,
     } = this.state;
+    const priceNoDollarSign = price.replace(/\$/gi, '');
     const url = `/api/campgrounds/${id}`;
     const { history } = this.props;
 
@@ -114,7 +115,7 @@ class EditCampground extends Component {
     fd.append('name', name);
     fd.append('description', description);
     fd.append('campLocation', campLocation);
-    fd.append('price', price);
+    fd.append('price', priceNoDollarSign);
     fd.append('userId', userId);
     fd.append('adminBool', admin);
 
