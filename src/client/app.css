@@ -66,7 +66,7 @@
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1567127415/starry_camp_dq3dzc.jpg)
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1567127415/starry_camp_dq3dzc.jpg);
 }
 .slideshow li:nth-child(2) { 
   background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550279/campground3_ijvbxq.jpg);
