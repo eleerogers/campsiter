@@ -66,14 +66,14 @@
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550279/campground3_ijvbxq.jpg) 
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1567127415/starry_camp_dq3dzc.jpg)
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550277/campground7_nvgjpa.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550279/campground3_ijvbxq.jpg);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550276/campground6_ia78e1.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550277/campground7_nvgjpa.jpg);
   animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
