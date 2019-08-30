@@ -86,7 +86,6 @@ const createCampground = (request, response) => {
   });
 };
 
-
 const updateCampground = (request, response) => {
   const id = parseInt(request.params.id, 10);
   const {

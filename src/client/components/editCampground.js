@@ -101,6 +101,7 @@ class EditCampground extends Component {
       admin,
     } = this.state;
     const priceNoDollarSign = price.replace(/\$/gi, '');
+    console.log('priceNoDollarSign', priceNoDollarSign);
     const url = `/api/campgrounds/${id}`;
     const { history } = this.props;
 

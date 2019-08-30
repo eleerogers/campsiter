@@ -34,7 +34,7 @@ const Header = ({ loggedInAs, logout, history }) => {
       <Container className="d-flex justify-content-between">
         <Col>
           <Link to="/campgrounds">
-            <Navbar.Brand>YelpCamp2</Navbar.Brand>
+            <Navbar.Brand>CampSiter</Navbar.Brand>
           </Link>
         </Col>
 

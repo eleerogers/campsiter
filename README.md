@@ -1,3 +1,3 @@
-# YelpCamp2
+# campSiter
 
 A campground review website created using React and Postgres.

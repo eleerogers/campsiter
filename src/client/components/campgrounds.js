@@ -87,8 +87,8 @@ export default class Campgrounds extends Component {
           <Container>
             {this.renderAlert()}
             <Jumbotron>
-              <h1>Welcome to YelpCamp2!</h1>
-              <p>View our handpicked campgrounds from all over the world</p>
+              <h1>Welcome to CampSiter!</h1>
+              <p>Post and review campsites from around the globe</p>
               {loggedInAs.email.length > 0
                 ? (
                   <Link to="/newCampground">
