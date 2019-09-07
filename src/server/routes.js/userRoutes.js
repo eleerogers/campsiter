@@ -1,6 +1,5 @@
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
-const async = require('async');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
