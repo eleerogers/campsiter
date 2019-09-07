@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 
 
 class MapContainer extends React.Component {
+  // this is necessary for google-maps-react to correctly render
   componentDidMount() {
-    this.setState({ dumdum: 'us' });
+    this.setState({ mapRender: true });
   }
 
   render() {
