@@ -157,8 +157,8 @@ const ycLogout = (req, res) => {
 
 const resetPassword = async (req, res, next) => {
   try {
-    const buf = await crypto.randomBytes(20);
-    const token = await buf.toString('hex');
+    const buf = crypto.randomBytes(20);
+    const token = buf.toString('hex');
     const tokenExpires = Date.now() + 3600000;
     await pool.query('UPDATE ycusers SET reset_password_token=$1, reset_password_expires=$2 WHERE email=$3 RETURNING *', [token, tokenExpires, req.body.email], (err) => {
       if (err) {

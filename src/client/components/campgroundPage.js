@@ -26,9 +26,15 @@ class CampgroundPage extends React.Component {
       .then(results => results.json())
       .then(comments => this.setState({ comments }));
 
+    // fetch(`/api/ycusers/${userId}`)
+    //   .then(results => results.json())
+    //   .then(author => this.setState({ author }));
+
     fetch(`/api/ycusers/${userId}`)
-      .then(results => results.json())
-      .then(author => this.setState({ author }));
+      .then(async (results) => {
+        const author = await results.json();
+        this.setState({ author });
+      });
   }
 
   deleteCampgroundAndRedirect = (adminBool) => {
@@ -208,7 +214,7 @@ class CampgroundPage extends React.Component {
       <div className="container">
         <div className="row my-3">
           <div className="col-md-3">
-            <div className="map col-md-12">
+            <div className="map col-md-12 d-none d-md-block">
               <MapContainer campground={campground} />
             </div>
           </div>

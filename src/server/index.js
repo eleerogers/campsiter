@@ -6,10 +6,9 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const cors = require('cors');
-const path = require('path');
-const campgroundRoutes = require('./routes.js/campgroundRoutes');
-const userRoutes = require('./routes.js/userRoutes');
-const commentRoutes = require('./routes.js/commentRoutes');
+const campgroundRoutes = require('./routes/campgroundRoutes');
+const userRoutes = require('./routes/userRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 const middleware = require('./middleware');
 
 const app = express();
