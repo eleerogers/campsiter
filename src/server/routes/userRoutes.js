@@ -1,281 +1,131 @@
-const { Pool } = require('pg');
-const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
+const express = require('express');
 
-const connectionString = process.env.CONNECTION_STRING;
-
-const pool = new Pool({
-  connectionString
-});
+const router = express.Router();
+const userController = require('../controllers/userController');
+const middleware = require('../middleware');
 
 
-const getYCUsers = (request, response) => {
-  pool.query('SELECT * FROM ycusers ORDER BY id ASC', (error, results) => {
-    if (error) {
-      console.error(error);
-      throw error;
-    }
-    response.status(200).json(results.rows);
+router.get('/',
+  userController.getUsers,
+  (req, res) => {
+    const { users } = res.locals;
+    res.status(200).json({ users });
   });
-};
 
-
-const getYCUserById = (request, response) => {
-  const id = parseInt(request.params.id, 10);
-  pool.query('SELECT * FROM ycusers WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      console.error(error);
-      response.status(404).json({
-        error: 'YC user not found'
-      });
-      return;
-    }
-    response.status(200).json(results.rows[0]);
-  });
-};
-
-
-const ycRegister = (req, res) => {
-  const {
-    username,
-    firstName,
-    lastName,
-    email,
-    adminCode
-  } = req.body;
-  let {
-    image,
-    imageId,
-  } = req.body;
-  if (!image) {
-    image = 'https://res.cloudinary.com/eleerogers/image/upload/v1565769595/tg6i3wamwkkevynyqaoe.jpg';
-    imageId = 'tg6i3wamwkkevynyqaoe';
-  }
-  const correctAdminCode = adminCode === process.env.ADMIN_PASSWORD;
-
-  bcrypt.hash(req.body.password, 10)
-    .then((password) => {
-      const queryString = 'INSERT INTO ycusers (username, password, first_name, last_name, email, image, image_id, admin) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id';
-      const valueArr = [
-        username, password, firstName, lastName, email, image, imageId, correctAdminCode
-      ];
-
-      pool.query(queryString, valueArr, (error, results) => {
-        if (error) {
-          console.error(error);
-          throw error;
-        }
-        const message = `YC User added with ID: ${results.rows[0].id}`;
-        res.status(201).json({
-          message,
-          correctAdminCode
-        });
-      });
+router.post('/login',
+  middleware.getUserByEmail,
+  userController.login,
+  (req, res) => {
+    const { user } = res.locals;
+    const {
+      id,
+      email,
+      admin,
+      image,
+      firstName,
+      lastName,
+      username,
+      imageId
+    } = user;
+    res.json({
+      id,
+      email,
+      admin,
+      image,
+      firstName,
+      lastName,
+      username,
+      imageId
     });
-};
+  });
 
+router.post('/forgot',
+  middleware.getUserByEmail,
+  userController.resetPassword,
+  (req, res) => {
+    return res.redirect('/forgot');
+  });
 
-const ycUpdate = (req, res) => {
-  const {
-    id,
-    username,
-    firstName,
-    lastName,
-    email,
-    image,
-    imageId,
-    admin,
-    adminCode
-  } = req.body;
+router.post('/reset',
+  middleware.getUserByToken,
+  middleware.checkTokenExpiration,
+  userController.updatePassword,
+  (req, res) => {
+    const { userId } = res.locals;
+    res.status(201).send(`Password changed for user with ID: ${userId}`);
+  });
 
-  const correctAdminCode = adminCode === process.env.ADMIN_PASSWORD || admin;
+router.post('/',
+  middleware.fileConverter,
+  middleware.validUser,
+  middleware.checkIfUsernameInUse,
+  middleware.checkIfEmailInUse,
+  middleware.picUploader,
+  userController.register,
+  (req, res) => {
+    const { userId, correctAdminCode } = res.locals;
+    const message = `YC User added with ID: ${userId}`;
+    res.status(201).json({
+      message,
+      correctAdminCode
+    });
+  });
 
-  const queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, image=$4, image_id=$5, admin=$6 WHERE id=$7 RETURNING *';
-  const valueArr = [firstName, lastName, email, image, imageId, correctAdminCode, id];
+router.get('/logout',
+  userController.logout,
+  (req, res) => {
+    res.json({
+      message: 'userId cookie cleared',
+    });
+  });
 
-  pool.query(queryString, valueArr, (error, results) => {
-    if (error) {
-      console.error(error);
-      throw error;
-    }
-    const message = `YC User added with ID: ${results.rows[0].id}`;
+router.get('/:id',
+  userController.getUserById,
+  (req, res) => {
+    const { user } = res.locals;
+    res.status(200).json({ user });
+  });
+
+router.put('/',
+  middleware.fileConverter,
+  middleware.validEditUser,
+  middleware.onUpdateCheckIfEmailInUse,
+  middleware.picReplacer,
+  userController.update,
+  (req, res) => {
+    const { correctAdminCode, userId } = res.locals;
+    const {
+      // id,
+      // username,
+      // firstName,
+      // lastName,
+      // email,
+      image,
+      imageId
+    } = req.body;
+    const message = `Updated user with ID: ${userId}`;
     res.status(201).json({
       message,
       correctAdminCode,
       admin: correctAdminCode,
-      id,
-      username,
-      first_name: firstName,
-      last_name: lastName,
-      email,
+      // id,
+      // username,
+      // first_name: firstName,
+      // last_name: lastName,
+      // email,
       image,
       image_id: imageId
     });
   });
-};
 
-
-const ycLogin = (req, res) => {
-  const { password, user } = req.body;
-  if (!user) {
-    res.status(400).send(new Error('Invalid email'));
-  } else {
-    bcrypt
-      .compare(password, user.password)
-      .then((result) => {
-        if (result) {
-          res.cookie('userId', user.id, {
-            httpOnly: true,
-            signed: true
-          });
-          res.json({
-            id: user.id,
-            email: user.email,
-            admin: user.admin,
-            image: user.image,
-            firstName: user.first_name,
-            lastName: user.last_name,
-            username: user.username,
-            imageId: user.image_id
-          });
-        } else {
-          res.status(400).send(new Error('Incorrect password'));
-        }
-      });
-  }
-};
-
-
-const ycLogout = (req, res) => {
-  res.clearCookie('userId');
-  res.json({
-    message: 'userId cookie cleared',
+router.get('/token/:reset_password_token',
+  userController.getUserByToken,
+  (req, res) => {
+    const { user } = res.locals;
+    res.json({
+      user
+    });
   });
-};
 
 
-const resetPassword = async (req, res, next) => {
-  try {
-    const buf = crypto.randomBytes(20);
-    const token = buf.toString('hex');
-    const tokenExpires = Date.now() + 3600000;
-    await pool.query('UPDATE ycusers SET reset_password_token=$1, reset_password_expires=$2 WHERE email=$3 RETURNING *', [token, tokenExpires, req.body.email], (err) => {
-      if (err) {
-        console.error(err);
-        throw err;
-      }
-    });
-    const transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-        user: 'edwinleerogers@gmail.com',
-        pass: process.env.GMAILPW
-      },
-      port: 587,
-      secure: false, // true for 465, false for other ports
-    });
-    await transporter.sendMail({
-      to: req.body.email,
-      from: 'CampSiter@example.com',
-      subject: 'CampSiter Password Reset',
-      text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your CampSiter account.\n\n'
-        + 'Please click on the following link, or paste this into your browser to complete the process:\n\n'
-        + 'http://'}${req.headers.host}/reset/${token}\n\n`
-        + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-    });
-    return res.redirect('/forgot');
-  } catch (err) {
-    if (err) return next(err);
-    return res.redirect('/forgot');
-  }
-
-
-  // async.waterfall([
-  //   function createToken(done) {
-  //     crypto.randomBytes(20, (err, buf) => {
-  //       const token = buf.toString('hex');
-  //       done(err, token);
-  //     });
-  //   },
-  //   function addToken(token, done) {
-  //     const tokenExpires = Date.now() + 3600000;
-  //     pool.query('UPDATE ycusers SET reset_password_token=$1, reset_password_expires=$2 WHERE email=$3 RETURNING *', [token, tokenExpires, req.body.email], (err) => {
-  //       if (err) {
-  //         console.error(err);
-  //         throw err;
-  //       }
-  //       done(err, token, req.body);
-  //     });
-  //   },
-  //   async function emailLink(token, user) {
-  //     // create reusable transporter object using the default SMTP transport
-  //     const transporter = nodemailer.createTransport({
-  //       service: 'Gmail',
-  //       auth: {
-  //         user: 'edwinleerogers@gmail.com',
-  //         pass: process.env.GMAILPW
-  //       },
-  //       port: 587,
-  //       secure: false, // true for 465, false for other ports
-  //     });
-
-  //     // send mail with defined transport object
-  //     await transporter.sendMail({
-  //       to: user.email,
-  //       from: 'CampSiter@example.com',
-  //       subject: 'CampSiter Password Reset',
-  //       text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your CampSiter account.\n\n'
-  //         + 'Please click on the following link, or paste this into your browser to complete the process:\n\n'
-  //         + 'http://'}${req.headers.host}/reset/${token}\n\n`
-  //         + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-  //     });
-  //     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-  //   }
-  // ], (err) => {
-  //   if (err) return next(err);
-  //   return res.redirect('/forgot');
-  // });
-};
-
-const updatePassword = (req, res) => {
-  bcrypt.hash(req.body.password, 10)
-    .then((password) => {
-      pool.query('UPDATE ycusers SET password = $1 WHERE id = $2 RETURNING id', [password, req.body.user.id], (error, results) => {
-        if (error) {
-          throw error;
-        }
-        const message = `Password changed for YC User with ID: ${results.rows[0].id}`;
-        res.status(201).json({
-          message,
-        });
-      });
-    });
-};
-
-const getUserByToken = (req, res) => {
-  const resetPasswordToken = req.params.reset_password_token;
-  pool.query('SELECT * FROM ycusers WHERE reset_password_token = $1', [resetPasswordToken], (error, results) => {
-    if (error || results.rows.length === 0) {
-      res.status(404).send(new Error('not found'));
-    } else {
-      const [user] = results.rows;
-      res.json({
-        user
-      });
-    }
-  });
-};
-
-
-module.exports = {
-  getYCUsers,
-  getYCUserById,
-  ycRegister,
-  ycUpdate,
-  ycLogin,
-  ycLogout,
-  resetPassword,
-  updatePassword,
-  getUserByToken
-};
+module.exports = router;

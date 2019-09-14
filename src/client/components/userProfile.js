@@ -19,10 +19,10 @@ class UserProfile extends Component {
     const { location } = this.props;
     const { state } = location;
     const { author } = state;
-
-    fetch(`/api/campgrounds/ycuser/${author.id}`)
+    fetch(`/api/campgrounds/user/${author.id}`)
       .then(res => res.json())
-      .then((campgrounds) => {
+      .then((campgroundsObj) => {
+        const { campgrounds } = campgroundsObj;
         this.setState({ campgrounds });
       });
   }
@@ -120,7 +120,6 @@ UserProfile.propTypes = {
         first_name: PropTypes.string,
         last_name: PropTypes.string,
         image: PropTypes.string.isRequired,
-        image_id: PropTypes.string.isRequired,
         admin: PropTypes.bool,
       })
     })

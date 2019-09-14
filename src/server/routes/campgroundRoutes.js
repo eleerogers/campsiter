@@ -1,135 +1,60 @@
-const { Pool } = require('pg');
-const NodeGeocoder = require('node-geocoder');
+const express = require('express');
 
+const router = express.Router();
+const campgroundController = require('../controllers/campgroundController');
+const middleware = require('../middleware');
 
-const connectionString = process.env.CONNECTION_STRING;
-
-const pool = new Pool({
-  connectionString
-});
-
-
-const options = {
-  provider: 'google',
-  httpAdapter: 'https',
-  apiKey: process.env.GEOCODER_API_KEY,
-  formatter: null
-};
-
-const geocoder = NodeGeocoder(options);
-
-
-const getCampgrounds = (request, response) => {
-  pool.query('SELECT * FROM campgrounds ORDER BY id ASC', (error, results) => {
-    if (error) {
-      console.error(error);
-      response.status(404).send();
-      return;
-    }
-    response.status(200).json(results.rows);
+router.get('/',
+  campgroundController.getCampgrounds,
+  (req, res) => {
+    const { campgrounds } = res.locals;
+    res.status(200).json({ campgrounds });
   });
-};
 
-
-const getCampgroundsByUser = (request, response) => {
-  const id = parseInt(request.params.id, 10);
-  pool.query('SELECT * FROM campgrounds WHERE user_id = $1 ORDER BY id ASC', [id], (error, results) => {
-    if (error) {
-      console.error(error);
-      throw new Error(error);
-    }
-    response.status(200).json(results.rows);
+router.get('/user/:id',
+  campgroundController.getCampgroundsByUser,
+  (req, res) => {
+    const { campgrounds } = res.locals;
+    res.status(200).json({ campgrounds });
   });
-};
 
-
-const getCampgroundById = (request, response) => {
-  const id = parseInt(request.params.id, 10);
-
-  pool.query('SELECT * FROM campgrounds WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      console.error(error);
-      throw error;
-    }
-    response.status(200).json(results.rows);
+router.get('/:id',
+  campgroundController.getCampgroundById,
+  (req, res) => {
+    const { campground } = res.locals;
+    res.status(200).json({ campground });
   });
-};
 
-
-const createCampground = (request, response) => {
-  const {
-    name,
-    image,
-    imageId,
-    description,
-    userId,
-    price,
-    campLocation,
-  } = request.body;
-
-  geocoder.geocode(campLocation, (err, data) => {
-    if (err) {
-      console.error(err);
-      console.log('GEOCODER ERROR: ', err);
-    }
-    const lat = data[0].latitude;
-    const lng = data[0].longitude;
-    const location = data[0].formattedAddress;
-
-    pool.query('INSERT INTO campgrounds (name, image, image_id, description, user_id, price, lat, lng, location) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id', [name, image, imageId, description, userId, price, lat, lng, location], (error, results) => {
-      if (error) {
-        console.error(error);
-        throw error;
-      }
-      response.status(201).send(`Campground added with ID: ${results.rows[0].id}`);
-    });
+router.post('/',
+  middleware.fileConverter,
+  middleware.allowAccess,
+  middleware.validCampground,
+  middleware.picUploader,
+  campgroundController.createCampground,
+  (req, res) => {
+    const { campgroundId } = res.locals;
+    res.status(201).send(`Campground added with ID: ${campgroundId}`);
   });
-};
 
-const updateCampground = (request, response) => {
-  const id = parseInt(request.params.id, 10);
-  const {
-    name, image, imageId, description, price, campLocation
-  } = request.body;
-  geocoder.geocode(campLocation, (err, data) => {
-    if (err) {
-      console.error(err);
-    }
-    const lat = data[0].latitude;
-    const lng = data[0].longitude;
-    const location = data[0].formattedAddress;
-    pool.query(
-      'UPDATE campgrounds SET name = $1, image = $2, image_id = $3, description = $4, price = $5, lat = $6, lng = $7, location = $8 WHERE id = $9 RETURNING *',
-      [name, image, imageId, description, price, lat, lng, location, id],
-      (error, results) => {
-        if (error) {
-          console.error(error);
-          throw error;
-        }
-        response.status(200).json(results.rows[0]);
-      }
-    );
+router.put('/:id',
+  middleware.fileConverter,
+  middleware.allowAccess,
+  middleware.validCampground,
+  middleware.picReplacer,
+  campgroundController.updateCampground,
+  (req, res) => {
+    const { campground } = res.locals;
+    res.status(200).json({ campground });
   });
-};
 
-
-const deleteCampground = (request, response) => {
-  const id = parseInt(request.params.id, 10);
-  pool.query('DELETE FROM campgrounds WHERE id = $1', [id], (error) => {
-    if (error) {
-      console.error(error);
-      throw error;
-    }
-    response.status(200).send(`Campground deleted with ID: ${id}`);
+router.delete('/:id',
+  middleware.allowAccess,
+  middleware.picDeleter,
+  campgroundController.deleteCampground,
+  (req, res) => {
+    const { campgroundId } = res.locals;
+    res.status(200).send(`Campground deleted with ID: ${campgroundId}`);
   });
-};
 
 
-module.exports = {
-  getCampgrounds,
-  getCampgroundsByUser,
-  getCampgroundById,
-  createCampground,
-  updateCampground,
-  deleteCampground,
-};
+module.exports = router;

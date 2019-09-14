@@ -39,9 +39,10 @@ export default class App extends Component {
 
   componentDidMount() {
     if (localStorage.userId) {
-      fetch(`/api/ycusers/${localStorage.userId}`)
+      fetch(`/api/users/${localStorage.userId}`)
         .then(res => res.json())
-        .then((res) => {
+        .then((userObj) => {
+          const { user } = userObj;
           const {
             admin,
             created_at: createdAt,
@@ -53,7 +54,7 @@ export default class App extends Component {
             image_id: imageId,
             password,
             username
-          } = res;
+          } = user;
           const loggedInAs = {
             admin,
             createdAt,
@@ -92,7 +93,7 @@ export default class App extends Component {
       email: emailForm,
       password: passwordForm
     };
-    fetch('/api/ycusers/login/', {
+    fetch('/api/users/login/', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -131,7 +132,7 @@ export default class App extends Component {
     const pathArr = pathname.split('/');
     const pathLast = pathArr.pop();
 
-    fetch('/api/ycusers/logout')
+    fetch('/api/users/logout')
       .then(res => res.json())
       .then(() => {
         localStorage.removeItem('userId');

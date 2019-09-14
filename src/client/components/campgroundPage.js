@@ -22,18 +22,18 @@ class CampgroundPage extends React.Component {
 
     this.setState({ campground, history, alertMessage });
 
-    fetch(`/api/campgrounds/${id}/comments`)
+    fetch(`/api/comments/${id}`)
       .then(results => results.json())
-      .then(comments => this.setState({ comments }));
+      .then((commentsObj) => {
+        const { comments } = commentsObj;
+        this.setState({ comments });
+      });
 
-    // fetch(`/api/ycusers/${userId}`)
-    //   .then(results => results.json())
-    //   .then(author => this.setState({ author }));
-
-    fetch(`/api/ycusers/${userId}`)
+    fetch(`/api/users/${userId}`)
       .then(async (results) => {
-        const author = await results.json();
-        this.setState({ author });
+        const authorObj = await results.json();
+        const { user } = authorObj;
+        this.setState({ author: user });
       });
   }
 
@@ -143,7 +143,7 @@ class CampgroundPage extends React.Component {
     event.preventDefault();
     const { campground } = this.state;
     const { id } = campground;
-    const url = `/api/campgrounds/${id}/comments`;
+    const url = `/api/comments/${id}`;
     const { comment_id: commentId, user_id: userId } = commentObj;
     const data = {
       adminBool,
@@ -166,9 +166,12 @@ class CampgroundPage extends React.Component {
           }
         });
       })
-      .then(() => fetch(`/api/campgrounds/${id}/comments`))
+      .then(() => fetch(`/api/comments/${id}`))
       .then(results => results.json())
-      .then(comments => this.setState({ comments }))
+      .then((commentsObj) => {
+        const { comments } = commentsObj;
+        this.setState({ comments });
+      })
       .catch(error => console.error('Error:', error));
   }
 

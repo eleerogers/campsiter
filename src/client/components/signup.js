@@ -96,7 +96,7 @@ class Signup extends Component {
           'content-type': 'multipart/form-data'
         }
       };
-      axios.post('/api/ycusers', fd, config)
+      axios.post('/api/users', fd, config)
         .then((res) => {
           const { status } = res;
           if (status === 201) {

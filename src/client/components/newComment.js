@@ -45,7 +45,7 @@ class NewComment extends Component {
     const { history, user, match } = this.props;
     const { params } = match;
     const { id } = params;
-    const url = `/api/campgrounds/${id}/comments`;
+    const url = `/api/comments/${id}`;
     const data = {
       comment,
       userId: user.id

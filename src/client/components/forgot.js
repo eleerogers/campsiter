@@ -37,7 +37,7 @@ class Forgot extends Component {
     const data = {
       email
     };
-    fetch('api/forgot', {
+    fetch('api/users/forgot', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

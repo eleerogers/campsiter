@@ -6,10 +6,9 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const cors = require('cors');
-const campgroundRoutes = require('./routes/campgroundRoutes');
-const userRoutes = require('./routes/userRoutes');
-const commentRoutes = require('./routes/commentRoutes');
-const middleware = require('./middleware');
+const campgrounds = require('./routes/campgroundRoutes');
+const users = require('./routes/userRoutes');
+const comments = require('./routes/commentRoutes');
 
 const app = express();
 
@@ -28,78 +27,9 @@ app.use(cors({
 }));
 app.use(flash());
 
-
-// CAMPGROUND ROUTES
-app.get('/api/campgrounds',
-  campgroundRoutes.getCampgrounds);
-app.get('/api/campgrounds/ycuser/:id',
-  campgroundRoutes.getCampgroundsByUser);
-app.get('/api/campgrounds/:id',
-  campgroundRoutes.getCampgroundById);
-app.post('/api/campgrounds',
-  middleware.fileConverter,
-  middleware.allowAccess,
-  middleware.validCampground,
-  middleware.picUploader,
-  campgroundRoutes.createCampground);
-app.put('/api/campgrounds/:id',
-  middleware.fileConverter,
-  middleware.allowAccess,
-  middleware.validCampground,
-  middleware.picReplacer,
-  campgroundRoutes.updateCampground);
-app.delete('/api/campgrounds/:id',
-  middleware.allowAccess,
-  middleware.picDeleter,
-  campgroundRoutes.deleteCampground);
-
-// COMMENT ROUTES
-app.get('/api/campgrounds/:campgroundId/comments',
-  commentRoutes.getComments);
-app.post('/api/campgrounds/:campgroundId/comments',
-  middleware.allowAccess,
-  middleware.validComment,
-  commentRoutes.createComment);
-app.put('/api/campgrounds/:campgroundId/comments',
-  middleware.allowAccess,
-  middleware.validComment,
-  commentRoutes.editComment);
-app.delete('/api/campgrounds/:campgroundId/comments',
-  middleware.allowAccess,
-  commentRoutes.deleteComment);
-
-// USER ROUTES
-app.get('/api/ycusers',
-  userRoutes.getYCUsers);
-app.post('/api/ycusers/login',
-  middleware.getUserByEmail,
-  userRoutes.ycLogin);
-app.post('/api/ycusers',
-  middleware.fileConverter,
-  middleware.validUser,
-  middleware.checkIfUsernameInUse,
-  middleware.checkIfEmailInUse,
-  middleware.picUploader,
-  userRoutes.ycRegister);
-app.get('/api/ycusers/logout',
-  userRoutes.ycLogout);
-app.get('/api/ycusers/:id',
-  userRoutes.getYCUserById);
-app.put('/api/ycusers',
-  middleware.fileConverter,
-  middleware.validEditUser,
-  middleware.onUpdateCheckIfEmailInUse,
-  middleware.picReplacer,
-  userRoutes.ycUpdate);
-app.post('/api/forgot',
-  middleware.getUserByEmail,
-  userRoutes.resetPassword);
-app.post('/api/reset',
-  middleware.getUserByToken,
-  middleware.checkTokenExpiration,
-  userRoutes.updatePassword);
-app.get('/api/ycusers/token/:reset_password_token',
-  userRoutes.getUserByToken);
+app.use('/api/campgrounds', campgrounds);
+app.use('/api/comments', comments);
+app.use('/api/users', users);
 
 app.get('*', (req, res) => {
   res.sendFile('/app/dist/index.html');

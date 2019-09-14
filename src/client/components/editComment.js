@@ -61,7 +61,7 @@ class EditComment extends Component {
     const { params } = match;
     const { id } = params;
     const { history } = this.props;
-    const url = `/api/campgrounds/${id}/comments`;
+    const url = `/api/comments/${id}`;
     const {
       commentId,
       userId,

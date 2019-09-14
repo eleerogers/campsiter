@@ -101,7 +101,6 @@ class EditCampground extends Component {
       admin,
     } = this.state;
     const priceNoDollarSign = price.replace(/\$/gi, '');
-    console.log('priceNoDollarSign', priceNoDollarSign);
     const url = `/api/campgrounds/${id}`;
     const { history } = this.props;
 
@@ -136,7 +135,7 @@ class EditCampground extends Component {
       })
       .then((response) => {
         if (response.status === 200) {
-          const campground = response.data;
+          const { campground } = response.data;
           history.push({
             pathname: `/campgrounds/${id}`,
             state: {

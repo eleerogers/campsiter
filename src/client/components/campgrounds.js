@@ -24,9 +24,11 @@ export default class Campgrounds extends Component {
 
     fetch('/api/campgrounds')
       .then(res => res.json())
-      .then((campgrounds) => {
+      .then((campgroundsObj) => {
+        const { campgrounds } = campgroundsObj;
         this.setState({ campgrounds });
       });
+
   }
 
   renderAlert = () => {

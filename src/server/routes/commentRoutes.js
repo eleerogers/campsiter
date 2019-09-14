@@ -1,81 +1,40 @@
-const { Pool } = require('pg');
+const express = require('express');
 
-const connectionString = process.env.CONNECTION_STRING;
+const router = express.Router();
+const commentController = require('../controllers/commentController');
+const middleware = require('../middleware');
 
-const pool = new Pool({
-  connectionString
-});
-
-const getComments = (request, response) => {
-  const { campgroundId } = request.params;
-
-  pool.query('SELECT email, comment, comment_id, user_id, comments.created_at FROM comments JOIN ycusers ON ycusers.id=comments.user_id WHERE comments.campground_id=$1 ORDER BY comment_id ASC', [campgroundId], (error, results) => {
-    if (error) {
-      console.error(error);
-      throw error;
-    }
-    response.status(200).json(results.rows);
+router.get('/:campgroundId',
+  commentController.getComments,
+  (req, res) => {
+    const { comments } = res.locals;
+    res.status(200).json({ comments });
   });
-};
 
-const createComment = (request, response) => {
-  const {
-    campgroundId
-  } = request.params;
-  const {
-    userId, comment
-  } = request.body;
-  pool.query(
-    'INSERT INTO comments (user_id, campground_id, comment) VALUES ($1, $2, $3)',
-    [userId, campgroundId, comment],
-    (error) => {
-      if (error) {
-        console.error(error);
-        throw error;
-      }
-      response.status(200).send(
-        'Successfully added comment'
-      );
-    }
-  );
-};
+router.post('/:campgroundId',
+  middleware.allowAccess,
+  middleware.validComment,
+  commentController.createComment,
+  (req, res) => {
+    res.status(200).send(
+      'Successfully added comment'
+    );
+  });
 
-const editComment = (request, response) => {
-  const {
-    commentId, comment
-  } = request.body;
+router.put('/:campgroundId',
+  middleware.allowAccess,
+  middleware.validComment,
+  commentController.editComment,
+  (req, res) => {
+    res.status(200).send('Successfully edited comment');
+  });
 
-  pool.query(
-    'UPDATE comments SET comment = $1 WHERE comment_id = $2',
-    [comment, commentId],
-    (error) => {
-      if (error) {
-        console.error(error);
-        throw error;
-      }
-      response.status(200).send('Successfully edited comment');
-    }
-  );
-};
+router.delete('/:campgroundId',
+  middleware.allowAccess,
+  commentController.deleteComment,
+  (req, res) => {
+    res.status(200).send('Comment successfully deleted');
+  });
 
-const deleteComment = (request, response) => {
-  const { commentId } = request.body;
-  pool.query(
-    'DELETE FROM comments WHERE comment_id = $1',
-    [commentId],
-    (error) => {
-      if (error) {
-        console.error(error);
-        throw error;
-      }
-      response.status(200).send('Comment successfully deleted');
-    }
-  );
-};
 
-module.exports = {
-  getComments,
-  createComment,
-  editComment,
-  deleteComment
-};
+module.exports = router;

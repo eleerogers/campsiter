@@ -116,13 +116,13 @@ class EditUser extends Component {
         'content-type': 'multipart/form-data'
       }
     };
-    axios.put('/api/ycusers', fd, config)
+    axios.put('/api/users', fd, config)
       .then((res) => {
         const { updateLoggedinasState } = this.props;
         const {
           admin,
-          password,
-          createdAt,
+          // password,
+          // createdAt,
           image: newImageLink,
           image_id: newImageId
         } = res.data;
@@ -132,13 +132,13 @@ class EditUser extends Component {
             admin,
             id,
             username,
-            password,
+            // password,
             firstName,
             lastName,
             email,
             image: newImageLink,
             imageId: newImageId,
-            createdAt,
+            // createdAt,
           });
           const { correctAdminCode } = res;
           let text = '';

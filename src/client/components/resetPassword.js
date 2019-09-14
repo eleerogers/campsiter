@@ -20,7 +20,7 @@ class Reset extends Component {
     const {
       reset_password_token: resetPasswordToken
     } = params;
-    fetch(`/api/ycusers/token/${resetPasswordToken}`)
+    fetch(`/api/users/token/${resetPasswordToken}`)
       .then(res => res.json())
       .then((res) => {
         const { email } = res.user;
@@ -50,7 +50,7 @@ class Reset extends Component {
           password: password1,
           reset_password_token: resetPasswordToken
         };
-        fetch('/api/reset', {
+        fetch('/api/users/reset', {
           method: 'POST',
           body: JSON.stringify(data),
           headers: {
