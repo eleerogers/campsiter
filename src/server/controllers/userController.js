@@ -169,53 +169,6 @@ const resetPassword = async (req, res, next) => {
   } catch (err) {
     if (err) return next(err);
   }
-
-
-  // async.waterfall([
-  //   function createToken(done) {
-  //     crypto.randomBytes(20, (err, buf) => {
-  //       const token = buf.toString('hex');
-  //       done(err, token);
-  //     });
-  //   },
-  //   function addToken(token, done) {
-  //     const tokenExpires = Date.now() + 3600000;
-  //     pool.query('UPDATE ycusers SET reset_password_token=$1, reset_password_expires=$2 WHERE email=$3 RETURNING *', [token, tokenExpires, req.body.email], (err) => {
-  //       if (err) {
-  //         console.error(err);
-  //         throw err;
-  //       }
-  //       done(err, token, req.body);
-  //     });
-  //   },
-  //   async function emailLink(token, user) {
-  //     // create reusable transporter object using the default SMTP transport
-  //     const transporter = nodemailer.createTransport({
-  //       service: 'Gmail',
-  //       auth: {
-  //         user: 'edwinleerogers@gmail.com',
-  //         pass: process.env.GMAILPW
-  //       },
-  //       port: 587,
-  //       secure: false, // true for 465, false for other ports
-  //     });
-
-  //     // send mail with defined transport object
-  //     await transporter.sendMail({
-  //       to: user.email,
-  //       from: 'CampSiter@example.com',
-  //       subject: 'CampSiter Password Reset',
-  //       text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your CampSiter account.\n\n'
-  //         + 'Please click on the following link, or paste this into your browser to complete the process:\n\n'
-  //         + 'http://'}${req.headers.host}/reset/${token}\n\n`
-  //         + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-  //     });
-  //     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-  //   }
-  // ], (err) => {
-  //   if (err) return next(err);
-  //   return res.redirect('/forgot');
-  // });
 };
 
 const updatePassword = (req, res, next) => {
