@@ -69,7 +69,7 @@ class Login extends Component {
           <br />
           <form
             className="entryBox centered"
-            onSubmit={e => submitLogin(e, history)}
+            onSubmit={(e) => submitLogin(e, history)}
           >
             <div className="form-group">
               <input
@@ -115,7 +115,8 @@ class Login extends Component {
 
 Login.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({

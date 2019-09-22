@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 
 class MapContainer extends React.Component {
-
   render() {
     const { campground, google } = this.props;
     const {

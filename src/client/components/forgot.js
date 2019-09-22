@@ -88,7 +88,7 @@ class Forgot extends Component {
           <br />
           <form
             className="entryBox centered"
-            onSubmit={e => this.submitEmailReset(e)}
+            onSubmit={(e) => this.submitEmailReset(e)}
           >
             <div className="form-group">
               <input

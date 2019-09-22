@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {
-  Link,
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../app.css';
 import axios from 'axios';
-import { match } from 'minimatch';
 
 
 class Signup extends Component {
@@ -59,7 +57,7 @@ class Signup extends Component {
     let message;
     if (files && files.length > 1) message = `${files.length} files selected`;
     else message = value.split('\\').pop();
-    if (message) this.setState(prevState => ({ ...prevState, message }));
+    if (message) this.setState((prevState) => ({ ...prevState, message }));
     this.setState({
       imageFile: e.target.files[0]
     });
@@ -258,7 +256,8 @@ class Signup extends Component {
 
 Signup.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired
   }).isRequired,
 };
 
