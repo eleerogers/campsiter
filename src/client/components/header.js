@@ -61,7 +61,7 @@ const Header = ({ loggedInAs, logout, history }) => {
                   </div>
                 )
                 : (
-                  <React.Fragment>
+                  <>
                     <Link
                       className="nav-link"
                       to={{ pathname: '/login' }}
@@ -74,9 +74,8 @@ const Header = ({ loggedInAs, logout, history }) => {
                     >
                       Signup
                     </Link>
-                  </React.Fragment>
-                )
-              }
+                  </>
+                )}
             </Nav>
           </Navbar.Collapse>
         </Col>
@@ -95,6 +94,13 @@ Header.propTypes = {
     password: PropTypes.string,
     email: PropTypes.string,
     created_at: PropTypes.string,
+    username: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    image: PropTypes.string,
+    imageId: PropTypes.string,
+    message: PropTypes.string,
+    admin: PropTypes.bool,
   }).isRequired,
   logout: PropTypes.func.isRequired,
 };

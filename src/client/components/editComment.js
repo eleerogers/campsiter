@@ -111,7 +111,7 @@ class EditComment extends Component {
         }
       }
     })
-      .catch(error => console.error('Error:', error));
+      .catch((error) => console.error('Error:', error));
   }
 
   render() {

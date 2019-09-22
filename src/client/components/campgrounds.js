@@ -23,12 +23,11 @@ export default class Campgrounds extends Component {
     }
 
     fetch('/api/campgrounds')
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((campgroundsObj) => {
         const { campgrounds } = campgroundsObj;
         this.setState({ campgrounds });
       });
-
   }
 
   renderAlert = () => {
@@ -130,7 +129,8 @@ export default class Campgrounds extends Component {
 
 Campgrounds.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired
   }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
@@ -141,6 +141,10 @@ Campgrounds.propTypes = {
     })
   }).isRequired,
   loggedInAs: PropTypes.shape({
+    id: PropTypes.string,
+    password: PropTypes.string,
     email: PropTypes.string,
+    created_at: PropTypes.string,
+    admin: PropTypes.bool,
   }).isRequired,
 };

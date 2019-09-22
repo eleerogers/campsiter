@@ -81,7 +81,7 @@ class EditCampground extends Component {
     let message;
     if (files && files.length > 1) message = `${files.length} files selected`;
     else message = value.split('\\').pop();
-    if (message) this.setState(prevState => ({ ...prevState, message }));
+    if (message) this.setState((prevState) => ({ ...prevState, message }));
     this.setState({
       image: e.target.files[0]
     });
@@ -148,7 +148,7 @@ class EditCampground extends Component {
           });
         }
       })
-      .catch(error => console.error('Error:', error));
+      .catch((error) => console.error('Error:', error));
   }
 
   render() {
@@ -294,9 +294,20 @@ EditCampground.propTypes = {
         text: PropTypes.string,
         variant: PropTypes.string
       }),
+      loggedInAs: PropTypes.shape({
+        id: PropTypes.string,
+        password: PropTypes.string,
+        email: PropTypes.string,
+        created_at: PropTypes.string,
+        admin: PropTypes.bool,
+      }).isRequired,
     }).isRequired,
   }).isRequired,
   loggedInAs: PropTypes.shape({
+    id: PropTypes.string,
+    password: PropTypes.string,
+    email: PropTypes.string,
+    created_at: PropTypes.string,
     admin: PropTypes.bool,
   }).isRequired,
 };
