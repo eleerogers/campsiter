@@ -17,7 +17,7 @@ class NewCampground extends Component {
     campLocation: '',
     price: '',
     errorMessage: null,
-    message: 'Select Campground Image'
+    message: 'Select Campground Image (Required)'
   }
 
   onChange = (event) => {
@@ -50,7 +50,7 @@ class NewCampground extends Component {
     let message;
     if (files && files.length > 1) message = `${files.length} files selected`;
     else message = value.split('\\').pop();
-    if (message) this.setState(prevState => ({ ...prevState, message }));
+    if (message) this.setState((prevState) => ({ ...prevState, message }));
     this.setState({
       imageFile: e.target.files[0]
     });

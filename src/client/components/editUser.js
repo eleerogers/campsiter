@@ -76,7 +76,7 @@ class EditUser extends Component {
     let message;
     if (files && files.length > 1) message = `${files.length} files selected`;
     else message = value.split('\\').pop();
-    if (message) this.setState(prevState => ({ ...prevState, message }));
+    if (message) this.setState((prevState) => ({ ...prevState, message }));
     this.setState({
       imageFile: e.target.files[0]
     });

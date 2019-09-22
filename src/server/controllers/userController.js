@@ -166,8 +166,9 @@ const resetPassword = async (req, res, next) => {
         + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
     });
     next();
+    return;
   } catch (err) {
-    if (err) return next(err);
+    if (err) next(err);
   }
 };
 

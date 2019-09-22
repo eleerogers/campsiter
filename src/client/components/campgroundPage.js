@@ -23,7 +23,7 @@ class CampgroundPage extends React.Component {
     this.setState({ campground, history, alertMessage });
 
     fetch(`/api/comments/${id}`)
-      .then(results => results.json())
+      .then((results) => results.json())
       .then((commentsObj) => {
         const { comments } = commentsObj;
         this.setState({ comments });
@@ -79,7 +79,7 @@ class CampgroundPage extends React.Component {
           });
         }
       })
-      .catch(error => console.error('Error:', error));
+      .catch((error) => console.error('Error:', error));
   }
 
   renderEditDeleteBtns = () => {
@@ -92,7 +92,7 @@ class CampgroundPage extends React.Component {
       || loggedInAs.admin
     ) {
       return (
-        <React.Fragment>
+        <>
           <Link to={{
             pathname: '/editCampground',
             state: {
@@ -104,7 +104,7 @@ class CampgroundPage extends React.Component {
             <Button size="sm" variant="warning" className="mr-2">Edit Campground</Button>
           </Link>
           <Button size="sm" variant="danger" onClick={() => this.deleteCampgroundAndRedirect(loggedInAs.admin)}>Delete Campground</Button>
-        </React.Fragment>
+        </>
       );
     }
     return null;
@@ -132,7 +132,7 @@ class CampgroundPage extends React.Component {
           >
             <Button size="sm" variant="warning" className="mr-2">Edit Comment</Button>
           </Link>
-          <Button size="sm" variant="danger" onClick={e => this.deleteComment(e, commentObj, adminBool)}>Delete Comment</Button>
+          <Button size="sm" variant="danger" onClick={(e) => this.deleteComment(e, commentObj, adminBool)}>Delete Comment</Button>
         </div>
       );
     }
@@ -157,7 +157,7 @@ class CampgroundPage extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(res => res.text())
+      .then((res) => res.text())
       .then((text) => {
         this.setState({
           alertMessage: {
@@ -167,12 +167,12 @@ class CampgroundPage extends React.Component {
         });
       })
       .then(() => fetch(`/api/comments/${id}`))
-      .then(results => results.json())
+      .then((results) => results.json())
       .then((commentsObj) => {
         const { comments } = commentsObj;
         this.setState({ comments });
       })
-      .catch(error => console.error('Error:', error));
+      .catch((error) => console.error('Error:', error));
   }
 
   renderAlert = () => {
@@ -276,12 +276,11 @@ class CampgroundPage extends React.Component {
                     >
                       <Button size="sm" variant="success">Login to Comment</Button>
                     </Link>
-                  )
-                }
+                  )}
               </div>
               <hr />
               <div className="row">
-                {comments.map(comment => (
+                {comments.map((comment) => (
                   <div className="col-md-12 mb-2" key={comment.comment_id}>
                     <div className="card">
                       <div className="card-body">
@@ -310,7 +309,8 @@ class CampgroundPage extends React.Component {
 
 CampgroundPage.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired
   }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
@@ -329,6 +329,7 @@ CampgroundPage.propTypes = {
     password: PropTypes.string,
     email: PropTypes.string,
     created_at: PropTypes.string,
+    admin: PropTypes.bool,
   }).isRequired,
 };
 

@@ -20,7 +20,7 @@ class UserProfile extends Component {
     const { state } = location;
     const { author } = state;
     fetch(`/api/campgrounds/user/${author.id}`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((campgroundsObj) => {
         const { campgrounds } = campgroundsObj;
         this.setState({ campgrounds });
@@ -38,7 +38,7 @@ class UserProfile extends Component {
       || loggedInAs.admin
     ) {
       return (
-        <React.Fragment>
+        <>
           <Link to={{
             pathname: '/editUser',
             state: { author }
@@ -46,7 +46,7 @@ class UserProfile extends Component {
           >
             <Button size="sm" variant="warning" className="mr-2">Edit User</Button>
           </Link>
-        </React.Fragment>
+        </>
       );
     }
     return null;
@@ -64,7 +64,7 @@ class UserProfile extends Component {
     } = author;
     const mailTo = `mailto:${email}`;
     const { campgrounds } = this.state;
-    const campgroundComponents = campgrounds.map(campground => (
+    const campgroundComponents = campgrounds.map((campground) => (
       <Col key={campground.id} md={3} sm={6}>
         <Campground campground={campground} />
       </Col>
@@ -110,6 +110,7 @@ UserProfile.propTypes = {
     password: PropTypes.string,
     email: PropTypes.string,
     created_at: PropTypes.string,
+    admin: PropTypes.bool,
   }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({

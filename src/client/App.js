@@ -40,7 +40,7 @@ export default class App extends Component {
   componentDidMount() {
     if (localStorage.userId) {
       fetch(`/api/users/${localStorage.userId}`)
-        .then(res => res.json())
+        .then((res) => res.json())
         .then((userObj) => {
           const { user } = userObj;
           const {
@@ -133,7 +133,7 @@ export default class App extends Component {
     const pathLast = pathArr.pop();
 
     fetch('/api/users/logout')
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(() => {
         localStorage.removeItem('userId');
         this.setState({
@@ -154,7 +154,7 @@ export default class App extends Component {
           history.push('/campgrounds');
         }
       })
-      .catch(error => console.error('Error:', error));
+      .catch((error) => console.error('Error:', error));
   }
 
   render() {
@@ -171,16 +171,19 @@ export default class App extends Component {
             <Route
               path="/"
               render={
-                props => (
+                (props) => (
                   (props.location.pathname !== '/')
                   && (
                   <Header
-                    {...props}
+                    history={props.history}
+                    location={props.location}
+                    match={props.match}
                     loggedInAs={loggedInAs}
                     logout={this.logout}
                   />
                   )
-                )}
+                )
+              }
             />
             <Container>
               <Switch>
@@ -193,53 +196,67 @@ export default class App extends Component {
                   path="/campgrounds"
                   exact
                   render={
-                    props => (
+                    (props) => (
                       <Campgrounds
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         loggedInAs={loggedInAs}
                       />
-                    )}
+                    )
+                  }
                 />
                 <Route
                   path="/newCampground"
                   exact
                   render={
-                    props => (
+                    (props) => (
                       <NewCampground
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         user={loggedInAs}
                       />
-                    )}
+                    )
+                  }
                 />
                 <Route
                   path="/editCampground"
                   exact
                   render={
-                    props => (
+                    (props) => (
                       <EditCampground
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         loggedInAs={loggedInAs}
                       />
-                    )}
+                    )
+                  }
                 />
                 <Route
                   path="/campgrounds/:id"
                   exact
                   render={
-                    props => (
+                    (props) => (
                       <CampgroundPage
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         loggedInAs={loggedInAs}
                       />
-                    )}
+                    )
+                  }
                 />
                 <Route
                   path="/campgrounds/:id/comments/new"
                   exact
                   render={
-                    props => (
+                    (props) => (
                       <NewComment
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         user={loggedInAs}
                       />
                     )
@@ -249,9 +266,11 @@ export default class App extends Component {
                   path="/campgrounds/:id/comments/edit"
                   exact
                   render={
-                    props => (
+                    (props) => (
                       <EditComment
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         user={loggedInAs}
                       />
                     )
@@ -260,9 +279,11 @@ export default class App extends Component {
                 <Route
                   path="/login"
                   render={
-                    props => (
+                    (props) => (
                       <Login
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         onFormChange={this.onFormChange}
                         submitLogin={this.submitLogin}
                         emailForm={emailForm}
@@ -275,12 +296,15 @@ export default class App extends Component {
                 <Route
                   path="/ycusers/:id"
                   render={
-                    props => (
+                    (props) => (
                       <UserProfile
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         loggedInAs={loggedInAs}
                       />
-                    )}
+                    )
+                  }
                 />
                 <Route
                   path="/signup"
@@ -291,13 +315,16 @@ export default class App extends Component {
                   path="/editUser"
                   exact
                   render={
-                    props => (
+                    (props) => (
                       <EditUser
-                        {...props}
+                        history={props.history}
+                        location={props.location}
+                        match={props.match}
                         loggedInAs={loggedInAs}
                         updateLoggedinasState={this.updateLoggedinasState}
                       />
-                    )}
+                    )
+                  }
                 />
                 <Route
                   path="/forgot"
