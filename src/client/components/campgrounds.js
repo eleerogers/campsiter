@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button, Jumbotron, Container, Row, Col, Alert
 } from 'react-bootstrap';
@@ -6,37 +6,38 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Campground from './campground';
 
-export default class Campgrounds extends Component {
-  state = {
-    campgrounds: [],
-    alertMessage: null,
-    search: ''
-  };
 
-  componentDidMount() {
-    const { location } = this.props;
+export default function Campgrounds({ location, history, loggedInAs }) {
+  const [campgrnds, setCampgrnds] = useState([]);
+  const [alertMsg, setAlertMsg] = useState(null);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          '/api/campgrounds'
+        );
+        const campgroundsObj = await response.json();
+        const { campgrounds } = campgroundsObj;
+        setCampgrnds(campgrounds);
+      } catch (e) {
+        console.error(e);
+      }
+    }
     const { state } = location;
-
     if (state) {
       const { alertMessage } = state;
-      this.setState({ alertMessage });
+      setAlertMsg(alertMessage);
     }
+    fetchData();
+  }, []);
 
-    fetch('/api/campgrounds')
-      .then((res) => res.json())
-      .then((campgroundsObj) => {
-        const { campgrounds } = campgroundsObj;
-        this.setState({ campgrounds });
-      });
-  }
-
-  renderAlert = () => {
+  const renderAlert = () => {
     const space = '    ';
-    const { alertMessage } = this.state;
-    const { history } = this.props;
 
-    if (alertMessage) {
-      const { text, variant } = alertMessage;
+    if (alertMsg) {
+      const { text, variant } = alertMsg;
       return (
         <Alert variant={variant}>
           <Alert>
@@ -45,9 +46,7 @@ export default class Campgrounds extends Component {
             <Button
               onClick={() => {
                 history.replace('/campgrounds', null);
-                this.setState({
-                  alertMessage: null
-                });
+                setAlertMsg(null);
               }}
               variant="outline-success"
               size="sm"
@@ -59,72 +58,63 @@ export default class Campgrounds extends Component {
       );
     }
     return null;
-  }
+  };
 
-  onFormChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  }
+  const searchLC = search.toLowerCase();
+  const campgroundComponents = campgrnds.map((campground) => {
+    const campgroundName = campground.name.toLowerCase();
+    if (search === '' || campgroundName.indexOf(searchLC) !== -1) {
+      return (
+        <Col key={campground.id} lg={3} md={4} sm={6} className="mb-4">
+          <Campground campground={campground} />
+        </Col>
+      );
+    }
+    return null;
+  });
 
-  render() {
-    const { loggedInAs } = this.props;
-    const { campgrounds, search } = this.state;
-    const searchLC = search.toLowerCase();
-    const campgroundComponents = campgrounds.map((campground) => {
-      const campgroundName = campground.name.toLowerCase();
-      if (search === '' || campgroundName.indexOf(searchLC) !== -1) {
-        return (
-          <Col key={campground.id} lg={3} md={4} sm={6} className="mb-4">
-            <Campground campground={campground} />
-          </Col>
-        );
-      }
-      return null;
-    });
-    return (
-      <div>
+  return (
+    <div>
+      <Container>
         <Container>
-          <Container>
-            {this.renderAlert()}
-            <Jumbotron>
-              <h1>Welcome to CampSiter!</h1>
-              <p>Post and review campsites from around the globe</p>
-              {loggedInAs.email.length > 0
-                ? (
-                  <Link to="/newCampground">
-                    <Button variant="primary" size="lg">Add New Campground</Button>
-                  </Link>
-                )
-                : (
-                  <Link to="/login">
-                    <Button variant="primary" size="lg">Login to Add New Campground</Button>
-                  </Link>
-                )}
-              <br />
-              <br />
-              <form className="form-inline">
-                <input
-                  className="form-control col-md-3"
-                  type="text"
-                  name="search"
-                  placeholder="Search campgrounds..."
-                  value={search}
-                  onChange={this.onFormChange}
-                  autoComplete="off"
-                />
-              </form>
-            </Jumbotron>
-          </Container>
-          <Container>
-            <Row key={1}>
-              {campgroundComponents}
-            </Row>
-          </Container>
+          {renderAlert()}
+          <Jumbotron>
+            <h1>Welcome to CampSiter!</h1>
+            <p>Post and review campsites from around the globe</p>
+            {loggedInAs.email.length > 0
+              ? (
+                <Link to="/newCampground">
+                  <Button variant="primary" size="lg">Add New Campground</Button>
+                </Link>
+              )
+              : (
+                <Link to="/login">
+                  <Button variant="primary" size="lg">Login to Add New Campground</Button>
+                </Link>
+              )}
+            <br />
+            <br />
+            <form className="form-inline">
+              <input
+                className="form-control col-md-3"
+                type="text"
+                name="search"
+                placeholder="Search campgrounds..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                autoComplete="off"
+              />
+            </form>
+          </Jumbotron>
         </Container>
-      </div>
-    );
-  }
+        <Container>
+          <Row key={1}>
+            {campgroundComponents}
+          </Row>
+        </Container>
+      </Container>
+    </div>
+  );
 }
 
 Campgrounds.propTypes = {
