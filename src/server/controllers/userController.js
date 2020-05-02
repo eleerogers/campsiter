@@ -125,6 +125,9 @@ const login = (req, res, next) => {
         } else {
           res.status(400).send(new Error('Incorrect password'));
         }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 };

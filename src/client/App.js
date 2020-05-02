@@ -110,7 +110,7 @@ export default class App extends Component {
         } else {
           return res.json();
         }
-        throw Error;
+        throw new Error('Invalid login');
       })
       .then((res) => {
         localStorage.userId = res.id;
@@ -122,7 +122,7 @@ export default class App extends Component {
         history.push('/campgrounds');
       })
       .catch((error) => {
-        throw error;
+        console.log(error);
       });
   }
 

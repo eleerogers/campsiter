@@ -30,6 +30,9 @@ module.exports = {
     ]
   },
   resolve: {
+    alias: {
+      moment$: 'moment/moment.js',
+    },
     extensions: ['*', '.js', '.jsx']
   },
   devServer: {
