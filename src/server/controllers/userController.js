@@ -10,6 +10,7 @@ const pool = new Pool({
 });
 
 // test comment
+// two comments
 
 const getUsers = (request, response, next) => {
   pool.query('SELECT * FROM ycusers ORDER BY id ASC', (error, results) => {
