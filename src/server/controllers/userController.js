@@ -9,6 +9,7 @@ const pool = new Pool({
   connectionString
 });
 
+// test comment
 
 const getUsers = (request, response, next) => {
   pool.query('SELECT * FROM ycusers ORDER BY id ASC', (error, results) => {
