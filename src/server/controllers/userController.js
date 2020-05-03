@@ -8,7 +8,9 @@ const connectionString = process.env.CONNECTION_STRING;
 const pool = new Pool({
   connectionString
 });
+
 // test comment
+// two comments
 
 const getUsers = (request, response, next) => {
   pool.query('SELECT * FROM ycusers ORDER BY id ASC', (error, results) => {
