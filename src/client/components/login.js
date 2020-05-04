@@ -57,7 +57,7 @@ function Login({
         <br />
         <form
           className="entryBox centered"
-          onSubmit={(e) => submitLogin(e, history)}
+          onSubmit={(e) => submitLogin(e, goBack)}
         >
           <div className="form-group">
             <input

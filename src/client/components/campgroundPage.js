@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import axios from 'axios';
 import MapContainer from './map';
 
 class CampgroundPage extends React.Component {
@@ -14,72 +15,86 @@ class CampgroundPage extends React.Component {
     alertMessage: null
   }
 
-  componentDidMount() {
-    const { location, history } = this.props;
-    const { state } = location;
-    const { campground, alertMessage } = state;
-    const { id, user_id: userId } = campground;
+  async componentDidMount() {
+    try {
+      const {
+        location: {
+          state: {
+            campground, alertMessage
+          }
+        }, history
+      } = this.props;
+      const { id, user_id: userId } = campground;
 
-    this.setState({ campground, history, alertMessage });
+      this.setState({ campground, history, alertMessage });
 
-    fetch(`/api/comments/${id}`)
-      .then((results) => results.json())
-      .then((commentsObj) => {
-        const { comments } = commentsObj;
-        this.setState({ comments });
-      });
+      const { data: { comments } } = await axios.get(`/api/comments/${id}`);
+      this.setState({ comments });
 
-    fetch(`/api/users/${userId}`)
-      .then(async (results) => {
-        const authorObj = await results.json();
-        const { user } = authorObj;
-        this.setState({ author: user });
-      });
+      const { data: { user } } = await axios.get(`/api/users/${userId}`);
+      this.setState({ author: user });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  deleteCampgroundAndRedirect = (adminBool) => {
-    const { campground, history } = this.state;
-    const { id, user_id: userId, image_id: imageId } = campground;
-    const data = {
-      adminBool,
-      userId,
-      imageId
-    };
-    fetch(`/api/campgrounds/${id}`, {
-      method: 'DELETE',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
+  deleteCampgroundAndRedirect = async (adminBool) => {
+    try {
+      const {
+        campground: {
+          id, user_id: userId, image_id: imageId
+        },
+        history
+      } = this.state;
+      const data = {
+        adminBool: false,
+        userId: 6666,
+        imageId: 666
+      }; 
+      const status = await axios.delete(`/api/campgrounds/${id}`, { data });
+      if (status === 401) {
+        this.setState({
+          alertMessage: {
+            text: 'Permission denied',
+            variant: 'danger'
+          }
+        });
+      } else if (status === 400) {
+        this.setState({
+          alertMessage: {
+            text: 'Error deleting picture',
+            variant: 'danger'
+          }
+        }); 
+      } else {
+        history.push({
+          pathname: '/campgrounds',
+          state: {
+            alertMessage: {
+              text: 'Successfully deleted campground',
+              variant: 'success'
+            }
+          }
+        });
       }
-    })
-      .then((results) => {
-        if (results.status === 401) {
-          this.setState({
-            alertMessage: {
-              text: 'Permission denied',
-              variant: 'danger'
-            }
-          });
-        } else if (results.status === 400) {
-          this.setState({
-            alertMessage: {
-              text: 'Error deleting picture',
-              variant: 'danger'
-            }
-          });
-        } else {
-          history.push({
-            pathname: '/campgrounds',
-            state: {
-              alertMessage: {
-                text: 'Successfully deleted campground',
-                variant: 'success'
-              }
-            }
-          });
-        }
-      })
-      .catch((error) => console.error('Error:', error));
+    } catch (err) {
+      const { response: { status } } = err;
+      if (status === 401) {
+        this.setState({
+          alertMessage: {
+            text: 'Permission denied',
+            variant: 'danger'
+          }
+        });
+      } else if (status === 400) {
+        this.setState({
+          alertMessage: {
+            text: 'Error deleting picture',
+            variant: 'danger'
+          }
+        });
+      }
+    }
   }
 
   renderEditDeleteBtns = () => {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './app.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
+import axios from 'axios';
 import Header from './components/header';
 // import Footer from './components/footer';
 import Landing from './components/landing';
@@ -37,40 +38,44 @@ export default class App extends Component {
     errorMessage: null
   }
 
-  componentDidMount() {
-    if (localStorage.userId) {
-      fetch(`/api/users/${localStorage.userId}`)
-        .then((res) => res.json())
-        .then((userObj) => {
-          const { user } = userObj;
-          const {
-            admin,
-            created_at: createdAt,
-            email,
-            first_name: firstName,
-            last_name: lastName,
-            id,
-            image,
-            image_id: imageId,
-            password,
-            username
-          } = user;
-          const loggedInAs = {
-            admin,
-            createdAt,
-            email,
-            firstName,
-            lastName,
-            id,
-            image,
-            imageId,
-            password,
-            username
-          };
-          this.setState({
-            loggedInAs
-          });
+  async componentDidMount() {
+    try {
+      if (localStorage.userId) {
+        const {
+          data: {
+            user: {
+              admin,
+              created_at: createdAt,
+              email,
+              first_name: firstName,
+              last_name: lastName,
+              id,
+              image,
+              image_id: imageId,
+              password,
+              username
+            }
+          }
+        } = await axios.get(`/api/users/${localStorage.userId}`);
+        const loggedInAs = {
+          admin,
+          createdAt,
+          email,
+          firstName,
+          lastName,
+          id,
+          image,
+          imageId,
+          password,
+          username
+        };
+        this.setState({
+          loggedInAs
         });
+      }
+    } catch (err) {
+      console.log('is this it?');
+      console.error(err);
     }
   }
 
@@ -86,75 +91,53 @@ export default class App extends Component {
     });
   }
 
-  submitLogin = (event, history) => {
-    event.preventDefault();
-    const { emailForm, passwordForm } = this.state;
-    const data = {
-      email: emailForm,
-      password: passwordForm
-    };
-    fetch('/api/users/login/', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((res) => {
-        if (
-          res.status === 400 || res.status === 404
-        ) {
-          this.setState({
-            errorMessage: 'Invalid login'
-          });
-        } else {
-          return res.json();
-        }
-        throw new Error('Invalid login');
-      })
-      .then((res) => {
-        localStorage.userId = res.id;
-        this.setState({
-          loggedInAs: res
-        });
-      })
-      .then(() => {
-        history.push('/campgrounds');
-      })
-      .catch((error) => {
-        console.log(error);
+  submitLogin = async (event, goBack) => {
+    try {
+      event.preventDefault();
+      const { emailForm, passwordForm } = this.state;
+      const loginInfo = {
+        email: emailForm,
+        password: passwordForm
+      };
+      const { data } = await axios.post('/api/users/login/', loginInfo);
+      localStorage.userId = data.id;
+      this.setState({
+        loggedInAs: data
       });
+      goBack();
+    } catch (err) {
+      this.setState({
+        errorMessage: 'Invalid login'
+      });
+      console.error(err);
+    }
   }
 
-  logout = (history) => {
-    const { location } = history;
-    const { pathname } = location;
-    const pathArr = pathname.split('/');
-    const pathLast = pathArr.pop();
-
-    fetch('/api/users/logout')
-      .then((res) => res.json())
-      .then(() => {
-        localStorage.removeItem('userId');
-        this.setState({
-          emailForm: '',
-          passwordForm: '',
-          loggedInAs: {
-            id: '', password: '', email: '', created_at: ''
-          },
-        });
-      })
-      .then(() => {
-        if (
-          pathLast === 'new'
-          || pathLast === 'edit'
-          || pathLast === 'newCampground'
-          || pathLast === 'editCampground'
-        ) {
-          history.push('/campgrounds');
-        }
-      })
-      .catch((error) => console.error('Error:', error));
+  logout = async (history) => {
+    try {
+      const { location: { pathname } } = history;
+      const pathArr = pathname.split('/');
+      const pathLast = pathArr.pop();
+      await axios.get('/api/users/logout');
+      localStorage.removeItem('userId');
+      this.setState({
+        emailForm: '',
+        passwordForm: '',
+        loggedInAs: {
+          id: '', password: '', email: '', created_at: ''
+        },
+      });
+      if (
+        pathLast === 'new'
+        || pathLast === 'edit'
+        || pathLast === 'newCampground'
+        || pathLast === 'editCampground'
+      ) {
+        history.push('/campgrounds');
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   render() {
