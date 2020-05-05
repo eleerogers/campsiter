@@ -91,15 +91,17 @@ const picReplacer = (req, res, next) => {
 const picDeleter = (req, res, next) => {
   // check it's not generic empty headshot image
   if (req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
-    cloudinary.uploader.destroy(req.body.imageId, (error) => {
-      if (error) {
-        console.error(error);
-        res.status(400).send(new Error(error));
+    cloudinary.uploader.destroy(req.body.imageId, (error, reslt) => {
+      const { result } = reslt;
+      if (error || result === 'not found') {
+        const err = error || result;
+        res.status(400).send(new Error(err));
+      } else {
+        next();
       }
-      // next();
     });
   } else {
-    // next();
+    next();
   }
 };
 
@@ -201,19 +203,13 @@ const checkIfUsernameInUse = (req, res, next) => {
 function allowAccess(req, res, next) {
   const cookieId = parseInt(req.signedCookies.userId, 10);
   const userId = parseInt(req.body.userId, 10);
-  console.log(cookieId);
-  console.log(userId);
-  console.log(cookieId !== userId);
-  console.log('!adminBool: ', typeof req.body.adminBool);
-  console.log(req.body.adminBool);
 
-  // console.log(userId);
-  // console.log(req.body.adminBool);
   if (cookieId !== userId && !req.body.adminBool) {
-    console.log('if');
+    console.log(cookieId);
+    console.log(userId);
+    console.log(req.body);
     res.status(401).send(new Error('Un-authorized'));
   } else {
-    console.log('else');
     next();
   }
 }

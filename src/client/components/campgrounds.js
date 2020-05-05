@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import Campground from './campground';
 
 
@@ -15,11 +16,7 @@ export default function Campgrounds({ location, history, loggedInAs }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(
-          '/api/campgrounds'
-        );
-        const campgroundsObj = await response.json();
-        const { campgrounds } = campgroundsObj;
+        const { data: { campgrounds } } = await axios.get('/api/campgrounds');
         setCampgrnds(campgrounds);
       } catch (e) {
         console.error(e);

@@ -46,37 +46,24 @@ class CampgroundPage extends React.Component {
         },
         history
       } = this.state;
+
       const data = {
-        adminBool: false,
-        userId: 6666,
-        imageId: 666
-      }; 
-      const status = await axios.delete(`/api/campgrounds/${id}`, { data });
-      if (status === 401) {
-        this.setState({
+        adminBool,
+        userId,
+        imageId
+      };
+
+      await axios.delete(`/api/campgrounds/${id}`, { data });
+
+      history.push({
+        pathname: '/campgrounds',
+        state: {
           alertMessage: {
-            text: 'Permission denied',
-            variant: 'danger'
+            text: 'Successfully deleted campground',
+            variant: 'success'
           }
-        });
-      } else if (status === 400) {
-        this.setState({
-          alertMessage: {
-            text: 'Error deleting picture',
-            variant: 'danger'
-          }
-        }); 
-      } else {
-        history.push({
-          pathname: '/campgrounds',
-          state: {
-            alertMessage: {
-              text: 'Successfully deleted campground',
-              variant: 'success'
-            }
-          }
-        });
-      }
+        }
+      });
     } catch (err) {
       const { response: { status } } = err;
       if (status === 401) {
@@ -129,7 +116,12 @@ class CampgroundPage extends React.Component {
     const { loggedInAs } = this.props;
     const { campground } = this.state;
     const { id } = campground;
+    console.log('commentObj: ', commentObj);
+    console.log('adminBool: ', adminBool);
+    console.log('campground: ', campground);
     const loggedInAsId = parseInt(loggedInAs.id, 10);
+    console.log('loggedInAs: ', loggedInAsId);
+    console.log('loggedIn: ', loggedInAs);
     const commentUserId = parseInt(commentObj.user_id, 10);
     if (
       (loggedInAs
@@ -154,40 +146,33 @@ class CampgroundPage extends React.Component {
     return null;
   }
 
-  deleteComment = (event, commentObj, adminBool) => {
-    event.preventDefault();
-    const { campground } = this.state;
-    const { id } = campground;
-    const url = `/api/comments/${id}`;
-    const { comment_id: commentId, user_id: userId } = commentObj;
-    const data = {
-      adminBool,
-      commentId,
-      userId
-    };
-    fetch(url, {
-      method: 'DELETE',
-      body: JSON.stringify(data), // data can be `string` or {object}!
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((res) => res.text())
-      .then((text) => {
-        this.setState({
-          alertMessage: {
-            text,
-            variant: 'success'
-          }
-        });
-      })
-      .then(() => fetch(`/api/comments/${id}`))
-      .then((results) => results.json())
-      .then((commentsObj) => {
-        const { comments } = commentsObj;
-        this.setState({ comments });
-      })
-      .catch((error) => console.error('Error:', error));
+  deleteComment = async (event, commentObj, adminBool) => {
+    try {
+      event.preventDefault();
+      const { campground: { id } } = this.state;
+      const url = `/api/comments/${id}`;
+      const { comment_id: commentId, user_id: userId } = commentObj;
+      const commentData = {
+        adminBool,
+        commentId,
+        userId
+      };
+
+      const { data: text } = await axios.delete(url, { data: commentData });
+
+      this.setState({
+        alertMessage: {
+          text,
+          variant: 'success'
+        }
+      });
+
+      const { data: { comments } } = await axios.get(`/api/comments/${id}`);
+
+      this.setState({ comments });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   renderAlert = () => {

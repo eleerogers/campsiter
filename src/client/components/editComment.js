@@ -6,6 +6,7 @@ import {
 import { Button, Container, Alert } from 'react-bootstrap';
 import '../app.css';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 
 class EditComment extends Component {
@@ -20,6 +21,7 @@ class EditComment extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     const { location } = this.props;
     const { state } = location;
     const { commentObj, campground, adminBool } = state;
@@ -55,12 +57,15 @@ class EditComment extends Component {
     return null;
   }
 
-  submitForm = (event) => {
+  submitForm = async (event) => {
     event.preventDefault();
-    const { match } = this.props;
-    const { params } = match;
-    const { id } = params;
-    const { history } = this.props;
+    const {
+      history, match: {
+        params: {
+          id
+        }
+      }
+    } = this.props;
     const url = `/api/comments/${id}`;
     const {
       commentId,
@@ -70,48 +75,43 @@ class EditComment extends Component {
       campground,
       adminBool
     } = this.state;
-    const data = {
-      commentId,
-      userId,
-      campgroundId,
-      comment,
-      user: {
-        id: userId
-      },
-      adminBool
-    };
-    fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((res) => {
-      if (res.ok) {
+    try {
+      const data = {
+        commentId,
+        userId,
+        campgroundId,
+        comment,
+        user: {
+          id: userId
+        },
+        adminBool
+      };
+      const { data: responseData, status } = await axios.put(url, data);
+      if (status === 200) {
         history.push({
           pathname: `/campgrounds/${id}`,
           state: {
             campground,
             alertMessage: {
-              text: 'Successfully edited comment',
+              text: responseData,
               variant: 'success'
             }
           }
         });
-      } else {
-        if (res.status === 401) {
-          this.setState({
-            errorMessage: 'You need to be logged in'
-          });
-        }
-        if (res.status === 400) {
-          this.setState({
-            errorMessage: 'Invalid comment'
-          });
-        }
       }
-    })
-      .catch((error) => console.error('Error:', error));
+    } catch (err) {
+      const { response: { status, statusText } } = err;
+      history.push({
+        pathname: `/campgrounds/${id}`,
+        state: {
+          campground,
+          alertMessage: {
+            text: `${statusText} (${status})`,
+            variant: 'danger'
+          }
+        }
+      });
+    }
   }
 
   render() {
@@ -178,12 +178,9 @@ EditComment.propTypes = {
       adminBool: PropTypes.bool.isRequired
     }).isRequired,
   }).isRequired,
-  loggedInAs: PropTypes.shape({
-    admin: PropTypes.bool.isRequired,
-  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired
+      id: PropTypes.string.isRequired
     })
   }).isRequired
 };
