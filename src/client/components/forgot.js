@@ -4,6 +4,7 @@ import {
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import '../app.css';
 
@@ -30,40 +31,30 @@ class Forgot extends Component {
     });
   }
 
-  submitEmailReset = (event) => {
+  submitEmailReset = async (event) => {
     event.preventDefault();
     const { history } = this.props;
     const { email } = this.state;
-    const data = {
-      email
-    };
-    fetch('api/users/forgot', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((res) => {
-        if (res.status === 404) {
-          this.setState({
-            alertMessage: 'Email address not found',
-            variant: 'danger'
-          });
-        }
-        if (res.status === 200) {
-          history.push({
-            pathname: '/campgrounds',
-            state: {
-              alertMessage: {
-                text: `An e-mail has been sent to ${email} with further instructions.`,
-                variant: 'success'
-              }
+    try {
+      const { data, status } = await axios.post('api/users/forgot', { email });
+      if (status === 200) {
+        history.push({
+          pathname: '/campgrounds',
+          state: {
+            alertMessage: {
+              text: data,
+              variant: 'success'
             }
-          });
-        }
-        return res;
+          }
+        });
+      }
+    } catch (err) {
+      const { response: { status, statusText } } = err;
+      this.setState({
+        alertMessage: `${statusText} (${status})`,
+        variant: 'danger'
       });
+    }
   }
 
   renderAlert = () => {

@@ -42,7 +42,10 @@ router.post('/login',
 router.post('/forgot',
   middleware.getUserByEmail,
   userController.resetPassword,
-  (req, res) => res.redirect('/forgot'));
+  (req, res) => {
+    const { email } = res.locals;
+    res.status(200).send(`An e-mail has been sent to ${email} with further instructions.`);
+  });
 
 router.post('/reset',
   middleware.getUserByToken,

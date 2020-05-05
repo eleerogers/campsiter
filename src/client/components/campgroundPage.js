@@ -116,12 +116,7 @@ class CampgroundPage extends React.Component {
     const { loggedInAs } = this.props;
     const { campground } = this.state;
     const { id } = campground;
-    console.log('commentObj: ', commentObj);
-    console.log('adminBool: ', adminBool);
-    console.log('campground: ', campground);
     const loggedInAsId = parseInt(loggedInAs.id, 10);
-    console.log('loggedInAs: ', loggedInAsId);
-    console.log('loggedIn: ', loggedInAs);
     const commentUserId = parseInt(commentObj.user_id, 10);
     if (
       (loggedInAs

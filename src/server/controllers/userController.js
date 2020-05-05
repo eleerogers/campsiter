@@ -142,6 +142,7 @@ const logout = (req, res, next) => {
 
 
 const resetPassword = async (req, res, next) => {
+  res.locals.email = req.body.email;
   try {
     const buf = crypto.randomBytes(20);
     const token = buf.toString('hex');
@@ -166,12 +167,11 @@ const resetPassword = async (req, res, next) => {
       from: 'CampSiter@example.com',
       subject: 'CampSiter Password Reset',
       text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your CampSiter account.\n\n'
-        + 'Please click on the following link, or paste this into your browser to complete the process:\n\n'
-        + 'http://'}${req.headers.host}/reset/${token}\n\n`
-        + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      + 'Please click on the following link, or paste this into your browser to complete the process:\n\n'
+      + 'http://'}${req.headers.host}/reset/${token}\n\n`
+      + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
     });
     next();
-    return;
   } catch (err) {
     if (err) next(err);
   }
