@@ -82,7 +82,7 @@ class EditCampground extends Component {
 
   getFileName = (e) => {
     getUploadedFileName(e, this.setState.bind(this));
-  } 
+  }
 
   submitForm = (event) => {
     event.preventDefault();
