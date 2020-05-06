@@ -6,31 +6,68 @@ import {
 import {
   Col, Container, Row, Button
 } from 'react-bootstrap';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import Campground from './campground';
 import '../app.css';
 
 class UserProfile extends Component {
+  isMounted = false;
+
   state = {
     campgrounds: [],
   }
 
   componentDidMount() {
-    const { location } = this.props;
-    const { state } = location;
-    const { author } = state;
-    fetch(`/api/campgrounds/user/${author.id}`)
-      .then((res) => res.json())
-      .then((campgroundsObj) => {
-        const { campgrounds } = campgroundsObj;
-        this.setState({ campgrounds });
+    this.isMounted = true;
+    const {
+      location: {
+        state: {
+          author: {
+            id
+          }
+        }
+      }
+    } = this.props;
+    axios.get(`/api/campgrounds/user/${id}`)
+      .then(({ data: { campgrounds } }) => {
+        if (this.isMounted) {
+          this.setState({ campgrounds });
+        }
       });
   }
 
+  componentDidUpdate() {
+    this.isMounted = true;
+    const {
+      location: {
+        state: {
+          author: {
+            id
+          }
+        }
+      }
+    } = this.props;
+    axios.get(`/api/campgrounds/user/${id}`)
+      .then(({ data: { campgrounds } }) => {
+        if (this.isMounted) {
+          this.setState({ campgrounds });
+        }
+      });
+  }
+
+  componentWillUnmount() {
+    this.isMounted = false;
+  }
+
   renderEditButton = () => {
-    const { loggedInAs, location } = this.props;
-    const { state } = location;
-    const { author } = state;
+    const {
+      loggedInAs, location: {
+        state: {
+          author
+        }
+      }
+    } = this.props;
     if (
       (loggedInAs
       && author
@@ -53,15 +90,18 @@ class UserProfile extends Component {
   }
 
   render() {
-    const { location } = this.props;
-    const { state } = location;
-    const { author } = state;
     const {
-      first_name: firstName,
-      last_name: lastName,
-      image,
-      email
-    } = author;
+      location: {
+        state: {
+          author: {
+            first_name: firstName,
+            last_name: lastName,
+            image,
+            email
+          }
+        }
+      }
+    } = this.props;
     const mailTo = `mailto:${email}`;
     const { campgrounds } = this.state;
     const campgroundComponents = campgrounds.map((campground) => (
@@ -125,6 +165,6 @@ UserProfile.propTypes = {
       })
     })
   }).isRequired
-};
+}; 
 
 export default withRouter(UserProfile);
