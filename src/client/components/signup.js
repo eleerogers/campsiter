@@ -6,6 +6,7 @@ import { Button, Container, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../app.css';
 import axios from 'axios';
+import getUploadedFileName from '../utils/getUploadedFileName';
 
 
 class Signup extends Component {
@@ -51,16 +52,8 @@ class Signup extends Component {
     return null;
   }
 
-  getUploadedFileName = (e) => {
-    const { files } = e.target;
-    const { value } = e.target;
-    let message;
-    if (files && files.length > 1) message = `${files.length} files selected`;
-    else message = value.split('\\').pop();
-    if (message) this.setState((prevState) => ({ ...prevState, message }));
-    this.setState({
-      imageFile: e.target.files[0]
-    });
+  getFileName = (e) => {
+    getUploadedFileName(e, this.setState.bind(this));
   }
 
   submitForm = (event) => {
@@ -221,7 +214,7 @@ class Signup extends Component {
                   type="file"
                   name="image"
                   data-multiple-caption={message}
-                  onChange={this.getUploadedFileName}
+                  onChange={this.getFileName}
                 />
                 <span>{message}</span>
               </label>

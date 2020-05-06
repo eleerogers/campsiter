@@ -5,8 +5,9 @@ import {
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
 import '../app.css';
-import PropTypes from 'prop-types';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import getUploadedFileName from '../utils/getUploadedFileName';
 
 
 class EditUser extends Component {
@@ -26,19 +27,22 @@ class EditUser extends Component {
   }
 
   componentDidMount() {
-    const { location } = this.props;
-    const { state } = location;
-    const { author } = state;
     const {
-      id,
-      username,
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      image,
-      image_id: imageId,
-      admin
-    } = author;
+      location: {
+        state: {
+          author: {
+            id,
+            username,
+            first_name: firstName,
+            last_name: lastName,
+            email,
+            image,
+            image_id: imageId,
+            admin
+          }
+        }
+      }
+    } = this.props;
     this.setState({
       id,
       username,
@@ -69,17 +73,8 @@ class EditUser extends Component {
     return null;
   }
 
-
-  getUploadedFileName = (e) => {
-    const { files } = e.target;
-    const { value } = e.target;
-    let message;
-    if (files && files.length > 1) message = `${files.length} files selected`;
-    else message = value.split('\\').pop();
-    if (message) this.setState((prevState) => ({ ...prevState, message }));
-    this.setState({
-      imageFile: e.target.files[0]
-    });
+  getFileName = (e) => {
+    getUploadedFileName(e, this.setState.bind(this));
   }
 
   submitForm = (event) => {
@@ -281,7 +276,7 @@ class EditUser extends Component {
                   type="file"
                   name="image"
                   data-multiple-caption={message}
-                  onChange={this.getUploadedFileName}
+                  onChange={this.getFileName}
                 />
                 <span>{message}</span>
               </label>

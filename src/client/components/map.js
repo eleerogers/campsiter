@@ -7,10 +7,11 @@ import PropTypes from 'prop-types';
 
 class MapContainer extends React.Component {
   render() {
-    const { campground, google } = this.props;
     const {
-      lat, lng
-    } = campground;
+      google, campground: {
+        lat, lng
+      }
+    } = this.props;
     const center = { lat, lng };
     const style = {
       width: '100%',

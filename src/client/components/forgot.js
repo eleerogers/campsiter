@@ -17,8 +17,11 @@ class Forgot extends Component {
   }
 
   componentDidMount() {
-    const { location } = this.props;
-    const { state } = location;
+    const {
+      location: {
+        state
+      }
+    } = this.props;
     if (state) {
       const { alertMessage } = state;
       this.setState({ alertMessage });

@@ -82,8 +82,11 @@ class NewComment extends Component {
   }
 
   render() {
-    const { campground } = this.state;
-    const { id } = campground;
+    const {
+      campground: {
+        id
+      }
+    } = this.state;
     return (
       <div className="margin-top-50">
         {this.renderAlert()}

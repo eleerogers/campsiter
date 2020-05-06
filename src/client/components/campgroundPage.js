@@ -201,10 +201,10 @@ class CampgroundPage extends React.Component {
   }
 
   render() {
+    const { loggedInAs } = this.props;
     const {
       campground, comments, author
     } = this.state;
-    const { loggedInAs } = this.props;
     const {
       name, image, description, price, id, created_at: createdAt
     } = campground;

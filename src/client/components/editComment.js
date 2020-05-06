@@ -21,12 +21,17 @@ class EditComment extends Component {
   }
 
   componentDidMount() {
-    const { location } = this.props;
-    const { state } = location;
-    const { commentObj, campground, adminBool } = state;
     const {
-      comment_id: commentId, user_id: userId, comment
-    } = commentObj;
+      location: {
+        state: {
+          campground, adminBool, commentObj: {
+            comment_id: commentId,
+            user_id: userId,
+            comment
+          }
+        }
+      }
+    } = this.props;
     const campgroundId = campground.id;
     this.setState({
       commentId,

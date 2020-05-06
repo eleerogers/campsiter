@@ -4,9 +4,10 @@ import {
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import '../app.css';
-import axios from 'axios';
+import getUploadedFileName from '../utils/getUploadedFileName';
 
 
 class NewCampground extends Component {
@@ -26,12 +27,6 @@ class NewCampground extends Component {
     });
   }
 
-  // handleSelectFile = (event) => {
-  //   this.setState({
-  //     image: event.target.files[0]
-  //   });
-  // }
-
   renderAlert = () => {
     const { errorMessage } = this.state;
     if (errorMessage) {
@@ -44,16 +39,8 @@ class NewCampground extends Component {
     return null;
   }
 
-  getUploadedFileName = (e) => {
-    const { files } = e.target;
-    const { value } = e.target;
-    let message;
-    if (files && files.length > 1) message = `${files.length} files selected`;
-    else message = value.split('\\').pop();
-    if (message) this.setState((prevState) => ({ ...prevState, message }));
-    this.setState({
-      imageFile: e.target.files[0]
-    });
+  getFileName = (e) => {
+    getUploadedFileName(e, this.setState.bind(this));
   }
 
   submitForm = (event) => {
@@ -163,7 +150,7 @@ class NewCampground extends Component {
                     type="file"
                     name="image"
                     data-multiple-caption={message}
-                    onChange={this.getUploadedFileName}
+                    onChange={this.getFileName}
                   />
                   <span>{message}</span>
                 </label>

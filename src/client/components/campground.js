@@ -5,8 +5,7 @@ import { Figure, Button } from 'react-bootstrap';
 import '../app.css';
 
 
-function Campground(props) {
-  const { campground } = props;
+function Campground({ campground }) {
   const { id, name, image } = campground;
   return (
     <div>

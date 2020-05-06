@@ -4,10 +4,10 @@ import {
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import '../app.css';
-
-const axios = require('axios');
+import getUploadedFileName from '../utils/getUploadedFileName';
 
 
 class EditCampground extends Component {
@@ -26,9 +26,15 @@ class EditCampground extends Component {
   }
 
   componentDidMount() {
-    const { location } = this.props;
-    const { state } = location;
-    const { campground, loggedInAs } = state;
+    const {
+      location: {
+        state: {
+          campground, loggedInAs: {
+            admin
+          }
+        }
+      }
+    } = this.props;
     const {
       name,
       image,
@@ -41,7 +47,6 @@ class EditCampground extends Component {
       lat,
       lng
     } = campground;
-    const { admin } = loggedInAs;
     this.setState({
       name,
       image,
@@ -75,16 +80,8 @@ class EditCampground extends Component {
     return null;
   }
 
-  getUploadedFileName = (e) => {
-    const { files } = e.target;
-    const { value } = e.target;
-    let message;
-    if (files && files.length > 1) message = `${files.length} files selected`;
-    else message = value.split('\\').pop();
-    if (message) this.setState((prevState) => ({ ...prevState, message }));
-    this.setState({
-      image: e.target.files[0]
-    });
+  getFileName = (e) => {
+    getUploadedFileName(e, this.setState.bind(this));
   }
 
   submitForm = (event) => {
@@ -239,7 +236,7 @@ class EditCampground extends Component {
                     type="file"
                     name="image"
                     data-multiple-caption={message}
-                    onChange={this.getUploadedFileName}
+                    onChange={this.getFileName}
                   />
                   <span>{message}</span>
                 </label>
