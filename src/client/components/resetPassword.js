@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import '../app.css';
 
@@ -15,15 +16,16 @@ class Reset extends Component {
   }
 
   componentDidMount() {
-    const { match } = this.props;
-    const { params } = match;
     const {
-      reset_password_token: resetPasswordToken
-    } = params;
-    fetch(`/api/users/token/${resetPasswordToken}`)
-      .then((res) => res.json())
-      .then((res) => {
-        const { email } = res.user;
+      match: {
+        params: {
+          reset_password_token: resetPasswordToken
+        }
+      }
+    } = this.props;
+    const url = `/api/users/token/${resetPasswordToken}`;
+    axios.get(url)
+      .then(({ data: { user: { email } } }) => {
         this.setState({
           email
         });
@@ -36,57 +38,55 @@ class Reset extends Component {
     });
   }
 
-  submitEmailReset = (event) => {
+  submitEmailReset = async (event) => {
     event.preventDefault();
-    const { history, match } = this.props;
-    const { params } = match;
     const {
-      reset_password_token: resetPasswordToken
-    } = params;
-    const { password1, password2 } = this.state;
-    if (password1 !== '') {
-      if (password1 === password2) {
-        const data = {
-          password: password1,
+      history, match: {
+        params: {
           reset_password_token: resetPasswordToken
-        };
-        fetch('/api/users/reset', {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then((res) => {
-            if (res.status === 410) {
-              this.setState({
-                alertMessage: 'Reset link has expired',
-                variant: 'danger'
-              });
-            }
-            if (res.status === 201) {
-              history.push({
-                pathname: '/login',
-                state: {
-                  alertMessage: {
-                    text: 'Successfully changed password. Please login.',
-                    variant: 'success'
-                  }
+        }
+      }
+    } = this.props;
+    const { password1, password2 } = this.state;
+    try {
+      if (password1 !== '') {
+        if (password1 === password2) {
+          const pwData = {
+            password: password1,
+            reset_password_token: resetPasswordToken
+          };
+          const { data, status } = await axios.post('/api/users/reset', pwData);
+          if (status === 201) {
+            history.push({
+              pathname: '/login',
+              state: {
+                alertMessage: {
+                  text: data,
+                  variant: 'success'
                 }
-              });
-            }
+              }
+            });
+          }
+        } else {
+          this.setState({
+            alertMessage: 'Passwords do not match',
+            variant: 'danger'
           });
+        }
       } else {
         this.setState({
-          alertMessage: 'Passwords do not match',
+          alertMessage: 'Password cannot be blank',
           variant: 'danger'
         });
       }
-    } else {
-      this.setState({
-        alertMessage: 'Password cannot be blank',
-        variant: 'danger'
-      });
+    } catch (err) {
+      const { response: { status, data } } = err;
+      if (status === 410) {
+        this.setState({
+          alertMessage: data,
+          variant: 'danger'
+        });
+      }
     }
   }
 

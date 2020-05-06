@@ -208,7 +208,7 @@ function allowAccess(req, res, next) {
     console.log(cookieId);
     console.log(userId);
     console.log(req.body);
-    res.status(401).send(new Error('Un-authorized'));
+    res.status(401).send('Unauthorized');
   } else {
     next();
   }
@@ -242,7 +242,7 @@ const validComment = (req, res, next) => {
   ) {
     next();
   } else {
-    res.status(400).send(new Error('invalid comment'));
+    res.status(400).send('Invalid comment');
   }
 };
 
@@ -252,7 +252,7 @@ const checkTokenExpiration = (req, res, next) => {
   if (currentTime < req.body.user.reset_password_expires) {
     next();
   } else {
-    res.status(410).send();
+    res.status(410).send('Reset link has expired');
   }
 };
 

@@ -45,7 +45,11 @@ function Login({
   };
 
   const goBack = () => {
-    history.goBack();
+    if (window.history.length > 2) {
+      history.goBack();
+    } else {
+      history.push('/campgrounds');
+    }
   };
 
   return (

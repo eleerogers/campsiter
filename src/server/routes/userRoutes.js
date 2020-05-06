@@ -52,8 +52,7 @@ router.post('/reset',
   middleware.checkTokenExpiration,
   userController.updatePassword,
   (req, res) => {
-    const { userId } = res.locals;
-    res.status(201).send(`Password changed for user with ID: ${userId}`);
+    res.status(201).send('Successfully changed password. Please login.');
   });
 
 router.post('/',

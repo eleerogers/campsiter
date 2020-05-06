@@ -17,7 +17,7 @@ router.post('/:campgroundId',
   commentController.createComment,
   (req, res) => {
     res.status(200).send(
-      'Successfully added comment'
+      'Successfully added comment!'
     );
   });
 

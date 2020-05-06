@@ -184,7 +184,7 @@ const updatePassword = (req, res, next) => {
         if (error) {
           throw error;
         }
-        res.locals.userId = results.rows[0].id;
+        // res.locals.userId = results.rows[0].id;
         next();
       });
     });

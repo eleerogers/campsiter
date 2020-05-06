@@ -4,6 +4,7 @@ import {
   withRouter
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import '../app.css';
 
@@ -15,9 +16,13 @@ class NewComment extends Component {
   }
 
   componentDidMount() {
-    const { location } = this.props;
-    const { state } = location;
-    const { campground } = state;
+    const {
+      location: {
+        state: {
+          campground
+        }
+      }
+    } = this.props;
     this.setState({ campground });
   }
 
@@ -39,49 +44,41 @@ class NewComment extends Component {
     return null;
   }
 
-  submitForm = (event) => {
+  submitForm = async (event) => {
     event.preventDefault();
     const { campground, comment } = this.state;
-    const { history, user, match } = this.props;
-    const { params } = match;
-    const { id } = params;
+    const {
+      history, user, match: {
+        params: {
+          id
+        }
+      }
+    } = this.props;
     const url = `/api/comments/${id}`;
-    const data = {
+    const commentData = {
       comment,
       userId: user.id
     };
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((res) => {
-      if (res.ok) {
+    try {
+      const { data, status } = await axios.post(url, commentData);
+      if (status === 200) {
         history.push({
           pathname: `/campgrounds/${id}`,
           state: {
             campground,
             alertMessage: {
-              text: 'Successfully added comment',
+              text: data,
               variant: 'success'
             }
           }
         });
-      } else {
-        if (res.status === 401) {
-          this.setState({
-            errorMessage: 'You need to be logged in'
-          });
-        }
-        if (res.status === 400) {
-          this.setState({
-            errorMessage: 'Invalid comment'
-          });
-        }
       }
-    })
-      .catch((error) => console.error('Error:', error));
+    } catch (err) {
+      const { response: { status, data } } = err;
+      this.setState({
+        errorMessage: `${data} (${status})`
+      });
+    }
   }
 
   render() {

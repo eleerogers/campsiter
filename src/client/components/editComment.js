@@ -21,7 +21,6 @@ class EditComment extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const { location } = this.props;
     const { state } = location;
     const { commentObj, campground, adminBool } = state;
@@ -100,13 +99,13 @@ class EditComment extends Component {
         });
       }
     } catch (err) {
-      const { response: { status, statusText } } = err;
+      const { response: { status, data } } = err;
       history.push({
         pathname: `/campgrounds/${id}`,
         state: {
           campground,
           alertMessage: {
-            text: `${statusText} (${status})`,
+            text: `${data} (${status})`,
             variant: 'danger'
           }
         }
