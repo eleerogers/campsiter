@@ -44,7 +44,8 @@ router.put('/:id',
   campgroundController.updateCampground,
   (req, res) => {
     const { campground } = res.locals;
-    res.status(200).json({ campground });
+    const message = 'Successfully edited campground';
+    res.status(200).json({ campground, message });
   });
 
 router.delete('/:id',

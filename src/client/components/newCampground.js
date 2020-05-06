@@ -163,7 +163,7 @@ class NewCampground extends Component {
                   type="submit"
                   size="lg"
                 >
-                Submit
+                  Submit
                 </Button>
               </div>
               <Link to="/campgrounds">

@@ -191,7 +191,7 @@ class CampgroundPage extends React.Component {
               variant={btnVariant}
               size="sm"
             >
-            X
+              X
             </Button>
           </span>
         </Alert>

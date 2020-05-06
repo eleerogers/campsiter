@@ -230,7 +230,7 @@ const validCampground = (req, res, next) => {
   ) {
     next();
   } else {
-    res.status(400).send(new Error('invalid campground information!'));
+    res.status(400).send('Invalid campground information');
   }
 };
 

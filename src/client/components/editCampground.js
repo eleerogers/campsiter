@@ -84,7 +84,7 @@ class EditCampground extends Component {
     getUploadedFileName(e, this.setState.bind(this));
   }
 
-  submitForm = (event) => {
+  submitForm = async (event) => {
     event.preventDefault();
     const {
       name,
@@ -116,36 +116,26 @@ class EditCampground extends Component {
     fd.append('userId', userId);
     fd.append('adminBool', admin);
 
-    axios.put(url, fd, config)
-      .catch((error) => {
-        if (error.response.status === 401) {
-          this.setState({
-            errorMessage: 'You need to be logged in.'
-          });
-        }
-        if (error.response.status === 400) {
-          this.setState({
-            errorMessage: 'Invalid campground info.'
-          });
-        }
-        return error;
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          const { campground } = response.data;
-          history.push({
-            pathname: `/campgrounds/${id}`,
-            state: {
-              campground,
-              alertMessage: {
-                text: 'Successfully edited campground',
-                variant: 'success'
-              }
+    try {
+      const { status, data: { campground, message } } = await axios.put(url, fd, config);
+      if (status === 200) {
+        history.push({
+          pathname: `/campgrounds/${id}`,
+          state: {
+            campground,
+            alertMessage: {
+              text: message,
+              variant: 'success'
             }
-          });
-        }
-      })
-      .catch((error) => console.error('Error:', error));
+          }
+        });
+      }
+    } catch (err) {
+      const { response: { status, data: message } } = err;
+      this.setState({
+        errorMessage: `${message} (${status})`
+      });
+    }
   }
 
   render() {
