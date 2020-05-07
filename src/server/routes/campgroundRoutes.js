@@ -54,8 +54,7 @@ router.delete('/:id',
   middleware.picDeleter,
   campgroundController.deleteCampground,
   (req, res) => {
-    const { campgroundId } = res.locals;
-    res.status(200).send(`Campground deleted with ID: ${campgroundId}`);
+    res.status(200).send('Campground successfully deleted');
   });
 
 

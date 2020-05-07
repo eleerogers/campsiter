@@ -82,11 +82,8 @@ class NewComment extends Component {
   }
 
   render() {
-    const {
-      campground: {
-        id
-      }
-    } = this.state;
+    const { campground } = this.state;
+    const { id } = campground;
     return (
       <div className="margin-top-50">
         {this.renderAlert()}
@@ -113,7 +110,7 @@ class NewComment extends Component {
                 variant="primary"
                 type="submit"
               >
-              Submit
+                Submit
               </Button>
             </div>
             <Link to={{

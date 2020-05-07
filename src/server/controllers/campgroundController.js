@@ -125,7 +125,6 @@ const deleteCampground = (request, response, next) => {
       console.error(error);
       throw error;
     }
-    response.locals.campgroundId = id;
     next();
   });
 };

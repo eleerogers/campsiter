@@ -205,10 +205,10 @@ function allowAccess(req, res, next) {
   const userId = parseInt(req.body.userId, 10);
 
   if (cookieId !== userId && !req.body.adminBool) {
+    res.status(401).send('Unauthorized');
     console.log(cookieId);
     console.log(userId);
     console.log(req.body);
-    res.status(401).send('Unauthorized');
   } else {
     next();
   }

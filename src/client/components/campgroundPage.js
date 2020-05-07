@@ -24,6 +24,7 @@ class CampgroundPage extends React.Component {
           }
         }, history
       } = this.props;
+
       const { id, user_id: userId } = campground;
 
       this.setState({ campground, history, alertMessage });
@@ -53,34 +54,26 @@ class CampgroundPage extends React.Component {
         imageId
       };
 
-      await axios.delete(`/api/campgrounds/${id}`, { data });
-
-      history.push({
-        pathname: '/campgrounds',
-        state: {
-          alertMessage: {
-            text: 'Successfully deleted campground',
-            variant: 'success'
-          }
-        }
-      });
-    } catch (err) {
-      const { response: { status } } = err;
-      if (status === 401) {
-        this.setState({
-          alertMessage: {
-            text: 'Permission denied',
-            variant: 'danger'
-          }
-        });
-      } else if (status === 400) {
-        this.setState({
-          alertMessage: {
-            text: 'Error deleting picture',
-            variant: 'danger'
+      const { status, data: message } = await axios.delete(`/api/campgrounds/${id}`, { data });
+      if (status === 200) {
+        history.push({
+          pathname: '/campgrounds',
+          state: {
+            alertMessage: {
+              text: message,
+              variant: 'success'
+            }
           }
         });
       }
+    } catch (err) {
+      const { response: { status, data: message } } = err;
+      this.setState({
+        alertMessage: {
+          text: `${message} (${status})`,
+          variant: 'danger'
+        }
+      });
     }
   }
 
@@ -166,7 +159,13 @@ class CampgroundPage extends React.Component {
 
       this.setState({ comments });
     } catch (err) {
-      console.error(err);
+      const { response: { status, statusText } } = err;
+      this.setState({
+        alertMessage: {
+          text: `${statusText} (${status})`,
+          variant: 'danger'
+        }
+      });
     }
   }
 
