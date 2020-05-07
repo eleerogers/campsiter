@@ -48,7 +48,7 @@ export default function Campgrounds({ location, history, loggedInAs }) {
               variant="outline-success"
               size="sm"
             >
-            X
+              X
             </Button>
           </Alert>
         </Alert>

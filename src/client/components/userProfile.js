@@ -4,7 +4,7 @@ import {
   withRouter
 } from 'react-router-dom';
 import {
-  Col, Container, Row, Button
+  Col, Container, Row, Button, Alert
 } from 'react-bootstrap';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -12,62 +12,48 @@ import Campground from './campground';
 import '../app.css';
 
 class UserProfile extends Component {
-  isMounted = false;
+  // isMounted = false;
 
   state = {
+    author: {},
     campgrounds: [],
+    alertMessage: null,
   }
 
   componentDidMount() {
-    this.isMounted = true;
+    // this.isMounted = true;
     const {
       location: {
         state: {
-          author: {
-            id
-          }
+          alertMessage,
+        }
+      },
+      match: {
+        params: {
+          id
         }
       }
     } = this.props;
+    if (alertMessage) {
+      this.setState({ alertMessage });
+    }
     axios.get(`/api/campgrounds/user/${id}`)
-      .then(({ data: { campgrounds } }) => {
-        if (this.isMounted) {
-          this.setState({ campgrounds });
-        }
+      .then(({ data: { campgrounds, user: author } }) => {
+        // if (this.isMounted) {
+          this.setState({ campgrounds, author });
+        // }
       });
   }
 
-  componentDidUpdate() {
-    this.isMounted = true;
-    const {
-      location: {
-        state: {
-          author: {
-            id
-          }
-        }
-      }
-    } = this.props;
-    axios.get(`/api/campgrounds/user/${id}`)
-      .then(({ data: { campgrounds } }) => {
-        if (this.isMounted) {
-          this.setState({ campgrounds });
-        }
-      });
-  }
-
-  componentWillUnmount() {
-    this.isMounted = false;
-  }
+  // componentWillUnmount() {
+  //   this.isMounted = false;
+  // }
 
   renderEditButton = () => {
     const {
-      loggedInAs, location: {
-        state: {
-          author
-        }
-      }
+      loggedInAs,
     } = this.props;
+    const { author } = this.state;
     if (
       (loggedInAs
       && author
@@ -89,21 +75,48 @@ class UserProfile extends Component {
     return null;
   }
 
+  renderAlert = () => {
+    const space = '    ';
+    const { alertMessage } = this.state;
+    const {
+      history,
+    } = this.props;
+    const { author } = this.state;
+    if (alertMessage) {
+      const { text, variant } = alertMessage;
+      return (
+        <Alert variant={variant}>
+          <Alert>
+            {text}
+            {space}
+            <Button
+              onClick={() => {
+                history.replace(`/ycusers/${author.id}`, { author });
+                this.setState({ alertMessage: null });
+              }}
+              variant="outline-success"
+              size="sm"
+            >
+              X
+            </Button>
+          </Alert>
+        </Alert>
+      );
+    }
+    return null;
+  };
+
   render() {
     const {
-      location: {
-        state: {
-          author: {
-            first_name: firstName,
-            last_name: lastName,
-            image,
-            email
-          }
-        }
+      campgrounds,
+      author: {
+        first_name: firstName,
+        last_name: lastName,
+        image,
+        email
       }
-    } = this.props;
+    } = this.state;
     const mailTo = `mailto:${email}`;
-    const { campgrounds } = this.state;
     const campgroundComponents = campgrounds.map((campground) => (
       <Col key={campground.id} md={3} sm={6}>
         <Campground campground={campground} />
@@ -134,6 +147,7 @@ class UserProfile extends Component {
         </div>
         <div className="col-md-8">
           <Container>
+            {this.renderAlert()}
             <Row key={1}>
               {campgroundComponents}
             </Row>
@@ -145,6 +159,10 @@ class UserProfile extends Component {
 }
 
 UserProfile.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired
+  }).isRequired,
   loggedInAs: PropTypes.shape({
     id: PropTypes.string,
     password: PropTypes.string,
@@ -154,6 +172,10 @@ UserProfile.propTypes = {
   }).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
+      alertMessage: PropTypes.shape({
+        text: PropTypes.string,
+        variant: PropTypes.string
+      }),
       author: PropTypes.shape({
         id: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
@@ -164,7 +186,12 @@ UserProfile.propTypes = {
         admin: PropTypes.bool,
       })
     })
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    })
   }).isRequired
-}; 
+};
 
 export default withRouter(UserProfile);

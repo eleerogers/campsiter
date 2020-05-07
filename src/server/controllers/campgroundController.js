@@ -84,8 +84,6 @@ const createCampground = (request, response, next) => {
         console.error(error);
         throw error;
       }
-
-      response.locals.campgroundId = results.rows[0].id;
       next();
     });
   });

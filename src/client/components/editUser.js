@@ -77,9 +77,9 @@ class EditUser extends Component {
     getUploadedFileName(e, this.setState.bind(this));
   }
 
-  submitForm = (event) => {
+  submitForm = async (event) => {
     event.preventDefault();
-    const { history } = this.props;
+    const { history, updateLoggedinasState } = this.props;
     const {
       id,
       username,
@@ -111,71 +111,118 @@ class EditUser extends Component {
         'content-type': 'multipart/form-data'
       }
     };
-    axios.put('/api/users', fd, config)
-      .then((res) => {
-        const { updateLoggedinasState } = this.props;
-        const {
+    try {
+      const {
+        status,
+        data: {
+          message,
           admin,
-          // password,
-          // createdAt,
           image: newImageLink,
           image_id: newImageId
-        } = res.data;
-        const { status } = res;
-        if (status === 201) {
-          updateLoggedinasState({
-            admin,
-            id,
-            username,
-            // password,
-            firstName,
-            lastName,
-            email,
-            image: newImageLink,
-            imageId: newImageId,
-            // createdAt,
-          });
-          const { correctAdminCode } = res;
-          let text = '';
-          if (correctAdminCode) {
-            text = 'Succesfully edited admin account.';
-          } else {
-            text = 'Succesfully edited account (non-admin).';
+        }
+      } = await axios.put('/api/users', fd, config);
+      if (status === 201) {
+        updateLoggedinasState({
+          admin,
+          id,
+          username,
+          firstName,
+          lastName,
+          email,
+          image: newImageLink,
+          imageId: newImageId,
+        });
+        history.push({
+          pathname: `/ycusers/${id}`,
+          state: {
+            alertMessage: {
+              text: message,
+              variant: 'success'
+            },
+            // author: {
+            //   admin,
+            //   id,
+            //   username,
+            //   first_name: firstName,
+            //   last_name: lastName,
+            //   email,
+            //   image: newImageLink,
+            //   image_id: newImageId,
+            // }
           }
-          history.push({
-            pathname: `/ycusers/${id}`,
-            state: {
-              alertMessage: {
-                text,
-                variant: 'success'
-              },
-              author: {
-                admin,
-                id,
-                username,
-                first_name: firstName,
-                last_name: lastName,
-                email,
-                image: newImageLink,
-                image_id: newImageId,
-              }
-            }
-          });
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 409) {
-          this.setState({
-            errorMessage: 'Email address or user name already in use'
-          });
-        }
-        if (error.response.status === 400) {
-          this.setState({
-            errorMessage: 'Invalid account information.'
-          });
-        }
-        return error;
+        });
+      }
+    } catch (err) {
+      const { response: { status, data: message } } = err;
+      this.setState({
+        errorMessage: `${message} (${status})`
       });
+    }
+    // axios.put('/api/users', fd, config)
+    //   .then((res) => {
+    //     // const { updateLoggedinasState } = this.props;
+    //     const {
+    //       admin,
+    //       // password,
+    //       // createdAt,
+    //       image: newImageLink,
+    //       image_id: newImageId
+    //     } = res.data;
+    //     const { status } = res;
+    //     if (status === 201) {
+    //       updateLoggedinasState({
+    //         admin,
+    //         id,
+    //         username,
+    //         // password,
+    //         firstName,
+    //         lastName,
+    //         email,
+    //         image: newImageLink,
+    //         imageId: newImageId,
+    //         // createdAt,
+    //       });
+    //       // const { correctAdminCode } = res;
+    //       let text = '';
+    //       if (correctAdminCode) {
+    //         text = 'Succesfully edited admin account.';
+    //       } else {
+    //         text = 'Succesfully edited account (non-admin).';
+    //       }
+    //       history.push({
+    //         pathname: `/ycusers/${id}`,
+    //         state: {
+    //           alertMessage: {
+    //             text,
+    //             variant: 'success'
+    //           },
+    //           author: {
+    //             admin,
+    //             id,
+    //             username,
+    //             first_name: firstName,
+    //             last_name: lastName,
+    //             email,
+    //             image: newImageLink,
+    //             image_id: newImageId,
+    //           }
+    //         }
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.response.status === 409) {
+    //       this.setState({
+    //         errorMessage: 'Email address or user name already in use'
+    //       });
+    //     }
+    //     if (error.response.status === 400) {
+    //       this.setState({
+    //         errorMessage: 'Invalid account information.'
+    //       });
+    //     }
+    //     return error;
+    //   });
   }
 
 
@@ -288,7 +335,7 @@ class EditUser extends Component {
                 variant="primary"
                 type="submit"
               >
-              Submit
+                Submit
               </Button>
             </div>
             <Link to={{

@@ -22,10 +22,10 @@ router.post('/login',
       email,
       admin,
       image,
-      firstName,
-      lastName,
+      first_name: firstName,
+      last_name: lastName,
       username,
-      imageId
+      image_id: imageId
     } = user;
     res.json({
       id,
@@ -93,7 +93,7 @@ router.put('/',
   middleware.picReplacer,
   userController.update,
   (req, res) => {
-    const { correctAdminCode, userId } = res.locals;
+    const { correctAdminCode } = res.locals;
     const {
       // id,
       // username,
@@ -103,10 +103,9 @@ router.put('/',
       image,
       imageId
     } = req.body;
-    const message = `Updated user with ID: ${userId}`;
+    const message = correctAdminCode ? 'Succesfully edited admin account.' : 'Succesfully edited account (non-admin).';
     res.status(201).json({
       message,
-      correctAdminCode,
       admin: correctAdminCode,
       // id,
       // username,

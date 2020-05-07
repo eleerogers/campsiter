@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const campgroundController = require('../controllers/campgroundController');
+const userController = require('../controllers/userController');
 const middleware = require('../middleware');
 
 router.get('/',
@@ -13,9 +14,10 @@ router.get('/',
 
 router.get('/user/:id',
   campgroundController.getCampgroundsByUser,
+  userController.getUserById,
   (req, res) => {
-    const { campgrounds } = res.locals;
-    res.status(200).json({ campgrounds });
+    const { campgrounds, user } = res.locals;
+    res.status(200).json({ campgrounds, user });
   });
 
 router.get('/:id',
@@ -32,8 +34,7 @@ router.post('/',
   middleware.picUploader,
   campgroundController.createCampground,
   (req, res) => {
-    const { campgroundId } = res.locals;
-    res.status(201).send(`Campground added with ID: ${campgroundId}`);
+    res.status(201).send('Successfully added campground');
   });
 
 router.put('/:id',

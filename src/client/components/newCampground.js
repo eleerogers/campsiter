@@ -43,9 +43,8 @@ class NewCampground extends Component {
     getUploadedFileName(e, this.setState.bind(this));
   }
 
-  submitForm = (event) => {
+  submitForm = async (event) => {
     event.preventDefault();
-    const url = '/api/campgrounds';
     const {
       name, imageFile, description, campLocation, price
     } = this.state;
@@ -63,34 +62,32 @@ class NewCampground extends Component {
     fd.append('campLocation', campLocation);
     fd.append('price', priceNoDollarSign);
     fd.append('userId', user.id);
+    const url = '/api/campgrounds';
 
-    axios.post(url, fd, config)
-      .catch((error) => {
-        if (error.response.status === 401) {
-          this.setState({
-            errorMessage: 'Must be logged in.'
-          });
-        }
-        if (error.response.status === 400) {
-          this.setState({
-            errorMessage: 'Invalid campground info.'
-          });
-        }
-        return error;
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          history.push({
-            pathname: '/campgrounds',
-            state: {
-              alertMessage: {
-                text: 'Successfully added campground',
-                variant: 'success'
-              }
+    try {
+      const { status, data: message } = await axios.post(url, fd, config);
+      if (status === 201) {
+        history.push({
+          pathname: '/campgrounds',
+          state: {
+            alertMessage: {
+              text: message,
+              variant: 'success'
             }
-          });
+          }
+        });
+      }
+    } catch (err) {
+      const {
+        response: {
+          status,
+          data: message
         }
+      } = err;
+      this.setState({
+        errorMessage: `${message} (${status})`
       });
+    }
   }
 
 

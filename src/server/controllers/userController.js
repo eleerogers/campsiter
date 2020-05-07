@@ -30,7 +30,7 @@ const getUserById = (request, response, next) => {
     if (error) {
       console.error(error);
       response.status(404).json({
-        error: 'YC user not found'
+        error: 'User not found'
       });
       return;
     }

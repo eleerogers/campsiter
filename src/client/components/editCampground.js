@@ -117,7 +117,12 @@ class EditCampground extends Component {
     fd.append('adminBool', admin);
 
     try {
-      const { status, data: { campground, message } } = await axios.put(url, fd, config);
+      const {
+        status,
+        data: {
+          campground, message
+        }
+      } = await axios.put(url, fd, config);
       if (status === 200) {
         history.push({
           pathname: `/campgrounds/${id}`,
@@ -131,7 +136,12 @@ class EditCampground extends Component {
         });
       }
     } catch (err) {
-      const { response: { status, data: message } } = err;
+      const {
+        response: {
+          status,
+          data: message
+        }
+      } = err;
       this.setState({
         errorMessage: `${message} (${status})`
       });

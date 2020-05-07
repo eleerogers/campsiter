@@ -19,7 +19,7 @@ function Login({
       const { alertMessage } = state;
       setAlertMsg(alertMessage);
     }
-  });
+  }, []);
 
   const renderAlert = () => {
     if (errorMessage) {
@@ -94,7 +94,7 @@ function Login({
               variant="primary"
               type="submit"
             >
-            Submit
+              Submit
             </Button>
           </div>
           <Button onClick={goBack} className="float-left" size="sm" variant="link">Go Back</Button>
