@@ -18,6 +18,7 @@ import UserProfile from './components/userProfile';
 import EditUser from './components/editUser';
 import Forgot from './components/forgot';
 import Reset from './components/resetPassword';
+import ErrorBoundary from './components/errorBoundary';
 
 export default class App extends Component {
   state = {
@@ -74,7 +75,6 @@ export default class App extends Component {
         });
       }
     } catch (err) {
-      console.log('is this it?');
       console.error(err);
     }
   }
@@ -208,12 +208,14 @@ export default class App extends Component {
                   exact
                   render={
                     (props) => (
-                      <EditCampground
-                        history={props.history}
-                        location={props.location}
-                        match={props.match}
-                        loggedInAs={loggedInAs}
-                      />
+                      <ErrorBoundary history={props.history}>
+                        <EditCampground
+                          history={props.history}
+                          location={props.location}
+                          match={props.match}
+                          loggedInAs={loggedInAs}
+                        />
+                      </ErrorBoundary>
                     )
                   }
                 />
@@ -236,12 +238,14 @@ export default class App extends Component {
                   exact
                   render={
                     (props) => (
-                      <NewComment
-                        history={props.history}
-                        location={props.location}
-                        match={props.match}
-                        user={loggedInAs}
-                      />
+                      <ErrorBoundary history={props.history}>
+                        <NewComment
+                          history={props.history}
+                          location={props.location}
+                          match={props.match}
+                          user={loggedInAs}
+                        />
+                      </ErrorBoundary>
                     )
                   }
                 />
@@ -250,12 +254,14 @@ export default class App extends Component {
                   exact
                   render={
                     (props) => (
-                      <EditComment
-                        history={props.history}
-                        location={props.location}
-                        match={props.match}
-                        user={loggedInAs}
-                      />
+                      <ErrorBoundary history={props.history}>
+                        <EditComment
+                          history={props.history}
+                          location={props.location}
+                          match={props.match}
+                          user={loggedInAs}
+                        />
+                      </ErrorBoundary>
                     )
                   }
                 />
@@ -272,6 +278,7 @@ export default class App extends Component {
                         emailForm={emailForm}
                         passwordForm={passwordForm}
                         errorMessage={errorMessage}
+                        loggedInAs={loggedInAs}
                       />
                     )
                   }
@@ -292,27 +299,42 @@ export default class App extends Component {
                 <Route
                   path="/signup"
                   exact
-                  component={Signup}
+                  render={
+                    () => (
+                      <Signup
+                        loggedInAs={loggedInAs}
+                      />
+                    )
+                  }
                 />
                 <Route
                   path="/editUser"
                   exact
                   render={
                     (props) => (
-                      <EditUser
-                        history={props.history}
-                        location={props.location}
-                        match={props.match}
-                        loggedInAs={loggedInAs}
-                        updateLoggedinasState={this.updateLoggedinasState}
-                      />
+                      <ErrorBoundary history={props.history}>
+                        <EditUser
+                          history={props.history}
+                          location={props.location}
+                          match={props.match}
+                          loggedInAs={loggedInAs}
+                          updateLoggedinasState={this.updateLoggedinasState}
+                        />
+                      </ErrorBoundary>
                     )
                   }
                 />
                 <Route
                   path="/forgot"
                   exact
-                  component={Forgot}
+                  render={
+                    (props) => (
+                      <Forgot
+                        history={props.history}
+                        loggedInAs={loggedInAs}
+                      />
+                    )
+                  }
                 />
                 <Route
                   path="/reset/:reset_password_token"

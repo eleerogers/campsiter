@@ -27,14 +27,20 @@ class EditCampground extends Component {
 
   componentDidMount() {
     const {
+      history,
       location: {
         state: {
-          campground, loggedInAs: {
-            admin
+          campground,
+          loggedInAs: {
+            admin,
+            id: loggedInAsId
           }
         }
       }
     } = this.props;
+    if (loggedInAsId === 0) {
+      history.push('/campgrounds');
+    }
     const {
       name,
       image,
@@ -249,7 +255,7 @@ class EditCampground extends Component {
                   type="submit"
                   size="lg"
                 >
-                Submit
+                  Submit
                 </Button>
               </div>
               <Link to={{
@@ -286,7 +292,7 @@ EditCampground.propTypes = {
         location: PropTypes.string.isRequired,
         lat: PropTypes.number.isRequired,
         lng: PropTypes.number.isRequired
-      }).isRequired,
+      }),
       alertMessage: PropTypes.shape({
         text: PropTypes.string,
         variant: PropTypes.string
@@ -297,9 +303,9 @@ EditCampground.propTypes = {
         email: PropTypes.string,
         created_at: PropTypes.string,
         admin: PropTypes.bool,
-      }).isRequired,
-    }).isRequired,
-  }).isRequired,
+      }),
+    }),
+  }),
   loggedInAs: PropTypes.shape({
     id: PropTypes.string,
     password: PropTypes.string,
@@ -308,5 +314,24 @@ EditCampground.propTypes = {
     admin: PropTypes.bool,
   }).isRequired,
 };
+
+EditCampground.defaultProps = {
+  location: {
+    state: {
+      campground: {
+        id: NaN,
+        user_id: NaN,
+        name: "",
+        image: "",
+        image_id: "",
+        description: "",
+        price: "",
+        location: "",
+        lat: NaN,
+        lng: NaN
+      }
+    }
+  }
+}
 
 export default withRouter(EditCampground);

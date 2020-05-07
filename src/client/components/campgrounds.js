@@ -14,10 +14,13 @@ export default function Campgrounds({ location, history, loggedInAs }) {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
+    let mounted = true;
     async function fetchData() {
       try {
         const { data: { campgrounds } } = await axios.get('/api/campgrounds');
-        setCampgrnds(campgrounds);
+        if (mounted) {
+          setCampgrnds(campgrounds);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -28,6 +31,7 @@ export default function Campgrounds({ location, history, loggedInAs }) {
       setAlertMsg(alertMessage);
     }
     fetchData();
+    return (() => { mounted = false; });
   }, []);
 
   const renderAlert = () => {

@@ -9,17 +9,20 @@ import '../app.css';
 
 
 function Login({
-  location, errorMessage, history, emailForm, passwordForm, onFormChange, submitLogin
+  location, errorMessage, history, emailForm, passwordForm, onFormChange, submitLogin, loggedInAs
 }) {
   const [alertMsg, setAlertMsg] = useState(null);
 
   useEffect(() => {
+    if (loggedInAs.id.length > 0) {
+      history.push('/campgrounds');
+    }
     const { state } = location;
     if (state) {
       const { alertMessage } = state;
       setAlertMsg(alertMessage);
     }
-  }, []);
+  }, [loggedInAs]);
 
   const renderAlert = () => {
     if (errorMessage) {
@@ -121,13 +124,21 @@ Login.propTypes = {
   emailForm: PropTypes.string,
   passwordForm: PropTypes.string,
   onFormChange: PropTypes.func.isRequired,
-  submitLogin: PropTypes.func.isRequired
+  submitLogin: PropTypes.func.isRequired,
+  loggedInAs: PropTypes.shape({
+    id: PropTypes.string,
+    password: PropTypes.string,
+    email: PropTypes.string,
+    created_at: PropTypes.string,
+    admin: PropTypes.bool,
+  })
 };
 
 Login.defaultProps = {
   errorMessage: null,
   emailForm: '',
-  passwordForm: ''
+  passwordForm: '',
+  loggedInAs: null
 };
 
 export default withRouter(Login);

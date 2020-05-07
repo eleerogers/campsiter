@@ -23,6 +23,21 @@ class Signup extends Component {
     message: 'Select avatar image (optional)'
   }
 
+  componentDidMount() {
+    const { history, loggedInAs } = this.props;
+    if (loggedInAs.id.length > 0) {
+      history.push('/campgrounds');
+    }
+  }
+
+  componentDidUpdate() {
+    const { history, loggedInAs } = this.props;
+
+    if (loggedInAs.id.length > 0) {
+      history.push('/campgrounds');
+    }
+  }
+
   goBack = () => {
     const { history } = this.props;
     history.goBack();
@@ -236,7 +251,7 @@ class Signup extends Component {
                 variant="primary"
                 type="submit"
               >
-              Submit
+                Submit
               </Button>
             </div>
             <Button onClick={this.goBack} className="float-left" size="sm" variant="link">Go Back</Button>
@@ -252,6 +267,9 @@ Signup.propTypes = {
     push: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired
   }).isRequired,
+  loggedInAs: PropTypes.shape({
+    id: PropTypes.string.isRequired
+  }).isRequired
 };
 
 export default withRouter(Signup);

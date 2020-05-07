@@ -146,7 +146,7 @@ class EditComment extends Component {
                 variant="primary"
                 type="submit"
               >
-              Submit
+                Submit
               </Button>
             </div>
             <Link to={{

@@ -21,6 +21,13 @@ class NewCampground extends Component {
     message: 'Select Campground Image (Required)'
   }
 
+  componentDidMount() {
+    const { history, user: { id } } = this.props;
+    if (id.length === 0) {
+      history.push('/campgrounds');
+    }
+  }
+
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value

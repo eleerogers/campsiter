@@ -18,13 +18,28 @@ class Forgot extends Component {
 
   componentDidMount() {
     const {
+      history,
+      loggedInAs,
       location: {
         state
       }
     } = this.props;
+
+    if (loggedInAs.id.length > 0) {
+      history.push('/campgrounds');
+    }
+
     if (state) {
       const { alertMessage } = state;
       this.setState({ alertMessage });
+    }
+  }
+
+  componentDidUpdate() {
+    const { history, loggedInAs } = this.props;
+
+    if (loggedInAs.id.length > 0) {
+      history.push('/campgrounds');
     }
   }
 
@@ -101,7 +116,7 @@ class Forgot extends Component {
                 variant="primary"
                 type="submit"
               >
-              Reset Password
+                Reset Password
               </Button>
             </div>
             <Link to="/login">
@@ -126,6 +141,13 @@ Forgot.propTypes = {
       }),
     }),
   }).isRequired,
+  loggedInAs: PropTypes.shape({
+    id: PropTypes.string,
+    password: PropTypes.string,
+    email: PropTypes.string,
+    created_at: PropTypes.string,
+    admin: PropTypes.bool,
+  }).isRequired
 };
 
 export default withRouter(Forgot);
