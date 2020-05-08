@@ -28,6 +28,10 @@ class EditUser extends Component {
 
   componentDidMount() {
     const {
+      history,
+      loggedInAs: {
+        id: idFromState
+      },
       location: {
         state: {
           author: {
@@ -43,6 +47,9 @@ class EditUser extends Component {
         }
       }
     } = this.props;
+    if (idFromState.length === 0 || idFromState !== id) {
+      history.push('/campgrounds');
+    }
     this.setState({
       id,
       username,
@@ -53,6 +60,19 @@ class EditUser extends Component {
       imageId,
       admin
     });
+  }
+
+  componentDidUpdate() {
+    const {
+      history,
+      loggedInAs: {
+        id
+      }
+    } = this.props;
+
+    if (id.length === 0) {
+      history.push('/campgrounds');
+    }
   }
 
   onChange = (event) => {
@@ -356,6 +376,9 @@ class EditUser extends Component {
 
 
 EditUser.propTypes = {
+  loggedInAs: PropTypes.shape({
+    id: PropTypes.string.isRequired
+  }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
