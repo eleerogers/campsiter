@@ -120,7 +120,7 @@ const validUser = (req, res, next) => {
   ) {
     next();
   } else {
-    res.status(400).send(new Error('invalid account information!'));
+    res.status(400).send('Invalid account information');
   }
 };
 
@@ -170,7 +170,7 @@ const getUserByToken = (req, res, next) => {
 const checkIfEmailInUse = (req, res, next) => {
   pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email], (error, results) => {
     if (error || results.rows.length > 0) {
-      res.status(409).send(new Error('email in use'));
+      res.status(409).send('Email address already in use');
     } else {
       next();
     }
@@ -192,7 +192,7 @@ const onUpdateCheckIfEmailInUse = (req, res, next) => {
 const checkIfUsernameInUse = (req, res, next) => {
   pool.query('SELECT * FROM ycusers WHERE username = $1', [req.body.username], (error, results) => {
     if (error || results.rows.length > 0) {
-      res.status(409).send(new Error('username in use'));
+      res.status(409).send('Username already in use.');
     } else {
       next();
     }

@@ -65,12 +65,11 @@ const register = (req, res, next) => {
         username, password, firstName, lastName, email, image, imageId, correctAdminCode
       ];
 
-      pool.query(queryString, valueArr, (error, results) => {
+      pool.query(queryString, valueArr, (error) => {
         if (error) {
           console.error(error);
           throw error;
         }
-        res.locals.userId = results.rows[0].id;
         res.locals.correctAdminCode = correctAdminCode;
         next();
       });

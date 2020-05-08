@@ -63,11 +63,10 @@ router.post('/',
   middleware.picUploader,
   userController.register,
   (req, res) => {
-    const { userId, correctAdminCode } = res.locals;
-    const message = `YC User added with ID: ${userId}`;
+    const { correctAdminCode } = res.locals;
+    const message = correctAdminCode ? 'Succesfully created new admin account. Please login.' : 'Succesfully created new account (non-admin). Please login.';
     res.status(201).json({
-      message,
-      correctAdminCode
+      message
     });
   });
 

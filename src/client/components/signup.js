@@ -71,7 +71,7 @@ class Signup extends Component {
     getUploadedFileName(e, this.setState.bind(this));
   }
 
-  submitForm = (event) => {
+  submitForm = async (event) => {
     event.preventDefault();
     const { history } = this.props;
     const {
@@ -102,42 +102,30 @@ class Signup extends Component {
           'content-type': 'multipart/form-data'
         }
       };
-      axios.post('/api/users', fd, config)
-        .then((res) => {
-          const { status } = res;
-          if (status === 201) {
-            const { data } = res;
-            const { correctAdminCode } = data;
-            let text = '';
-            if (correctAdminCode) {
-              text = 'Succesfully created new admin account. Please login.';
-            } else {
-              text = 'Succesfully created new account (non-admin). Please login.';
-            }
-            history.push({
-              pathname: '/login',
-              state: {
-                alertMessage: {
-                  text,
-                  variant: 'success'
-                }
+      try {
+        const {
+          status,
+          data: {
+            message
+          }
+        } = await axios.post('/api/users', fd, config);
+        if (status === 201) {
+          history.push({
+            pathname: '/login',
+            state: {
+              alertMessage: {
+                text: message,
+                variant: 'success'
               }
-            });
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 409) {
-            this.setState({
-              errorMessage: 'Email address or user name already in use'
-            });
-          }
-          if (error.response.status === 400) {
-            this.setState({
-              errorMessage: 'Invalid email and/or password'
-            });
-          }
-          return error;
+            }
+          });
+        }
+      } catch (err) {
+        const { response: { status, data: message } } = err;
+        this.setState({
+          errorMessage: `${message} (${status})`
         });
+      }
     } else {
       this.setState({
         errorMessage: 'Passwords do not match.'
