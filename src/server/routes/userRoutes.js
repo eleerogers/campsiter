@@ -89,7 +89,8 @@ router.put('/',
   middleware.fileConverter,
   middleware.validEditUser,
   middleware.onUpdateCheckIfEmailInUse,
-  middleware.picReplacer,
+  middleware.picDeleter,
+  middleware.picUploader,
   userController.update,
   (req, res) => {
     const { correctAdminCode } = res.locals;

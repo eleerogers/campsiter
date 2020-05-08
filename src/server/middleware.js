@@ -2,6 +2,10 @@ const { Pool } = require('pg');
 const multer = require('multer');
 const path = require('path');
 const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
+const { promisify } = require('util');
+
+const unlinkAsync = promisify(fs.unlink);
 
 const connectionString = process.env.CONNECTION_STRING;
 
@@ -50,62 +54,85 @@ const fileConverter = (req, res, next) => {
   });
 };
 
-const picUploader = (req, res, next) => {
-  if (req.file) {
-    cloudinary.uploader.upload(req.file.path, (error, result) => {
-      if (error) {
-        console.error(error);
-      }
-      const image = result.secure_url;
-      const imageId = result.public_id;
+const picUploader = async (req, res, next) => {
+  try {
+    if (req.file) {
+      const {
+        secure_url: image,
+        public_id: imageId
+      } = await cloudinary.uploader.upload(req.file.path);
       req.body.image = image;
       req.body.imageId = imageId;
-      next();
-    });
-  } else {
-    req.body.image = null;
+      await unlinkAsync(req.file.path);
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
     next();
   }
 };
 
-const picReplacer = (req, res, next) => {
-  if (req.file && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
-    cloudinary.uploader.destroy(req.body.imageId);
-  }
-  if (req.file) {
-    cloudinary.uploader.upload(req.file.path, (error, result) => {
-      if (error) {
-        console.error(error);
-      }
-      const image = result.secure_url;
-      const imageId = result.public_id;
-      req.body.image = image;
-      req.body.imageId = imageId;
-      next();
-    });
-  } else {
-    next();
-  }
-};
+// const picReplacer = async (req, res, next) => {
+//   // try {
+//   //   if (req.file && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
+//   //     cloudinary.uploader.destroy(req.body.imageId);
+//   //   }
+//   //   if (req.file) {
 
-const picDeleter = (req, res, next) => {
-  // check it's not generic empty headshot image
-  if (req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
-    cloudinary.uploader.destroy(req.body.imageId, (error, reslt) => {
-      const { result } = reslt;
-      if (error || result === 'not found') {
-        const err = error || result;
-        res.status(400).send(new Error(err));
+//   //   }
+//   // } catch (err) {
+//   //   console.error(err);
+//   // }
+//   if (req.file && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
+//     cloudinary.uploader.destroy(req.body.imageId);
+//   }
+//   if (req.file) {
+//     cloudinary.uploader.upload(req.file.path, (error, result) => {
+//       if (error) {
+//         console.error(error);
+//       }
+//       const image = result.secure_url;
+//       const imageId = result.public_id;
+//       req.body.image = image;
+//       req.body.imageId = imageId;
+//       next();
+//     });
+//   } else {
+//     next();
+//   }
+// };
+
+const picDeleter = async (req, res, next) => {
+  try {
+    if (req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
+      const { result } = await cloudinary.uploader.destroy(req.body.imageId);
+      if (result === 'not found') {
+        res.status(400).send('Bad request: image not found');
       } else {
         next();
       }
-    });
-  } else {
-    next();
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(400).send('Bad request');
   }
+  // check it's not generic empty headshot image
+  // if (req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
+  //   cloudinary.uploader.destroy(req.body.imageId, (error, reslt) => {
+  //     const { result } = reslt;
+  //     if (error || result === 'not found') {
+  //       const err = error || result;
+  //       res.status(400).send(new Error(err));
+  //     } else {
+  //       next();
+  //     }
+  //   });
+  // } else {
+  //   next();
+  // }
 };
 
-const validUser = (req, res, next) => {
+const validUser = async (req, res, next) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
   const validPassword = typeof req.body.password === 'string' && req.body.password.trim() !== '';
   const validUsername = typeof req.body.username === 'string' && req.body.username.trim() !== '';
@@ -120,7 +147,13 @@ const validUser = (req, res, next) => {
   ) {
     next();
   } else {
-    res.status(400).send('Invalid account information');
+    try {
+      await unlinkAsync(req.file.path);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      res.status(400).send('Invalid account information');
+    }
   }
 };
 
@@ -167,36 +200,54 @@ const getUserByToken = (req, res, next) => {
 };
 
 
-const checkIfEmailInUse = (req, res, next) => {
-  pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email], (error, results) => {
-    if (error || results.rows.length > 0) {
+const checkIfEmailInUse = async (req, res, next) => {
+  try {
+    const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email]);
+    if (length > 0) {
+      await unlinkAsync(req.file.path);
       res.status(409).send('Email address already in use');
     } else {
       next();
     }
-  });
+  } catch (err) {
+    console.error(err);
+    await unlinkAsync(req.file.path);
+    res.status(400).send('Bad request');
+  }
 };
 
 
-const onUpdateCheckIfEmailInUse = (req, res, next) => {
-  pool.query('SELECT * FROM ycusers WHERE email = $1 AND id != $2', [req.body.email, req.body.id], (error, results) => {
-    if (error || results.rows.length > 0) {
-      res.status(409).send(new Error('email in use'));
+const onUpdateCheckIfEmailInUse = async (req, res, next) => {
+  try {
+    const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE email = $1 AND id != $2', [req.body.email, req.body.id]);
+    if (length > 0) {
+      await unlinkAsync(req.file.path);
+      res.status(409).send('Email address already in use');
     } else {
       next();
     }
-  });
+  } catch (err) {
+    console.error(err);
+    await unlinkAsync(req.file.path);
+    res.status(400).send('Bad request');
+  }
 };
 
 
-const checkIfUsernameInUse = (req, res, next) => {
-  pool.query('SELECT * FROM ycusers WHERE username = $1', [req.body.username], (error, results) => {
-    if (error || results.rows.length > 0) {
+const checkIfUsernameInUse = async (req, res, next) => {
+  try {
+    const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE username = $1', [req.body.username]);
+    if (length > 0) {
+      await unlinkAsync(req.file.path);
       res.status(409).send('Username already in use.');
     } else {
       next();
     }
-  });
+  } catch (err) {
+    console.error(err);
+    await unlinkAsync(req.file.path);
+    res.status(400).send('Bad request');
+  }
 };
 
 
@@ -260,7 +311,7 @@ const checkTokenExpiration = (req, res, next) => {
 module.exports = {
   fileConverter,
   picUploader,
-  picReplacer,
+  // picReplacer,
   picDeleter,
   validUser,
   validEditUser,

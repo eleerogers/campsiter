@@ -41,7 +41,8 @@ router.put('/:id',
   middleware.fileConverter,
   middleware.allowAccess,
   middleware.validCampground,
-  middleware.picReplacer,
+  middleware.picDeleter,
+  middleware.picUploader,
   campgroundController.updateCampground,
   (req, res) => {
     const { campground } = res.locals;
