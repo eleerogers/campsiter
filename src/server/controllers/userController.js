@@ -9,8 +9,6 @@ const pool = new Pool({
   connectionString
 });
 
-// test comment
-// two comments
 
 const getUsers = (request, response, next) => {
   pool.query('SELECT * FROM ycusers ORDER BY id ASC', (error, results) => {
@@ -176,17 +174,14 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
-const updatePassword = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10)
-    .then((password) => {
-      pool.query('UPDATE ycusers SET password = $1 WHERE id = $2 RETURNING id', [password, req.body.user.id], (error, results) => {
-        if (error) {
-          throw error;
-        }
-        // res.locals.userId = results.rows[0].id;
-        next();
-      });
-    });
+const updatePassword = async (req, res, next) => {
+  try {
+    const password = await bcrypt.hash(req.body.password, 10);
+    await pool.query('UPDATE ycusers SET password = $1 WHERE id = $2 RETURNING id', [password, req.body.user.id]);
+    next();
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const getUserByToken = (req, res, next) => {

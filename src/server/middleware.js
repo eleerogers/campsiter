@@ -56,14 +56,20 @@ const fileConverter = (req, res, next) => {
 
 const picUploader = async (req, res, next) => {
   try {
+    // if (!req.body.imageId || req.body.imageId === '') {
+    //   next();
+    // }
     if (req.file) {
+      console.log(1);
       const {
         secure_url: image,
         public_id: imageId
       } = await cloudinary.uploader.upload(req.file.path);
       req.body.image = image;
       req.body.imageId = imageId;
+      console.log(2);
       await unlinkAsync(req.file.path);
+      console.log(3);
     }
   } catch (err) {
     console.error(err);
@@ -104,14 +110,19 @@ const picUploader = async (req, res, next) => {
 
 const picDeleter = async (req, res, next) => {
   try {
-    if (req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
+    // if (!req.body.imageId || req.body.imageId === '') {
+    //   console.log('picDeleter first if');
+    //   next();
+    // }
+    if ((req.file || req.body.delete) && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
+      console.log('picDeleter second if', req.body.imageId);
       const { result } = await cloudinary.uploader.destroy(req.body.imageId);
       if (result === 'not found') {
-        res.status(400).send('Bad request: image not found');
-      } else {
-        next();
+        // res.status(400).send('Bad request: image not found');
+        console.error('image not found');
       }
     }
+    next();
   } catch (err) {
     console.error(err);
     res.status(400).send('Bad request');

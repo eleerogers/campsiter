@@ -45,6 +45,7 @@ router.put('/:id',
   middleware.picUploader,
   campgroundController.updateCampground,
   (req, res) => {
+    console.log("GIMME A BREAK PLS!");
     const { campground } = res.locals;
     const message = 'Successfully edited campground';
     res.status(200).json({ campground, message });

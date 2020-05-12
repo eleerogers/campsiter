@@ -15,6 +15,7 @@ class EditCampground extends Component {
     name: '',
     image: '',
     imageId: '',
+    imageFile: null,
     description: '',
     campLocation: '',
     price: '',
@@ -96,6 +97,7 @@ class EditCampground extends Component {
       name,
       image,
       imageId,
+      imageFile,
       description,
       campLocation,
       price,
@@ -113,7 +115,11 @@ class EditCampground extends Component {
         'content-type': 'multipart/form-data'
       }
     };
-    fd.append('image', image);
+    if (imageFile) {
+      fd.append('image', imageFile);
+    } else {
+      fd.append('image', image);
+    }
     fd.append('imageId', imageId);
     fd.append('name', name);
     fd.append('description', description);
@@ -321,12 +327,12 @@ EditCampground.defaultProps = {
       campground: {
         id: NaN,
         user_id: NaN,
-        name: "",
-        image: "",
-        image_id: "",
-        description: "",
-        price: "",
-        location: "",
+        name: '',
+        image: '',
+        image_id: '',
+        description: '',
+        price: '',
+        location: '',
         lat: NaN,
         lng: NaN
       }

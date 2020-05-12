@@ -51,7 +51,7 @@ class Signup extends Component {
 
   handleSelectFile = (event) => {
     this.setState({
-      image: event.target.files[0]
+      imageFile: event.target.files[0]
     });
   }
 
