@@ -56,20 +56,14 @@ const fileConverter = (req, res, next) => {
 
 const picUploader = async (req, res, next) => {
   try {
-    // if (!req.body.imageId || req.body.imageId === '') {
-    //   next();
-    // }
     if (req.file) {
-      console.log(1);
       const {
         secure_url: image,
         public_id: imageId
       } = await cloudinary.uploader.upload(req.file.path);
       req.body.image = image;
       req.body.imageId = imageId;
-      console.log(2);
       await unlinkAsync(req.file.path);
-      console.log(3);
     }
   } catch (err) {
     console.error(err);
@@ -78,47 +72,13 @@ const picUploader = async (req, res, next) => {
   }
 };
 
-// const picReplacer = async (req, res, next) => {
-//   // try {
-//   //   if (req.file && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
-//   //     cloudinary.uploader.destroy(req.body.imageId);
-//   //   }
-//   //   if (req.file) {
-
-//   //   }
-//   // } catch (err) {
-//   //   console.error(err);
-//   // }
-//   if (req.file && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
-//     cloudinary.uploader.destroy(req.body.imageId);
-//   }
-//   if (req.file) {
-//     cloudinary.uploader.upload(req.file.path, (error, result) => {
-//       if (error) {
-//         console.error(error);
-//       }
-//       const image = result.secure_url;
-//       const imageId = result.public_id;
-//       req.body.image = image;
-//       req.body.imageId = imageId;
-//       next();
-//     });
-//   } else {
-//     next();
-//   }
-// };
-
 const picDeleter = async (req, res, next) => {
   try {
-    // if (!req.body.imageId || req.body.imageId === '') {
-    //   console.log('picDeleter first if');
-    //   next();
-    // }
+    // req.body.delete signals that it should still delete the picture
+    // even though there isn't another picture to replace it
     if ((req.file || req.body.delete) && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
-      console.log('picDeleter second if', req.body.imageId);
       const { result } = await cloudinary.uploader.destroy(req.body.imageId);
       if (result === 'not found') {
-        // res.status(400).send('Bad request: image not found');
         console.error('image not found');
       }
     }
@@ -127,20 +87,6 @@ const picDeleter = async (req, res, next) => {
     console.error(err);
     res.status(400).send('Bad request');
   }
-  // check it's not generic empty headshot image
-  // if (req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
-  //   cloudinary.uploader.destroy(req.body.imageId, (error, reslt) => {
-  //     const { result } = reslt;
-  //     if (error || result === 'not found') {
-  //       const err = error || result;
-  //       res.status(400).send(new Error(err));
-  //     } else {
-  //       next();
-  //     }
-  //   });
-  // } else {
-  //   next();
-  // }
 };
 
 const validUser = async (req, res, next) => {
@@ -190,7 +136,7 @@ const validEditUser = (req, res, next) => {
 const getUserByEmail = (req, res, next) => {
   pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email], (error, results) => {
     if (error || results.rows.length === 0) {
-      res.status(404).send(new Error('user not found'));
+      res.status(404).send('User not found');
     } else {
       [req.body.user] = results.rows;
       next();
@@ -268,9 +214,6 @@ function allowAccess(req, res, next) {
 
   if (cookieId !== userId && !req.body.adminBool) {
     res.status(401).send('Unauthorized');
-    console.log(cookieId);
-    console.log(userId);
-    console.log(req.body);
   } else {
     next();
   }

@@ -106,8 +106,9 @@ export default class App extends Component {
       });
       goBack();
     } catch (err) {
+      const { response: { status, data: message } } = err;
       this.setState({
-        errorMessage: 'Invalid login'
+        errorMessage: `${message} (${status})`
       });
       console.error(err);
     }

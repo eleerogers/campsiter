@@ -23,7 +23,7 @@ const getCampgrounds = (request, response, next) => {
   pool.query('SELECT * FROM campgrounds ORDER BY id ASC', (error, results) => {
     if (error) {
       console.error(error);
-      response.status(404).send();
+      response.status(404).send('Problem fetching campgrounds');
     }
     response.locals.campgrounds = results.rows;
     next();
@@ -109,30 +109,7 @@ const updateCampground = async (request, response, next) => {
     console.error(err);
     throw err;
   }
-
-  // geocoder.geocode(campLocation, (err, data) => {
-  //   if (err) {
-  //     console.error(err);
-  //   }
-  //   const lat = data[0].latitude;
-  //   const lng = data[0].longitude;
-  //   const location = data[0].formattedAddress;
-  //   pool.query(
-  //     'UPDATE campgrounds SET name = $1, image = $2, image_id = $3, description = $4, price = $5, lat = $6, lng = $7, location = $8 WHERE id = $9 RETURNING *',
-  //     [name, image, imageId, description, price, lat, lng, location, id],
-  //     (error, results) => {
-  //       if (error) {
-  //         console.error(error);
-  //         throw error;
-  //       }
-  //       const [campground] = results.rows;
-  //       response.locals.campground = campground;
-  //       next();
-  //     }
-  //   );
-  // });
 };
-
 
 const deleteCampground = (request, response, next) => {
   const id = parseInt(request.params.id, 10);
