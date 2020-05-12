@@ -8,7 +8,7 @@ import axios from 'axios';
 import Campground from './campground';
 
 
-export default function Campgrounds({ location, history, loggedInAs }) {
+function Campgrounds({ location, history, loggedInAs }) {
   const [campgrnds, setCampgrnds] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
   const [search, setSearch] = useState('');
@@ -139,3 +139,5 @@ Campgrounds.propTypes = {
     admin: PropTypes.bool,
   }).isRequired,
 };
+
+export default Campgrounds;
