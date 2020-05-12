@@ -94,6 +94,9 @@ export default class App extends Component {
   submitLogin = async (event, goBack) => {
     try {
       event.preventDefault();
+      this.setState({
+        errorMessage: null
+      });
       const { emailForm, passwordForm } = this.state;
       const loginInfo = {
         email: emailForm,

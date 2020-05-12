@@ -55,6 +55,10 @@ function Login({
     }
   };
 
+  const loginHandler = (e) => {
+    submitLogin(e, goBack);
+  };
+
   return (
     <div className="margin-top-50">
       {renderAlert()}
@@ -64,7 +68,7 @@ function Login({
         <br />
         <form
           className="entryBox centered"
-          onSubmit={(e) => submitLogin(e, goBack)}
+          onSubmit={loginHandler}
         >
           <div className="form-group">
             <input

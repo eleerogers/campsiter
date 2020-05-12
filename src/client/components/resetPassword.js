@@ -143,7 +143,7 @@ class Reset extends Component {
                 variant="primary"
                 type="submit"
               >
-              Reset Password
+                Reset Password
               </Button>
             </div>
           </form>

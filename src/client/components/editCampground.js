@@ -338,6 +338,6 @@ EditCampground.defaultProps = {
       }
     }
   }
-}
+};
 
 export default withRouter(EditCampground);
