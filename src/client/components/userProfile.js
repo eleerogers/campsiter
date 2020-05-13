@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Link,
-  withRouter,
-  useState,
-  useEffect,
+  // withRouter,
   useHistory,
   useParams
 } from 'react-router-dom';
@@ -324,9 +322,9 @@ function UserProfile({ loggedInAs }) {
 // };
 
 UserProfile.propTypes = {
-  history: PropTypes.shape({
-    replace: PropTypes.func.isRequired
-  }).isRequired,
+  // history: PropTypes.shape({
+  //   replace: PropTypes.func.isRequired
+  // }).isRequired,
   loggedInAs: PropTypes.shape({
     id: PropTypes.string,
     password: PropTypes.string,
@@ -334,28 +332,28 @@ UserProfile.propTypes = {
     created_at: PropTypes.string,
     admin: PropTypes.bool,
   }).isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      alertMessage: PropTypes.shape({
-        text: PropTypes.string,
-        variant: PropTypes.string
-      }),
-      author: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
-        username: PropTypes.string,
-        first_name: PropTypes.string,
-        last_name: PropTypes.string,
-        image: PropTypes.string.isRequired,
-        admin: PropTypes.bool,
-      })
-    })
-  }).isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired
-    })
-  }).isRequired
+  // location: PropTypes.shape({
+  //   state: PropTypes.shape({
+  //     alertMessage: PropTypes.shape({
+  //       text: PropTypes.string,
+  //       variant: PropTypes.string
+  //     }),
+  //     author: PropTypes.shape({
+  //       id: PropTypes.string.isRequired,
+  //       email: PropTypes.string.isRequired,
+  //       username: PropTypes.string,
+  //       first_name: PropTypes.string,
+  //       last_name: PropTypes.string,
+  //       image: PropTypes.string.isRequired,
+  //       admin: PropTypes.bool,
+  //     })
+  //   })
+  // }).isRequired,
+  // match: PropTypes.shape({
+  //   params: PropTypes.shape({
+  //     id: PropTypes.string.isRequired
+  //   })
+  // }).isRequired
 };
 
 export default UserProfile;
