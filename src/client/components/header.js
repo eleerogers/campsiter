@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
-const Header = ({ loggedInAs, logout, history }) => {
+function Header({ loggedInAs, logout, history }) {
   const {
     id,
     username,
@@ -82,7 +82,7 @@ const Header = ({ loggedInAs, logout, history }) => {
       </Container>
     </Navbar>
   );
-};
+}
 
 
 Header.propTypes = {

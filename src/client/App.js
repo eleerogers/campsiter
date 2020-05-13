@@ -287,7 +287,12 @@ export default class App extends Component {
                     )
                   }
                 />
-                <Route
+                <Route path="/ycusers/:id">
+                  <UserProfile
+                    loggedInAs={loggedInAs}
+                  />
+                </Route>
+                {/* <Route
                   path="/ycusers/:id"
                   render={
                     (props) => (
@@ -299,7 +304,7 @@ export default class App extends Component {
                       />
                     )
                   }
-                />
+                /> */}
                 <Route
                   path="/signup"
                   exact

@@ -64,7 +64,8 @@ class EditComment extends Component {
   submitForm = async (event) => {
     event.preventDefault();
     const {
-      history, match: {
+      history,
+      match: {
         params: {
           id
         }
