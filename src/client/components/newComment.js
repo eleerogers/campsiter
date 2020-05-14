@@ -79,6 +79,7 @@ function NewComment({ user }) {
               name="comment"
               placeholder="Comment"
               onChange={handleChange}
+              value={values.comment || ''}
             />
           </div>
           <br />

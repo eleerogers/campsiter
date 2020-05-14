@@ -41,7 +41,8 @@ class Reset extends Component {
   submitEmailReset = async (event) => {
     event.preventDefault();
     const {
-      history, match: {
+      history,
+      match: {
         params: {
           reset_password_token: resetPasswordToken
         }

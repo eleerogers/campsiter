@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-const useForm = (callback) => {
-  const [values, setValues] = useState({});
+const useForm = (callback, initialFormStateObj) => {
+  const [values, setValues] = useState(initialFormStateObj || {});
 
   const handleChange = (event) => {
     event.persist();

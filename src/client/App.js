@@ -262,19 +262,23 @@ export default class App extends Component {
                 <Route
                   path="/campgrounds/:id/comments/edit"
                   exact
-                  render={
-                    (props) => (
-                      <ErrorBoundary history={props.history}>
-                        <EditComment
-                          history={props.history}
-                          location={props.location}
-                          match={props.match}
-                          user={loggedInAs}
-                        />
-                      </ErrorBoundary>
-                    )
-                  }
-                />
+                  // render={
+                  //   (props) => (
+                  //     <ErrorBoundary history={props.history}>
+                  //       <EditComment
+                  //         history={props.history}
+                  //         location={props.location}
+                  //         match={props.match}
+                  //         user={loggedInAs}
+                  //       />
+                  //     </ErrorBoundary>
+                  //   )
+                  // }
+                >
+                  <ErrorBoundary>
+                    <EditComment />
+                  </ErrorBoundary>
+                </Route>
                 <Route
                   path="/login"
                   render={
