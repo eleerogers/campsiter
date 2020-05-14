@@ -37,21 +37,11 @@ function EditComment() {
     user: { id: userId },
     adminBool
   };
-  // eslint-disable-next-line no-use-before-define
-  const { values, handleChange, handleSubmit } = useForm(submitForm, initFormData);
 
-  function renderAlert() {
-    if (errorMessage) {
-      return (
-        <Alert variant="danger">
-          {errorMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  const { values, handleChange } = useForm(initFormData);
 
-  async function submitForm() {
+  async function submitForm(event) {
+    event.preventDefault();
     const url = `/api/comments/${id}`;
     try {
       const { data, status } = await axios.put(url, values);
@@ -73,6 +63,17 @@ function EditComment() {
     }
   }
 
+  function renderAlert() {
+    if (errorMessage) {
+      return (
+        <Alert variant="danger">
+          {errorMessage}
+        </Alert>
+      );
+    }
+    return null;
+  }
+
   return (
     <div className="margin-top-50">
       {renderAlert()}
@@ -81,7 +82,7 @@ function EditComment() {
         <br />
         <form
           className="entryBox centered"
-          onSubmit={handleSubmit}
+          onSubmit={submitForm}
         >
           <div className="form-group">
             <input
@@ -279,27 +280,27 @@ function EditComment() {
 // }
 
 // EditComment.propTypes = {
-  // history: PropTypes.shape({
-  //   push: PropTypes.func.isRequired
-  // }).isRequired,
-  // location: PropTypes.shape({
-  //   state: PropTypes.shape({
-  //     campground: PropTypes.shape({
-  //       id: PropTypes.number.isRequired,
-  //     }).isRequired,
-  //     commentObj: PropTypes.shape({
-  //       comment_id: PropTypes.number.isRequired,
-  //       user_id: PropTypes.number.isRequired,
-  //       comment: PropTypes.string.isRequired,
-  //     }),
-  //     adminBool: PropTypes.bool.isRequired
-  //   }).isRequired,
-  // }).isRequired,
-  // match: PropTypes.shape({
-  //   params: PropTypes.shape({
-  //     id: PropTypes.string.isRequired
-  //   })
-  // }).isRequired
+// history: PropTypes.shape({
+//   push: PropTypes.func.isRequired
+// }).isRequired,
+// location: PropTypes.shape({
+//   state: PropTypes.shape({
+//     campground: PropTypes.shape({
+//       id: PropTypes.number.isRequired,
+//     }).isRequired,
+//     commentObj: PropTypes.shape({
+//       comment_id: PropTypes.number.isRequired,
+//       user_id: PropTypes.number.isRequired,
+//       comment: PropTypes.string.isRequired,
+//     }),
+//     adminBool: PropTypes.bool.isRequired
+//   }).isRequired,
+// }).isRequired,
+// match: PropTypes.shape({
+//   params: PropTypes.shape({
+//     id: PropTypes.string.isRequired
+//   })
+// }).isRequired
 // };
 
 export default EditComment;

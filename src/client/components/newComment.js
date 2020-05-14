@@ -13,8 +13,8 @@ import '../app.css';
 
 function NewComment({ user }) {
   const [errorMessage, setErrorMessage] = useState('');
-  // eslint-disable-next-line no-use-before-define
-  const { values, handleChange, handleSubmit } = useForm(submitForm);
+  const initData = { comment: '', userId: user.id };
+  const { values, handleChange } = useForm(initData);
   const {
     location: {
       state: {
@@ -36,14 +36,11 @@ function NewComment({ user }) {
     return null;
   }
 
-  async function submitForm() {
+  async function submitForm(event) {
+    event.preventDefault();
     const url = `/api/comments/${id}`;
-    const commentData = {
-      comment: values.comment,
-      userId: user.id
-    };
     try {
-      const { data, status } = await axios.post(url, commentData);
+      const { data, status } = await axios.post(url, values);
       if (status === 200) {
         push({
           pathname: `/campgrounds/${id}`,
@@ -70,7 +67,7 @@ function NewComment({ user }) {
         <br />
         <form
           className="entryBox centered"
-          onSubmit={handleSubmit}
+          onSubmit={submitForm}
         >
           <div className="form-group">
             <input
@@ -79,7 +76,7 @@ function NewComment({ user }) {
               name="comment"
               placeholder="Comment"
               onChange={handleChange}
-              value={values.comment || ''}
+              value={values.comment}
             />
           </div>
           <br />
