@@ -1,8 +1,7 @@
-import React, { Component, useState, useEffect } from 'react';
-import { withRouter, useParams, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import useForm from '../hooks/useForm';
 import '../app.css';
 
