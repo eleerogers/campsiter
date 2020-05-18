@@ -135,7 +135,14 @@ class Signup extends Component {
 
   render() {
     const {
-      message, username, password1, password2, email, firstName, lastName, adminCode
+      message,
+      username,
+      password1,
+      password2,
+      email,
+      firstName,
+      lastName,
+      adminCode
     } = this.state;
     return (
       <div className="margin-top-50">

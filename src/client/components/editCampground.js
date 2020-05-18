@@ -216,7 +216,6 @@ function EditCampground() {
   );
 }
 
-
 export default EditCampground;
 
 

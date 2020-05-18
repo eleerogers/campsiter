@@ -196,33 +196,19 @@ export default class App extends Component {
                 <Route
                   path="/newCampground"
                   exact
-                  render={
-                    (props) => (
-                      <NewCampground
-                        history={props.history}
-                        location={props.location}
-                        match={props.match}
-                        user={loggedInAs}
-                      />
-                    )
-                  }
-                />
+                >
+                  <NewCampground
+                    user={loggedInAs}
+                  />
+                </Route>
                 <Route
                   path="/editCampground"
                   exact
-                  render={
-                    (props) => (
-                      <ErrorBoundary history={props.history}>
-                        <EditCampground
-                          history={props.history}
-                          location={props.location}
-                          // match={props.match}
-                          // loggedInAs={loggedInAs}
-                        />
-                      </ErrorBoundary>
-                    )
-                  }
-                />
+                >
+                  <ErrorBoundary>
+                    <EditCampground />
+                  </ErrorBoundary>
+                </Route>
                 <Route
                   path="/campgrounds/:id"
                   exact
