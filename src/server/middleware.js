@@ -40,6 +40,7 @@ const upload = multer({
   limits: { fileSize: 10000000 },
   fileFilter: imageFilter,
   onError: (err, next) => {
+    console.log('upload onError');
     console.error(err);
     next(err);
   }
@@ -48,7 +49,7 @@ const upload = multer({
 const fileConverter = (req, res, next) => {
   upload(req, res, (err) => {
     if (req.fileValidationError || err) {
-      return res.status(400).send(req.fileValidationError);
+      return res.status(400).send(req.fileValidationError || err.message);
     }
     return next();
   });
@@ -128,7 +129,7 @@ const validEditUser = (req, res, next) => {
   ) {
     next();
   } else {
-    res.status(400).send(new Error('invalid account information!'));
+    res.status(400).send('invalid account information!');
   }
 };
 

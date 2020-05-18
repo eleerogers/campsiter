@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Link,
   // withRouter,
@@ -12,7 +12,7 @@ import useGetFileName from '../hooks/useGetFileName';
 import '../app.css';
 // import getUploadedFileName from '../utils/getUploadedFileName';
 
-function NewCampground({ user: { id } }) {
+function NewCampground({ user: { id: loggedInAsId } }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const { push } = useHistory();
   const initBtnMessage = 'Select Campground Image (Required)';
@@ -29,10 +29,10 @@ function NewCampground({ user: { id } }) {
   } = values;
 
   useEffect(() => {
-    if (id === '') {
+    if (loggedInAsId === '') {
       push('/campgrounds');
     }
-  }, [id]);
+  }, [loggedInAsId]);
 
   function renderAlert() {
     if (errorMessage) {
@@ -59,7 +59,7 @@ function NewCampground({ user: { id } }) {
     fd.append('description', description);
     fd.append('campLocation', campLocation);
     fd.append('price', priceNoDollarSign);
-    fd.append('userId', id);
+    fd.append('userId', loggedInAsId);
     const url = '/api/campgrounds';
 
     try {
@@ -74,6 +74,13 @@ function NewCampground({ user: { id } }) {
             }
           }
         });
+      } else {
+        const error = new Error();
+        error.response = {
+          status: 400,
+          data: 'Unsuccessful request'
+        };
+        throw error;
       }
     } catch (err) {
       const {

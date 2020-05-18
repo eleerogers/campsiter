@@ -216,8 +216,8 @@ export default class App extends Component {
                         <EditCampground
                           history={props.history}
                           location={props.location}
-                          match={props.match}
-                          loggedInAs={loggedInAs}
+                          // match={props.match}
+                          // loggedInAs={loggedInAs}
                         />
                       </ErrorBoundary>
                     )

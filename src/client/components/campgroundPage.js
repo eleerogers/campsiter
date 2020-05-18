@@ -54,8 +54,6 @@ class CampgroundPage extends React.Component {
         imageId,
         delete: true
       };
-      console.log('data');
-      console.log(data);
       const { status, data: message } = await axios.delete(`/api/campgrounds/${id}`, { data });
       if (status === 200) {
         history.push({
