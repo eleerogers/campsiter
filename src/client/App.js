@@ -304,14 +304,11 @@ export default class App extends Component {
                 <Route
                   path="/signup"
                   exact
-                  render={
-                    () => (
-                      <Signup
-                        loggedInAs={loggedInAs}
-                      />
-                    )
-                  }
-                />
+                >
+                  <Signup
+                    loggedInAs={loggedInAs}
+                  />
+                </Route>
                 <Route
                   path="/editUser"
                   exact
