@@ -267,22 +267,31 @@ export default class App extends Component {
                 </Route>
                 <Route
                   path="/login"
-                  render={
-                    (props) => (
-                      <Login
-                        history={props.history}
-                        location={props.location}
-                        match={props.match}
-                        onFormChange={this.onFormChange}
-                        submitLogin={this.submitLogin}
-                        emailForm={emailForm}
-                        passwordForm={passwordForm}
-                        errorMessage={errorMessage}
-                        loggedInAs={loggedInAs}
-                      />
-                    )
-                  }
-                />
+                  // render={
+                  //   (props) => (
+                  //     <Login
+                  //       history={props.history}
+                  //       location={props.location}
+                  //       match={props.match}
+                  //       onFormChange={this.onFormChange}
+                  //       submitLogin={this.submitLogin}
+                  //       emailForm={emailForm}
+                  //       passwordForm={passwordForm}
+                  //       errorMessage={errorMessage}
+                  //       loggedInAs={loggedInAs}
+                  //     />
+                  //   )
+                  // }
+                >
+                  <Login
+                    onFormChange={this.onFormChange}
+                    submitLogin={this.submitLogin}
+                    emailForm={emailForm}
+                    passwordForm={passwordForm}
+                    errorMessage={errorMessage}
+                    loggedInAs={loggedInAs}
+                  />
+                </Route>
                 <Route path="/ycusers/:id">
                   <UserProfile
                     loggedInAs={loggedInAs}
@@ -314,7 +323,7 @@ export default class App extends Component {
                   exact
                   render={
                     (props) => (
-                      <ErrorBoundary history={props.history}>
+                      <ErrorBoundary>
                         <EditUser
                           history={props.history}
                           location={props.location}
