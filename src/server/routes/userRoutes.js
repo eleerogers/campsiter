@@ -93,20 +93,15 @@ router.put('/',
   middleware.picUploader,
   userController.update,
   (req, res) => {
-    const { correctAdminCode } = res.locals;
+    const { updatedAdmin } = res.locals;
     const {
-      // id,
-      // username,
-      // firstName,
-      // lastName,
-      // email,
       image,
       imageId
     } = req.body;
-    const message = correctAdminCode ? 'Succesfully edited admin account.' : 'Succesfully edited account (non-admin).';
+    const message = updatedAdmin ? 'Succesfully edited admin account.' : 'Succesfully edited account (non-admin).';
     res.status(201).json({
       message,
-      admin: correctAdminCode,
+      admin: updatedAdmin,
       // id,
       // username,
       // first_name: firstName,

@@ -80,23 +80,23 @@ const update = (req, res, next) => {
     email,
     image,
     imageId,
-    // admin,
+    admin,
     adminCode
   } = req.body;
 
-  const correctAdminCode = adminCode === process.env.ADMIN_PASSWORD;
-  // || admin;
+  const updatedAdmin = adminCode === process.env.ADMIN_PASSWORD
+  || admin === 'true';
 
   const queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, image=$4, image_id=$5, admin=$6 WHERE id=$7 RETURNING *';
-  const valueArr = [firstName, lastName, email, image, imageId, correctAdminCode, id];
+  const valueArr = [firstName, lastName, email, image, imageId, updatedAdmin, id];
 
   pool.query(queryString, valueArr, (error, results) => {
     if (error) {
       console.error(error);
       throw error;
     }
-    res.locals.admin = correctAdminCode;
-    res.locals.userId = results.rows[0].id;
+    res.locals.updatedAdmin = updatedAdmin;
+    // res.locals.userId = results.rows[0].id;
     next();
   });
 };
