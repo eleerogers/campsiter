@@ -221,17 +221,23 @@ export default class App extends Component {
                 <Route
                   path="/campgrounds/:id"
                   exact
-                  render={
-                    (props) => (
-                      <CampgroundPage
-                        history={props.history}
-                        location={props.location}
-                        match={props.match}
-                        loggedInAs={loggedInAs}
-                      />
-                    )
-                  }
-                />
+                  // render={
+                  //   (props) => (
+                  //     <CampgroundPage
+                  //       history={props.history}
+                  //       location={props.location}
+                  //       match={props.match}
+                  //       loggedInAs={loggedInAs}
+                  //     />
+                  //   )
+                  // }
+                >
+                  <ErrorBoundary>
+                    <CampgroundPage
+                      loggedInAs={loggedInAs}
+                    />
+                  </ErrorBoundary>
+                </Route>
                 <Route
                   path="/campgrounds/:id/comments/new"
                   exact
