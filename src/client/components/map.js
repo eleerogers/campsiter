@@ -4,31 +4,51 @@ import {
 } from 'google-maps-react';
 import PropTypes from 'prop-types';
 
+// require('dotenv').config();
 
-class MapContainer extends React.Component {
-  render() {
-    const {
-      google, campground: {
-        lat, lng
-      }
-    } = this.props;
-    const center = { lat, lng };
-    const style = {
-      width: '100%',
-      height: '400px'
-    };
-    return (
-      <Map
-        google={google}
-        style={style}
-        center={center}
-        zoom={15}
-        onClick={this.onMapClicked}
-        scrollwheel={false}
-      />
-    );
-  }
+function MapContainer({ google, campground: { lat, lng } }) {
+  const center = { lat, lng };
+  const style = {
+    width: '100%',
+    height: '400px'
+  };
+  return (
+    <Map
+      google={google}
+      style={style}
+      center={center}
+      zoom={15}
+      // onClick={this.onMapClicked}
+      scrollwheel={false}
+    />
+  );
 }
+
+
+// class MapContainer extends React.Component {
+//   render() {
+//     const {
+//       google, campground: {
+//         lat, lng
+//       }
+//     } = this.props;
+//     const center = { lat, lng };
+//     const style = {
+//       width: '100%',
+//       height: '400px'
+//     };
+//     return (
+//       <Map
+//         google={google}
+//         style={style}
+//         center={center}
+//         zoom={15}
+//         onClick={this.onMapClicked}
+//         scrollwheel={false}
+//       />
+//     );
+//   }
+// }
 
 MapContainer.propTypes = {
   campground: PropTypes.shape({
@@ -43,5 +63,5 @@ MapContainer.propTypes = {
 };
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyCzu35XTda9FLYoYkDRnHGoNVU6bVukyio'
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
 })(MapContainer);
