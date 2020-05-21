@@ -117,11 +117,11 @@ export default class App extends Component {
     }
   }
 
-  logout = async (history) => {
+  logout = async (pathname, push) => {
     try {
-      const { location: { pathname } } = history;
       const pathArr = pathname.split('/');
       const pathLast = pathArr.pop();
+      console.log({pathLast});
       await axios.get('/api/users/logout');
       localStorage.removeItem('userId');
       this.setState({
@@ -137,7 +137,7 @@ export default class App extends Component {
         || pathLast === 'newCampground'
         || pathLast === 'editCampground'
       ) {
-        history.push('/campgrounds');
+        push('/campgrounds');
       }
     } catch (err) {
       console.error(err);
@@ -157,21 +157,26 @@ export default class App extends Component {
           <div>
             <Route
               path="/"
-              render={
-                (props) => (
-                  (props.location.pathname !== '/')
-                  && (
-                  <Header
-                    history={props.history}
-                    location={props.location}
-                    match={props.match}
-                    loggedInAs={loggedInAs}
-                    logout={this.logout}
-                  />
-                  )
-                )
-              }
-            />
+              // render={
+              //   (props) => (
+              //     (props.location.pathname !== '/')
+              //     && (
+              //     <Header
+              //       history={props.history}
+              //       location={props.location}
+              //       match={props.match}
+              //       loggedInAs={loggedInAs}
+              //       logout={this.logout}
+              //     />
+              //     )
+              //   )
+              // }
+            >
+              <Header
+                loggedInAs={loggedInAs}
+                logout={this.logout}
+              />
+            </Route>
             <Container>
               <Switch>
                 <Route
@@ -182,17 +187,21 @@ export default class App extends Component {
                 <Route
                   path="/campgrounds"
                   exact
-                  render={
-                    (props) => (
-                      <Campgrounds
-                        history={props.history}
-                        location={props.location}
-                        match={props.match}
-                        loggedInAs={loggedInAs}
-                      />
-                    )
-                  }
-                />
+                  // render={
+                  //   (props) => (
+                  //     <Campgrounds
+                  //       history={props.history}
+                  //       location={props.location}
+                  //       match={props.match}
+                  //       loggedInAs={loggedInAs}
+                  //     />
+                  //   )
+                  // }
+                >
+                  <Campgrounds
+                    loggedInAs={loggedInAs}
+                  />
+                </Route>
                 <Route
                   path="/newCampground"
                   exact
@@ -321,32 +330,43 @@ export default class App extends Component {
                 <Route
                   path="/editUser"
                   exact
-                  render={
-                    (props) => (
-                      <ErrorBoundary>
-                        <EditUser
-                          history={props.history}
-                          location={props.location}
-                          match={props.match}
-                          loggedInAs={loggedInAs}
-                          updateLoggedinasState={this.updateLoggedinasState}
-                        />
-                      </ErrorBoundary>
-                    )
-                  }
-                />
+                  // render={
+                  //   (props) => (
+                  //     <ErrorBoundary>
+                  //       <EditUser
+                  //         history={props.history}
+                  //         location={props.location}
+                  //         match={props.match}
+                  //         loggedInAs={loggedInAs}
+                  //         updateLoggedinasState={this.updateLoggedinasState}
+                  //       />
+                  //     </ErrorBoundary>
+                  //   )
+                  // }
+                >
+                  <ErrorBoundary>
+                    <EditUser
+                      loggedInAs={loggedInAs}
+                      updateLoggedinasState={this.updateLoggedinasState}
+                    />
+                  </ErrorBoundary>
+                </Route>
                 <Route
                   path="/forgot"
                   exact
-                  render={
-                    (props) => (
-                      <Forgot
-                        history={props.history}
-                        loggedInAs={loggedInAs}
-                      />
-                    )
-                  }
-                />
+                  // render={
+                  //   (props) => (
+                  //     <Forgot
+                  //       history={props.history}
+                  //       loggedInAs={loggedInAs}
+                  //     />
+                  //   )
+                  // }
+                >
+                  <Forgot
+                    loggedInAs={loggedInAs}
+                  />
+                </Route>
                 <Route
                   path="/reset/:reset_password_token"
                   exact

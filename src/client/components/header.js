@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Nav, Navbar, Container, Button, Col
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
-function Header({ loggedInAs, logout, history }) {
+function Header({ loggedInAs, logout }) {
+  const {
+    location: {
+      pathname
+    },
+    push,
+    listen
+  } = useHistory();
+  const [currPath, setCurrPath] = useState(pathname === '/');
+
+  listen((location) => {
+    setCurrPath(location.pathname);
+  });
+  // function handlePathChange() {
+  //   console.log('handlePathChang')
+  //   setIsHome(pathname === '/');
+  // }
+
+  // useEffect(() => {
+  //   console.log('useEffect');
+  //   window.addEventListener('popstate', handlePathChange);
+  //   return () => window.removeEventListener('popstate', handlePathChange);
+  // });
+
   const {
     id,
     username,
@@ -29,6 +52,11 @@ function Header({ loggedInAs, logout, history }) {
     admin,
     message
   };
+
+  if (currPath === '/') {
+    return null;
+  }
+
   return (
     <Navbar className="mb-3" bg="light" variant="light">
       <Container className="d-flex justify-content-between">
@@ -57,7 +85,7 @@ function Header({ loggedInAs, logout, history }) {
                     </Link>
                     {' '}
                     {loggedInAs.admin && '(admin)'}
-                    <Button size="sm" className="float-right ml-3" onClick={() => logout(history)}>Logout</Button>
+                    <Button size="sm" className="float-right ml-3" onClick={() => logout(currPath, push)}>Logout</Button>
                   </div>
                 )
                 : (
@@ -86,9 +114,6 @@ function Header({ loggedInAs, logout, history }) {
 
 
 Header.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }).isRequired,
   loggedInAs: PropTypes.shape({
     id: PropTypes.string,
     password: PropTypes.string,

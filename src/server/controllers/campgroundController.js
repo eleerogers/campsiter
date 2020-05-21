@@ -24,9 +24,10 @@ const getCampgrounds = (request, response, next) => {
     if (error) {
       console.error(error);
       response.status(404).send('Problem fetching campgrounds');
+    } else {
+      response.locals.campgrounds = results.rows;
+      next();
     }
-    response.locals.campgrounds = results.rows;
-    next();
   });
 };
 

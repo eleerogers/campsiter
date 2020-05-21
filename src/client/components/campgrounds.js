@@ -2,16 +2,22 @@ import React, { useState, useEffect } from 'react';
 import {
   Button, Jumbotron, Container, Row, Col, Alert
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Campground from './campground';
 
 
-function Campgrounds({ location, history, loggedInAs }) {
+function Campgrounds({ loggedInAs }) {
   const [campgrnds, setCampgrnds] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
   const [search, setSearch] = useState('');
+  const {
+    location: {
+      state
+    },
+    replace
+  } = useHistory();
 
   useEffect(() => {
     let mounted = true;
@@ -21,18 +27,22 @@ function Campgrounds({ location, history, loggedInAs }) {
         if (mounted) {
           setCampgrnds(campgrounds);
         }
-      } catch (e) {
-        console.error(e);
+      } catch (err) {
+        console.error(err);
+        const { response: { status, data } } = err;
+        setAlertMsg({ text: `${data} (${status})`, variant: 'danger' });
       }
-    }
-    const { state } = location;
-    if (state) {
-      const { alertMessage } = state;
-      setAlertMsg(alertMessage);
     }
     fetchData();
     return (() => { mounted = false; });
   }, []);
+
+  useEffect(() => {
+    if (state) {
+      const { alertMessage } = state;
+      setAlertMsg(alertMessage);
+    }
+  }, [state]);
 
   const renderAlert = () => {
     const space = '    ';
@@ -46,10 +56,10 @@ function Campgrounds({ location, history, loggedInAs }) {
             {space}
             <Button
               onClick={() => {
-                history.replace('/campgrounds', null);
+                replace('/campgrounds', null);
                 setAlertMsg(null);
               }}
-              variant="outline-success"
+              variant={`outline-${variant}`}
               size="sm"
             >
               X
@@ -119,18 +129,6 @@ function Campgrounds({ location, history, loggedInAs }) {
 }
 
 Campgrounds.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired
-  }).isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      alertMessage: PropTypes.shape({
-        text: PropTypes.string,
-        variant: PropTypes.string
-      }),
-    })
-  }).isRequired,
   loggedInAs: PropTypes.shape({
     id: PropTypes.string,
     password: PropTypes.string,
