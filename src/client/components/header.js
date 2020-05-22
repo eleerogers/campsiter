@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
-function Header({ loggedInAs, logout }) {
+function Header({ loggedInAs, logout, loginFormReset }) {
   const {
     location: {
       pathname
@@ -21,6 +21,7 @@ function Header({ loggedInAs, logout }) {
   }, [pathname]);
 
   listen((location) => {
+    loginFormReset();
     setCurrPath(location.pathname);
   });
 
@@ -51,6 +52,42 @@ function Header({ loggedInAs, logout }) {
     return null;
   }
 
+  const showLoginOrLoggedInAs = loggedInAs.email.length > 0
+    ? (
+      <div>
+        Logged in as
+        {' '}
+        <Link to={{
+          pathname: `/ycusers/${loggedInAs.id}`,
+          state: {
+            author
+          }
+        }}
+        >
+          {loggedInAs.email}
+        </Link>
+        {' '}
+        {loggedInAs.admin && '(admin)'}
+        <Button size="sm" className="float-right ml-3" onClick={() => logout(currPath, push)}>Logout</Button>
+      </div>
+    )
+    : (
+      <>
+        <Link
+          className="nav-link"
+          to={{ pathname: '/login' }}
+        >
+          Login
+        </Link>
+        <Link
+          className="nav-link"
+          to={{ pathname: '/signup' }}
+        >
+          Signup
+        </Link>
+      </>
+    );
+
   return (
     <Navbar className="mb-3" bg="light" variant="light">
       <Container className="d-flex justify-content-between">
@@ -63,41 +100,7 @@ function Header({ loggedInAs, logout }) {
         <Col>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              {loggedInAs.email.length > 0
-                ? (
-                  <div>
-                    Logged in as
-                    {' '}
-                    <Link to={{
-                      pathname: `/ycusers/${loggedInAs.id}`,
-                      state: {
-                        author
-                      }
-                    }}
-                    >
-                      {loggedInAs.email}
-                    </Link>
-                    {' '}
-                    {loggedInAs.admin && '(admin)'}
-                    <Button size="sm" className="float-right ml-3" onClick={() => logout(currPath, push)}>Logout</Button>
-                  </div>
-                )
-                : (
-                  <>
-                    <Link
-                      className="nav-link"
-                      to={{ pathname: '/login' }}
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      className="nav-link"
-                      to={{ pathname: '/signup' }}
-                    >
-                      Signup
-                    </Link>
-                  </>
-                )}
+              {showLoginOrLoggedInAs}
             </Nav>
           </Navbar.Collapse>
         </Col>
@@ -122,6 +125,7 @@ Header.propTypes = {
     admin: PropTypes.bool,
   }).isRequired,
   logout: PropTypes.func.isRequired,
+  loginFormReset: PropTypes.func.isRequired
 };
 
 export default Header;

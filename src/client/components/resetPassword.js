@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import useForm from '../hooks/useForm';
 import '../app.css';
 
 
-function Reset() {
-  const [alertMessage, setAlertMessage] = useState({ message: '', variant: '' });
+function Reset({ alertMessage, setAlertMessage }) {
   const [rPEmail, setRPEmail] = useState();
   const { push } = useHistory();
   const { reset_password_token: resetPasswordToken } = useParams();
@@ -45,13 +45,13 @@ function Reset() {
           }
         } else {
           setAlertMessage({
-            alertMessage: 'Passwords do not match',
+            text: 'Passwords do not match',
             variant: 'danger'
           });
         }
       } else {
         setAlertMessage({
-          alertMessage: 'Password cannot be blank',
+          text: 'Password cannot be blank',
           variant: 'danger'
         });
       }
@@ -59,7 +59,7 @@ function Reset() {
       const { response: { status, data } } = err;
       if (status === 410) {
         setAlertMessage({
-          alertMessage: data,
+          text: data,
           variant: 'danger'
         });
       }
@@ -67,13 +67,15 @@ function Reset() {
   }
 
   function renderAlert() {
-    const { message, variant } = alertMessage;
-    if (message.length > 0) {
-      return (
-        <Alert variant={variant}>
-          {message}
-        </Alert>
-      );
+    if (alertMessage) {
+      const { text, variant } = alertMessage;
+      if (text.length > 0) {
+        return (
+          <Alert variant={variant}>
+            {text}
+          </Alert>
+        );
+      }
     }
     return null;
   }
@@ -284,5 +286,20 @@ function Reset() {
 //     })
 //   }).isRequired
 // };
+
+Reset.propTypes = {
+  alertMessage: PropTypes.shape({
+    text: PropTypes.string,
+    variant: PropTypes.string
+  }),
+  setAlertMessage: PropTypes.func.isRequired
+};
+
+Reset.defaultProps = {
+  alertMessage: {
+    text: '',
+    variant: ''
+  }
+};
 
 export default Reset;

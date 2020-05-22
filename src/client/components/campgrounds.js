@@ -8,9 +8,9 @@ import axios from 'axios';
 import Campground from './campground';
 
 
-function Campgrounds({ loggedInAs }) {
+function Campgrounds({ loggedInAs, alertMessage, setAlertMessage }) {
   const [campgrnds, setCampgrnds] = useState([]);
-  const [alertMsg, setAlertMsg] = useState(null);
+  // const [alertMsg, setAlertMsg] = useState(null);
   const [search, setSearch] = useState('');
   const {
     location: {
@@ -30,7 +30,7 @@ function Campgrounds({ loggedInAs }) {
       } catch (err) {
         console.error(err);
         const { response: { status, data } } = err;
-        setAlertMsg({ text: `${data} (${status})`, variant: 'danger' });
+        setAlertMessage({ text: `${data} (${status})`, variant: 'danger' });
       }
     }
     fetchData();
@@ -38,17 +38,18 @@ function Campgrounds({ loggedInAs }) {
   }, []);
 
   useEffect(() => {
+    setAlertMessage(null);
     if (state) {
-      const { alertMessage } = state;
-      setAlertMsg(alertMessage);
+      const { alertMessage: newAlertMessage } = state;
+      setAlertMessage(newAlertMessage);
     }
   }, [state]);
 
   const renderAlert = () => {
     const space = '    ';
 
-    if (alertMsg) {
-      const { text, variant } = alertMsg;
+    if (alertMessage) {
+      const { text, variant } = alertMessage;
       return (
         <Alert variant={variant}>
           <Alert>
@@ -57,7 +58,7 @@ function Campgrounds({ loggedInAs }) {
             <Button
               onClick={() => {
                 replace('/campgrounds', null);
-                setAlertMsg(null);
+                setAlertMessage(null);
               }}
               variant={`outline-${variant}`}
               size="sm"

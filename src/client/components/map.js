@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 // require('dotenv').config();
 
 function MapContainer({ google, campground: { lat, lng } }) {
+  console.log(process.env.REACT_APP_GOOGLE_API_KEY);
   const center = { lat, lng };
   const style = {
     width: '100%',

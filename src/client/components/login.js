@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Link,
   useHistory
@@ -9,10 +9,9 @@ import '../app.css';
 
 
 function Login({
-  errorMessage, loginFormValues, onFormChange, submitLogin, loggedInAs
+  alertMessage, setAlertMessage, loginFormValues, onFormChange, submitLogin, loggedInAs
 }) {
   const { emailForm, passwordForm } = loginFormValues;
-  const [alertMsg, setAlertMsg] = useState(null);
   const {
     location: {
       state
@@ -29,26 +28,16 @@ function Login({
   }, [loggedInAs]);
 
   useEffect(() => {
+    setAlertMessage(null);
     if (state) {
-      const { alertMessage } = state;
-      setAlertMsg(alertMessage);
+      const { alertMessage: newAlertMsg } = state;
+      setAlertMessage(newAlertMsg);
     }
   }, [state]);
 
   function renderAlert() {
-    if (errorMessage) {
-      return (
-        <Alert variant="danger">
-          {errorMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
-
-  function renderSucessAlert() {
-    if (alertMsg) {
-      const { text, variant } = alertMsg;
+    if (alertMessage) {
+      const { text, variant } = alertMessage;
       return (
         <Alert variant={variant}>
           {text}
@@ -73,7 +62,6 @@ function Login({
   return (
     <div className="margin-top-50">
       {renderAlert()}
-      {renderSucessAlert()}
       <Container>
         <h1 className="text-center">Login to your account</h1>
         <br />
@@ -130,7 +118,11 @@ function Login({
 }
 
 Login.propTypes = {
-  errorMessage: PropTypes.string,
+  alertMessage: PropTypes.shape({
+    text: PropTypes.string,
+    variant: PropTypes.string
+  }),
+  setAlertMessage: PropTypes.func.isRequired,
   loginFormValues: PropTypes.shape({
     emailForm: PropTypes.string,
     passwordForm: PropTypes.string,
@@ -147,7 +139,7 @@ Login.propTypes = {
 };
 
 Login.defaultProps = {
-  errorMessage: null,
+  alertMessage: null,
   loggedInAs: null
 };
 

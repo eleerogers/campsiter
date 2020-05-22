@@ -24,7 +24,7 @@ import ErrorBoundary from './components/errorBoundary';
 import useForm from './hooks/useForm';
 
 function App() {
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [alertMessage, setAlertMessage] = useState(null);
   const loggedInAsInit = {
     id: '',
     password: '',
@@ -84,7 +84,10 @@ function App() {
         })
         .catch((err) => {
           const { response: { status, data: message } } = err;
-          setErrorMessage(`${message} (${status})`);
+          setAlertMessage({
+            text: `${message} (${status})`,
+            variant: 'danger'
+          });
           console.error(err);
         });
     }
@@ -93,7 +96,7 @@ function App() {
   async function submitLogin(event, goBack) {
     event.preventDefault();
     try {
-      setErrorMessage(null);
+      setAlertMessage(null);
       const loginInfo = {
         email: emailForm,
         password: passwordForm
@@ -104,7 +107,10 @@ function App() {
       goBack();
     } catch (err) {
       const { response: { status, data: message } } = err;
-      setErrorMessage(`${message} (${status})`);
+      setAlertMessage({
+        text: `${message} (${status})`,
+        variant: 'danger'
+      });
       console.error(err);
     }
   }
@@ -127,7 +133,10 @@ function App() {
       }
     } catch (err) {
       const { response: { status, data: message } } = err;
-      setErrorMessage(`${message} (${status})`);
+      setAlertMessage({
+        text: `${message} (${status})`,
+        variant: 'danger'
+      });
       console.error(err);
     }
   }
@@ -142,6 +151,7 @@ function App() {
             <Header
               loggedInAs={loggedInAs}
               logout={logout}
+              loginFormReset={loginFormReset}
             />
           </Route>
           <Container>
@@ -155,17 +165,23 @@ function App() {
                 path="/campgrounds"
                 exact
               >
-                <Campgrounds
-                  loggedInAs={loggedInAs}
-                />
+                <ErrorBoundary>
+                  <Campgrounds
+                    loggedInAs={loggedInAs}
+                    alertMessage={alertMessage}
+                    setAlertMessage={setAlertMessage}
+                  />
+                </ErrorBoundary>
               </Route>
               <Route
                 path="/newCampground"
                 exact
               >
-                <NewCampground
-                  user={loggedInAs}
-                />
+                <ErrorBoundary>
+                  <NewCampground
+                    user={loggedInAs}
+                  />
+                </ErrorBoundary>
               </Route>
               <Route
                 path="/editCampground"
@@ -206,26 +222,33 @@ function App() {
               <Route
                 path="/login"
               >
-                <Login
-                  onFormChange={loginFormHandleChange}
-                  submitLogin={submitLogin}
-                  loginFormValues={loginFormValues}
-                  errorMessage={errorMessage}
-                  loggedInAs={loggedInAs}
-                />
+                <ErrorBoundary>
+                  <Login
+                    onFormChange={loginFormHandleChange}
+                    submitLogin={submitLogin}
+                    loginFormValues={loginFormValues}
+                    alertMessage={alertMessage}
+                    setAlertMessage={setAlertMessage}
+                    loggedInAs={loggedInAs}
+                  />
+                </ErrorBoundary>
               </Route>
               <Route path="/ycusers/:id">
-                <UserProfile
-                  loggedInAs={loggedInAs}
-                />
+                <ErrorBoundary>
+                  <UserProfile
+                    loggedInAs={loggedInAs}
+                  />
+                </ErrorBoundary>
               </Route>
               <Route
                 path="/signup"
                 exact
               >
-                <Signup
-                  loggedInAs={loggedInAs}
-                />
+                <ErrorBoundary>
+                  <Signup
+                    loggedInAs={loggedInAs}
+                  />
+                </ErrorBoundary>
               </Route>
               <Route
                 path="/editUser"
@@ -242,15 +265,23 @@ function App() {
                 path="/forgot"
                 exact
               >
-                <Forgot
-                  loggedInAs={loggedInAs}
-                />
+                <ErrorBoundary>
+                  <Forgot
+                    loggedInAs={loggedInAs}
+                  />
+                </ErrorBoundary>
               </Route>
               <Route
                 path="/reset/:reset_password_token"
                 exact
-                component={Reset}
-              />
+              >
+                <ErrorBoundary>
+                  <Reset
+                    alertMessage={alertMessage}
+                    setAlertMessage={setAlertMessage}
+                  />
+                </ErrorBoundary>
+              </Route>
             </Switch>
           </Container>
         </div>
