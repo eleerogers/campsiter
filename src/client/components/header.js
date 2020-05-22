@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Nav, Navbar, Container, Button, Col
 } from 'react-bootstrap';
@@ -14,21 +14,15 @@ function Header({ loggedInAs, logout }) {
     push,
     listen
   } = useHistory();
-  const [currPath, setCurrPath] = useState(pathname === '/');
+  const [currPath, setCurrPath] = useState();
+
+  useEffect(() => {
+    setCurrPath(pathname);
+  }, [pathname]);
 
   listen((location) => {
     setCurrPath(location.pathname);
   });
-  // function handlePathChange() {
-  //   console.log('handlePathChang')
-  //   setIsHome(pathname === '/');
-  // }
-
-  // useEffect(() => {
-  //   console.log('useEffect');
-  //   window.addEventListener('popstate', handlePathChange);
-  //   return () => window.removeEventListener('popstate', handlePathChange);
-  // });
 
   const {
     id,

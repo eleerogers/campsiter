@@ -9,8 +9,9 @@ import '../app.css';
 
 
 function Login({
-  errorMessage, emailForm, passwordForm, onFormChange, submitLogin, loggedInAs
+  errorMessage, loginFormValues, onFormChange, submitLogin, loggedInAs
 }) {
+  const { emailForm, passwordForm } = loginFormValues;
   const [alertMsg, setAlertMsg] = useState(null);
   const {
     location: {
@@ -130,8 +131,10 @@ function Login({
 
 Login.propTypes = {
   errorMessage: PropTypes.string,
-  emailForm: PropTypes.string,
-  passwordForm: PropTypes.string,
+  loginFormValues: PropTypes.shape({
+    emailForm: PropTypes.string,
+    passwordForm: PropTypes.string,
+  }).isRequired,
   onFormChange: PropTypes.func.isRequired,
   submitLogin: PropTypes.func.isRequired,
   loggedInAs: PropTypes.shape({
@@ -145,8 +148,6 @@ Login.propTypes = {
 
 Login.defaultProps = {
   errorMessage: null,
-  emailForm: '',
-  passwordForm: '',
   loggedInAs: null
 };
 

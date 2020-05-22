@@ -11,9 +11,14 @@ const useForm = (initialFormStateObj) => {
     }));
   };
 
+  const reset = () => {
+    setValues(initialFormStateObj || {});
+  };
+
   return {
     handleChange,
     values,
+    reset
   };
 };
 

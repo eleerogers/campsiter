@@ -42,7 +42,7 @@ function UserProfile({ loggedInAs }) {
         setUPCampgrounds(campgrounds);
         setUPAuthor(user);
       });
-  }, []);
+  }, [id]);
 
   function renderEditButton() {
     if (

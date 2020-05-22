@@ -11,7 +11,7 @@ import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 
 
-function EditUser({ updateLoggedinasState, loggedInAs: { id: loggedInAsId } }) {
+function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const {
     push,
@@ -87,7 +87,7 @@ function EditUser({ updateLoggedinasState, loggedInAs: { id: loggedInAsId } }) {
         }
       } = await axios.put('/api/users', fd, config);
       if (status === 201) {
-        updateLoggedinasState({
+        setLoggedInAs({
           admin: updatedAdmin === 'true',
           id,
           username,
@@ -510,7 +510,7 @@ EditUser.propTypes = {
   loggedInAs: PropTypes.shape({
     id: PropTypes.string.isRequired
   }).isRequired,
-  updateLoggedinasState: PropTypes.func.isRequired
+  setLoggedInAs: PropTypes.func.isRequired
 };
 
 export default EditUser;
