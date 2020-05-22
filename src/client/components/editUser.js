@@ -34,7 +34,11 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
     adminCode
   } = values;
   const initBtnMessage = 'Change Profile Image';
-  const { imageFile, message: btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
+  const {
+    imageFile,
+    message: btnMessage,
+    handleFileChange
+  } = useGetFileName(initBtnMessage);
 
   useEffect(() => {
     if (loggedInAsId.length === 0 || loggedInAsId !== id) {
@@ -87,8 +91,9 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
         }
       } = await axios.put('/api/users', fd, config);
       if (status === 201) {
+        console.log('status 201!');
         setLoggedInAs({
-          admin: updatedAdmin === 'true',
+          admin: updatedAdmin,
           id,
           username,
           firstName,
