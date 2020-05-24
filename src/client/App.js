@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 import './app.css';
 import {
   BrowserRouter as Router, Switch, Route
 } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import Header from './components/header';
 // import Footer from './components/footer';
 import Landing from './components/landing';
@@ -23,8 +25,10 @@ import Reset from './components/resetPassword';
 import ErrorBoundary from './components/errorBoundary';
 import useForm from './hooks/useForm';
 
+toast.configure();
+
 function App() {
-  const [alertMessage, setAlertMessage] = useState(null);
+  // const [alertMessage, setAlertMessage] = useState(null);
   const loggedInAsInit = {
     id: '',
     password: '',
@@ -48,6 +52,35 @@ function App() {
     reset: loginFormReset
   } = useForm(loginInit);
   const { emailForm, passwordForm } = loginFormValues;
+
+  // useEffect(() => {
+  //   if (alertMessage) {
+  //     const { text, variant } = alertMessage;
+  //     const alertBtn = (
+  //       <Button
+  //         onClick={() => {
+  //           setAlertMessage(null);
+  //         }}
+  //         variant={`outline-${variant}`}
+  //         size="sm"
+  //       >
+  //         X
+  //       </Button>
+  //     );
+  //     const config = {
+  //       autoClose: 6000,
+  //       hideProgressBar: true,
+  //       closeButton: alertBtn
+  //     };
+  //     if (variant === 'warning') {
+  //       toast.warn(text, config);
+  //     } else if (variant === 'success') {
+  //       toast.success(text, config);
+  //     } else {
+  //       toast(text, config);
+  //     }
+  //   }
+  // }, [alertMessage]);
 
   useEffect(() => {
     if (localStorage.userId) {
@@ -84,11 +117,12 @@ function App() {
         })
         .catch((err) => {
           const { response: { status, data: message } } = err;
-          setAlertMessage({
-            text: `${message} (${status})`,
-            variant: 'danger'
-          });
-          console.error(err);
+          toast.error(`${message} (${status})`);
+          // setAlertMessage({
+          //   text: `${message} (${status})`,
+          //   variant: 'danger'
+          // });
+          // console.error(err);
         });
     }
   }, [localStorage.userId]);
@@ -96,7 +130,7 @@ function App() {
   async function submitLogin(event, goBack) {
     event.preventDefault();
     try {
-      setAlertMessage(null);
+      // setAlertMessage(null);
       const loginInfo = {
         email: emailForm,
         password: passwordForm
@@ -107,11 +141,12 @@ function App() {
       goBack();
     } catch (err) {
       const { response: { status, data: message } } = err;
-      setAlertMessage({
-        text: `${message} (${status})`,
-        variant: 'danger'
-      });
-      console.error(err);
+      toast.error(`${message} (${status})`);
+      // setAlertMessage({
+      //   text: `${message} (${status})`,
+      //   variant: 'danger'
+      // });
+      // console.error(err);
     }
   }
 
@@ -133,11 +168,12 @@ function App() {
       }
     } catch (err) {
       const { response: { status, data: message } } = err;
-      setAlertMessage({
-        text: `${message} (${status})`,
-        variant: 'danger'
-      });
-      console.error(err);
+      toast.error(`${message} (${status})`);
+      // setAlertMessage({
+      //   text: `${message} (${status})`,
+      //   variant: 'danger'
+      // });
+      // console.error(err);
     }
   }
 
@@ -168,8 +204,8 @@ function App() {
                 <ErrorBoundary>
                   <Campgrounds
                     loggedInAs={loggedInAs}
-                    alertMessage={alertMessage}
-                    setAlertMessage={setAlertMessage}
+                    // alertMessage={alertMessage}
+                    // setAlertMessage={setAlertMessage}
                   />
                 </ErrorBoundary>
               </Route>
@@ -180,6 +216,7 @@ function App() {
                 <ErrorBoundary>
                   <NewCampground
                     user={loggedInAs}
+                    // setAlertMessage={setAlertMessage}
                   />
                 </ErrorBoundary>
               </Route>
@@ -227,8 +264,8 @@ function App() {
                     onFormChange={loginFormHandleChange}
                     submitLogin={submitLogin}
                     loginFormValues={loginFormValues}
-                    alertMessage={alertMessage}
-                    setAlertMessage={setAlertMessage}
+                    // alertMessage={alertMessage}
+                    // setAlertMessage={setAlertMessage}
                     loggedInAs={loggedInAs}
                   />
                 </ErrorBoundary>
@@ -277,8 +314,8 @@ function App() {
               >
                 <ErrorBoundary>
                   <Reset
-                    alertMessage={alertMessage}
-                    setAlertMessage={setAlertMessage}
+                    // alertMessage={alertMessage}
+                    // setAlertMessage={setAlertMessage}
                   />
                 </ErrorBoundary>
               </Route>

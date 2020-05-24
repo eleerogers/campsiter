@@ -7,12 +7,13 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { Button, Container, Alert } from 'react-bootstrap';
 import useForm from '../hooks/useForm';
 import '../app.css';
 
 function NewComment({ user }) {
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
   const initData = { comment: '', userId: user.id };
   const { values, handleChange } = useForm(initData);
   const {
@@ -25,16 +26,16 @@ function NewComment({ user }) {
   } = useHistory();
   const { id } = useParams();
 
-  function renderAlert() {
-    if (errorMessage) {
-      return (
-        <Alert variant="danger">
-          {errorMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (errorMessage) {
+  //     return (
+  //       <Alert variant="danger">
+  //         {errorMessage}
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   async function submitForm(event) {
     event.preventDefault();
@@ -42,26 +43,28 @@ function NewComment({ user }) {
     try {
       const { data, status } = await axios.post(url, values);
       if (status === 200) {
+        toast.success(data);
         push({
           pathname: `/campgrounds/${id}`,
           state: {
             campground,
-            alertMessage: {
-              text: data,
-              variant: 'success'
-            }
+            // alertMessage: {
+            //   text: data,
+            //   variant: 'success'
+            // }
           }
         });
       }
     } catch (err) {
       const { response: { status, data } } = err;
-      setErrorMessage(`${data} (${status})`);
+      toast.error(`${data} (${status})`);
+      // setErrorMessage(`${data} (${status})`);
     }
   }
 
   return (
     <div className="margin-top-50">
-      {renderAlert()}
+      {/* {renderAlert()} */}
       <Container>
         <h1 className="text-center">Comment on This Campground</h1>
         <br />

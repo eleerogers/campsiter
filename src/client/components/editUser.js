@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   useHistory,
   Link
 } from 'react-router-dom';
-import { Button, Container, Alert } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../app.css';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 
 
 function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState(null);
   const {
     push,
     location: {
@@ -46,16 +47,16 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
     }
   }, [loggedInAsId]);
 
-  function renderAlert() {
-    if (errorMessage) {
-      return (
-        <Alert variant="danger">
-          {errorMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (errorMessage) {
+  //     return (
+  //       <Alert variant="danger">
+  //         {errorMessage}
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   async function submitForm(event) {
     event.preventDefault();
@@ -102,19 +103,22 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
           image: newImageLink,
           imageId: newImageId,
         });
-        push({
-          pathname: `/ycusers/${id}`,
-          state: {
-            alertMessage: {
-              text: message,
-              variant: 'success'
-            }
-          }
-        });
+        toast.success(message);
+        push(`/ycusers/${id}`);
+        // push({
+        //   pathname: `/ycusers/${id}`,
+        //   state: {
+        //     alertMessage: {
+        //       text: message,
+        //       variant: 'success'
+        //     }
+        //   }
+        // });
       }
     } catch (err) {
       const { response: { status, data: message } } = err;
-      setErrorMessage(`${message} (${status})`);
+      toast.error(`${message} (${status})`);
+      // setErrorMessage(`${message} (${status})`);
     }
   }
 
@@ -138,7 +142,7 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
 
   return (
     <div className="margin-top-50">
-      {renderAlert()}
+      {/* {renderAlert()} */}
       <Container>
         <h1 className="text-center">
           Edit account details:

@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Link,
   // withRouter,
   useHistory
 } from 'react-router-dom';
-import { Button, Container, Alert } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import '../app.css';
 // import getUploadedFileName from '../utils/getUploadedFileName';
 
 function NewCampground({ user: { id: loggedInAsId } }) {
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState(null);
   const { push } = useHistory();
   const initBtnMessage = 'Select Campground Image (Required)';
   const { imageFile, message, handleFileChange } = useGetFileName(initBtnMessage);
@@ -34,16 +35,16 @@ function NewCampground({ user: { id: loggedInAsId } }) {
     }
   }, [loggedInAsId]);
 
-  function renderAlert() {
-    if (errorMessage) {
-      return (
-        <Alert variant="danger">
-          {errorMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (errorMessage) {
+  //     return (
+  //       <Alert variant="danger">
+  //         {errorMessage}
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   async function submitForm(event) {
     event.preventDefault();
@@ -65,15 +66,21 @@ function NewCampground({ user: { id: loggedInAsId } }) {
     try {
       const { status, data } = await axios.post(url, fd, config);
       if (status === 201) {
-        push({
-          pathname: '/campgrounds',
-          state: {
-            alertMessage: {
-              text: data,
-              variant: 'success'
-            }
-          }
-        });
+        toast.success(data);
+        // setAlertMessage({
+        //   text: data,
+        //   variant: 'success'
+        // });
+        push('/campgrounds');
+        // push({
+        //   pathname: '/campgrounds',
+        //   // state: {
+        //   //   alertMessage: {
+        //   //     text: data,
+        //   //     variant: 'success'
+        //   //   }
+        //   // }
+        // });
       } else {
         const error = new Error();
         error.response = {
@@ -89,13 +96,13 @@ function NewCampground({ user: { id: loggedInAsId } }) {
           data
         }
       } = err;
-      setErrorMessage(`${data} (${status})`);
+      toast.error(`${data} (${status})`);
     }
   }
 
   return (
     <div className="margin-top-50">
-      {renderAlert()}
+      {/* {renderAlert()} */}
       <Container>
         <h1 className="text-center">Create a New Campground</h1>
         <br />

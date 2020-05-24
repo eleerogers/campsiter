@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Link,
   // withRouter,
   useHistory,
   useParams
 } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Button, Container, Alert } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { Button, Container } from 'react-bootstrap';
 import useForm from '../hooks/useForm';
 import '../app.css';
 
 function EditComment() {
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
   const {
     location: {
       state: {
@@ -46,37 +47,39 @@ function EditComment() {
     try {
       const { data, status } = await axios.put(url, values);
       if (status === 200) {
+        toast.success(data);
         push({
           pathname: `/campgrounds/${id}`,
           state: {
             campground,
-            alertMessage: {
-              text: data,
-              variant: 'success'
-            }
+            // alertMessage: {
+            //   text: data,
+            //   variant: 'success'
+            // }
           }
         });
       }
     } catch (err) {
       const { response: { status, data } } = err;
-      setErrorMessage(`${data} (${status})`);
+      toast.error(`${data} (${status})`);
+      // setErrorMessage(`${data} (${status})`);
     }
   }
 
-  function renderAlert() {
-    if (errorMessage) {
-      return (
-        <Alert variant="danger">
-          {errorMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (errorMessage) {
+  //     return (
+  //       <Alert variant="danger">
+  //         {errorMessage}
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   return (
     <div className="margin-top-50">
-      {renderAlert()}
+      {/* {renderAlert()} */}
       <Container>
         <h1 className="text-center">Comment on This Campground</h1>
         <br />
@@ -280,27 +283,27 @@ function EditComment() {
 // }
 
 // EditComment.propTypes = {
-// history: PropTypes.shape({
-//   push: PropTypes.func.isRequired
-// }).isRequired,
-// location: PropTypes.shape({
-//   state: PropTypes.shape({
-//     campground: PropTypes.shape({
-//       id: PropTypes.number.isRequired,
-//     }).isRequired,
-//     commentObj: PropTypes.shape({
-//       comment_id: PropTypes.number.isRequired,
-//       user_id: PropTypes.number.isRequired,
-//       comment: PropTypes.string.isRequired,
-//     }),
-//     adminBool: PropTypes.bool.isRequired
+//   history: PropTypes.shape({
+//     push: PropTypes.func.isRequired
 //   }).isRequired,
-// }).isRequired,
-// match: PropTypes.shape({
-//   params: PropTypes.shape({
-//     id: PropTypes.string.isRequired
-//   })
-// }).isRequired
+//   location: PropTypes.shape({
+//     state: PropTypes.shape({
+//       campground: PropTypes.shape({
+//         id: PropTypes.number.isRequired,
+//       }).isRequired,
+//       commentObj: PropTypes.shape({
+//         comment_id: PropTypes.number.isRequired,
+//         user_id: PropTypes.number.isRequired,
+//         comment: PropTypes.string.isRequired,
+//       }),
+//       adminBool: PropTypes.bool.isRequired
+//     }).isRequired,
+//   }).isRequired,
+//   match: PropTypes.shape({
+//     params: PropTypes.shape({
+//       id: PropTypes.string.isRequired
+//     })
+//   }).isRequired
 // };
 
 export default EditComment;

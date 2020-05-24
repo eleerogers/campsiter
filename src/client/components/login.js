@@ -3,19 +3,19 @@ import {
   Link,
   useHistory
 } from 'react-router-dom';
-import { Button, Container, Alert } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../app.css';
 
 
 function Login({
-  alertMessage, setAlertMessage, loginFormValues, onFormChange, submitLogin, loggedInAs
+  loginFormValues, onFormChange, submitLogin, loggedInAs
 }) {
   const { emailForm, passwordForm } = loginFormValues;
   const {
-    location: {
-      state
-    },
+    // location: {
+    //   state
+    // },
     push,
     goBack,
     length
@@ -27,25 +27,25 @@ function Login({
     }
   }, [loggedInAs]);
 
-  useEffect(() => {
-    setAlertMessage(null);
-    if (state) {
-      const { alertMessage: newAlertMsg } = state;
-      setAlertMessage(newAlertMsg);
-    }
-  }, [state]);
+  // useEffect(() => {
+  //   setAlertMessage(null);
+  //   if (state) {
+  //     const { alertMessage: newAlertMsg } = state;
+  //     setAlertMessage(newAlertMsg);
+  //   }
+  // }, [state]);
 
-  function renderAlert() {
-    if (alertMessage) {
-      const { text, variant } = alertMessage;
-      return (
-        <Alert variant={variant}>
-          {text}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (alertMessage) {
+  //     const { text, variant } = alertMessage;
+  //     return (
+  //       <Alert variant={variant}>
+  //         {text}
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   function goBackOrToCampgrounds() {
     if (length > 2) {
@@ -61,7 +61,7 @@ function Login({
 
   return (
     <div className="margin-top-50">
-      {renderAlert()}
+      {/* {renderAlert()} */}
       <Container>
         <h1 className="text-center">Login to your account</h1>
         <br />
@@ -118,11 +118,11 @@ function Login({
 }
 
 Login.propTypes = {
-  alertMessage: PropTypes.shape({
-    text: PropTypes.string,
-    variant: PropTypes.string
-  }),
-  setAlertMessage: PropTypes.func.isRequired,
+  // alertMessage: PropTypes.shape({
+  //   text: PropTypes.string,
+  //   variant: PropTypes.string
+  // }),
+  // setAlertMessage: PropTypes.func.isRequired,
   loginFormValues: PropTypes.shape({
     emailForm: PropTypes.string,
     passwordForm: PropTypes.string,
@@ -139,7 +139,7 @@ Login.propTypes = {
 };
 
 Login.defaultProps = {
-  alertMessage: null,
+  // alertMessage: null,
   loggedInAs: null
 };
 

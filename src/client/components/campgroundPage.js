@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Button, Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import MapContainer from './map';
 
 function CampgroundPage({ loggedInAs }) {
-  const [alertMessage, setAlertMessage] = useState(null);
+  // const [alertMessage, setAlertMessage] = useState(null);
   const [author, setAuthor] = useState({});
   const [comments, setComments] = useState([]);
   const {
     location: {
       state: {
         campground,
-        alertMessage: incomingAlertMessage
+        // alertMessage: incomingAlertMessage
       }
     },
     push,
@@ -36,11 +37,11 @@ function CampgroundPage({ loggedInAs }) {
     email: loggedInAsEmail
   } = loggedInAs;
 
-  useEffect(() => {
-    if (incomingAlertMessage) {
-      setAlertMessage(incomingAlertMessage);
-    }
-  }, [incomingAlertMessage]);
+  // useEffect(() => {
+  //   if (incomingAlertMessage) {
+  //     setAlertMessage(incomingAlertMessage);
+  //   }
+  // }, [incomingAlertMessage]);
 
   useEffect(() => {
     axios.get(`/api/comments/${campgroundId}`)
@@ -73,22 +74,25 @@ function CampgroundPage({ loggedInAs }) {
       } = await axios.delete(delUrl, { data });
 
       if (status === 200) {
-        push({
-          pathname: '/campgrounds',
-          state: {
-            alertMessage: {
-              text: message,
-              variant: 'success'
-            }
-          }
-        });
+        toast.success(message);
+        push('/campgrounds');
+        // push({
+        //   pathname: '/campgrounds',
+        //   state: {
+        //     alertMessage: {
+        //       text: message,
+        //       variant: 'success'
+        //     }
+        //   }
+        // });
       }
     } catch (err) {
       const { response: { status, data: message } } = err;
-      setAlertMessage({
-        text: `${message} (${status})`,
-        variant: 'danger'
-      });
+      toast.error(`${message} (${status})`);
+      // setAlertMessage({
+      //   text: `${message} (${status})`,
+      //   variant: 'danger'
+      // });
     }
   }
 
@@ -146,10 +150,11 @@ function CampgroundPage({ loggedInAs }) {
       const {
         data: text
       } = await axios.delete(url, { data: commentData });
-      setAlertMessage({
-        text,
-        variant: 'success'
-      });
+      toast.success(text);
+      // setAlertMessage({
+      //   text,
+      //   variant: 'success'
+      // });
 
       const {
         data: {
@@ -159,10 +164,11 @@ function CampgroundPage({ loggedInAs }) {
       setComments(updatedComments);
     } catch (err) {
       const { response: { status, statusText } } = err;
-      setAlertMessage({
-        text: `${statusText} (${status})`,
-        variant: 'danger'
-      });
+      toast.error(`${statusText} (${status})`);
+      // setAlertMessage({
+      //   text: `${statusText} (${status})`,
+      //   variant: 'danger'
+      // });
     }
   }
 
@@ -204,33 +210,33 @@ function CampgroundPage({ loggedInAs }) {
     return null;
   }
 
-  function renderAlert() {
-    if (alertMessage) {
-      const { text, variant } = alertMessage;
-      const btnVariant = `outline-${alertMessage.variant}`;
-      return (
-        <Alert variant={variant}>
-          <span>{text}</span>
-          <span className="float-right">
-            <Button
-              onClick={() => {
-                replace(
-                  `${campgroundId}`,
-                  { campground, alertMessage: null }
-                );
-                setAlertMessage(null);
-              }}
-              variant={btnVariant}
-              size="sm"
-            >
-              X
-            </Button>
-          </span>
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (alertMessage) {
+  //     const { text, variant } = alertMessage;
+  //     const btnVariant = `outline-${alertMessage.variant}`;
+  //     return (
+  //       <Alert variant={variant}>
+  //         <span>{text}</span>
+  //         <span className="float-right">
+  //           <Button
+  //             onClick={() => {
+  //               replace(
+  //                 `${campgroundId}`,
+  //                 { campground, alertMessage: null }
+  //               );
+  //               setAlertMessage(null);
+  //             }}
+  //             variant={btnVariant}
+  //             size="sm"
+  //           >
+  //             X
+  //           </Button>
+  //         </span>
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   const commentsDisplay = comments.map((comment) => (
     <div className="col-md-12 mb-2" key={comment.comment_id}>
@@ -260,7 +266,7 @@ function CampgroundPage({ loggedInAs }) {
           </div>
         </div>
         <div className="col-md-9">
-          {renderAlert()}
+          {/* {renderAlert()} */}
           <div className="card mb-3">
             <img
               className="img-responsive cover"

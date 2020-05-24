@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Button, Jumbotron, Container, Row, Col, Alert
+  Button, Jumbotron, Container, Row, Col
 } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import Campground from './campground';
 
 
-function Campgrounds({ loggedInAs, alertMessage, setAlertMessage }) {
+function Campgrounds({ loggedInAs }) {
   const [campgrnds, setCampgrnds] = useState([]);
   // const [alertMsg, setAlertMsg] = useState(null);
   const [search, setSearch] = useState('');
-  const {
-    location: {
-      state
-    },
-    replace
-  } = useHistory();
+  // const {
+  //   // location: {
+  //   //   state
+  //   // },
+  //   replace
+  // } = useHistory();
 
   useEffect(() => {
     let mounted = true;
@@ -30,47 +31,50 @@ function Campgrounds({ loggedInAs, alertMessage, setAlertMessage }) {
       } catch (err) {
         console.error(err);
         const { response: { status, data } } = err;
-        setAlertMessage({ text: `${data} (${status})`, variant: 'danger' });
+        toast.error(`${data} (${status})`);
+        // setAlertMessage({ text: `${data} (${status})`, variant: 'danger' });
       }
     }
-    fetchData();
+    if (campgrnds.length === 0) {
+      fetchData();
+    }
     return (() => { mounted = false; });
   }, []);
 
-  useEffect(() => {
-    setAlertMessage(null);
-    if (state) {
-      const { alertMessage: newAlertMessage } = state;
-      setAlertMessage(newAlertMessage);
-    }
-  }, [state]);
+  // useEffect(() => {
+  //   setAlertMessage(null);
+  //   if (state) {
+  //     const { alertMessage: newAlertMessage } = state;
+  //     setAlertMessage(newAlertMessage);
+  //   }
+  // }, [state]);
 
-  const renderAlert = () => {
-    const space = '    ';
+  // const renderAlert = () => {
+  //   const space = '    ';
 
-    if (alertMessage) {
-      const { text, variant } = alertMessage;
-      return (
-        <Alert variant={variant}>
-          <Alert>
-            {text}
-            {space}
-            <Button
-              onClick={() => {
-                replace('/campgrounds', null);
-                setAlertMessage(null);
-              }}
-              variant={`outline-${variant}`}
-              size="sm"
-            >
-              X
-            </Button>
-          </Alert>
-        </Alert>
-      );
-    }
-    return null;
-  };
+  //   if (alertMessage) {
+  //     const { text, variant } = alertMessage;
+  //     return (
+  //       <Alert variant={variant}>
+  //         <Alert>
+  //           {text}
+  //           {space}
+  //           <Button
+  //             onClick={() => {
+  //               replace('/campgrounds', null);
+  //               setAlertMessage(null);
+  //             }}
+  //             variant={`outline-${variant}`}
+  //             size="sm"
+  //           >
+  //             X
+  //           </Button>
+  //         </Alert>
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   const searchLC = search.toLowerCase();
   const campgroundComponents = campgrnds.map((campground) => {
@@ -89,7 +93,7 @@ function Campgrounds({ loggedInAs, alertMessage, setAlertMessage }) {
     <div>
       <Container>
         <Container>
-          {renderAlert()}
+          {/* {renderAlert()} */}
           <Jumbotron>
             <h1>Welcome to CampSiter!</h1>
             <p>Post and review campsites from around the globe</p>
@@ -137,6 +141,18 @@ Campgrounds.propTypes = {
     created_at: PropTypes.string,
     admin: PropTypes.bool,
   }).isRequired,
+  // alertMessage: PropTypes.shape({
+  //   text: PropTypes.string,
+  //   variant: PropTypes.string
+  // }),
+  // setAlertMessage: PropTypes.func.isRequired,
+};
+
+Campgrounds.defaultProps = {
+  alertMessage: {
+    text: '',
+    variant: ''
+  }
 };
 
 export default Campgrounds;

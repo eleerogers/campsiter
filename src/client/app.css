@@ -177,3 +177,31 @@ a:hover {
   line-height: 36px;
   cursor: pointer;
 }
+
+.Toastify__toast-container {
+  width: 320px;
+}
+.Toastify__toast--default {
+    background: #fff;
+    color: #aaa;
+ }
+  .Toastify__toast--info {
+    background: #3498db;
+ }
+  .Toastify__toast--success {
+    background: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+ }
+  .Toastify__toast--warning {
+    background: #f1c40f;
+ }
+  .Toastify__toast--error {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+ }
+ .Toastify__toast-container--top-right {
+  top: 4em;
+  right: 4em; 
+}

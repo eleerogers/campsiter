@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Link,
   // withRouter,
   useHistory
 } from 'react-router-dom';
-import { Button, Container, Alert } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 // import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import '../app.css';
 // import getUploadedFileName from '../utils/getUploadedFileName';
 
 function EditCampground() {
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState(null);
   const {
     location: {
       state: {
@@ -47,16 +48,16 @@ function EditCampground() {
     }
   }, [loggedInAsId]);
 
-  function renderAlert() {
-    if (errorMessage) {
-      return (
-        <Alert variant="danger">
-          {errorMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (errorMessage) {
+  //     return (
+  //       <Alert variant="danger">
+  //         {errorMessage}
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   async function submitForm(event) {
     event.preventDefault();
@@ -90,14 +91,15 @@ function EditCampground() {
         }
       } = await axios.put(url, fd, config);
       if (status === 200) {
+        toast.success(putResponseMsg);
         push({
           pathname: `/campgrounds/${campgroundId}`,
           state: {
             campground: updatedCampground,
-            alertMessage: {
-              text: putResponseMsg,
-              variant: 'success'
-            }
+            // alertMessage: {
+            //   text: putResponseMsg,
+            //   variant: 'success'
+            // }
           }
         });
       } else {
@@ -116,15 +118,14 @@ function EditCampground() {
           data
         }
       } = err;
-      console.log('status: ', status);
-      console.log('data: ', data);
-      setErrorMessage(`${data} (${status})`);
+      toast.error(`${data} (${status})`);
+      // setErrorMessage(`${data} (${status})`);
     }
   }
 
   return (
     <div className="margin-top-50">
-      {renderAlert()}
+      {/* {renderAlert()} */}
       <Container>
         <h1 className="text-center">
           Edit Campground:

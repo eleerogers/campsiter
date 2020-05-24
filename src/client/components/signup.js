@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   useHistory
 } from 'react-router-dom';
-import { Button, Container, Alert } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../app.css';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 
 
 function Signup({ loggedInAs }) {
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState(null);
   const {
     push,
     goBack
@@ -44,16 +45,16 @@ function Signup({ loggedInAs }) {
     }
   }, [loggedInAs]);
 
-  function renderAlert() {
-    if (errorMessage) {
-      return (
-        <Alert variant="danger">
-          {errorMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (errorMessage) {
+  //     return (
+  //       <Alert variant="danger">
+  //         {errorMessage}
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   async function submitForm(event) {
     event.preventDefault();
@@ -83,15 +84,17 @@ function Signup({ loggedInAs }) {
           }
         } = await axios.post('/api/users', fd, config);
         if (status === 201) {
-          push({
-            pathname: '/login',
-            state: {
-              alertMessage: {
-                text: message,
-                variant: 'success'
-              }
-            }
-          });
+          toast.success(message);
+          push('/login');
+          // push({
+          //   pathname: '/login',
+          //   state: {
+          //     alertMessage: {
+          //       text: message,
+          //       variant: 'success'
+          //     }
+          //   }
+          // });
         } else {
           const error = new Error();
           error.response = {
@@ -102,16 +105,18 @@ function Signup({ loggedInAs }) {
         }
       } catch (err) {
         const { response: { status, data: message } } = err;
-        setErrorMessage(`${message} (${status})`);
+        toast.error(`${message} (${status})`);
+        // setErrorMessage(`${message} (${status})`);
       }
     } else {
-      setErrorMessage('Passwords do not match');
+      toast.error('Passwords do not match');
+      // setErrorMessage('Passwords do not match');
     }
   }
 
   return (
     <div className="margin-top-50">
-      {renderAlert()}
+      {/* {renderAlert()} */}
       <Container>
         <h1 className="text-center">Create your account</h1>
         <br />

@@ -1,17 +1,17 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Link,
-  withRouter,
   useHistory
 } from 'react-router-dom';
 import { Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import '../app.css';
 
 function Forgot({ loggedInAs: { id: loggedInAsId } }) {
   const [email, setEmail] = useState('');
-  const [alert, setAlert] = useState({ alertMessage: null, variant: null });
+  // const [alert, setAlert] = useState({ alertMessage: null, variant: null });
   const { push } = useHistory();
 
   useEffect(() => {
@@ -29,36 +29,39 @@ function Forgot({ loggedInAs: { id: loggedInAsId } }) {
     try {
       const { data, status } = await axios.post('api/users/forgot', { email });
       if (status === 200) {
-        push({
-          pathname: '/campgrounds',
-          state: {
-            alertMessage: {
-              text: data,
-              variant: 'success'
-            }
-          }
-        });
+        toast.success(data);
+        push('/campgrounds');
+        // push({
+        //   pathname: '/campgrounds',
+        //   state: {
+        //     alertMessage: {
+        //       text: data,
+        //       variant: 'success'
+        //     }
+        //   }
+        // });
       }
     } catch (err) {
       const { response: { status, statusText } } = err;
-      setAlert({
-        alertMessage: `${statusText} (${status})`,
-        variant: 'danger'
-      });
+      toast.error(`${statusText} (${status})`);
+      // setAlert({
+      //   alertMessage: `${statusText} (${status})`,
+      //   variant: 'danger'
+      // });
     }
   }
 
-  function renderAlert() {
-    const { alertMessage, variant } = alert;
-    if (alertMessage) {
-      return (
-        <Alert variant={variant}>
-          {alertMessage}
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   const { alertMessage, variant } = alert;
+  //   if (alertMessage) {
+  //     return (
+  //       <Alert variant={variant}>
+  //         {alertMessage}
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   return (
     <div className="margin-top-50">

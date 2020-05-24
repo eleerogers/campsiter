@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import {
   Link,
   // withRouter,
-  useHistory,
+  // useHistory,
   useParams
 } from 'react-router-dom';
 import {
-  Col, Container, Row, Button, Alert
+  Col, Container, Row, Button
 } from 'react-bootstrap';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -16,25 +16,25 @@ import '../app.css';
 function UserProfile({ loggedInAs }) {
   const [uPAuthor, setUPAuthor] = useState({});
   const [uPCampgrounds, setUPCampgrounds] = useState([]);
-  const [uPAlertMsg, setUPAlertMsg] = useState(null);
+  // const [uPAlertMsg, setUPAlertMsg] = useState(null);
 
-  const {
-    location: {
-      state: {
-        alertMessage,
-      }
-    },
-    replace
-  } = useHistory();
+  // const {
+  //   // location: {
+  //   //   state: {
+  //   //     alertMessage,
+  //   //   }
+  //   // },
+  //   replace
+  // } = useHistory();
 
   const { id } = useParams();
 
-  useEffect(() => {
-    // do I need this if statement?
-    if (alertMessage) {
-      setUPAlertMsg(alertMessage);
-    }
-  }, [alertMessage]);
+  // useEffect(() => {
+  //   // do I need this if statement?
+  //   if (alertMessage) {
+  //     setUPAlertMsg(alertMessage);
+  //   }
+  // }, [alertMessage]);
 
   useEffect(() => {
     axios.get(`/api/campgrounds/user/${id}`)
@@ -66,30 +66,30 @@ function UserProfile({ loggedInAs }) {
     return null;
   }
 
-  function renderAlert() {
-    if (uPAlertMsg) {
-      const { text, variant } = uPAlertMsg;
-      return (
-        <Alert variant={variant}>
-          <Alert>
-            {text}
-            {'    '}
-            <Button
-              onClick={() => {
-                replace(`/ycusers/${uPAuthor.id}`, {});
-                setUPAlertMsg(null);
-              }}
-              variant="outline-success"
-              size="sm"
-            >
-              X
-            </Button>
-          </Alert>
-        </Alert>
-      );
-    }
-    return null;
-  }
+  // function renderAlert() {
+  //   if (uPAlertMsg) {
+  //     const { text, variant } = uPAlertMsg;
+  //     return (
+  //       <Alert variant={variant}>
+  //         <Alert>
+  //           {text}
+  //           {'    '}
+  //           <Button
+  //             onClick={() => {
+  //               replace(`/ycusers/${uPAuthor.id}`, {});
+  //               setUPAlertMsg(null);
+  //             }}
+  //             variant="outline-success"
+  //             size="sm"
+  //           >
+  //             X
+  //           </Button>
+  //         </Alert>
+  //       </Alert>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   const {
     first_name: firstName,
@@ -129,7 +129,7 @@ function UserProfile({ loggedInAs }) {
       </div>
       <div className="col-md-8">
         <Container>
-          {renderAlert()}
+          {/* {renderAlert()} */}
           <Row key={1}>
             {campgroundComponents}
           </Row>
