@@ -7,11 +7,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import MapContainer from './map';
 import DeleteModal from './deleteModal';
+import Comments from './comments';
 
 function CampgroundPage({ loggedInAs }) {
   // const [alertMessage, setAlertMessage] = useState(null);
   const [author, setAuthor] = useState({});
-  const [comments, setComments] = useState([]);
   const {
     location: {
       state: {
@@ -44,20 +44,12 @@ function CampgroundPage({ loggedInAs }) {
   // }, [incomingAlertMessage]);
 
   useEffect(() => {
-    axios.get(`/api/comments/${campgroundId}`)
-      .then(({ data: { comments: incomingComments } }) => {
-        setComments(incomingComments);
-      })
-      .catch((err) => { console.error(err); });
-  }, []);
-
-  useEffect(() => {
     axios.get(`/api/users/${userId}`)
       .then(({ data: { user } }) => {
         setAuthor(user);
       })
       .catch((err) => { console.error(err); });
-  }, []);
+  }, [userId]);
 
   async function deleteCampgroundAndRedirect(adminBool) {
     try {
@@ -142,137 +134,6 @@ function CampgroundPage({ loggedInAs }) {
     return null;
   }
 
-  async function deleteComment(commentObj, loggedInAsAdminBool) {
-    // event.preventDefault();
-    try {
-      const url = `/api/comments/${campgroundId}`;
-      const {
-        comment_id: commentId,
-        user_id: commentUserId
-      } = commentObj;
-      const commentData = {
-        adminBool: loggedInAsAdminBool,
-        commentId,
-        userId: commentUserId
-      };
-      const {
-        data: text
-      } = await axios.delete(url, { data: commentData });
-      toast.success(text);
-      // setAlertMessage({
-      //   text,
-      //   variant: 'success'
-      // });
-
-      const {
-        data: {
-          comments: updatedComments
-        }
-      } = await axios.get(`/api/comments/${campgroundId}`);
-      setComments(updatedComments);
-    } catch (err) {
-      const { response: { status, statusText } } = err;
-      toast.error(`${statusText} (${status})`);
-      // setAlertMessage({
-      //   text: `${statusText} (${status})`,
-      //   variant: 'danger'
-      // });
-    }
-  }
-
-  function renderCommentButtons(commentObj, adminBool) {
-    const loggedInAsIdInteger = parseInt(loggedInAsId, 10);
-    const commentUserId = parseInt(commentObj.user_id, 10);
-    if (
-      (loggedInAs
-      && loggedInAsIdInteger === commentUserId)
-      || loggedInAsAdmin
-    ) {
-      return (
-        <div className="float-right">
-          <Link to={{
-            pathname: `/campgrounds/${campgroundId}/comments/edit`,
-            state: {
-              commentObj, campground, adminBool
-            }
-          }}
-          >
-            <Button
-              size="sm"
-              variant="warning"
-              className="mr-2"
-            >
-              Edit Comment
-            </Button>
-          </Link>
-          {/* <Button
-            size="sm"
-            variant="danger"
-            onClick={(e) => deleteComment(e, commentObj, adminBool)}
-          >
-            Delete Comment
-          </Button> */}
-          <DeleteModal
-            itemType="comment"
-            itemObj={commentObj}
-            handleDelete={deleteComment}
-            loggedInAsAdminBool={adminBool}
-          >
-            Delete Comment
-          </DeleteModal>
-        </div>
-      );
-    }
-    return null;
-  }
-
-  // function renderAlert() {
-  //   if (alertMessage) {
-  //     const { text, variant } = alertMessage;
-  //     const btnVariant = `outline-${alertMessage.variant}`;
-  //     return (
-  //       <Alert variant={variant}>
-  //         <span>{text}</span>
-  //         <span className="float-right">
-  //           <Button
-  //             onClick={() => {
-  //               replace(
-  //                 `${campgroundId}`,
-  //                 { campground, alertMessage: null }
-  //               );
-  //               setAlertMessage(null);
-  //             }}
-  //             variant={btnVariant}
-  //             size="sm"
-  //           >
-  //             X
-  //           </Button>
-  //         </span>
-  //       </Alert>
-  //     );
-  //   }
-  //   return null;
-  // }
-
-  const commentsDisplay = comments.map((comment) => (
-    <div className="col-md-12 mb-2" key={comment.comment_id}>
-      <div className="card">
-        <div className="card-body">
-          <p className="card-title">
-            <strong>{comment.email}</strong>
-            <span className="float-right">
-              {moment(comment.created_at).fromNow()}
-            </span>
-          </p>
-          <p className="card-text float-left">{comment.comment}</p>
-          <div className="float-right">
-            {renderCommentButtons(comment, loggedInAsAdmin)}
-          </div>
-        </div>
-      </div>
-    </div>
-  ));
-
   return (
     <div className="container">
       <div className="row my-3">
@@ -354,7 +215,10 @@ function CampgroundPage({ loggedInAs }) {
             </div>
             <hr />
             <div className="row">
-              {commentsDisplay}
+              <Comments
+                campground={campground}
+                loggedInAs={loggedInAs}
+              />
             </div>
           </div>
         </div>

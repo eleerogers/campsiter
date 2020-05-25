@@ -5,10 +5,15 @@
     "browser": true,
     "node": true
   },
+  "plugins": [
+    "react-hooks"
+  ],
   "rules": {
     "no-console": "off",
     "comma-dangle": "off",
     "react/jsx-filename-extension": "off",
-    "react/state-in-constructor": "off"
+    "react/state-in-constructor": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

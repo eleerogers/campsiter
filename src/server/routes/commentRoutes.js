@@ -32,8 +32,11 @@ router.put('/:campgroundId',
 router.delete('/:campgroundId',
   middleware.allowAccess,
   commentController.deleteComment,
+  commentController.getComments,
   (req, res) => {
-    res.status(200).send('Comment successfully deleted');
+    const message = 'Comment successfully deleted';
+    const { comments } = res.locals;
+    res.status(200).json({ comments, message });
   });
 
 

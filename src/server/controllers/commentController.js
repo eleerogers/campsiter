@@ -11,7 +11,7 @@ const getComments = (request, response, next) => {
 
   pool.query('SELECT email, comment, comment_id, user_id, comments.created_at FROM comments JOIN ycusers ON ycusers.id=comments.user_id WHERE comments.campground_id=$1 ORDER BY comment_id ASC', [campgroundId], (error, results) => {
     if (error) {
-      console.error(error);
+      console.error('error here?', error);
       throw error;
     }
     response.locals.comments = results.rows;
