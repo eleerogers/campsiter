@@ -6,6 +6,7 @@ import moment from 'moment';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import MapContainer from './map';
+import DeleteModal from './deleteModal';
 
 function CampgroundPage({ loggedInAs }) {
   // const [alertMessage, setAlertMessage] = useState(null);
@@ -19,7 +20,6 @@ function CampgroundPage({ loggedInAs }) {
       }
     },
     push,
-    replace
   } = useHistory();
   const {
     id: campgroundId,
@@ -96,7 +96,7 @@ function CampgroundPage({ loggedInAs }) {
     }
   }
 
-  function renderEditDeleteBtns() {
+  function renderEditDeleteBtns(adminBool) {
     if (
       (loggedInAs
       && author
@@ -121,21 +121,29 @@ function CampgroundPage({ loggedInAs }) {
               Edit Campground
             </Button>
           </Link>
-          <Button
+          {/* <Button
             size="sm"
             variant="danger"
             onClick={() => deleteCampgroundAndRedirect(loggedInAsAdmin)}
           >
             Delete Campground
-          </Button>
+          </Button> */}
+          <DeleteModal
+            itemType="campground"
+            itemObj={campground}
+            handleDelete={deleteCampgroundAndRedirect}
+            loggedInAsAdminBool={adminBool}
+          >
+            Delete Campground
+          </DeleteModal>
         </>
       );
     }
     return null;
   }
 
-  async function deleteComment(event, commentObj, adminBool) {
-    event.preventDefault();
+  async function deleteComment(commentObj, loggedInAsAdminBool) {
+    // event.preventDefault();
     try {
       const url = `/api/comments/${campgroundId}`;
       const {
@@ -143,7 +151,7 @@ function CampgroundPage({ loggedInAs }) {
         user_id: commentUserId
       } = commentObj;
       const commentData = {
-        adminBool,
+        adminBool: loggedInAsAdminBool,
         commentId,
         userId: commentUserId
       };
@@ -197,13 +205,21 @@ function CampgroundPage({ loggedInAs }) {
               Edit Comment
             </Button>
           </Link>
-          <Button
+          {/* <Button
             size="sm"
             variant="danger"
             onClick={(e) => deleteComment(e, commentObj, adminBool)}
           >
             Delete Comment
-          </Button>
+          </Button> */}
+          <DeleteModal
+            itemType="comment"
+            itemObj={commentObj}
+            handleDelete={deleteComment}
+            loggedInAsAdminBool={adminBool}
+          >
+            Delete Comment
+          </DeleteModal>
         </div>
       );
     }
@@ -300,7 +316,7 @@ function CampgroundPage({ loggedInAs }) {
                   {moment(createdAt).fromNow()}
                 </em>
               </p>
-              {renderEditDeleteBtns()}
+              {renderEditDeleteBtns(loggedInAsAdmin)}
             </div>
           </div>
           <div className="card card-body bg-light">
