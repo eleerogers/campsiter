@@ -313,10 +313,7 @@ function App() {
                 exact
               >
                 <ErrorBoundary>
-                  <Reset
-                    // alertMessage={alertMessage}
-                    // setAlertMessage={setAlertMessage}
-                  />
+                  <Reset />
                 </ErrorBoundary>
               </Route>
             </Switch>

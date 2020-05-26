@@ -39,7 +39,7 @@ function Campgrounds({ loggedInAs }) {
       fetchData();
     }
     return (() => { mounted = false; });
-  }, []);
+  }, [campgrnds.length]);
 
   // useEffect(() => {
   //   setAlertMessage(null);

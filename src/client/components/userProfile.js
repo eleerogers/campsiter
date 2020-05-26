@@ -14,8 +14,9 @@ import Campground from './campground';
 import '../app.css';
 
 function UserProfile({ loggedInAs }) {
-  const [uPAuthor, setUPAuthor] = useState({});
-  const [uPCampgrounds, setUPCampgrounds] = useState([]);
+
+  const [author, setAuthor] = useState({});
+  const [campgrounds, setCampgrounds] = useState([]);
   // const [uPAlertMsg, setUPAlertMsg] = useState(null);
 
   // const {
@@ -27,7 +28,7 @@ function UserProfile({ loggedInAs }) {
   //   replace
   // } = useHistory();
 
-  const { id } = useParams();
+  const { id: userId } = useParams();
 
   // useEffect(() => {
   //   // do I need this if statement?
@@ -37,25 +38,32 @@ function UserProfile({ loggedInAs }) {
   // }, [alertMessage]);
 
   useEffect(() => {
-    axios.get(`/api/campgrounds/user/${id}`)
-      .then(({ data: { campgrounds, user } }) => {
-        setUPCampgrounds(campgrounds);
-        setUPAuthor(user);
-      });
-  }, [id]);
+    axios.get(`/api/campgrounds/user/${userId}`)
+      .then(
+        ({
+          data: {
+            campgrounds: userCampgrounds,
+            user
+          }
+        }) => {
+          setCampgrounds(userCampgrounds);
+          setAuthor(user);
+        }
+      );
+  }, [userId]);
 
   function renderEditButton() {
     if (
       (loggedInAs
-      && uPAuthor
-      && loggedInAs.id === uPAuthor.id)
+      // && author
+      && loggedInAs.id === userId)
       || loggedInAs.admin
     ) {
       return (
         <>
           <Link to={{
             pathname: '/editUser',
-            state: { author: uPAuthor }
+            state: { author }
           }}
           >
             <Button size="sm" variant="warning" className="mr-2">Edit User</Button>
@@ -96,13 +104,18 @@ function UserProfile({ loggedInAs }) {
     last_name: lastName,
     image,
     email
-  } = uPAuthor;
+  } = author;
   const mailTo = `mailto:${email}`;
-  const campgroundComponents = uPCampgrounds.map((campground) => (
-    <Col key={campground.id} md={3} sm={6}>
-      <Campground campground={campground} />
-    </Col>
-  ));
+  const campgroundComponents = campgrounds.map((campground) => {
+    const campgroundPlusAuthorEmail = {
+      ...campground, email: author.email
+    };
+    return (
+      <Col key={campground.id} md={3} sm={6}>
+        <Campground campground={campgroundPlusAuthorEmail} />
+      </Col>
+    );
+  });
 
   return (
     <div className="row">

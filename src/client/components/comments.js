@@ -16,7 +16,6 @@ function Comments({ campground, loggedInAs }) {
   } = loggedInAs;
 
   useEffect(() => {
-    console.log(campgroundId);
     axios.get(`/api/comments/${campgroundId}`)
       .then(({ data: { comments: incomingComments } }) => {
         setComments(incomingComments);
