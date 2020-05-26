@@ -13,9 +13,6 @@ function Login({
 }) {
   const { emailForm, passwordForm } = loginFormValues;
   const {
-    // location: {
-    //   state
-    // },
     push,
     goBack,
     length
@@ -26,26 +23,6 @@ function Login({
       push('/campgrounds');
     }
   }, [loggedInAs, push]);
-
-  // useEffect(() => {
-  //   setAlertMessage(null);
-  //   if (state) {
-  //     const { alertMessage: newAlertMsg } = state;
-  //     setAlertMessage(newAlertMsg);
-  //   }
-  // }, [state]);
-
-  // function renderAlert() {
-  //   if (alertMessage) {
-  //     const { text, variant } = alertMessage;
-  //     return (
-  //       <Alert variant={variant}>
-  //         {text}
-  //       </Alert>
-  //     );
-  //   }
-  //   return null;
-  // }
 
   function goBackOrToCampgrounds() {
     if (length > 2) {
@@ -61,7 +38,6 @@ function Login({
 
   return (
     <div className="margin-top-50">
-      {/* {renderAlert()} */}
       <Container>
         <h1 className="text-center">Login to your account</h1>
         <br />
@@ -118,11 +94,6 @@ function Login({
 }
 
 Login.propTypes = {
-  // alertMessage: PropTypes.shape({
-  //   text: PropTypes.string,
-  //   variant: PropTypes.string
-  // }),
-  // setAlertMessage: PropTypes.func.isRequired,
   loginFormValues: PropTypes.shape({
     emailForm: PropTypes.string,
     passwordForm: PropTypes.string,
@@ -139,7 +110,6 @@ Login.propTypes = {
 };
 
 Login.defaultProps = {
-  // alertMessage: null,
   loggedInAs: null
 };
 

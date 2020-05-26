@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
@@ -10,7 +10,6 @@ import DeleteModal from './deleteModal';
 import Comments from './comments';
 
 function CampgroundPage({ loggedInAs }) {
-  // const [author, setAuthor] = useState({});
   const {
     location: {
       state: {
@@ -35,14 +34,6 @@ function CampgroundPage({ loggedInAs }) {
     admin: loggedInAsAdmin,
     email: loggedInAsEmail
   } = loggedInAs;
-
-  // useEffect(() => {
-  //   axios.get(`/api/users/${userId}`)
-  //     .then(({ data: { user } }) => {
-  //       setAuthor(user);
-  //     })
-  //     .catch((err) => { console.error(err); });
-  // }, [userId]);
 
   async function deleteCampgroundAndRedirect(adminBool) {
     try {
@@ -71,7 +62,6 @@ function CampgroundPage({ loggedInAs }) {
   function renderEditDeleteBtns(adminBool) {
     if (
       (loggedInAs
-      // && author
       && loggedInAsId === userId)
       || loggedInAsAdmin
     ) {

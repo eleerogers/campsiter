@@ -11,14 +11,7 @@ import Campground from './campground';
 
 function Campgrounds({ loggedInAs }) {
   const [campgrnds, setCampgrnds] = useState([]);
-  // const [alertMsg, setAlertMsg] = useState(null);
   const [search, setSearch] = useState('');
-  // const {
-  //   // location: {
-  //   //   state
-  //   // },
-  //   replace
-  // } = useHistory();
 
   useEffect(() => {
     let mounted = true;
@@ -32,7 +25,6 @@ function Campgrounds({ loggedInAs }) {
         console.error(err);
         const { response: { status, data } } = err;
         toast.error(`${data} (${status})`);
-        // setAlertMessage({ text: `${data} (${status})`, variant: 'danger' });
       }
     }
     if (campgrnds.length === 0) {
@@ -40,41 +32,6 @@ function Campgrounds({ loggedInAs }) {
     }
     return (() => { mounted = false; });
   }, [campgrnds.length]);
-
-  // useEffect(() => {
-  //   setAlertMessage(null);
-  //   if (state) {
-  //     const { alertMessage: newAlertMessage } = state;
-  //     setAlertMessage(newAlertMessage);
-  //   }
-  // }, [state]);
-
-  // const renderAlert = () => {
-  //   const space = '    ';
-
-  //   if (alertMessage) {
-  //     const { text, variant } = alertMessage;
-  //     return (
-  //       <Alert variant={variant}>
-  //         <Alert>
-  //           {text}
-  //           {space}
-  //           <Button
-  //             onClick={() => {
-  //               replace('/campgrounds', null);
-  //               setAlertMessage(null);
-  //             }}
-  //             variant={`outline-${variant}`}
-  //             size="sm"
-  //           >
-  //             X
-  //           </Button>
-  //         </Alert>
-  //       </Alert>
-  //     );
-  //   }
-  //   return null;
-  // };
 
   const searchLC = search.toLowerCase();
   const campgroundComponents = campgrnds.map((campground) => {
@@ -93,7 +50,6 @@ function Campgrounds({ loggedInAs }) {
     <div>
       <Container>
         <Container>
-          {/* {renderAlert()} */}
           <Jumbotron>
             <h1>Welcome to CampSiter!</h1>
             <p>Post and review campsites from around the globe</p>
@@ -140,19 +96,7 @@ Campgrounds.propTypes = {
     email: PropTypes.string,
     created_at: PropTypes.string,
     admin: PropTypes.bool,
-  }).isRequired,
-  // alertMessage: PropTypes.shape({
-  //   text: PropTypes.string,
-  //   variant: PropTypes.string
-  // }),
-  // setAlertMessage: PropTypes.func.isRequired,
-};
-
-Campgrounds.defaultProps = {
-  alertMessage: {
-    text: '',
-    variant: ''
-  }
+  }).isRequired
 };
 
 export default Campgrounds;

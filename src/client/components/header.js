@@ -109,7 +109,6 @@ function Header({ loggedInAs, logout, loginFormReset }) {
   );
 }
 
-
 Header.propTypes = {
   loggedInAs: PropTypes.shape({
     id: PropTypes.string,
