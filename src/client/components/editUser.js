@@ -37,7 +37,7 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
   const initBtnMessage = 'Change Profile Image';
   const {
     imageFile,
-    message: btnMessage,
+    btnMessage,
     handleFileChange
   } = useGetFileName(initBtnMessage);
 
@@ -45,7 +45,7 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
     if (loggedInAsId.length === 0 || loggedInAsId !== id) {
       push('/campgrounds');
     }
-  }, [loggedInAsId]);
+  }, [loggedInAsId, push, id]);
 
   // function renderAlert() {
   //   if (errorMessage) {

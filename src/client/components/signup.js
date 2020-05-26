@@ -37,13 +37,13 @@ function Signup({ loggedInAs }) {
     adminCode,
   } = values;
   const initBtnMessage = 'Select avatar image (optional)';
-  const { imageFile, message: btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
+  const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
 
   useEffect(() => {
     if (loggedInAs.id.length > 0) {
       push('/campgrounds');
     }
-  }, [loggedInAs]);
+  }, [loggedInAs, push]);
 
   // function renderAlert() {
   //   if (errorMessage) {

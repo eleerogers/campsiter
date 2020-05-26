@@ -25,7 +25,7 @@ function Login({
     if (loggedInAs.id.length > 0) {
       push('/campgrounds');
     }
-  }, [loggedInAs]);
+  }, [loggedInAs, push]);
 
   // useEffect(() => {
   //   setAlertMessage(null);

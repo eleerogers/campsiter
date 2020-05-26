@@ -17,7 +17,7 @@ function NewCampground({ user: { id: loggedInAsId } }) {
   // const [errorMessage, setErrorMessage] = useState(null);
   const { push } = useHistory();
   const initBtnMessage = 'Select Campground Image (Required)';
-  const { imageFile, message, handleFileChange } = useGetFileName(initBtnMessage);
+  const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
   const initData = {
     name: '',
     description: '',
@@ -157,10 +157,10 @@ function NewCampground({ user: { id: loggedInAsId } }) {
                   id="file-upload"
                   type="file"
                   name="image"
-                  data-multiple-caption={message}
+                  data-multiple-caption={btnMessage}
                   onChange={handleFileChange}
                 />
-                <span>{message}</span>
+                <span>{btnMessage}</span>
               </label>
             </div>
             <br />

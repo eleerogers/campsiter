@@ -2,23 +2,23 @@ import { useState } from 'react';
 
 function useGetFileName(initBtnMessage) {
   const [imageFile, setImageFile] = useState(null);
-  const [message, setMessage] = useState(initBtnMessage);
+  const [btnMessage, setBtnMessage] = useState(initBtnMessage);
 
   function handleFileChange(e) {
     const { files, value } = e.target;
-    let newMessage;
+    let newBtnMessage;
     if (files && files.length > 1) {
-      newMessage = `${files.length} files selected`;
+      newBtnMessage = `${files.length} files selected`;
     } else {
-      newMessage = value.split('\\').pop();
+      newBtnMessage = value.split('\\').pop();
     }
-    if (newMessage) {
-      setMessage(newMessage);
+    if (newBtnMessage) {
+      setBtnMessage(newBtnMessage);
     }
     setImageFile(e.target.files[0]);
   }
 
-  return { imageFile, message, handleFileChange };
+  return { imageFile, btnMessage, handleFileChange };
 }
 
 export default useGetFileName;

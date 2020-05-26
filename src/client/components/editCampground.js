@@ -28,7 +28,7 @@ function EditCampground() {
     push
   } = useHistory();
   const initBtnMessage = 'Change Campground Image';
-  const { imageFile, message, handleFileChange } = useGetFileName(initBtnMessage);
+  const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
   const { values, handleChange } = useForm(campground);
   const {
     name,
@@ -46,7 +46,7 @@ function EditCampground() {
     if (loggedInAsId === '') {
       push('/campgrounds');
     }
-  }, [loggedInAsId]);
+  }, [loggedInAsId, push]);
 
   // function renderAlert() {
   //   if (errorMessage) {
@@ -184,10 +184,10 @@ function EditCampground() {
                   id="file-upload"
                   type="file"
                   name="image"
-                  data-multiple-caption={message}
+                  data-multiple-caption={btnMessage}
                   onChange={handleFileChange}
                 />
-                <span>{message}</span>
+                <span>{btnMessage}</span>
               </label>
             </div>
             <br />
