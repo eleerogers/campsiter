@@ -89,7 +89,7 @@ function App() {
           toast.error(`${message} (${status})`);
         });
     }
-  }, []);
+  }, [localStorage.userId]);
 
   async function submitLogin(event, goBack) {
     event.preventDefault();

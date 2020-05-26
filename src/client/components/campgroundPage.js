@@ -62,7 +62,7 @@ function CampgroundPage({ loggedInAs }) {
   function renderEditDeleteBtns(adminBool) {
     if (
       (loggedInAs
-      && loggedInAsId === userId)
+      && loggedInAsId === String(userId))
       || loggedInAsAdmin
     ) {
       return (
