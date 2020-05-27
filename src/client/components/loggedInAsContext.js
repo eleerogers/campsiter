@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
 const LoggedInAsContext = React.createContext();
@@ -19,8 +21,66 @@ function LoggedInAsContextProvider(props) {
   const [loggedInAs, setLoggedInAs] = useState(loggedInAsInit);
   const { children } = props;
 
-  function logoutUser() {
-    setLoggedInAs(loggedInAsInit);
+  useEffect(() => {
+    if (localStorage.userId) {
+      axios.get(`/api/users/${localStorage.userId}`)
+        .then(({
+          data: {
+            user: {
+              admin,
+              created_at: createdAt,
+              email,
+              first_name: firstName,
+              last_name: lastName,
+              id,
+              image,
+              image_id: imageId,
+              password,
+              username
+            }
+          }
+        }) => {
+          const updatedLoggedInAs = {
+            admin,
+            createdAt,
+            email,
+            firstName,
+            lastName,
+            id,
+            image,
+            imageId,
+            password,
+            username
+          };
+          setLoggedInAs(updatedLoggedInAs);
+        })
+        .catch((err) => {
+          const { response: { status, data: message } } = err;
+          toast.error(`${message} (${status})`);
+        });
+    }
+  }, [localStorage.userId]);
+
+  async function logoutUser(path, loginFormReset, push) {
+    try {
+      const pathArr = path.split('/');
+      const pathLast = pathArr.pop();
+      await axios.get('/api/users/logout');
+      localStorage.removeItem('userId');
+      loginFormReset();
+      setLoggedInAs(loggedInAsInit);
+      if (
+        pathLast === 'new'
+        || pathLast === 'edit'
+        || pathLast === 'newCampground'
+        || pathLast === 'editCampground'
+      ) {
+        push('/campgrounds');
+      }
+    } catch (err) {
+      const { response: { status, data: message } } = err;
+      toast.error(`${message} (${status})`);
+    }
   }
 
   return (

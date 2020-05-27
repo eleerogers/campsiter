@@ -40,6 +40,10 @@ function Header({ loginFormReset }) {
     setCurrPath(location.pathname);
   });
 
+  function logout() {
+    logoutUser(pathname, loginFormReset, push);
+  }
+
   const author = {
     id,
     username,
@@ -72,7 +76,7 @@ function Header({ loginFormReset }) {
         </Link>
         {' '}
         {admin && '(admin)'}
-        <Button size="sm" className="float-right ml-3" onClick={() => logoutUser(currPath, push)}>Logout</Button>
+        <Button size="sm" className="float-right ml-3" onClick={() => logout(currPath)}>Logout</Button>
       </div>
     )
     : (
