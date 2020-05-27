@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
-import {
-  useHistory
-} from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import '../app.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { LoggedInAsContext } from './loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 
 
-function Signup({ loggedInAs }) {
+function Signup() {
+  const {
+    loggedInAs: {
+      id: loggedInAsId
+    }
+  } = useContext(LoggedInAsContext);
   const {
     push,
     goBack
@@ -39,10 +42,10 @@ function Signup({ loggedInAs }) {
   const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
 
   useEffect(() => {
-    if (loggedInAs.id.length > 0) {
+    if (loggedInAsId.length > 0) {
       push('/campgrounds');
     }
-  }, [loggedInAs, push]);
+  }, [loggedInAsId, push]);
 
   async function submitForm(event) {
     event.preventDefault();
@@ -201,11 +204,5 @@ function Signup({ loggedInAs }) {
     </div>
   );
 }
-
-Signup.propTypes = {
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string.isRequired
-  }).isRequired
-};
 
 export default Signup;

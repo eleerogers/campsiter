@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
-import {
-  Link,
-  useHistory
-} from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../app.css';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { LoggedInAsContext } from './loggedInAsContext';
 
 
 function Login({
-  loginFormValues, onFormChange, submitLogin, loggedInAs
+  loginFormValues, onFormChange
 }) {
   const { emailForm, passwordForm } = loginFormValues;
   const {
@@ -17,6 +17,7 @@ function Login({
     goBack,
     length
   } = useHistory();
+  const { loggedInAs, setLoggedInAs } = useContext(LoggedInAsContext);
 
   useEffect(() => {
     if (loggedInAs.id.length > 0) {
@@ -32,8 +33,25 @@ function Login({
     }
   }
 
-  function loginHandler(e) {
-    submitLogin(e, goBack);
+  // function submitLogin(e) {
+  //   submitLogin(e, goBack);
+  // }
+
+  async function submitLogin(event) {
+    event.preventDefault();
+    try {
+      const loginInfo = {
+        email: emailForm,
+        password: passwordForm
+      };
+      const { data } = await axios.post('/api/users/login/', loginInfo);
+      localStorage.userId = data.id;
+      setLoggedInAs(data);
+      goBack();
+    } catch (err) {
+      const { response: { status, data: message } } = err;
+      toast.error(`${message} (${status})`);
+    }
   }
 
   return (
@@ -43,7 +61,7 @@ function Login({
         <br />
         <form
           className="entryBox centered"
-          onSubmit={loginHandler}
+          onSubmit={submitLogin}
         >
           <div className="form-group">
             <input
@@ -98,19 +116,7 @@ Login.propTypes = {
     emailForm: PropTypes.string,
     passwordForm: PropTypes.string,
   }).isRequired,
-  onFormChange: PropTypes.func.isRequired,
-  submitLogin: PropTypes.func.isRequired,
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string,
-    password: PropTypes.string,
-    email: PropTypes.string,
-    created_at: PropTypes.string,
-    admin: PropTypes.bool,
-  })
-};
-
-Login.defaultProps = {
-  loggedInAs: null
+  onFormChange: PropTypes.func.isRequired
 };
 
 export default Login;

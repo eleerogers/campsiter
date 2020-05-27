@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Link,
-  useHistory
-} from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import PropTypes from 'prop-types';
+import { LoggedInAsContext } from './loggedInAsContext';
 import '../app.css';
 
-function Forgot({ loggedInAs: { id: loggedInAsId } }) {
+function Forgot() {
   const [email, setEmail] = useState('');
   const { push } = useHistory();
+  const {
+    loggedInAs: {
+      id: loggedInAsId
+    }
+  } = useContext(LoggedInAsContext);
 
   useEffect(() => {
     if (loggedInAsId.length > 0) {
@@ -67,22 +69,17 @@ function Forgot({ loggedInAs: { id: loggedInAsId } }) {
             </Button>
           </div>
           <Link to="/login">
-            <Button size="sm" variant="link">Go Back</Button>
+            <Button
+              size="sm"
+              variant="link"
+            >
+              Go Back
+            </Button>
           </Link>
         </form>
       </Container>
     </div>
   );
 }
-
-Forgot.propTypes = {
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string,
-    password: PropTypes.string,
-    email: PropTypes.string,
-    created_at: PropTypes.string,
-    admin: PropTypes.bool,
-  }).isRequired
-};
 
 export default Forgot;

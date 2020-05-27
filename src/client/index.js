@@ -1,5 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { LoggedInAsContextProvider } from './components/loggedInAsContext';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <LoggedInAsContextProvider>
+    <App />
+  </LoggedInAsContextProvider>,
+  document.getElementById('root')
+);

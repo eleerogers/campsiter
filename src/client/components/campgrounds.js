@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Button, Jumbotron, Container, Row, Col
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { LoggedInAsContext } from './loggedInAsContext';
 import Campground from './campground';
 
 
-function Campgrounds({ loggedInAs }) {
+function Campgrounds() {
   const [campgrnds, setCampgrnds] = useState([]);
   const [search, setSearch] = useState('');
+  const {
+    loggedInAs: {
+      email: loggedInAsEmail
+    }
+  } = useContext(LoggedInAsContext);
 
   useEffect(() => {
     let mounted = true;
@@ -53,7 +58,7 @@ function Campgrounds({ loggedInAs }) {
           <Jumbotron>
             <h1>Welcome to CampSiter!</h1>
             <p>Post and review campsites from around the globe</p>
-            {loggedInAs.email.length > 0
+            {loggedInAsEmail.length > 0
               ? (
                 <Link to="/newCampground">
                   <Button variant="primary" size="lg">Add New Campground</Button>
@@ -88,15 +93,5 @@ function Campgrounds({ loggedInAs }) {
     </div>
   );
 }
-
-Campgrounds.propTypes = {
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string,
-    password: PropTypes.string,
-    email: PropTypes.string,
-    created_at: PropTypes.string,
-    admin: PropTypes.bool,
-  }).isRequired
-};
 
 export default Campgrounds;

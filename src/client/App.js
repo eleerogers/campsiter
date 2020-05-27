@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import './app.css';
 import {
@@ -23,23 +23,26 @@ import Forgot from './components/forgot';
 import Reset from './components/resetPassword';
 import ErrorBoundary from './components/errorBoundary';
 import useForm from './hooks/useForm';
+import { LoggedInAsContext } from './components/loggedInAsContext';
 
 toast.configure();
 
 function App() {
-  const loggedInAsInit = {
-    id: '',
-    password: '',
-    email: '',
-    created_at: '',
-    admin: false,
-    image: '',
-    imageId: '',
-    firstName: '',
-    lastName: '',
-    username: ''
-  };
-  const [loggedInAs, setLoggedInAs] = useState(loggedInAsInit);
+  // const loggedInAsInit = {
+  //   id: '',
+  //   password: '',
+  //   email: '',
+  //   created_at: '',
+  //   admin: false,
+  //   image: '',
+  //   imageId: '',
+  //   firstName: '',
+  //   lastName: '',
+  //   username: ''
+  // };
+  // const [loggedInAs, setLoggedInAs] = useState(loggedInAsInit);
+  const { loggedInAs, setLoggedInAs, logoutUser } = useContext(LoggedInAsContext);
+
   const loginInit = {
     emailForm: '',
     passwordForm: '',
@@ -49,7 +52,6 @@ function App() {
     handleChange: loginFormHandleChange,
     reset: loginFormReset
   } = useForm(loginInit);
-  const { emailForm, passwordForm } = loginFormValues;
 
   useEffect(() => {
     if (localStorage.userId) {
@@ -89,24 +91,7 @@ function App() {
           toast.error(`${message} (${status})`);
         });
     }
-  }, [localStorage.userId]);
-
-  async function submitLogin(event, goBack) {
-    event.preventDefault();
-    try {
-      const loginInfo = {
-        email: emailForm,
-        password: passwordForm
-      };
-      const { data } = await axios.post('/api/users/login/', loginInfo);
-      localStorage.userId = data.id;
-      setLoggedInAs(data);
-      goBack();
-    } catch (err) {
-      const { response: { status, data: message } } = err;
-      toast.error(`${message} (${status})`);
-    }
-  }
+  }, [localStorage.userId, setLoggedInAs]);
 
   async function logout(path, push) {
     try {
@@ -115,7 +100,7 @@ function App() {
       await axios.get('/api/users/logout');
       localStorage.removeItem('userId');
       loginFormReset();
-      setLoggedInAs(loggedInAsInit);
+      logoutUser();
       if (
         pathLast === 'new'
         || pathLast === 'edit'
@@ -212,7 +197,7 @@ function App() {
                 <ErrorBoundary>
                   <Login
                     onFormChange={loginFormHandleChange}
-                    submitLogin={submitLogin}
+                    // submitLogin={submitLogin}
                     loginFormValues={loginFormValues}
                     loggedInAs={loggedInAs}
                   />

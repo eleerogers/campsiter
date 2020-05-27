@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react';
-import {
-  useHistory,
-  Link
-} from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import '../app.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { LoggedInAsContext } from './loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 
 
-function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
+function EditUser() {
+  const {
+    setLoggedInAs,
+    loggedInAs: {
+      id: loggedInAsId
+    }
+  } = useContext(LoggedInAsContext);
   const {
     push,
     location: {
@@ -80,7 +83,6 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
         }
       } = await axios.put('/api/users', fd, config);
       if (status === 201) {
-        console.log('status 201!');
         setLoggedInAs({
           admin: updatedAdmin,
           id,
@@ -200,12 +202,5 @@ function EditUser({ setLoggedInAs, loggedInAs: { id: loggedInAsId } }) {
     </div>
   );
 }
-
-EditUser.propTypes = {
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string.isRequired
-  }).isRequired,
-  setLoggedInAs: PropTypes.func.isRequired
-};
 
 export default EditUser;

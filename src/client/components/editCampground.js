@@ -1,24 +1,24 @@
-import React, { useEffect, useRef } from 'react';
-import {
-  Link,
-  useHistory
-} from 'react-router-dom';
+import React, { useEffect, useRef, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { LoggedInAsContext } from './loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import '../app.css';
 
 function EditCampground() {
   const {
+    loggedInAs: {
+      admin,
+      id: loggedInAsId
+    }
+  } = useContext(LoggedInAsContext);
+  const {
     location: {
       state: {
-        campground,
-        loggedInAs: {
-          admin,
-          id: loggedInAsId
-        }
+        campground
       }
     },
     push

@@ -1,12 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Nav, Navbar, Container, Button, Col
 } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { LoggedInAsContext } from './loggedInAsContext';
 
 
-function Header({ loggedInAs, logout, loginFormReset }) {
+function Header({ loginFormReset }) {
+  const {
+    logoutUser,
+    loggedInAs: {
+      id,
+      username,
+      firstName,
+      lastName,
+      email,
+      image,
+      imageId,
+      admin,
+      message
+    }
+  } = useContext(LoggedInAsContext);
   const {
     location: {
       pathname
@@ -25,17 +40,6 @@ function Header({ loggedInAs, logout, loginFormReset }) {
     setCurrPath(location.pathname);
   });
 
-  const {
-    id,
-    username,
-    firstName,
-    lastName,
-    email,
-    image,
-    imageId,
-    admin,
-    message
-  } = loggedInAs;
   const author = {
     id,
     username,
@@ -52,23 +56,23 @@ function Header({ loggedInAs, logout, loginFormReset }) {
     return null;
   }
 
-  const showLoginOrLoggedInAs = loggedInAs.email.length > 0
+  const showLoginOrLoggedInAs = email.length > 0
     ? (
       <div>
         Logged in as
         {' '}
         <Link to={{
-          pathname: `/ycusers/${loggedInAs.id}`,
+          pathname: `/ycusers/${id}`,
           state: {
             author
           }
         }}
         >
-          {loggedInAs.email}
+          {email}
         </Link>
         {' '}
-        {loggedInAs.admin && '(admin)'}
-        <Button size="sm" className="float-right ml-3" onClick={() => logout(currPath, push)}>Logout</Button>
+        {admin && '(admin)'}
+        <Button size="sm" className="float-right ml-3" onClick={() => logoutUser(currPath, push)}>Logout</Button>
       </div>
     )
     : (
@@ -110,20 +114,6 @@ function Header({ loggedInAs, logout, loginFormReset }) {
 }
 
 Header.propTypes = {
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string,
-    password: PropTypes.string,
-    email: PropTypes.string,
-    created_at: PropTypes.string,
-    username: PropTypes.string,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    image: PropTypes.string,
-    imageId: PropTypes.string,
-    message: PropTypes.string,
-    admin: PropTypes.bool,
-  }).isRequired,
-  logout: PropTypes.func.isRequired,
   loginFormReset: PropTypes.func.isRequired
 };
 

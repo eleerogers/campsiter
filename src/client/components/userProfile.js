@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Link,
-  useParams
-} from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import {
   Col, Container, Row, Button
 } from 'react-bootstrap';
 import axios from 'axios';
-import PropTypes from 'prop-types';
+import { LoggedInAsContext } from './loggedInAsContext';
 import Campground from './campground';
 import '../app.css';
 
-function UserProfile({ loggedInAs }) {
+function UserProfile() {
   const [author, setAuthor] = useState({});
   const [campgrounds, setCampgrounds] = useState([]);
+  const {
+    loggedInAs: {
+      id: loggedInAsId,
+      admin: loggedInAsAdmin
+    }
+  } = useContext(LoggedInAsContext);
 
   const { id: userId } = useParams();
 
@@ -34,9 +37,8 @@ function UserProfile({ loggedInAs }) {
 
   function renderEditButton() {
     if (
-      (loggedInAs
-      && loggedInAs.id === userId)
-      || loggedInAs.admin
+      loggedInAsId === userId
+      || loggedInAsAdmin
     ) {
       return (
         <>
@@ -45,7 +47,13 @@ function UserProfile({ loggedInAs }) {
             state: { author }
           }}
           >
-            <Button size="sm" variant="warning" className="mr-2">Edit User</Button>
+            <Button
+              size="sm"
+              variant="warning"
+              className="mr-2"
+            >
+              Edit User
+            </Button>
           </Link>
         </>
       );
@@ -105,15 +113,5 @@ function UserProfile({ loggedInAs }) {
     </div>
   );
 }
-
-UserProfile.propTypes = {
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string,
-    password: PropTypes.string,
-    email: PropTypes.string,
-    created_at: PropTypes.string,
-    admin: PropTypes.bool,
-  }).isRequired,
-};
 
 export default UserProfile;

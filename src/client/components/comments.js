@@ -5,15 +5,11 @@ import PropTypes from 'prop-types';
 import Comment from './comment';
 
 
-function Comments({ campground, loggedInAs }) {
+function Comments({ campground }) {
   const [comments, setComments] = useState([]);
-
   const {
     id: campgroundId,
   } = campground;
-  const {
-    admin: loggedInAsAdmin
-  } = loggedInAs;
 
   useEffect(() => {
     axios.get(`/api/comments/${campgroundId}`)
@@ -23,7 +19,7 @@ function Comments({ campground, loggedInAs }) {
       .catch((err) => { console.error(err); });
   }, [campgroundId]);
 
-  async function deleteComment(commentObj) {
+  async function deleteComment(commentObj, loggedInAsAdmin) {
     try {
       const url = `/api/comments/${campgroundId}`;
       const {
@@ -31,7 +27,7 @@ function Comments({ campground, loggedInAs }) {
         user_id: commentUserId
       } = commentObj;
       const commentData = {
-        adminBool: loggedInAsAdmin,
+        loggedInAsAdmin,
         commentId,
         userId: commentUserId
       };
@@ -54,7 +50,6 @@ function Comments({ campground, loggedInAs }) {
       {comments.map((comment) => (
         <Comment
           comment={comment}
-          loggedInAs={loggedInAs}
           deleteComment={deleteComment}
           campground={campground}
           key={comment.comment_id}
@@ -67,17 +62,7 @@ function Comments({ campground, loggedInAs }) {
 Comments.propTypes = {
   campground: PropTypes.shape({
     id: PropTypes.number.isRequired
-  }).isRequired,
-  loggedInAs: PropTypes.shape({
-    admin: PropTypes.bool
-  })
-};
-
-Comments.defaultProps = {
-  loggedInAs: {
-    id: null,
-    admin: false
-  }
+  }).isRequired
 };
 
 export default Comments;

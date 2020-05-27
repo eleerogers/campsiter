@@ -1,26 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { LoggedInAsContext } from './loggedInAsContext';
 import DeleteModal from './deleteModal';
 
 function Comment({
-  comment, loggedInAs, deleteComment, campground
+  comment, deleteComment, campground
 }) {
+  const {
+    loggedInAs: {
+      id: loggedInAsId,
+      admin: loggedInAsAdmin
+    }
+  } = useContext(LoggedInAsContext);
   const {
     id: campgroundId,
   } = campground;
-  const {
-    id: loggedInAsId,
-    admin: loggedInAsAdmin
-  } = loggedInAs;
-  function renderCommentButtons(commentObj, adminBool) {
+
+  function renderCommentButtons(commentObj) {
     const loggedInAsIdInteger = parseInt(loggedInAsId, 10);
     const commentUserId = parseInt(commentObj.user_id, 10);
     if (
-      (loggedInAs
-      && loggedInAsIdInteger === commentUserId)
+      loggedInAsIdInteger === commentUserId
       || loggedInAsAdmin
     ) {
       return (
@@ -28,7 +31,9 @@ function Comment({
           <Link to={{
             pathname: `/campgrounds/${campgroundId}/comments/edit`,
             state: {
-              commentObj, campground, adminBool
+              commentObj,
+              campground,
+              loggedInAsAdmin
             }
           }}
           >
@@ -44,7 +49,7 @@ function Comment({
             itemType="comment"
             itemObj={commentObj}
             handleDelete={deleteComment}
-            loggedInAsAdminBool={adminBool}
+            loggedInAsAdminBool={loggedInAsAdmin}
           >
             Delete Comment
           </DeleteModal>
@@ -66,7 +71,7 @@ function Comment({
           </p>
           <p className="card-text float-left">{comment.comment}</p>
           <div className="float-right">
-            {renderCommentButtons(comment, loggedInAsAdmin)}
+            {renderCommentButtons(comment)}
           </div>
         </div>
       </div>
@@ -78,10 +83,6 @@ Comment.propTypes = {
   campground: PropTypes.shape({
     id: PropTypes.number.isRequired
   }).isRequired,
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string,
-    admin: PropTypes.bool
-  }),
   comment: PropTypes.shape({
     comment_id: PropTypes.number.isRequired,
     comment: PropTypes.string.isRequired,
@@ -89,13 +90,6 @@ Comment.propTypes = {
     created_at: PropTypes.string.isRequired
   }).isRequired,
   deleteComment: PropTypes.func.isRequired
-};
-
-Comment.defaultProps = {
-  loggedInAs: {
-    id: null,
-    admin: false
-  }
 };
 
 export default Comment;

@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
-  Link,
-  useHistory,
-  useParams
+  Link, useHistory, useParams
 } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Button, Container } from 'react-bootstrap';
+import { LoggedInAsContext } from './loggedInAsContext';
 import useForm from '../hooks/useForm';
 import '../app.css';
 
-function NewComment({ user }) {
-  const initData = { comment: '', userId: user.id };
+function NewComment() {
+  const {
+    loggedInAs: {
+      id: userId
+    }
+  } = useContext(LoggedInAsContext);
+  const initData = { comment: '', userId };
   const { values, handleChange } = useForm(initData);
   const {
     location: {
@@ -80,18 +83,17 @@ function NewComment({ user }) {
             }
           }}
           >
-            <Button size="sm" variant="link">Go Back</Button>
+            <Button
+              size="sm"
+              variant="link"
+            >
+              Go Back
+            </Button>
           </Link>
         </form>
       </Container>
     </div>
   );
 }
-
-NewComment.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default NewComment;

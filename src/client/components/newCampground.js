@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react';
-import {
-  Link,
-  useHistory
-} from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import { LoggedInAsContext } from './loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import '../app.css';
 
 
-function NewCampground({ user: { id: loggedInAsId } }) {
+function NewCampground() {
   const { push } = useHistory();
+  const {
+    loggedInAs: {
+      id: loggedInAsId
+    }
+  } = useContext(LoggedInAsContext);
   const initBtnMessage = 'Select Campground Image (Required)';
   const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
   const initData = {
@@ -148,7 +150,12 @@ function NewCampground({ user: { id: loggedInAsId } }) {
               </Button>
             </div>
             <Link to="/campgrounds">
-              <Button size="sm" variant="link">Go Back</Button>
+              <Button
+                size="sm"
+                variant="link"
+              >
+                Go Back
+              </Button>
             </Link>
           </div>
         </form>
@@ -156,11 +163,5 @@ function NewCampground({ user: { id: loggedInAsId } }) {
     </div>
   );
 }
-
-NewCampground.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default NewCampground;

@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { LoggedInAsContext } from './loggedInAsContext';
 import MapContainer from './map';
 import DeleteModal from './deleteModal';
 import Comments from './comments';
 
-function CampgroundPage({ loggedInAs }) {
+function CampgroundPage() {
+  const {
+    loggedInAs: {
+      id: loggedInAsId,
+      admin: loggedInAsAdmin,
+      email: loggedInAsEmail
+    }
+  } = useContext(LoggedInAsContext);
   const {
     location: {
       state: {
@@ -29,11 +36,6 @@ function CampgroundPage({ loggedInAs }) {
     created_at: createdAt,
     email: authorEmail
   } = campground;
-  const {
-    id: loggedInAsId,
-    admin: loggedInAsAdmin,
-    email: loggedInAsEmail
-  } = loggedInAs;
 
   async function deleteCampgroundAndRedirect(adminBool) {
     try {
@@ -61,8 +63,7 @@ function CampgroundPage({ loggedInAs }) {
 
   function renderEditDeleteBtns(adminBool) {
     if (
-      (loggedInAs
-      && loggedInAsId === String(userId))
+      loggedInAsId === String(userId)
       || loggedInAsAdmin
     ) {
       return (
@@ -70,8 +71,7 @@ function CampgroundPage({ loggedInAs }) {
           <Link to={{
             pathname: '/editCampground',
             state: {
-              campground,
-              loggedInAs
+              campground
             }
           }}
           >
@@ -170,7 +170,6 @@ function CampgroundPage({ loggedInAs }) {
             <div className="row">
               <Comments
                 campground={campground}
-                loggedInAs={loggedInAs}
               />
             </div>
           </div>
@@ -179,16 +178,5 @@ function CampgroundPage({ loggedInAs }) {
     </div>
   );
 }
-
-
-CampgroundPage.propTypes = {
-  loggedInAs: PropTypes.shape({
-    id: PropTypes.string,
-    password: PropTypes.string,
-    email: PropTypes.string,
-    created_at: PropTypes.string,
-    admin: PropTypes.bool,
-  }).isRequired,
-};
 
 export default CampgroundPage;
