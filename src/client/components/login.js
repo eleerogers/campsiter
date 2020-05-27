@@ -1,21 +1,32 @@
 import React, { useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import '../app.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './loggedInAsContext';
+import useForm from '../hooks/useForm';
 
 
-function Login({
-  loginFormValues, onFormChange
-}) {
-  const { emailForm, passwordForm } = loginFormValues;
+function Login() {
+  const loginInit = {
+    emailForm: '',
+    passwordForm: '',
+  };
+  const {
+    handleChange: loginFormHandleChange,
+    reset: loginFormReset,
+    values: {
+      emailForm,
+      passwordForm
+    }
+  } = useForm(loginInit);
+
   const {
     push,
     goBack,
-    length
+    length,
+    listen
   } = useHistory();
   const { loggedInAs, setLoggedInAs } = useContext(LoggedInAsContext);
 
@@ -25,6 +36,10 @@ function Login({
     }
   }, [loggedInAs, push]);
 
+  listen(() => {
+    loginFormReset();
+  });
+
   function goBackOrToCampgrounds() {
     if (length > 2) {
       goBack();
@@ -32,10 +47,6 @@ function Login({
       push('/campgrounds');
     }
   }
-
-  // function submitLogin(e) {
-  //   submitLogin(e, goBack);
-  // }
 
   async function submitLogin(event) {
     event.preventDefault();
@@ -70,7 +81,7 @@ function Login({
               name="emailForm"
               placeholder="Email"
               value={emailForm}
-              onChange={onFormChange}
+              onChange={loginFormHandleChange}
             />
           </div>
           <div className="form-group mb-1">
@@ -80,7 +91,7 @@ function Login({
               name="passwordForm"
               placeholder="Password"
               value={passwordForm}
-              onChange={onFormChange}
+              onChange={loginFormHandleChange}
             />
           </div>
           <Link to="/forgot">
@@ -110,13 +121,5 @@ function Login({
     </div>
   );
 }
-
-Login.propTypes = {
-  loginFormValues: PropTypes.shape({
-    emailForm: PropTypes.string,
-    passwordForm: PropTypes.string,
-  }).isRequired,
-  onFormChange: PropTypes.func.isRequired
-};
 
 export default Login;

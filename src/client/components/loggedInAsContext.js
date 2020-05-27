@@ -61,13 +61,12 @@ function LoggedInAsContextProvider(props) {
     }
   }, [localStorage.userId]);
 
-  async function logoutUser(path, loginFormReset, push) {
+  async function logoutUser(path, push) {
     try {
       const pathArr = path.split('/');
       const pathLast = pathArr.pop();
       await axios.get('/api/users/logout');
       localStorage.removeItem('userId');
-      loginFormReset();
       setLoggedInAs(loggedInAsInit);
       if (
         pathLast === 'new'

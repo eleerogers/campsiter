@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   Nav, Navbar, Container, Button, Col
 } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { LoggedInAsContext } from './loggedInAsContext';
 
 
-function Header({ loginFormReset }) {
+function Header() {
   const {
     logoutUser,
     loggedInAs: {
@@ -26,22 +25,11 @@ function Header({ loginFormReset }) {
     location: {
       pathname
     },
-    push,
-    listen
+    push
   } = useHistory();
-  const [currPath, setCurrPath] = useState();
-
-  useEffect(() => {
-    setCurrPath(pathname);
-  }, [pathname]);
-
-  listen((location) => {
-    loginFormReset();
-    setCurrPath(location.pathname);
-  });
 
   function logout() {
-    logoutUser(pathname, loginFormReset, push);
+    logoutUser(pathname, push);
   }
 
   const author = {
@@ -55,10 +43,6 @@ function Header({ loginFormReset }) {
     admin,
     message
   };
-
-  if (currPath === '/') {
-    return null;
-  }
 
   const showLoginOrLoggedInAs = email.length > 0
     ? (
@@ -76,7 +60,13 @@ function Header({ loginFormReset }) {
         </Link>
         {' '}
         {admin && '(admin)'}
-        <Button size="sm" className="float-right ml-3" onClick={() => logout(currPath)}>Logout</Button>
+        <Button
+          size="sm"
+          className="float-right ml-3"
+          onClick={() => logout(pathname)}
+        >
+          Logout
+        </Button>
       </div>
     )
     : (
@@ -116,9 +106,5 @@ function Header({ loginFormReset }) {
     </Navbar>
   );
 }
-
-Header.propTypes = {
-  loginFormReset: PropTypes.func.isRequired
-};
 
 export default Header;

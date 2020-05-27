@@ -19,30 +19,18 @@ import EditUser from './components/editUser';
 import Forgot from './components/forgot';
 import Reset from './components/resetPassword';
 import ErrorBoundary from './components/errorBoundary';
-import useForm from './hooks/useForm';
 
 toast.configure();
 
-function App() {
-  const loginInit = {
-    emailForm: '',
-    passwordForm: '',
-  };
-  const {
-    values: loginFormValues,
-    handleChange: loginFormHandleChange,
-    reset: loginFormReset
-  } = useForm(loginInit);
 
+function App() {
   return (
     <div className="app-outer">
       <div>
         <Route
           path="/"
         >
-          <Header
-            loginFormReset={loginFormReset}
-          />
+          <Header />
         </Route>
         <Container>
           <Switch>
@@ -103,10 +91,7 @@ function App() {
               path="/login"
             >
               <ErrorBoundary>
-                <Login
-                  onFormChange={loginFormHandleChange}
-                  loginFormValues={loginFormValues}
-                />
+                <Login />
               </ErrorBoundary>
             </Route>
             <Route path="/ycusers/:id">
