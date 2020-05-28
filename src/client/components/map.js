@@ -1,47 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Map, GoogleApiWrapper
-} from 'google-maps-react';
+import React from 'react';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 
 
-function MapContainer({ google, lat, lng }) {
-  const [currLat, setCurrLat] = useState(lat);
-  const [currLng, setCurrLng] = useState(lng);
-  useEffect(() => {
-    setCurrLat(lat);
-  }, [lat]);
-  useEffect(() => {
-    setCurrLng(lng);
-  }, [lng]);
-  const center = { lat: currLat, lng: currLng };
+function MapContainer({ lat, lng }) {
+  const center = { lat, lng };
   const style = {
     width: '100%',
     height: '400px'
   };
   return (
-    <Map
-      google={google}
-      style={style}
-      center={center}
-      zoom={15}
-      scrollwheel={false}
-    />
+    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
+      <GoogleMap
+        mapContainerStyle={style}
+        zoom={15}
+        center={center}
+      />
+    </LoadScript>
   );
 }
 
 MapContainer.propTypes = {
-  campground: PropTypes.shape({
-    lat: PropTypes.number.isRequired,
-    lng: PropTypes.number.isRequired
-  }).isRequired,
-  google: PropTypes.shape({
-    maps: PropTypes.shape({
-      Map: PropTypes.func.isRequired,
-    }).isRequired,
-  }).isRequired,
+  lat: PropTypes.number.isRequired,
+  lng: PropTypes.number.isRequired,
 };
 
-export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_API_KEY
-})(MapContainer);
+export default MapContainer;
