@@ -69,7 +69,7 @@ function Campgrounds() {
             <br />
             <form className="form-inline">
               <input
-                className="form-control col-md-3 search-form"
+                className="form-control search-form"
                 type="text"
                 name="search"
                 placeholder="Search campgrounds..."

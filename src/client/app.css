@@ -207,5 +207,6 @@ a:hover {
 }
 
 .search-form {
-  min-width: 13em;
+  width: 14em;
+  min-width: 14em;
 }
