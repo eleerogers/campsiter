@@ -98,7 +98,7 @@ router.put('/',
       image,
       imageId
     } = req.body;
-    const message = updatedAdmin ? 'Succesfully edited admin account.' : 'Succesfully edited account (non-admin).';
+    const message = updatedAdmin ? 'Succesfully edited admin account.' : 'Succesfully edited account.';
     res.status(201).json({
       message,
       admin: updatedAdmin,

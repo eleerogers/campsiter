@@ -21,6 +21,7 @@ function UserProfile() {
   const { id: userId } = useParams();
 
   useEffect(() => {
+    let mounted = true;
     axios.get(`/api/campgrounds/user/${userId}`)
       .then(
         ({
@@ -29,10 +30,13 @@ function UserProfile() {
             user
           }
         }) => {
-          setCampgrounds(userCampgrounds);
-          setAuthor(user);
+          if (mounted) {
+            setCampgrounds(userCampgrounds);
+            setAuthor(user);
+          }
         }
       );
+    return (() => { mounted = false; });
   }, [userId]);
 
   function renderEditButton() {
