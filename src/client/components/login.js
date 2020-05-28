@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import '../app.css';
@@ -9,6 +9,7 @@ import useForm from '../hooks/useForm';
 
 
 function Login() {
+  const mountedRef = useRef(null);
   const loginInit = {
     emailForm: '',
     passwordForm: '',
@@ -31,13 +32,17 @@ function Login() {
   const { loggedInAs, setLoggedInAs } = useContext(LoggedInAsContext);
 
   useEffect(() => {
+    mountedRef.current = true;
     if (loggedInAs.id.length > 0) {
       push('/campgrounds');
     }
+    return (() => { mountedRef.current = false; });
   }, [loggedInAs, push]);
 
   listen(() => {
-    loginFormReset();
+    if (mountedRef.current) {
+      loginFormReset();
+    }
   });
 
   function goBackOrToCampgrounds() {
