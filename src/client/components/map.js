@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Map, GoogleApiWrapper
 } from 'google-maps-react';
 import PropTypes from 'prop-types';
 
 
-function MapContainer({ google, campground: { lat, lng } }) {
-  const center = { lat, lng };
+function MapContainer({ google, lat, lng }) {
+  const [currLat, setCurrLat] = useState(lat);
+  const [currLng, setCurrLng] = useState(lng);
+  useEffect(() => {
+    setCurrLat(lat);
+  }, [lat]);
+  useEffect(() => {
+    setCurrLng(lng);
+  }, [lng]);
+  const center = { lat: currLat, lng: currLng };
   const style = {
     width: '100%',
     height: '400px'

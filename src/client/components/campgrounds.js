@@ -43,7 +43,13 @@ function Campgrounds() {
     const campgroundName = campground.name.toLowerCase();
     if (search === '' || campgroundName.indexOf(searchLC) !== -1) {
       return (
-        <Col key={campground.id} lg={3} md={4} sm={6} className="mb-4">
+        <Col
+          key={campground.id}
+          lg={3}
+          md={4}
+          sm={6}
+          className="mb-4"
+        >
           <Campground campground={campground} />
         </Col>
       );

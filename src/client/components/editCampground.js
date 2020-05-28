@@ -36,7 +36,7 @@ function EditCampground() {
     price,
     id: campgroundId,
     user_id: userId,
-    location: campLocation,
+    location
   } = values;
 
   const nameRef = useRef(name);
@@ -64,7 +64,7 @@ function EditCampground() {
     fd.append('imageId', imageId);
     fd.append('name', name);
     fd.append('description', description);
-    fd.append('campLocation', campLocation);
+    fd.append('campLocation', location);
     fd.append('price', priceNoDollarSign);
     fd.append('userId', userId);
     fd.append('adminBool', admin);
@@ -141,10 +141,10 @@ function EditCampground() {
               <input
                 className="form-control"
                 type="text"
-                name="campLocation"
+                name="location"
                 placeholder="Location"
                 onChange={handleChange}
-                value={campLocation}
+                value={location}
               />
             </div>
             <div className="form-group">
@@ -190,7 +190,12 @@ function EditCampground() {
               }
             }}
             >
-              <Button size="sm" variant="link">Go Back</Button>
+              <Button
+                size="sm"
+                variant="link"
+              >
+                Go Back
+              </Button>
             </Link>
           </div>
         </form>

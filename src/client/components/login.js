@@ -45,6 +45,9 @@ function Login() {
     }
   });
 
+  // after doing a password reset this prevents it from
+  // sending you back to the 'enter new password page' when
+  // you press the 'go back' link
   function goBackOrToCampgrounds() {
     if (length > 2) {
       goBack();

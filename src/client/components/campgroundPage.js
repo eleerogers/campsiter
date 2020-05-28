@@ -34,7 +34,9 @@ function CampgroundPage() {
     description,
     price,
     created_at: createdAt,
-    email: authorEmail
+    email: authorEmail,
+    lat,
+    lng
   } = campground;
 
   async function deleteCampgroundAndRedirect(adminBool) {
@@ -102,7 +104,7 @@ function CampgroundPage() {
       <div className="row my-3">
         <div className="col-md-3">
           <div className="map col-md-12 d-none d-md-block">
-            <MapContainer campground={campground} />
+            <MapContainer lat={lat} lng={lng} />
           </div>
         </div>
         <div className="col-md-9">
