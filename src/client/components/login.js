@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import '../app.css';
@@ -9,14 +9,12 @@ import useForm from '../hooks/useForm';
 
 
 function Login() {
-  const mountedRef = useRef(null);
   const loginInit = {
     emailForm: '',
     passwordForm: '',
   };
   const {
     handleChange: loginFormHandleChange,
-    reset: loginFormReset,
     values: {
       emailForm,
       passwordForm
@@ -26,28 +24,19 @@ function Login() {
   const {
     push,
     goBack,
-    length,
-    listen
+    length
   } = useHistory();
   const { loggedInAs, setLoggedInAs } = useContext(LoggedInAsContext);
 
   useEffect(() => {
-    mountedRef.current = true;
     if (loggedInAs.id.length > 0) {
       push('/campgrounds');
     }
-    return (() => { mountedRef.current = false; });
   }, [loggedInAs, push]);
 
-  listen(() => {
-    if (mountedRef.current) {
-      loginFormReset();
-    }
-  });
-
-  // after doing a password reset this prevents it from
-  // sending you back to the 'enter new password page' when
-  // you press the 'go back' link
+  // after doing a password reset this prevents
+  // sending you back to the 'enter new password page'
+  // after pressing the 'go back' link
   function goBackOrToCampgrounds() {
     if (length > 2) {
       goBack();

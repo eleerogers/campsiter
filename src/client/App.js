@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import './app.css';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Header from './components/header';
@@ -24,6 +24,15 @@ toast.configure();
 
 
 function App() {
+  // keeping track of path to update errorBoundary key so it will reset when you click a link
+  const [path, setPath] = useState('');
+  const { listen } = useHistory();
+  useEffect(() => {
+    listen(({ pathname }) => {
+      setPath(pathname);
+    });
+  }, [path, listen]);
+
   return (
     <div className="app-outer">
       <div>
@@ -33,105 +42,83 @@ function App() {
           <Header />
         </Route>
         <Container>
-          <Switch>
-            <Route
-              path="/"
-              exact
-              component={Landing}
-            />
-            <Route
-              path="/campgrounds"
-              exact
-            >
-              <ErrorBoundary>
+          <ErrorBoundary key={path}>
+            <Switch>
+              <Route
+                path="/"
+                exact
+                component={Landing}
+              />
+              <Route
+                path="/campgrounds"
+                exact
+              >
                 <Campgrounds />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/newCampground"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/newCampground"
+                exact
+              >
                 <NewCampground />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/editCampground"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/editCampground"
+                exact
+              >
                 <EditCampground />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/campgrounds/:id"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/campgrounds/:id"
+                exact
+              >
                 <CampgroundPage />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/campgrounds/:id/comments/new"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/campgrounds/:id/comments/new"
+                exact
+              >
                 <NewComment />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/campgrounds/:id/comments/edit"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/campgrounds/:id/comments/edit"
+                exact
+              >
                 <EditComment />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/login"
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/login"
+              >
                 <Login />
-              </ErrorBoundary>
-            </Route>
-            <Route path="/ycusers/:id">
-              <ErrorBoundary>
+              </Route>
+              <Route path="/ycusers/:id">
                 <UserProfile />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/signup"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/signup"
+                exact
+              >
                 <Signup />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/editUser"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/editUser"
+                exact
+              >
                 <EditUser />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/forgot"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/forgot"
+                exact
+              >
                 <Forgot />
-              </ErrorBoundary>
-            </Route>
-            <Route
-              path="/reset/:reset_password_token"
-              exact
-            >
-              <ErrorBoundary>
+              </Route>
+              <Route
+                path="/reset/:reset_password_token"
+                exact
+              >
                 <Reset />
-              </ErrorBoundary>
-            </Route>
-          </Switch>
+              </Route>
+            </Switch>
+          </ErrorBoundary>
         </Container>
       </div>
     </div>
