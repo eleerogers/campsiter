@@ -20,7 +20,7 @@ function Campgrounds() {
     }
   } = useContext(LoggedInAsContext);
 
-  const { campgrounds, error, isPending } = useCampgrounds();
+  const { campgrounds, error } = useCampgrounds();
 
   useEffect(() => {
     if (error) {
@@ -31,7 +31,7 @@ function Campgrounds() {
   const counter = useRef(0);
   function imageLoaded() {
     counter.current += 1;
-    if (!isPending && counter.current >= campgrounds.length) {
+    if (counter.current >= campgrounds.length) {
       setLoading(false);
     }
   }
@@ -109,7 +109,7 @@ function Campgrounds() {
             style={spinnerStyle}
             key={1}
           >
-            <Col style={{textAlign: 'center'}}>
+            <Col style={{ textAlign: 'center' }}>
               <Spinner
                 animation="border"
                 variant="primary"
