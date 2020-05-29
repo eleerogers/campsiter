@@ -5,7 +5,7 @@ import { Figure, Button } from 'react-bootstrap';
 import '../app.css';
 
 
-function Campground({ campground }) {
+function Campground({ campground, imageLoaded }) {
   const { id, name, image } = campground;
   return (
     <div>
@@ -17,9 +17,21 @@ function Campground({ campground }) {
           }
         }}
         >
-          <Figure.Image alt={name} src={image} thumbnail />
-          <Figure.Caption className="text-center">{name}</Figure.Caption>
-          <Button size="sm" variant="outline-primary">More Info</Button>
+          <Figure.Image
+            alt={name}
+            src={image}
+            onLoad={imageLoaded}
+            thumbnail
+          />
+          <Figure.Caption className="text-center">
+            {name}
+          </Figure.Caption>
+          <Button
+            size="sm"
+            variant="outline-primary"
+          >
+            More Info
+          </Button>
         </Link>
       </Figure>
     </div>

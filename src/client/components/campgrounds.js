@@ -1,8 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, {
+  useState, useContext, useEffect, useRef
+} from 'react';
 import {
-  Button, Jumbotron, Container, Row, Col
+  Button, Jumbotron, Container, Row, Col, Spinner
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './loggedInAsContext';
 import useCampgrounds from '../hooks/useCampgrounds';
 import Campground from './campground';
@@ -10,13 +13,28 @@ import Campground from './campground';
 
 function Campgrounds() {
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
   const {
     loggedInAs: {
       email: loggedInAsEmail
     }
   } = useContext(LoggedInAsContext);
 
-  const campgrounds = useCampgrounds();
+  const { campgrounds, error, isPending } = useCampgrounds();
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  const counter = useRef(0);
+  function imageLoaded() {
+    counter.current += 1;
+    if (!isPending && counter.current >= campgrounds.length) {
+      setLoading(false);
+    }
+  }
 
   const searchLC = search.toLowerCase();
   const campgroundComponents = campgrounds.map((campground) => {
@@ -30,12 +48,18 @@ function Campgrounds() {
           sm={6}
           className="mb-4"
         >
-          <Campground campground={campground} />
+          <Campground
+            campground={campground}
+            imageLoaded={imageLoaded}
+          />
         </Col>
       );
     }
     return null;
   });
+
+  const spinnerStyle = loading ? { left: '50%' } : { display: 'none' };
+  const campgroundsStyle = loading ? { display: 'none' } : {};
 
   return (
     <div>
@@ -81,7 +105,22 @@ function Campgrounds() {
           </Jumbotron>
         </Container>
         <Container>
-          <Row key={1}>
+          <Row
+            style={spinnerStyle}
+            key={1}
+          >
+            <Col style={{textAlign: 'center'}}>
+              <Spinner
+                animation="border"
+                variant="primary"
+                size="xl"
+              />
+            </Col>
+          </Row>
+          <Row
+            style={campgroundsStyle}
+            key={2}
+          >
             {campgroundComponents}
           </Row>
         </Container>

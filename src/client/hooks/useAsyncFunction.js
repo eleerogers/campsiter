@@ -8,14 +8,35 @@ function useAsyncFunction(asyncFunction, defaultValue) {
   });
 
   useEffect(() => {
+    let mounted = true;
     asyncFunction()
       .then(
-        (value) => setState({ value, error: null, isPending: false })
+        (value) => {
+          if (mounted) {
+            setState({
+              value,
+              error: null,
+              isPending: false
+            });
+          }
+        }
       )
       .catch(
-        (error) => setState({ ...state, error: error.toString(), isPending: false })
+        (err) => {
+          const { response: { status, data: message } } = err;
+          if (mounted) {
+            setState({
+              value: defaultValue,
+              error: `${message} (${status})`,
+              isPending: false
+            });
+          }
+        }
       );
-  }, [asyncFunction, state]);
+    return (() => {
+      mounted = false;
+    });
+  }, [asyncFunction, defaultValue]);
 
   const { value, error, isPending } = state;
   return [value, error, isPending];
