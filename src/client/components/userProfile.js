@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
-  Col, Container, Row, Button
+  Col, Container, Row, Button, Spinner
 } from 'react-bootstrap';
 import axios from 'axios';
 import { LoggedInAsContext } from './loggedInAsContext';
 import Campground from './campground';
 import '../app.css';
+import useImagesLoaded from '../hooks/useImagesLoading';
 
 function UserProfile() {
   const [author, setAuthor] = useState({});
   const [campgrounds, setCampgrounds] = useState([]);
+  const { loading, imageLoaded } = useImagesLoaded(campgrounds.length + 1);
+
   const {
     loggedInAs: {
       id: loggedInAsId,
@@ -79,14 +82,41 @@ function UserProfile() {
     };
     return (
       <Col key={campground.id} md={3} sm={6}>
-        <Campground campground={campgroundPlusAuthorEmail} />
+        <Campground
+          campground={campgroundPlusAuthorEmail}
+          imageLoaded={imageLoaded}
+        />
       </Col>
     );
   });
 
+  const spinnerStyle = loading ? { left: '50%' } : { display: 'none' };
+  const loadedDisplay = loading ? { display: 'none' } : {};
   return (
     <div className="row">
-      <div className="col-md-4">
+      <Container>
+        <Row
+          style={spinnerStyle}
+          key={1}
+        >
+          <Col
+            style={{
+              textAlign: 'center',
+              top: '5em'
+            }}
+          >
+            <Spinner
+              animation="border"
+              variant="primary"
+              size="xl"
+            />
+          </Col>
+        </Row>
+      </Container>
+      <div
+        className="col-md-4"
+        style={loadedDisplay}
+      >
         <h2>
           {firstName}
           {' '}
@@ -94,7 +124,12 @@ function UserProfile() {
         </h2>
         {' '}
         <div className="thumbnail">
-          <img className="img-fluid" src={image} alt={email} />
+          <img
+            className="img-fluid"
+            src={image}
+            alt={email}
+            onLoad={imageLoaded}
+          />
           <div className="caption float-right">
             <i>
               email:
@@ -109,7 +144,7 @@ function UserProfile() {
       </div>
       <div className="col-md-8">
         <Container>
-          <Row key={1}>
+          <Row key={2} style={loadedDisplay}>
             {campgroundComponents}
           </Row>
         </Container>

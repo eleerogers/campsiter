@@ -43,7 +43,8 @@ Campground.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  imageLoaded: PropTypes.func.isRequired
 };
 
 export default Campground;
