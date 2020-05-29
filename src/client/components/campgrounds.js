@@ -1,5 +1,5 @@
 import React, {
-  useState, useContext, useEffect, useRef
+  useState, useContext, useEffect
 } from 'react';
 import {
   Button, Jumbotron, Container, Row, Col, Spinner
@@ -9,11 +9,12 @@ import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './loggedInAsContext';
 import useCampgrounds from '../hooks/useCampgrounds';
 import Campground from './campground';
+import useImagesLoaded from '../hooks/useImagesLoading';
 
 
 function Campgrounds() {
   const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(true);
+
   const {
     loggedInAs: {
       email: loggedInAsEmail
@@ -21,20 +22,13 @@ function Campgrounds() {
   } = useContext(LoggedInAsContext);
 
   const { campgrounds, error } = useCampgrounds();
+  const { loading, imageLoaded } = useImagesLoaded(campgrounds.length);
 
   useEffect(() => {
     if (error) {
       toast.error(error);
     }
   }, [error]);
-
-  const counter = useRef(0);
-  function imageLoaded() {
-    counter.current += 1;
-    if (counter.current >= campgrounds.length) {
-      setLoading(false);
-    }
-  }
 
   const searchLC = search.toLowerCase();
   const campgroundComponents = campgrounds.map((campground) => {
