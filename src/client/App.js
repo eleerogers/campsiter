@@ -6,7 +6,7 @@ import { Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Header from './components/header';
 import Landing from './components/landing';
-import Campgrounds from './components/campgrounds';
+import CampgroundsHome from './components/campgroundsHome';
 import NewCampground from './components/newCampground';
 import CampgroundPage from './components/campgroundPage';
 import NewComment from './components/newComment';
@@ -50,10 +50,10 @@ function App() {
                 component={Landing}
               />
               <Route
-                path="/campgrounds"
+                path="/campgroundsHome"
                 exact
               >
-                <Campgrounds />
+                <CampgroundsHome />
               </Route>
               <Route
                 path="/newCampground"

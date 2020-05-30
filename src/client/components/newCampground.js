@@ -149,7 +149,7 @@ function NewCampground() {
                 Submit
               </Button>
             </div>
-            <Link to="/campgrounds">
+            <Link to="/campgroundsHome">
               <Button
                 size="sm"
                 variant="link"

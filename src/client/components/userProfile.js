@@ -5,9 +5,9 @@ import {
 } from 'react-bootstrap';
 import axios from 'axios';
 import { LoggedInAsContext } from './loggedInAsContext';
-import Campground from './campground';
 import '../app.css';
 import useImagesLoaded from '../hooks/useImagesLoading';
+import Campgrounds from './campgrounds';
 
 function UserProfile() {
   const [author, setAuthor] = useState({});
@@ -76,19 +76,10 @@ function UserProfile() {
   } = author;
   const mailTo = `mailto:${email}`;
 
-  const campgroundComponents = campgrounds.map((campground) => {
-    const campgroundPlusAuthorEmail = {
-      ...campground, email: author.email
-    };
-    return (
-      <Col key={campground.id} md={3} sm={6}>
-        <Campground
-          campground={campgroundPlusAuthorEmail}
-          imageLoaded={imageLoaded}
-        />
-      </Col>
-    );
-  });
+  const campgroundsDisplayConfig = {
+    md: 3,
+    sm: 6
+  };
 
   const spinnerStyle = loading ? { left: '50%' } : { display: 'none' };
   const loadedDisplay = loading ? { display: 'none' } : {};
@@ -145,7 +136,11 @@ function UserProfile() {
       <div className="col-md-8">
         <Container>
           <Row key={2} style={loadedDisplay}>
-            {campgroundComponents}
+            <Campgrounds
+              campgrounds={campgrounds}
+              configObj={campgroundsDisplayConfig}
+              imageLoaded={imageLoaded}
+            />
           </Row>
         </Container>
       </div>

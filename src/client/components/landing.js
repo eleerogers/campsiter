@@ -10,7 +10,7 @@ function Landing() {
         <h1>Welcome to CampSiter!</h1>
         <br />
         <ul>
-          <Link to="/campgrounds">
+          <Link to="/campgroundsHome">
             <Button variant="primary">Get Started</Button>
           </Link>
         </ul>

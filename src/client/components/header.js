@@ -66,7 +66,7 @@ function Header() {
     <Navbar className="mb-3" bg="light" variant="light">
       <Container className="d-flex justify-content-between">
         <Col>
-          <Link to="/campgrounds">
+          <Link to="/campgroundsHome">
             <Navbar.Brand>CampSiter</Navbar.Brand>
           </Link>
         </Col>

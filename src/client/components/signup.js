@@ -1,6 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React, {
+  useEffect, useContext, useState, useRef
+} from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Container } from 'react-bootstrap';
+import {
+  Button, Container, Row, Col, Spinner
+} from 'react-bootstrap';
 import '../app.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -10,6 +14,8 @@ import useGetFileName from '../hooks/useGetFileName';
 
 
 function Signup() {
+  const mountedRef = useRef(true);
+  const [waiting, setWaiting] = useState(false);
   const {
     loggedInAs: {
       id: loggedInAsId
@@ -41,6 +47,10 @@ function Signup() {
   const initBtnMessage = 'Select avatar image (optional)';
   const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
 
+  useEffect(() => (
+    () => { mountedRef.current = false; }
+  ), []);
+
   useEffect(() => {
     if (loggedInAsId.length > 0) {
       push('/campgrounds');
@@ -49,7 +59,6 @@ function Signup() {
 
   async function submitForm(event) {
     event.preventDefault();
-
     if (password1 === password2) {
       const fd = new FormData();
       fd.append('username', username);
@@ -68,6 +77,7 @@ function Signup() {
         }
       };
       try {
+        setWaiting(true);
         const {
           status,
           data: {
@@ -88,13 +98,36 @@ function Signup() {
       } catch (err) {
         const { response: { status, data: message } } = err;
         toast.error(`${message} (${status})`);
+      } finally {
+        if (mountedRef.current) {
+          setWaiting(false);
+        }
       }
     } else {
       toast.error('Passwords do not match');
     }
   }
 
-  return (
+  return waiting ? (
+    <Container>
+      <Row
+        // style={spinnerStyle}
+        key={1}
+      >
+        <Col style={{
+          textAlign: 'center',
+          top: '7em'
+        }}
+        >
+          <Spinner
+            animation="border"
+            variant="primary"
+            size="xl"
+          />
+        </Col>
+      </Row>
+    </Container>
+  ) : (
     <div className="margin-top-50">
       <Container>
         <h1 className="text-center">Create your account</h1>
