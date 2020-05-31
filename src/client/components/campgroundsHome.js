@@ -5,30 +5,30 @@ import {
   Button, Jumbotron, Container, Row, Col, Spinner
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './loggedInAsContext';
 import useCampgrounds from '../hooks/useCampgrounds';
 import Campgrounds from './campgrounds';
 import useImagesLoaded from '../hooks/useImagesLoading';
+import useSearchFilter from '../hooks/useSearchFilter';
 
 
 function CampgroundsHome() {
   const [search, setSearch] = useState('');
+  const campgrounds = useCampgrounds();
 
-  const { campgrounds, error } = useCampgrounds();
-  const [filteredCGs, setFilteredCGs] = useState(campgrounds || []);
+  const [filteredCGs, setCGsToFilter, filterCGsFunc] = useSearchFilter();
 
   const { loading, imageLoaded } = useImagesLoaded(filteredCGs.length);
 
   useEffect(() => {
-    const searchLC = search.toLowerCase();
-    const campgroundsFilteredBySearch = campgrounds.filter((campground) => {
-      const campgroundName = campground.name.toLowerCase();
-      return (search === ''
-      || campgroundName.indexOf(searchLC) !== -1);
-    });
-    setFilteredCGs(campgroundsFilteredBySearch);
-  }, [campgrounds, search]);
+    setCGsToFilter(campgrounds);
+  }, [setCGsToFilter, campgrounds]);
+
+  useEffect(() => {
+    setCGsToFilter(campgrounds);
+    filterCGsFunc(search);
+  }, [search, filterCGsFunc, campgrounds, setCGsToFilter]);
 
   const {
     loggedInAs: {
@@ -36,11 +36,11 @@ function CampgroundsHome() {
     }
   } = useContext(LoggedInAsContext);
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error(error);
+  //   }
+  // }, [error]);
 
   const campgroundsDisplayConfig = {
     sm: 6,
