@@ -16,19 +16,19 @@ import useSearchFilter from '../hooks/useSearchFilter';
 function CampgroundsHome() {
   const [search, setSearch] = useState('');
   const campgrounds = useCampgrounds();
-
-  const [filteredCGs, setCGsToFilter, filterCGsFunc] = useSearchFilter();
+  // console.log({campgrounds});
+  const filteredCGs = useSearchFilter(search, campgrounds);
 
   const { loading, imageLoaded } = useImagesLoaded(filteredCGs.length);
 
-  useEffect(() => {
-    setCGsToFilter(campgrounds);
-  }, [setCGsToFilter, campgrounds]);
+  // useEffect(() => {
+  //   setCGsToFilter(campgrounds);
+  // }, [setCGsToFilter, campgrounds]);
 
-  useEffect(() => {
-    setCGsToFilter(campgrounds);
-    filterCGsFunc(search);
-  }, [search, filterCGsFunc, campgrounds, setCGsToFilter]);
+  // useEffect(() => {
+  //   setCGsToFilter(campgrounds);
+  //   // filterCGsFunc(search);
+  // }, [search, filterCGsFunc, campgrounds, setCGsToFilter]);
 
   const {
     loggedInAs: {

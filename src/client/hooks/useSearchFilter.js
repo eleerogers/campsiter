@@ -1,18 +1,29 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
-function useSearchFilter(initArr = []) {
-  const [itemsArr, setItemsArr] = useState(initArr);
+function useSearchFilter(search, initArr) {
+  const [itemsArr, setItemsArr] = useState([]);
 
-  const filterArr = useCallback((search) => {
+  useEffect(() => {
     const searchLC = search.toLowerCase();
-    setItemsArr((itemsAr) => itemsAr.filter((item) => {
+    const filteredItems = initArr.filter((item) => {
       const itemNamePropertyLC = item.name.toLowerCase();
       return (search === ''
       || itemNamePropertyLC.indexOf(searchLC) !== -1);
-    }));
-  }, []);
+    });
+    setItemsArr(filteredItems);
+  }, [search, initArr]);
 
-  return [itemsArr, setItemsArr, filterArr];
+
+  // const filterArr = useCallback((search) => {
+  //   const searchLC = search.toLowerCase();
+  //   setItemsArr((itemsAr) => itemsAr.filter((item) => {
+  //     const itemNamePropertyLC = item.name.toLowerCase();
+  //     return (search === ''
+  //     || itemNamePropertyLC.indexOf(searchLC) !== -1);
+  //   }));
+  // }, []);
+
+  return itemsArr;
 }
 
 export default useSearchFilter;

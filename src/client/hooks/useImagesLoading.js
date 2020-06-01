@@ -1,17 +1,24 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 function useImagesLoading(numImages) {
   const [loading, setLoading] = useState(true);
-  const counter = useRef(0);
+  let counter = 0;
 
   function imageLoaded() {
-    counter.current += 1;
-    if (counter.current >= numImages) {
+    counter += 1;
+    console.log(counter);
+    if (counter >= numImages) {
       setLoading(false);
     }
   }
 
-  return { loading, imageLoaded };
+  function reset() {
+    counter = 0;
+    setLoading(true);
+  }
+  console.log({numImages});
+  console.log({loading});
+  return { loading, imageLoaded, reset };
 }
 
 export default useImagesLoading;
