@@ -53,7 +53,7 @@ function Signup() {
 
   useEffect(() => {
     if (loggedInAsId.length > 0) {
-      push('/campgrounds');
+      push('/campgroundsHome');
     }
   }, [loggedInAsId, push]);
 

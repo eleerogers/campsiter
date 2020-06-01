@@ -9,7 +9,7 @@ function Campground({ campground, imageLoaded }) {
   const { id, name, image } = campground;
   return (
     <div>
-      <Figure className="centered">
+      <Figure className="centered campground">
         <Link to={{
           pathname: `/campgrounds/${id}`,
           state: {

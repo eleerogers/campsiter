@@ -55,7 +55,7 @@ function CampgroundPage() {
 
       if (status === 200) {
         toast.success(message);
-        push('/campgrounds');
+        push('/campgroundsHome');
       }
     } catch (err) {
       const { response: { status, data: message } } = err;

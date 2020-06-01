@@ -74,7 +74,7 @@ function LoggedInAsContextProvider(props) {
         || pathLast === 'newCampground'
         || pathLast === 'editCampground'
       ) {
-        push('/campgrounds');
+        push('/campgroundsHome');
       }
     } catch (err) {
       const { response: { status, data: message } } = err;

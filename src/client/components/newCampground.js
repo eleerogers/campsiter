@@ -31,7 +31,7 @@ function NewCampground() {
 
   useEffect(() => {
     if (loggedInAsId === '') {
-      push('/campgrounds');
+      push('/campgroundsHome');
     }
   }, [loggedInAsId, push]);
 
@@ -56,7 +56,7 @@ function NewCampground() {
       const { status, data } = await axios.post(url, fd, config);
       if (status === 201) {
         toast.success(data);
-        push('/campgrounds');
+        push('/campgroundsHome');
       } else {
         const error = new Error();
         error.response = {

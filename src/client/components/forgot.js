@@ -17,7 +17,7 @@ function Forgot() {
 
   useEffect(() => {
     if (loggedInAsId.length > 0) {
-      push('/campgrounds');
+      push('/campgroundsHome');
     }
   }, [loggedInAsId, push]);
 
@@ -31,7 +31,7 @@ function Forgot() {
       const { data, status } = await axios.post('api/users/forgot', { email });
       if (status === 200) {
         toast.success(data);
-        push('/campgrounds');
+        push('/campgroundsHome');
       }
     } catch (err) {
       const { response: { status, statusText } } = err;

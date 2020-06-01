@@ -30,7 +30,7 @@ function Login() {
 
   useEffect(() => {
     if (loggedInAs.id.length > 0) {
-      push('/campgrounds');
+      push('/campgroundsHome');
     }
   }, [loggedInAs, push]);
 
@@ -41,7 +41,7 @@ function Login() {
     if (length > 2) {
       goBack();
     } else {
-      push('/campgrounds');
+      push('/campgroundsHome');
     }
   }
 

@@ -43,7 +43,7 @@ function EditCampground() {
 
   useEffect(() => {
     if (loggedInAsId === '') {
-      push('/campgrounds');
+      push('/campgroundsHome');
     }
   }, [loggedInAsId, push]);
 

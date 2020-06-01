@@ -45,7 +45,7 @@ function EditUser() {
 
   useEffect(() => {
     if (loggedInAsId.length === 0 || loggedInAsId !== id) {
-      push('/campgrounds');
+      push('/campgroundsHome');
     }
   }, [loggedInAsId, push, id]);
 
