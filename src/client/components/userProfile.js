@@ -1,57 +1,17 @@
-import React, { useEffect, useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {
-  Col, Container, Row, Button, Spinner
+  Col, Container, Row, Spinner
 } from 'react-bootstrap';
-import { LoggedInAsContext } from './loggedInAsContext';
 import '../app.css';
 import useCampgrounds from '../hooks/useCampgrounds';
 import Campgrounds from './campgrounds';
+import UserPicDisplay from './userPicDisplay';
 
 function UserProfile() {
   const { id: userId } = useParams();
   const { data: { campgrounds, user: author }, error, isPending } = useCampgrounds(userId);
-
-  const {
-    loggedInAs: {
-      id: loggedInAsId,
-      admin: loggedInAsAdmin
-    }
-  } = useContext(LoggedInAsContext);
-
-  function renderEditButton() {
-    if (
-      loggedInAsId === userId
-      || loggedInAsAdmin
-    ) {
-      return (
-        <>
-          <Link to={{
-            pathname: '/editUser',
-            state: { author }
-          }}
-          >
-            <Button
-              size="sm"
-              variant="warning"
-              className="mr-2"
-            >
-              Edit User
-            </Button>
-          </Link>
-        </>
-      );
-    }
-    return null;
-  }
-
-  const {
-    first_name: firstName,
-    last_name: lastName,
-    image,
-    email
-  } = author;
-  const mailTo = `mailto:${email}`;
 
   const campgroundsDisplayConfig = {
     md: 3,
@@ -60,6 +20,13 @@ function UserProfile() {
 
   const spinnerStyle = isPending ? { left: '50%' } : { display: 'none' };
   const loadedDisplay = isPending ? { display: 'none' } : {};
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
   return (
     <div className="row">
       <Container>
@@ -85,29 +52,10 @@ function UserProfile() {
         className="col-md-4"
         style={loadedDisplay}
       >
-        <h2>
-          {firstName}
-          {' '}
-          {lastName}
-        </h2>
-        {' '}
-        <div className="thumbnail">
-          <img
-            className="img-fluid"
-            src={image}
-            alt={email}
-          />
-          <div className="caption float-right">
-            <i>
-              email:
-              {' '}
-              <a href={mailTo}>
-                {email}
-              </a>
-            </i>
-          </div>
-        </div>
-        {renderEditButton()}
+        <UserPicDisplay
+          userId={userId}
+          author={author}
+        />
       </div>
       <div className="col-md-8">
         <Container>

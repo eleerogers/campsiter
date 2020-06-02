@@ -16,7 +16,7 @@ function Campground({ campground }) {
   return (
     <div>
       <Figure
-        className={`centered campground ${loading ? 'loading' : 'done'}`}
+        className={`centered campground transition ${loading ? 'loading' : 'done'}`}
       >
         <Link to={{
           pathname: `/campgrounds/${id}`,

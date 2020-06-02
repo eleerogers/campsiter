@@ -145,7 +145,6 @@ a:hover {
   height: 100%;
 }
 
-
 .km-button--primary {
   background-color: #5C5AA7;
   color: #FFFFFF;
@@ -212,24 +211,14 @@ a:hover {
 }
 
 .campground { 
-  /* animation: fadeInAnimation ease 12.5s;
-  animation-iteration-count: 1; 
-  animation-fill-mode: forwards;  */
   min-height: 200px;
   visibility: visible;
   opacity: 1;
+}
 
-  transition:opacity 12.5s linear;
-} 
-
-/* @keyframes fadeInAnimation { 
-  0% { 
-      opacity: 0; 
-  } 
-  100% { 
-      opacity: 1; 
-   } 
-}  */
+.transition {
+  transition:opacity 1.5s linear;
+}
 
 .loading {
   /* visibility: hidden; */
