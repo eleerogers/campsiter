@@ -4,7 +4,7 @@ import Campground from './campground';
 
 function Campgrounds({ campgrounds, configObj }) {
   const {
-    sm, md, lg, className, isLazy
+    sm, md, lg, className
   } = configObj;
   return (
     campgrounds.map((campground) => (
@@ -17,8 +17,6 @@ function Campgrounds({ campgrounds, configObj }) {
       >
         <Campground
           campground={campground}
-          // imageLoaded={imageLoaded}
-          isLazy={isLazy}
         />
       </Col>
     ))

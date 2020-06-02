@@ -8,16 +8,10 @@ function useAsyncFunction(asyncFunction, defaultValue, optionalParam) {
   });
 
   useEffect(() => {
-    console.log('useAsync state', state);
-  }, [state]);
-
-  useEffect(() => {
     let mounted = true;
     asyncFunction(optionalParam)
       .then(
         (value) => {
-          console.log({value});
-          console.log({optionalParam});
           if (mounted) {
             setState({
               value,

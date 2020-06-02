@@ -95,7 +95,6 @@ function EditCampground() {
         throw error;
       }
     } catch (err) {
-      console.log('err: ', err);
       const {
         response: {
           status,

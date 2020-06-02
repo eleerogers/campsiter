@@ -6,7 +6,6 @@ function useImagesLoading(numImages) {
 
   function imageLoaded() {
     counter += 1;
-    console.log(counter);
     if (counter >= numImages) {
       setLoading(false);
     }
@@ -16,8 +15,7 @@ function useImagesLoading(numImages) {
     counter = 0;
     setLoading(true);
   }
-  console.log({numImages});
-  console.log({loading});
+
   return { loading, imageLoaded, reset };
 }
 
