@@ -63,7 +63,7 @@ function Header() {
     );
 
   return (
-    <Navbar className="mb-3" bg="light" variant="light">
+    <Navbar className="mb-3 navMinHeight" bg="light" variant="light">
       <Container className="d-flex justify-content-between">
         <Col>
           <Link to="/campgroundsHome">

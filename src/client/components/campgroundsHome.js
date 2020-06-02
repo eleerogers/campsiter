@@ -5,21 +5,57 @@ import {
   Button, Jumbotron, Container, Row, Col, Spinner
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './loggedInAsContext';
 import useCampgrounds from '../hooks/useCampgrounds';
 import Campgrounds from './campgrounds';
 import useImagesLoaded from '../hooks/useImagesLoading';
 import useSearchFilter from '../hooks/useSearchFilter';
+import useIO from '../hooks/useIO';
 
 
 function CampgroundsHome() {
   const [search, setSearch] = useState('');
-  const campgrounds = useCampgrounds();
+  const { data: { campgrounds }, error, isPending } = useCampgrounds();
   // console.log({campgrounds});
   const filteredCGs = useSearchFilter(search, campgrounds);
+  // const [observer, setElements, entries] = useIO({
+  //   threshold: 0.25,
+  //   root: null
+  // });
+  // const { loading, imageLoaded, reset } = useImagesLoaded(filteredCGs.length);
 
-  const { loading, imageLoaded } = useImagesLoaded(filteredCGs.length);
+  function handleSearchChange(e) {
+    e.preventDefault();
+    // reset();
+    console.log('filtered CGs: ', filteredCGs);
+    setSearch(e.target.value);
+  }
+
+  useEffect(() => {
+    console.log({campgrounds});
+    console.log({error});
+    console.log({isPending});
+    console.log({filteredCGs});
+  }, [campgrounds, error, isPending, filteredCGs]);
+
+  // useEffect(() => {
+  //   if (filteredCGs.length) {
+  //     const lazyCGs = Array.from(document.getElementsByClassName('lazy'));
+  //     setElements(lazyCGs);
+  //   }
+  // }, [filteredCGs, setElements]);
+
+  // useEffect(() => {
+  //   entries.forEach((entry) => {
+  //     if (entry.isIntersecting) {
+  //       const lazyImage = entry.target;
+  //       // lazyImage.src = lazyImage.dataset.src;
+  //       lazyImage.classList.remove('lazy');
+  //       observer.unobserve(lazyImage);
+  //     }
+  //   });
+  // }, [entries, observer]);
 
   // useEffect(() => {
   //   setCGsToFilter(campgrounds);
@@ -36,17 +72,18 @@ function CampgroundsHome() {
     }
   } = useContext(LoggedInAsContext);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(error);
-  //   }
-  // }, [error]);
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   const campgroundsDisplayConfig = {
     sm: 6,
     md: 4,
     lg: 3,
-    className: 'mb-4'
+    className: 'mb-4',
+    isLazy: true
   };
   // const campgroundComponents = campgrounds.map((campground) => {
   //   const campgroundName = campground.name.toLowerCase();
@@ -69,8 +106,8 @@ function CampgroundsHome() {
   //   return null;
   // });
 
-  const spinnerStyle = loading ? { left: '50%' } : { display: 'none' };
-  const campgroundsStyle = loading ? { display: 'none' } : {};
+  const spinnerStyle = isPending ? { left: '50%' } : { display: 'none' };
+  // const campgroundsStyle = isPending ? { display: 'none' } : {};
 
   return (
     <div>
@@ -109,7 +146,7 @@ function CampgroundsHome() {
                 name="search"
                 placeholder="Search campgrounds..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={handleSearchChange}
                 autoComplete="off"
               />
             </form>
@@ -129,13 +166,13 @@ function CampgroundsHome() {
             </Col>
           </Row>
           <Row
-            style={campgroundsStyle}
+            // style={campgroundsStyle}
             key={2}
           >
             <Campgrounds
               campgrounds={filteredCGs}
               configObj={campgroundsDisplayConfig}
-              imageLoaded={imageLoaded}
+              // imageLoaded={imageLoaded}
             />
           </Row>
         </Container>

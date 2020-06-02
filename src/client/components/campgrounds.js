@@ -2,9 +2,9 @@ import React from 'react';
 import { Col } from 'react-bootstrap';
 import Campground from './campground';
 
-function Campgrounds({ campgrounds, configObj, imageLoaded }) {
+function Campgrounds({ campgrounds, configObj }) {
   const {
-    sm, md, lg, className
+    sm, md, lg, className, isLazy
   } = configObj;
   return (
     campgrounds.map((campground) => (
@@ -17,7 +17,8 @@ function Campgrounds({ campgrounds, configObj, imageLoaded }) {
       >
         <Campground
           campground={campground}
-          imageLoaded={imageLoaded}
+          // imageLoaded={imageLoaded}
+          isLazy={isLazy}
         />
       </Col>
     ))

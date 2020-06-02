@@ -212,16 +212,46 @@ a:hover {
 }
 
 .campground { 
-  animation: fadeInAnimation ease 1.5s;
+  /* animation: fadeInAnimation ease 12.5s;
   animation-iteration-count: 1; 
-  animation-fill-mode: forwards; 
+  animation-fill-mode: forwards;  */
+  min-height: 200px;
+  visibility: visible;
+  opacity: 1;
+
+  transition:opacity 12.5s linear;
 } 
 
-@keyframes fadeInAnimation { 
+/* @keyframes fadeInAnimation { 
   0% { 
       opacity: 0; 
   } 
   100% { 
       opacity: 1; 
    } 
-} 
+}  */
+
+.loading {
+  /* visibility: hidden; */
+  opacity: 0;
+  /* display: none; */
+}
+
+.done {
+  visibility: visible;
+  opacity: 1;
+}
+
+.campgroundThumb {
+  height: 120px;
+  width: 190px;
+  object-fit: cover;
+}
+
+.campgroundBtn {
+  margin-top: 7px;
+}
+
+.navMinHeight {
+  min-height: 71px;
+}

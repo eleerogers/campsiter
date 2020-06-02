@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-function useSearchFilter(search, initArr) {
+function useSearchFilter(search, initArr = []) {
   const [itemsArr, setItemsArr] = useState([]);
 
   useEffect(() => {
@@ -10,18 +10,9 @@ function useSearchFilter(search, initArr) {
       return (search === ''
       || itemNamePropertyLC.indexOf(searchLC) !== -1);
     });
+    setItemsArr([]);
     setItemsArr(filteredItems);
   }, [search, initArr]);
-
-
-  // const filterArr = useCallback((search) => {
-  //   const searchLC = search.toLowerCase();
-  //   setItemsArr((itemsAr) => itemsAr.filter((item) => {
-  //     const itemNamePropertyLC = item.name.toLowerCase();
-  //     return (search === ''
-  //     || itemNamePropertyLC.indexOf(searchLC) !== -1);
-  //   }));
-  // }, []);
 
   return itemsArr;
 }
