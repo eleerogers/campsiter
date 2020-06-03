@@ -57,7 +57,7 @@ function UserProfile() {
           author={author}
         />
       </div>
-      <div className="col-md-8">
+      <div className="user-cg-box col-md-8">
         <Container>
           <Row key={2} style={loadedDisplay}>
             <Campgrounds

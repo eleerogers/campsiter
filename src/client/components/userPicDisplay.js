@@ -1,15 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { LoggedInAsContext } from './loggedInAsContext';
+import useLoading from '../hooks/useLoading';
 
 function UserPicDisplay({ author, userId }) {
-  const [loading, setLoading] = useState(true);
-
-  function picLoad() {
-    setLoading(false);
-  }
+  const [loading, setLoadingFalse] = useLoading();
 
   const {
     loggedInAs: {
@@ -33,7 +30,7 @@ function UserPicDisplay({ author, userId }) {
             <Button
               size="sm"
               variant="warning"
-              className="mr-2"
+              className="mr-2 user-edit-btn"
             >
               Edit User
             </Button>
@@ -67,9 +64,9 @@ function UserPicDisplay({ author, userId }) {
           className="img-fluid"
           src={image}
           alt={email}
-          onLoad={picLoad}
+          onLoad={setLoadingFalse}
         />
-        <div className="caption float-right">
+        <div className="email-position caption float-right">
           <i>
             email:
             {' '}

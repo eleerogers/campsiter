@@ -74,7 +74,10 @@ function CampgroundsHome() {
               )}
             <br />
             <br />
-            <form className="form-inline">
+            <form
+              className="form-inline"
+              onSubmit={(e) => { e.preventDefault(); }}
+            >
               <input
                 className="form-control search-form"
                 type="text"

@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Figure, Button } from 'react-bootstrap';
+import useLoading from '../hooks/useLoading';
 import '../app.css';
 
 
 function Campground({ campground }) {
   const { id, name, image } = campground;
-  const [loading, setLoading] = useState(true);
-
-  function cGLoad() {
-    setLoading(false);
-  }
+  const [loading, setLoadingFalse] = useLoading();
 
   return (
     <div>
@@ -28,7 +25,7 @@ function Campground({ campground }) {
           <Figure.Image
             alt={name}
             src={image}
-            onLoad={cGLoad}
+            onLoad={setLoadingFalse}
             className="campgroundThumb"
             thumbnail
           />

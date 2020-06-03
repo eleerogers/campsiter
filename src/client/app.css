@@ -217,7 +217,7 @@ a:hover {
 }
 
 .transition {
-  transition:opacity 1.5s linear;
+  transition:opacity 1s linear;
 }
 
 .loading {
@@ -243,4 +243,16 @@ a:hover {
 
 .navMinHeight {
   min-height: 71px;
+}
+
+.user-cg-box {
+  margin-top: 43px;
+}
+
+.email-position {
+  margin-top: 20px;
+}
+
+.user-edit-btn {
+  margin-top: 10px;
 }
