@@ -4,7 +4,7 @@ import Campground from './campground';
 
 function Campgrounds({ campgrounds, configObj }) {
   const {
-    sm, md, lg, className
+    sm, md, lg, colClass, campClass
   } = configObj;
   return (
     campgrounds.map((campground) => (
@@ -13,10 +13,11 @@ function Campgrounds({ campgrounds, configObj }) {
         sm={sm}
         md={md}
         lg={lg}
-        className={className}
+        className={colClass}
       >
         <Campground
           campground={campground}
+          className={campClass}
         />
       </Col>
     ))

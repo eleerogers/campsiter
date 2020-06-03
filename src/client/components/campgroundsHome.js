@@ -38,8 +38,8 @@ function CampgroundsHome() {
     sm: 6,
     md: 4,
     lg: 3,
-    className: 'mb-4',
-    isLazy: true
+    colClass: 'mb-4',
+    campClass: 'campgroundThumb'
   };
 
   const spinnerStyle = isPending ? { left: '50%' } : { display: 'none' };

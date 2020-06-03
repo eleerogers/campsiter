@@ -14,8 +14,10 @@ function UserProfile() {
   const { data: { campgrounds, user: author }, error, isPending } = useCampgrounds(userId);
 
   const campgroundsDisplayConfig = {
-    md: 3,
-    sm: 6
+    lg: 3,
+    md: 4,
+    sm: 6,
+    campClass: 'campgroundUserThumb'
   };
 
   const spinnerStyle = isPending ? { left: '50%' } : { display: 'none' };

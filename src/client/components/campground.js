@@ -6,7 +6,7 @@ import useLoading from '../hooks/useLoading';
 import '../app.css';
 
 
-function Campground({ campground }) {
+function Campground({ campground, className }) {
   const { id, name, image } = campground;
   const [loading, setLoadingFalse] = useLoading();
 
@@ -26,7 +26,7 @@ function Campground({ campground }) {
             alt={name}
             src={image}
             onLoad={setLoadingFalse}
-            className="campgroundThumb"
+            className={className}
             thumbnail
           />
           <Figure.Caption className="text-center">

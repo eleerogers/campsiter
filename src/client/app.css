@@ -232,8 +232,14 @@ a:hover {
 }
 
 .campgroundThumb {
-  height: 120px;
-  width: 190px;
+  height: 165px;
+  width: 240px;
+  object-fit: cover;
+}
+
+.campgroundUserThumb {
+  height: 111px;
+  width: 153px;
   object-fit: cover;
 }
 
@@ -255,4 +261,8 @@ a:hover {
 
 .user-edit-btn {
   margin-top: 10px;
+}
+
+.jumbotron {
+  min-width: 265px;
 }
