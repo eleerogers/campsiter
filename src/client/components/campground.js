@@ -6,9 +6,11 @@ import useLoading from '../hooks/useLoading';
 import '../app.css';
 
 
-function Campground({ campground }) {
+function Campground({ campground, className, mapKey }) {
   const { id, name, image } = campground;
   const [loading, setLoadingFalse] = useLoading();
+  console.log('camground key: ', mapKey);
+  console.log('campground campground: ', campground);
 
   return (
     <div>
@@ -18,7 +20,8 @@ function Campground({ campground }) {
         <Link to={{
           pathname: `/campgrounds/${id}`,
           state: {
-            campground
+            campground,
+            mapKey
           }
         }}
         >
@@ -26,7 +29,7 @@ function Campground({ campground }) {
             alt={name}
             src={image}
             onLoad={setLoadingFalse}
-            className="campgroundThumb"
+            className={className}
             thumbnail
           />
           <Figure.Caption className="text-center">

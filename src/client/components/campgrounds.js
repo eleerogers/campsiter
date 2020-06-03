@@ -4,8 +4,9 @@ import Campground from './campground';
 
 function Campgrounds({ campgrounds, configObj }) {
   const {
-    sm, md, lg, className
+    sm, md, lg, colClass, campClass, mapKey
   } = configObj;
+  console.log('camgrounds key: ', key);
   return (
     campgrounds.map((campground) => (
       <Col
@@ -13,10 +14,12 @@ function Campgrounds({ campgrounds, configObj }) {
         sm={sm}
         md={md}
         lg={lg}
-        className={className}
+        className={colClass}
       >
         <Campground
           campground={campground}
+          className={campClass}
+          mapKey={mapKey}
         />
       </Col>
     ))

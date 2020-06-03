@@ -8,8 +8,9 @@ const middleware = require('../middleware');
 router.get('/',
   campgroundController.getCampgrounds,
   (req, res) => {
+    const { REACT_APP_GOOGLE_API_KEY: mapKey } = process.env;
     const { campgrounds } = res.locals;
-    res.status(200).json({ campgrounds });
+    res.status(200).json({ campgrounds, mapKey });
   });
 
 router.get('/user/:id',

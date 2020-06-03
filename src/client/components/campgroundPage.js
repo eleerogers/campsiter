@@ -21,10 +21,12 @@ function CampgroundPage() {
     location: {
       state: {
         campground,
+        mapKey
       }
     },
     push,
   } = useHistory();
+  console.log('camgroundPage key: ', mapKey);
   const {
     id: campgroundId,
     user_id: userId,
@@ -104,7 +106,11 @@ function CampgroundPage() {
       <div className="row my-3">
         <div className="col-md-3">
           <div className="map col-md-12 d-none d-md-block">
-            <MapContainer lat={lat} lng={lng} />
+            <MapContainer
+              lat={lat}
+              lng={lng}
+              mapKey={mapKey}
+            />
           </div>
         </div>
         <div className="col-md-9">

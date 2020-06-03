@@ -13,6 +13,7 @@ const emptyCGObj = {
   }
 };
 
+// retrieves all campground info plus google maps api key
 function getCampgrounds(userId) {
   const urlStr = userId ? `/api/campgrounds/user/${userId}` : '/api/campgrounds';
   return axios.get(urlStr)
@@ -25,6 +26,7 @@ function getCampgrounds(userId) {
         };
         throw error;
       }
+      console.log({data});
       return data;
     });
 }

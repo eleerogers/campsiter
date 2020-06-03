@@ -3,14 +3,15 @@ import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 
 
-function MapContainer({ lat, lng }) {
+function MapContainer({ lat, lng, mapKey }) {
   const center = { lat, lng };
   const style = {
     width: '100%',
     height: '400px'
   };
+  console.log('mapContainer key: ', mapKey);
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
+    <LoadScript googleMapsApiKey={mapKey}>
       <GoogleMap
         mapContainerStyle={style}
         zoom={15}
@@ -23,6 +24,7 @@ function MapContainer({ lat, lng }) {
 MapContainer.propTypes = {
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
+  mapKey: PropTypes.string.isRequired,
 };
 
 export default MapContainer;
