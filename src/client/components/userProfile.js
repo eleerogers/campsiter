@@ -11,13 +11,14 @@ import UserPicDisplay from './userPicDisplay';
 
 function UserProfile() {
   const { id: userId } = useParams();
-  const { data: { campgrounds, user: author }, error, isPending } = useCampgrounds(userId);
+  const { data: { campgrounds, user: author, mapKey }, error, isPending } = useCampgrounds(userId);
 
   const campgroundsDisplayConfig = {
     campClass: 'campgroundUserThumb',
     sm: 6,
     md: 4,
     lg: 3,
+    mapKey
   };
 
   const spinnerStyle = isPending ? { left: '50%' } : { display: 'none' };

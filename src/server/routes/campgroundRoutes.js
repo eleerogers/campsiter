@@ -18,7 +18,8 @@ router.get('/user/:id',
   userController.getUserById,
   (req, res) => {
     const { campgrounds, user } = res.locals;
-    res.status(200).json({ campgrounds, user });
+    const { REACT_APP_GOOGLE_API_KEY: mapKey } = process.env;
+    res.status(200).json({ campgrounds, user, mapKey });
   });
 
 router.get('/:id',

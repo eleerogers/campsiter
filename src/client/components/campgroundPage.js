@@ -1,15 +1,19 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import {
+  Button, Col, Container, Row, Spinner
+} from 'react-bootstrap';
 import moment from 'moment';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './loggedInAsContext';
 import MapContainer from './map';
 import DeleteModal from './deleteModal';
+import useLoading from '../hooks/useLoading';
 import Comments from './comments';
 
 function CampgroundPage() {
+  const [loading, setLoadingFalse] = useLoading();
   const {
     loggedInAs: {
       id: loggedInAsId,
@@ -101,6 +105,10 @@ function CampgroundPage() {
     return null;
   }
 
+  const spinnerStyle = loading ? { display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center', } : { display: 'none' };
+
   return (
     <div className="container">
       <div className="row my-3">
@@ -115,11 +123,39 @@ function CampgroundPage() {
         </div>
         <div className="col-md-9">
           <div className="card mb-3">
-            <img
-              className="img-responsive cover"
-              alt={name}
-              src={image}
-            />
+            <div className="test-div">
+              <div
+                style={{ display: 'flex' }}
+                className="test-image"
+              >
+                <Container
+                  className="d-flex justify-content-center"
+                >
+                  <Row
+                    style={spinnerStyle}
+                    key={1}
+                  >
+                    <Col
+                      style={{
+                        textAlign: 'center',
+                      }}
+                    >
+                      <Spinner
+                        animation="border"
+                        variant="primary"
+                        size="xl"
+                      />
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
+              <img
+                className={`test-image img-responsive cover transition ${loading ? 'loading' : 'done'}`}
+                alt={name}
+                src={image}
+                onLoad={setLoadingFalse}
+              />
+            </div>
             <div className="card-body">
               <h6 className="float-right">
                 $
