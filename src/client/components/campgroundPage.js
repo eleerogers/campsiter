@@ -105,9 +105,13 @@ function CampgroundPage() {
     return null;
   }
 
-  const spinnerStyle = loading ? { display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center', } : { display: 'none' };
+  const spinnerStyle = loading
+    ? {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+    : { display: 'none' };
 
   return (
     <div className="container">
