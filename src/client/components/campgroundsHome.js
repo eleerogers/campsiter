@@ -17,9 +17,10 @@ function CampgroundsHome() {
   const [search, setSearch] = useState('');
   const { data: { campgrounds, mapKey }, error, isPending } = useCampgrounds();
   const filteredCGs = useSearchFilter(search, campgrounds);
+  const CAMPGROUNDS_PER_PAGE = 12;
   const {
     jump, currentData, currentPage, maxPage
-  } = usePagination(filteredCGs, 12);
+  } = usePagination(filteredCGs, CAMPGROUNDS_PER_PAGE);
   const thisPageCGs = currentData();
 
   const pages = [];
@@ -30,6 +31,14 @@ function CampgroundsHome() {
       </Pagination.Item>,
     );
   }
+  const paginationDisplay = pages.length > 1
+    && (
+      <div>
+        <Pagination className="center-div">
+          {pages}
+        </Pagination>
+      </div>
+    );
 
   function handleSearchChange(e) {
     e.preventDefault();
@@ -132,11 +141,7 @@ function CampgroundsHome() {
             />
           </Row>
         </Container>
-        <div>
-          <Pagination className="center-div">
-            {pages}
-          </Pagination>
-        </div>
+        {paginationDisplay}
       </Container>
     </div>
   );
