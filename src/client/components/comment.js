@@ -3,7 +3,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import { LoggedInAsContext } from './loggedInAsContext';
+import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import DeleteModal from './deleteModal';
 
 function Comment({

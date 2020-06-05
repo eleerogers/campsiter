@@ -3,7 +3,7 @@ import {
   Nav, Navbar, Container, Button, Col
 } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import { LoggedInAsContext } from './loggedInAsContext';
+import { LoggedInAsContext } from './contexts/loggedInAsContext';
 
 
 function Header() {

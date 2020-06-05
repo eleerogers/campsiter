@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
-import { LoggedInAsContext } from './loggedInAsContext';
+import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useLoading from '../hooks/useLoading';
 
 function UserPicDisplay({ author, userId }) {

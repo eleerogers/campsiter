@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { LoggedInAsContext } from './loggedInAsContext';
+import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useCampgrounds from '../hooks/useCampgrounds';
 import usePagination from '../hooks/usePagination';
 import Campgrounds from './campgrounds';
