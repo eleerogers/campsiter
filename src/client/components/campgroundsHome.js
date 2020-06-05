@@ -96,7 +96,12 @@ function CampgroundsHome() {
             style={spinnerStyle}
             key={1}
           >
-            <Col style={{ textAlign: 'center' }}>
+            <Col
+              style={{
+                textAlign: 'center',
+                top: '5em'
+              }}
+            >
               <Spinner
                 animation="border"
                 variant="primary"
