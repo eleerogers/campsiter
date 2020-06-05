@@ -9,8 +9,6 @@ import '../app.css';
 function Campground({ campground, className, mapKey }) {
   const { id, name, image } = campground;
   const [loading, setLoadingFalse] = useLoading();
-  console.log('camground key: ', mapKey);
-  console.log('campground campground: ', campground);
 
   return (
     <div>

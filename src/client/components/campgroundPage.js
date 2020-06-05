@@ -30,7 +30,6 @@ function CampgroundPage() {
     },
     push,
   } = useHistory();
-  console.log('camgroundPage key: ', mapKey);
   const {
     id: campgroundId,
     user_id: userId,

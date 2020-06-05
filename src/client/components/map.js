@@ -9,7 +9,7 @@ function MapContainer({ lat, lng, mapKey }) {
     width: '100%',
     height: '400px'
   };
-  console.log('mapContainer key: ', mapKey);
+
   return (
     <LoadScript googleMapsApiKey={mapKey}>
       <GoogleMap
