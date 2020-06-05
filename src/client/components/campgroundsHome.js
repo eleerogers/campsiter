@@ -2,12 +2,13 @@ import React, {
   useState, useContext, useEffect
 } from 'react';
 import {
-  Button, Jumbotron, Container, Row, Col, Spinner
+  Button, Jumbotron, Container, Row, Col, Spinner, Pagination
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './loggedInAsContext';
 import useCampgrounds from '../hooks/useCampgrounds';
+import usePagination from '../hooks/usePagination';
 import Campgrounds from './campgrounds';
 import useSearchFilter from '../hooks/useSearchFilter';
 
@@ -16,6 +17,19 @@ function CampgroundsHome() {
   const [search, setSearch] = useState('');
   const { data: { campgrounds, mapKey }, error, isPending } = useCampgrounds();
   const filteredCGs = useSearchFilter(search, campgrounds);
+  const {
+    jump, currentData, currentPage, maxPage
+  } = usePagination(filteredCGs, 12);
+  const thisPageCGs = currentData();
+
+  const pages = [];
+  for (let number = 1; number <= maxPage; number += 1) {
+    pages.push(
+      <Pagination.Item key={number} active={number === currentPage} onClick={() => jump(number)}>
+        {number}
+      </Pagination.Item>,
+    );
+  }
 
   function handleSearchChange(e) {
     e.preventDefault();
@@ -113,11 +127,16 @@ function CampgroundsHome() {
             key={2}
           >
             <Campgrounds
-              campgrounds={filteredCGs}
+              campgrounds={thisPageCGs}
               configObj={campgroundsDisplayConfig}
             />
           </Row>
         </Container>
+        <div>
+          <Pagination className="center-div">
+            {pages}
+          </Pagination>
+        </div>
       </Container>
     </div>
   );

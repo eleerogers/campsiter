@@ -288,3 +288,9 @@ a:hover {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
+
+.center-div {
+  justify-content: center;
+  padding-top: 2em;
+  padding-bottom: 3em;
+}
