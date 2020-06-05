@@ -26,7 +26,6 @@ function getCampgrounds(userId) {
         };
         throw error;
       }
-      console.log({data});
       return data;
     });
 }

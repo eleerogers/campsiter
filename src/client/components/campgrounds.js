@@ -6,7 +6,7 @@ function Campgrounds({ campgrounds, configObj }) {
   const {
     sm, md, lg, colClass, campClass, mapKey
   } = configObj;
-  console.log('camgrounds key: ', key);
+
   return (
     campgrounds.map((campground) => (
       <Col

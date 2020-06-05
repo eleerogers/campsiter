@@ -54,6 +54,8 @@ Campground.propTypes = {
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired
   }).isRequired,
+  className: PropTypes.string.isRequired,
+  mapKey: PropTypes.string.isRequired
 };
 
 export default Campground;
