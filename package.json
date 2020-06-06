@@ -77,6 +77,10 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.4"
   },
+  "engines": {
+    "node": "13.x",
+    "npm": "6.x"
+  },
   "plugins": [
     "react-perf"
   ]
