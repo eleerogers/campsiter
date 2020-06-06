@@ -6,7 +6,7 @@ import useLoading from '../hooks/useLoading';
 import '../app.css';
 
 
-function Campground({ campground, className, mapKey }) {
+function Campground({ campground, className }) {
   const { id, name, image } = campground;
   const [loading, setLoadingFalse] = useLoading();
 
@@ -18,8 +18,7 @@ function Campground({ campground, className, mapKey }) {
         <Link to={{
           pathname: `/campgrounds/${id}`,
           state: {
-            campground,
-            mapKey
+            campground
           }
         }}
         >
@@ -52,8 +51,7 @@ Campground.propTypes = {
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired
   }).isRequired,
-  className: PropTypes.string.isRequired,
-  mapKey: PropTypes.string.isRequired
+  className: PropTypes.string.isRequired
 };
 
 export default Campground;

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const LoggedInAsContext = React.createContext();
 
-function LoggedInAsContextProvider(props) {
+function LoggedInAsContextProvider({ children }) {
   const loggedInAsInit = {
     id: '',
     password: '',
@@ -19,7 +19,6 @@ function LoggedInAsContextProvider(props) {
     username: ''
   };
   const [loggedInAs, setLoggedInAs] = useState(loggedInAsInit);
-  const { children } = props;
 
   useEffect(() => {
     if (localStorage.userId) {

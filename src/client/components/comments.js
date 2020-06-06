@@ -12,11 +12,15 @@ function Comments({ campground }) {
   } = campground;
 
   useEffect(() => {
+    let mounted = true;
     axios.get(`/api/comments/${campgroundId}`)
       .then(({ data: { comments: incomingComments } }) => {
-        setComments(incomingComments);
+        if (mounted) {
+          setComments(incomingComments);
+        }
       })
       .catch((err) => { console.error(err); });
+    return () => { mounted = false; };
   }, [campgroundId]);
 
   async function deleteComment(commentObj, loggedInAsAdmin) {
@@ -27,7 +31,7 @@ function Comments({ campground }) {
         user_id: commentUserId
       } = commentObj;
       const commentData = {
-        loggedInAsAdmin,
+        adminBool: loggedInAsAdmin,
         commentId,
         userId: commentUserId
       };

@@ -15,7 +15,7 @@ import useSearchFilter from '../hooks/useSearchFilter';
 
 function CampgroundsHome() {
   const [search, setSearch] = useState('');
-  const { data: { campgrounds, mapKey }, error, isPending } = useCampgrounds();
+  const { data: { campgrounds }, error, isPending } = useCampgrounds();
   const filteredCGs = useSearchFilter(search, campgrounds);
   const CAMPGROUNDS_PER_PAGE = 12;
   const {
@@ -62,8 +62,7 @@ function CampgroundsHome() {
     md: 4,
     lg: 3,
     colClass: 'mb-4',
-    campClass: 'campgroundThumb',
-    mapKey
+    campClass: 'campgroundThumb'
   };
 
   const spinnerStyle = isPending ? { left: '50%' } : { display: 'none' };

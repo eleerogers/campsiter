@@ -24,8 +24,7 @@ function CampgroundPage() {
   const {
     location: {
       state: {
-        campground,
-        mapKey
+        campground
       }
     },
     push,
@@ -120,7 +119,6 @@ function CampgroundPage() {
             <MapContainer
               lat={lat}
               lng={lng}
-              mapKey={mapKey}
             />
           </div>
         </div>
