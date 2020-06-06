@@ -19,11 +19,14 @@ import EditUser from './components/editUser';
 import Forgot from './components/forgot';
 import Reset from './components/resetPassword';
 import ErrorBoundary from './components/errorBoundary';
+import useMapKey from './hooks/useMapKey';
+import { LoadScriptNext } from '@react-google-maps/api';
 
 toast.configure();
 
 
 function App() {
+  // const mapKey = useMapKey();
   // keeping track of path to update errorBoundary key so it will reset when you click a link
   const [path, setPath] = useState('');
   const { listen } = useHistory();
@@ -71,7 +74,11 @@ function App() {
                 path="/campgrounds/:id"
                 exact
               >
-                <CampgroundPage />
+                <LoadScriptNext
+                  googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+                >
+                  <CampgroundPage />
+                </LoadScriptNext>
               </Route>
               <Route
                 path="/campgrounds/:id/comments/new"
