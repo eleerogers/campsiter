@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const Dotenv = require('dotenv');
+const Dotenv = require('dotenv').config();
 
 const outputDirectory = 'dist';
 
@@ -51,6 +51,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new Dotenv({ path: './.env' })
+    new webpack.DefinePlugin({
+      'process.env': {
+        'REACT_APP_GOOGLE_API_KEY': JSON.stringify(process.env.REACT_APP_GOOGLE_API_KEY),
+      }
+    })
   ]
 };
