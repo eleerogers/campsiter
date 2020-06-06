@@ -20,6 +20,7 @@ import Forgot from './components/forgot';
 import Reset from './components/resetPassword';
 import ErrorBoundary from './components/errorBoundary';
 import { LoadScriptNext } from '@react-google-maps/api';
+import {} from 'dotenv/config';
 
 toast.configure();
 
