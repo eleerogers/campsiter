@@ -25,7 +25,6 @@ toast.configure();
 
 
 function App() {
-  console.log('map key env: ', process.env.REACT_APP_GOOGLE_API_KEY)
   // keeping track of path to update errorBoundary key so it will reset when you click a link
   const [path, setPath] = useState('');
   const { listen } = useHistory();
