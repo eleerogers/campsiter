@@ -60,11 +60,12 @@ function Signup() {
   async function submitForm(event) {
     event.preventDefault();
     if (password1 === password2) {
+      const lNameNoPeriod = lastName.replace(/\.$/, "");
       const fd = new FormData();
       fd.append('username', username);
       fd.append('password', password1);
       fd.append('firstName', firstName);
-      fd.append('lastName', lastName);
+      fd.append('lastName', lNameNoPeriod);
       fd.append('email', email);
       fd.append('adminCode', adminCode);
       if (imageFile) {
@@ -181,7 +182,7 @@ function Signup() {
               className="form-control"
               type="text"
               name="lastName"
-              placeholder="Last Name"
+              placeholder="Last Name (or initial)"
               value={lastName}
               onChange={handleChange}
             />

@@ -45,19 +45,17 @@ function UserPicDisplay({ author, userId }) {
     first_name: firstName,
     last_name: lastName,
     image,
-    email
+    email,
+    username
   } = author;
   const mailTo = `mailto:${email}`;
+  const lNameOrInitial = lastName.length === 1 ? lastName + '.' : lastName;
 
   return (
     <div
       className={`transition ${loading ? 'loading' : 'done'}`}
     >
-      <h2>
-        {firstName}
-        {' '}
-        {lastName}
-      </h2>
+      <h1>{username}</h1>
       {' '}
       <div className="thumbnail">
         <img
@@ -66,9 +64,14 @@ function UserPicDisplay({ author, userId }) {
           alt={email}
           onLoad={setLoadingFalse}
         />
-        <div className="email-position caption float-right">
-          <i>
-            email:
+        <h6 className="float-left">
+          {firstName}
+          {' '}
+          {lNameOrInitial}
+        </h6>
+        <div className="email-position caption float-left">
+          <i className="float-left">
+            contact:
             {' '}
             <a href={mailTo}>
               {email}

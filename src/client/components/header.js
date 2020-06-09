@@ -11,7 +11,7 @@ function Header() {
     logoutUser,
     loggedInAs: {
       id,
-      email,
+      username,
       admin
     }
   } = useContext(LoggedInAsContext);
@@ -26,13 +26,13 @@ function Header() {
     logoutUser(pathname, push);
   }
 
-  const showLoginOrLoggedInAs = email.length > 0
+  const showLoginOrLoggedInAs = username.length > 0
     ? (
       <div>
         Logged in as
         {' '}
         <Link to={`/ycusers/${id}`}>
-          {email}
+          {username}
         </Link>
         {' '}
         {admin && '(admin)'}

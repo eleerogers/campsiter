@@ -51,12 +51,13 @@ function EditUser() {
 
   async function submitForm(event) {
     event.preventDefault();
+    const lNameNoPeriod = lastName.replace(/\.$/, "");
 
     const fd = new FormData();
     fd.append('id', id);
     fd.append('username', username);
     fd.append('firstName', firstName);
-    fd.append('lastName', lastName);
+    fd.append('lastName', lNameNoPeriod);
     fd.append('email', email);
     fd.append('admin', admin);
     fd.append('adminCode', adminCode);
@@ -88,7 +89,7 @@ function EditUser() {
           id,
           username,
           firstName,
-          lastName,
+          lastName: lNameNoPeriod,
           email,
           image: newImageLink,
           imageId: newImageId,
@@ -149,7 +150,7 @@ function EditUser() {
               type="text"
               name="last_name"
               value={lastName}
-              placeholder="Last Name"
+              placeholder="Last Name (or initial)"
               onChange={handleChange}
             />
           </div>

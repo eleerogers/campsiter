@@ -38,16 +38,16 @@ function CampgroundPage() {
     description,
     price,
     created_at: createdAt,
-    email: authorEmail,
+    username: authorUsername,
     lat,
     lng
   } = campground;
 
-  async function deleteCampgroundAndRedirect(adminBool) {
+  async function deleteCampgroundAndRedirect() {
     try {
       const delUrl = `/api/campgrounds/${campgroundId}`;
       const data = {
-        adminBool,
+        adminBool: loggedInAsAdmin,
         userId,
         imageId,
         delete: true
@@ -67,7 +67,7 @@ function CampgroundPage() {
     }
   }
 
-  function renderEditDeleteBtns(adminBool) {
+  function renderEditDeleteBtns() {
     if (
       loggedInAsId === String(userId)
       || loggedInAsAdmin
@@ -93,7 +93,7 @@ function CampgroundPage() {
             itemType="campground"
             itemObj={campground}
             handleDelete={deleteCampgroundAndRedirect}
-            loggedInAsAdminBool={adminBool}
+            loggedInAsAdminBool={loggedInAsAdmin}
           >
             Delete Campground
           </DeleteModal>
@@ -172,13 +172,13 @@ function CampgroundPage() {
                   Submitted by:
                   {' '}
                   <Link to={`/ycusers/${userId}`}>
-                    {authorEmail}
+                    {authorUsername}
                   </Link>
                   {' '}
                   {moment(createdAt).fromNow()}
                 </em>
               </p>
-              {renderEditDeleteBtns(loggedInAsAdmin)}
+              {renderEditDeleteBtns()}
             </div>
           </div>
           <div className="card card-body bg-light">

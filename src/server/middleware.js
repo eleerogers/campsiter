@@ -212,7 +212,6 @@ const checkIfUsernameInUse = async (req, res, next) => {
 function allowAccess(req, res, next) {
   const cookieId = parseInt(req.signedCookies.userId, 10);
   const userId = parseInt(req.body.userId, 10);
-  console.log('allow access adminbool: ', req.body.adminBool);
   if (cookieId !== userId && !req.body.adminBool) {
     res.status(401).send('Unauthorized');
   } else {

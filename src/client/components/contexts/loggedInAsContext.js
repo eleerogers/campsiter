@@ -21,7 +21,12 @@ function LoggedInAsContextProvider({ children }) {
   const [loggedInAs, setLoggedInAs] = useState(loggedInAsInit);
 
   useEffect(() => {
-    if (localStorage.userId) {
+    console.log({loggedInAs});
+  }, [loggedInAs]);
+
+  useEffect(() => {
+    if (localStorage.userId && !loggedInAs) {
+      console.log('LoggedInAsContext, useEffect: THIS IS NOT WHATS CALLING THE EXTRA RENDERS')
       axios.get(`/api/users/${localStorage.userId}`)
         .then(({
           data: {

@@ -10,8 +10,9 @@ import Campgrounds from './campgrounds';
 import UserPicDisplay from './userPicDisplay';
 
 function UserProfile() {
+  console.log('userProfile')
   const { id: userId } = useParams();
-  const { data: { campgrounds, user: author }, error, isPending } = useCampgrounds(userId);
+  const { data: { campgrounds, user: author }, error, isPending } = useCampgrounds(userId, 'userProfile');
 
   const campgroundsDisplayConfig = {
     campClass: 'campgroundUserThumb',
@@ -25,6 +26,7 @@ function UserProfile() {
 
   useEffect(() => {
     if (error) {
+      console.log({error});
       toast.error(error);
     }
   }, [error]);
