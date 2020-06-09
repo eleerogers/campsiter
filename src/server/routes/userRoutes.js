@@ -12,6 +12,7 @@ router.get('/',
     res.status(200).json({ users });
   });
 
+
 router.post('/login',
   middleware.getUserByEmail,
   userController.login,
@@ -39,6 +40,7 @@ router.post('/login',
     });
   });
 
+
 router.post('/forgot',
   middleware.getUserByEmail,
   userController.resetPassword,
@@ -47,6 +49,7 @@ router.post('/forgot',
     res.status(200).send(`An e-mail has been sent to ${email} with further instructions.`);
   });
 
+
 router.post('/reset',
   middleware.getUserByToken,
   middleware.checkTokenExpiration,
@@ -54,6 +57,7 @@ router.post('/reset',
   (req, res) => {
     res.status(201).send('Successfully changed password. Please login.');
   });
+
 
 router.post('/',
   middleware.fileConverter,
@@ -70,6 +74,7 @@ router.post('/',
     });
   });
 
+
 router.get('/logout',
   userController.logout,
   (req, res) => {
@@ -78,12 +83,14 @@ router.get('/logout',
     });
   });
 
+
 router.get('/:id',
   userController.getUserById,
   (req, res) => {
     const { user } = res.locals;
     res.status(200).json({ user });
   });
+
 
 router.put('/',
   middleware.fileConverter,
@@ -111,6 +118,7 @@ router.put('/',
       image_id: imageId
     });
   });
+
 
 router.get('/token/:reset_password_token',
   userController.getUserByToken,

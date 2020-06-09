@@ -1,10 +1,5 @@
-const { Pool } = require('pg');
+const pool = require('../pool');
 
-const connectionString = process.env.CONNECTION_STRING;
-
-const pool = new Pool({
-  connectionString
-});
 
 const getComments = (request, response, next) => {
   const { campgroundId } = request.params;
@@ -18,6 +13,7 @@ const getComments = (request, response, next) => {
     next();
   });
 };
+
 
 const createComment = (request, response, next) => {
   const {
@@ -39,6 +35,7 @@ const createComment = (request, response, next) => {
   );
 };
 
+
 const editComment = (request, response, next) => {
   const {
     commentId, comment
@@ -57,6 +54,7 @@ const editComment = (request, response, next) => {
   );
 };
 
+
 const deleteComment = (request, response, next) => {
   const { commentId } = request.body;
   pool.query(
@@ -71,6 +69,7 @@ const deleteComment = (request, response, next) => {
     }
   );
 };
+
 
 module.exports = {
   getComments,

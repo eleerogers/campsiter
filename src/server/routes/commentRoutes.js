@@ -4,12 +4,14 @@ const router = express.Router();
 const commentController = require('../controllers/commentController');
 const middleware = require('../middleware');
 
+
 router.get('/:campgroundId',
   commentController.getComments,
   (req, res) => {
     const { comments } = res.locals;
     res.status(200).json({ comments });
   });
+
 
 router.post('/:campgroundId',
   middleware.allowAccess,
@@ -21,6 +23,7 @@ router.post('/:campgroundId',
     );
   });
 
+
 router.put('/:campgroundId',
   middleware.allowAccess,
   middleware.validComment,
@@ -28,6 +31,7 @@ router.put('/:campgroundId',
   (req, res) => {
     res.status(200).send('Successfully edited comment');
   });
+
 
 router.delete('/:campgroundId',
   middleware.allowAccess,

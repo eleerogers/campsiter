@@ -1,13 +1,7 @@
-const { Pool } = require('pg');
+const pool = require('../pool');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-
-const connectionString = process.env.CONNECTION_STRING;
-
-const pool = new Pool({
-  connectionString
-});
 
 
 const getUsers = (request, response, next) => {
@@ -166,6 +160,7 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
+
 const updatePassword = async (req, res, next) => {
   try {
     const password = await bcrypt.hash(req.body.password, 10);
@@ -175,6 +170,7 @@ const updatePassword = async (req, res, next) => {
     console.error(err);
   }
 };
+
 
 const getUserByToken = (req, res, next) => {
   const resetPasswordToken = req.params.reset_password_token;

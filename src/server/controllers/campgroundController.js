@@ -1,13 +1,5 @@
-const { Pool } = require('pg');
+const pool = require('../pool');
 const NodeGeocoder = require('node-geocoder');
-
-
-const connectionString = process.env.CONNECTION_STRING;
-
-const pool = new Pool({
-  connectionString
-});
-
 
 const options = {
   provider: 'google',
@@ -88,6 +80,7 @@ const createCampground = async (request, response, next) => {
   }
 };
 
+
 const updateCampground = async (request, response, next) => {
   const id = parseInt(request.params.id, 10);
   const {
@@ -111,6 +104,7 @@ const updateCampground = async (request, response, next) => {
     throw err;
   }
 };
+
 
 const deleteCampground = (request, response, next) => {
   const id = parseInt(request.params.id, 10);
