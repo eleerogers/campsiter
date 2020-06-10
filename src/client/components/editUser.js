@@ -54,7 +54,7 @@ function EditUser() {
       push('/campgroundsHome');
     }
     return () => { mountedRef.current = false }
-  }, [loggedInAsId, push, id]);
+  }, [loggedInAsId.length, push, loggedInAsAdmin, loggedInAsThisUser]);
 
   async function submitForm(event) {
     event.preventDefault();

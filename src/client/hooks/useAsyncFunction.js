@@ -36,7 +36,7 @@ function useAsyncFunction(asyncFunction, defaultValue = null, ...optionalParams)
     return (() => {
       mounted = false;
     });
-  }, []);
+  }, [defaultValue, asyncFunction, optionalParams]);
 
   const { value, error, isPending } = state;
   return [value, error, isPending];
