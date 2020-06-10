@@ -5,13 +5,16 @@ import {
   Col, Container, Row, Spinner
 } from 'react-bootstrap';
 import '../app.css';
-import useCampgrounds from '../hooks/useCampgrounds';
+// import useCampgrounds from '../hooks/useCampgrounds';
+import useGetCGs from '../hooks/useGetCGs';
 import Campgrounds from './campgrounds';
 import UserPicDisplay from './userPicDisplay';
 
+
 function UserProfile() {
   const { id: userId } = useParams();
-  const { data: { campgrounds, user: author }, error, isPending } = useCampgrounds(userId);
+  // const { data: { campgrounds, user: author }, error, isPending } = useCampgrounds(userId);
+  const { data: { campgrounds, user: author }, errMsg, isLoading } = useGetCGs(`/api/campgrounds/user/${userId}`);
 
   const campgroundsDisplayConfig = {
     campClass: 'campgroundUserThumb',
@@ -20,15 +23,15 @@ function UserProfile() {
     lg: 3
   };
 
-  const spinnerStyle = isPending ? { left: '50%' } : { display: 'none' };
-  const loadedDisplay = isPending ? { display: 'none' } : {};
+  const spinnerStyle = isLoading ? { left: '50%' } : { display: 'none' };
+  const loadedDisplay = isLoading ? { display: 'none' } : {};
 
   useEffect(() => {
-    if (error) {
-      console.log({error});
-      toast.error(error);
+    if (errMsg) {
+      console.log({errMsg});
+      toast.error(errMsg);
     }
-  }, [error]);
+  }, [errMsg]);
 
   return (
     <div className="row">

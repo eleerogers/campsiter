@@ -7,7 +7,7 @@ import useLoading from '../hooks/useLoading';
 
 function UserPicDisplay({ author, userId }) {
   const [loading, setLoadingFalse] = useLoading();
-
+  console.log('userpicdisplay author: ', author);
   const {
     loggedInAs: {
       id: loggedInAsId,

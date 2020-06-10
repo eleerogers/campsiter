@@ -11,11 +11,13 @@ import useCampgrounds from '../hooks/useCampgrounds';
 import usePagination from '../hooks/usePagination';
 import Campgrounds from './campgrounds';
 import useSearchFilter from '../hooks/useSearchFilter';
+import useGetCGs from '../hooks/useGetCGs';
 
 
 function CampgroundsHome() {
   const [search, setSearch] = useState('');
-  const { data: { campgrounds }, error, isPending } = useCampgrounds();
+  // const { data: { campgrounds }, error, isPending } = useCampgrounds();
+  const { data: { campgrounds }, errMsg, isLoading } = useGetCGs();
   const filteredCGs = useSearchFilter(search, campgrounds);
   const CAMPGROUNDS_PER_PAGE = 12;
   const {
@@ -52,10 +54,10 @@ function CampgroundsHome() {
   } = useContext(LoggedInAsContext);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (errMsg) {
+      toast.error(errMsg);
     }
-  }, [error]);
+  }, [errMsg]);
 
   const campgroundsDisplayConfig = {
     sm: 6,
@@ -65,7 +67,7 @@ function CampgroundsHome() {
     campClass: 'campgroundThumb'
   };
 
-  const spinnerStyle = isPending ? { left: '50%' } : { display: 'none' };
+  const spinnerStyle = isLoading ? { left: '50%' } : { display: 'none' };
 
   return (
     <div>
