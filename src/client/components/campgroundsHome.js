@@ -14,9 +14,8 @@ import useSearchFilter from '../hooks/useSearchFilter';
 
 
 function CampgroundsHome() {
-  console.log('cgsHome');
   const [search, setSearch] = useState('');
-  const { data: { campgrounds }, error, isPending } = useCampgrounds(null, 'CGsHome');
+  const { data: { campgrounds }, error, isPending } = useCampgrounds();
   const filteredCGs = useSearchFilter(search, campgrounds);
   const CAMPGROUNDS_PER_PAGE = 12;
   const {

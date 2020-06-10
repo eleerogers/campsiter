@@ -77,9 +77,10 @@ const update = (req, res, next) => {
     admin,
     adminCode
   } = req.body;
-
-  const updatedAdmin = adminCode === process.env.ADMIN_PASSWORD
-  || admin === 'true';
+  const updatedAdmin =
+    adminCode === process.env.ADMIN_PASSWORD
+    ? admin === 'false'
+    : admin === 'true';
 
   const queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, image=$4, image_id=$5, admin=$6 WHERE id=$7 RETURNING *';
   const valueArr = [firstName, lastName, email, image, imageId, updatedAdmin, id];

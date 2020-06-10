@@ -40,7 +40,6 @@ const upload = multer({
   limits: { fileSize: 10000000 },
   fileFilter: imageFilter,
   onError: (err, next) => {
-    console.log('upload onError');
     console.error(err);
     next(err);
   }
@@ -179,14 +178,18 @@ const onUpdateCheckIfEmailInUse = async (req, res, next) => {
   try {
     const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE email = $1 AND id != $2', [req.body.email, req.body.id]);
     if (length > 0) {
-      await unlinkAsync(req.file.path);
+      if (req.file) {
+        await unlinkAsync(req.file.path);
+      }
       res.status(409).send('Email address already in use');
     } else {
       next();
     }
   } catch (err) {
     console.error(err);
-    await unlinkAsync(req.file.path);
+    if (req.file) {
+      await unlinkAsync(req.file.path);
+    }
     res.status(400).send('Bad request');
   }
 };

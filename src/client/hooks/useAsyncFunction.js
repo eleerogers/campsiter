@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useAsyncFunction(asyncFunction, defaultValue, optionalParam) {
+function useAsyncFunction(asyncFunction, defaultValue = null, ...optionalParams) {
   const [state, setState] = useState({
     value: defaultValue,
     error: null,
@@ -9,7 +9,7 @@ function useAsyncFunction(asyncFunction, defaultValue, optionalParam) {
 
   useEffect(() => {
     let mounted = true;
-    asyncFunction(optionalParam)
+    asyncFunction(...optionalParams)
       .then(
         (value) => {
           if (mounted) {

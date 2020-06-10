@@ -30,8 +30,7 @@ function getCampgrounds(userId) {
     });
 }
 
-function useCampgrounds(userId, calledBy) {
-  console.log({calledBy});
+function useCampgrounds(userId) {
   const [data, error, isPending] = useAsyncFunction(getCampgrounds, emptyCGObj, userId);
   return { data, error, isPending };
 }

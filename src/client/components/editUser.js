@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import '../app.css';
@@ -7,13 +7,17 @@ import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
+import LoadingButton from './loadingButton';
 
 
 function EditUser() {
+  const [isLoading, setIsLoading] = useState(false);
+  const mountedRef = useRef(true);
   const {
     setLoggedInAs,
     loggedInAs: {
-      id: loggedInAsId
+      id: loggedInAsId,
+      admin: loggedInAsAdmin
     }
   } = useContext(LoggedInAsContext);
   const {
@@ -43,14 +47,18 @@ function EditUser() {
     handleFileChange
   } = useGetFileName(initBtnMessage);
 
+  const loggedInAsThisUser = loggedInAsId === id
+
   useEffect(() => {
-    if (loggedInAsId.length === 0 || loggedInAsId !== id) {
+    if (loggedInAsId.length === 0 || !loggedInAsThisUser && !loggedInAsAdmin) {
       push('/campgroundsHome');
     }
+    return () => { mountedRef.current = false }
   }, [loggedInAsId, push, id]);
 
   async function submitForm(event) {
     event.preventDefault();
+    setIsLoading(true);
     const lNameNoPeriod = lastName.replace(/\.$/, "");
 
     const fd = new FormData();
@@ -84,34 +92,40 @@ function EditUser() {
         }
       } = await axios.put('/api/users', fd, config);
       if (status === 201) {
-        setLoggedInAs({
-          admin: updatedAdmin,
-          id,
-          username,
-          firstName,
-          lastName: lNameNoPeriod,
-          email,
-          image: newImageLink,
-          imageId: newImageId,
-        });
+        if (loggedInAsThisUser) {
+          setLoggedInAs({
+            admin: updatedAdmin,
+            id,
+            username,
+            firstName,
+            lastName: lNameNoPeriod,
+            email,
+            image: newImageLink,
+            imageId: newImageId,
+          });
+        }
         toast.success(message);
         push(`/ycusers/${id}`);
       }
     } catch (err) {
       const { response: { status, data: message } } = err;
       toast.error(`${message} (${status})`);
+    } finally {
+      if (mountedRef.current) {
+        setIsLoading(false);
+      }
     }
   }
 
   function renderAdminBox() {
-    if (!admin) {
+    if (loggedInAsAdmin) {
       return (
         <div className="form-group">
           <input
             className="form-control"
             type="text"
             name="adminCode"
-            placeholder="Admin Code (if applicable)"
+            placeholder="Enter admin code to toggle admin status"
             value={adminCode}
             onChange={handleChange}
           />
@@ -181,13 +195,14 @@ function EditUser() {
           </div>
           {renderAdminBox()}
           <div className="form-group">
-            <Button
-              className="btn-block"
+            <LoadingButton
+              isLoading={isLoading}
+              className="btn-block loading-button"
               variant="primary"
               type="submit"
             >
               Submit
-            </Button>
+            </LoadingButton>
           </div>
           <Link to={{
             pathname: `/ycusers/${id}`,
