@@ -1,6 +1,7 @@
 import React from "react";
 import { useSpring, animated } from "react-spring";
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 // import Loader from "./Loader";
 
@@ -70,3 +71,8 @@ export default function LoadingButton({ isLoading, children, ...props }) {
     </Button>
   );
 }
+
+LoadingButton.propTypes = {
+  children: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired
+};

@@ -53,6 +53,9 @@ function Login() {
         password: passwordForm
       };
       const { data } = await axios.post('/api/users/login/', loginInfo);
+      localStorage.userId = data.id;
+      setLoggedInAs(data);
+      goBack();
     } catch (err) {
       const { response: { status, data: message } } = err;
       toast.error(`${message} (${status})`);
