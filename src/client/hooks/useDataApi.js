@@ -8,22 +8,29 @@ const useDataApi = (initialUrl, initialData) => {
   const [isError, setIsError] = useState(false);
  
   useEffect(() => {
+    let mounted = true;
     const fetchData = async () => {
-      setIsError(false);
-      setIsLoading(true);
+        setIsError(false);
+        setIsLoading(true);
  
       try {
         const result = await axios(url);
-        setData(result.data);
+        if (mounted) {
+          setData(result.data);
+        }
       } catch (err) {
         const { response: { status, data: message } } = err;
-        setIsError(`${message} (${status})`);
+        if (mounted) {
+          setIsError(`${message} (${status})`);
+        }
       }
- 
-      setIsLoading(false);
+      if (mounted) {
+        setIsLoading(false);
+      }
     };
  
     fetchData();
+    return () => { mounted = false }
   }, [url]);
  
   return [{ data, isLoading, isError }, setUrl];
