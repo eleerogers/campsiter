@@ -7,7 +7,6 @@ import useLoading from '../hooks/useLoading';
 
 function UserPicDisplay({ author, userId }) {
   const [loading, setLoadingFalse] = useLoading();
-  console.log('userpicdisplay author: ', author);
   const {
     loggedInAs: {
       id: loggedInAsId,
@@ -89,7 +88,8 @@ UserPicDisplay.propTypes = {
     first_name: PropTypes.string.isRequired,
     last_name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired
+    email: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired
   }).isRequired,
   userId: PropTypes.string.isRequired
 };

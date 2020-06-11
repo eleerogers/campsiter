@@ -9,7 +9,8 @@ function useGetCGs(urlStr = '/api/campgrounds') {
       first_name: '',
       last_name: '',
       image: '',
-      email: ''
+      email: '',
+      username: '',
     }
   };
 

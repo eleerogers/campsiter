@@ -5,7 +5,6 @@ import {
   Col, Container, Row, Spinner
 } from 'react-bootstrap';
 import '../app.css';
-// import useCampgrounds from '../hooks/useCampgrounds';
 import useGetCGs from '../hooks/useGetCGs';
 import Campgrounds from './campgrounds';
 import UserPicDisplay from './userPicDisplay';
@@ -13,7 +12,6 @@ import UserPicDisplay from './userPicDisplay';
 
 function UserProfile() {
   const { id: userId } = useParams();
-  // const { data: { campgrounds, user: author }, error, isPending } = useCampgrounds(userId);
   const { data: { campgrounds, user: author }, errMsg, isLoading } = useGetCGs(`/api/campgrounds/user/${userId}`);
 
   const campgroundsDisplayConfig = {

@@ -7,7 +7,6 @@ import {
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
-import useCampgrounds from '../hooks/useCampgrounds';
 import usePagination from '../hooks/usePagination';
 import Campgrounds from './campgrounds';
 import useSearchFilter from '../hooks/useSearchFilter';
@@ -16,7 +15,6 @@ import useGetCGs from '../hooks/useGetCGs';
 
 function CampgroundsHome() {
   const [search, setSearch] = useState('');
-  // const { data: { campgrounds }, error, isPending } = useCampgrounds();
   const { data: { campgrounds }, errMsg, isLoading } = useGetCGs();
   const filteredCGs = useSearchFilter(search, campgrounds);
   const CAMPGROUNDS_PER_PAGE = 12;
@@ -45,6 +43,7 @@ function CampgroundsHome() {
   function handleSearchChange(e) {
     e.preventDefault();
     setSearch(e.target.value);
+    jump(1);
   }
 
   const {
