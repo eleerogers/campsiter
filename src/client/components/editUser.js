@@ -49,12 +49,19 @@ function EditUser() {
 
   const loggedInAsThisUser = loggedInAsId === id
 
+  // useEffect(() => {
+  //   if (loggedInAsId.length === 0 || !loggedInAsThisUser && !loggedInAsAdmin) {
+  //     push('/campgroundsHome');
+  //   }
+  //   return () => { mountedRef.current = false }
+  // }, [loggedInAsId.length, push, loggedInAsAdmin, loggedInAsThisUser]);
+
   useEffect(() => {
-    if (loggedInAsId.length === 0 || !loggedInAsThisUser && !loggedInAsAdmin) {
+    if (!localStorage.userId) {
       push('/campgroundsHome');
     }
     return () => { mountedRef.current = false }
-  }, [loggedInAsId.length, push, loggedInAsAdmin, loggedInAsThisUser]);
+  }, [push]);
 
   async function submitForm(event) {
     event.preventDefault();
@@ -92,7 +99,7 @@ function EditUser() {
         }
       } = await axios.put('/api/users', fd, config);
       if (status === 201) {
-        if (loggedInAsThisUser) {
+        if (loggedInAsThisUser && mountedRef.current) {
           setLoggedInAs({
             admin: updatedAdmin,
             id,

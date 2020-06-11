@@ -40,7 +40,7 @@ function Forgot() {
   }
 
   return (
-    <div className="margin-top-50">
+    <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">Forgot Password</h1>
         <br />
@@ -72,7 +72,7 @@ function Forgot() {
             <Button
               size="sm"
               variant="link"
-              className="float-left marginBtm"
+              className="float-left"
             >
               Go Back
             </Button>

@@ -57,7 +57,7 @@ function EditComment() {
   }
 
   return (
-    <div className="margin-top-50">
+    <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">Comment on This Campground</h1>
         <br />
@@ -66,11 +66,12 @@ function EditComment() {
           onSubmit={submitForm}
         >
           <div className="form-group">
-            <input
-              className="form-control"
+            <textarea
+              className="form-control inputTextBox"
               type="text"
               name="comment"
               placeholder="Comment"
+              rows="5"
               onChange={handleChange}
               value={values.comment || ''}
             />
@@ -95,7 +96,7 @@ function EditComment() {
             <Button
               size="sm"
               variant="link"
-              className="marginBtm float-left"
+              className="float-left"
             >
               Go Back
             </Button>

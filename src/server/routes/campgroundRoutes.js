@@ -6,13 +6,6 @@ const userController = require('../controllers/userController');
 const middleware = require('../middleware');
 
 
-// router.get('/mapkey',
-//   (req, res) => {
-//     const { REACT_APP_GOOGLE_API_KEY: mapKey } = process.env;
-//     res.status(200).send(mapKey);
-//   });
-
-
 router.get('/',
   campgroundController.getCampgrounds,
   (req, res) => {

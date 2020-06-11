@@ -69,7 +69,7 @@ function Comment({
               {moment(comment.created_at).fromNow()}
             </span>
           </p>
-          <p className="card-text float-left">{comment.comment}</p>
+          <p className="card-text float-left keepTextSpacing">{comment.comment}</p>
           <div className="float-right">
             {renderCommentButtons(comment)}
           </div>

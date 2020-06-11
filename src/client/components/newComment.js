@@ -48,7 +48,7 @@ function NewComment() {
   }
 
   return (
-    <div className="margin-top-50">
+    <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">Comment on This Campground</h1>
         <br />
@@ -57,11 +57,12 @@ function NewComment() {
           onSubmit={submitForm}
         >
           <div className="form-group">
-            <input
-              className="form-control"
+            <textarea
+              className="form-control inputTextBox"
               type="text"
               name="comment"
               placeholder="Comment"
+              rows="5"
               onChange={handleChange}
               value={values.comment}
             />
@@ -86,7 +87,7 @@ function NewComment() {
             <Button
               size="sm"
               variant="link"
-              className="float-left marginBtm"
+              className="float-left"
             >
               Go Back
             </Button>

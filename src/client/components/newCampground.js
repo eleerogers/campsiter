@@ -30,10 +30,10 @@ function NewCampground() {
   } = values;
 
   useEffect(() => {
-    if (loggedInAsId === '') {
+    if (!localStorage.userId) {
       push('/campgroundsHome');
     }
-  }, [loggedInAsId, push]);
+  }, [push]);
 
   async function submitForm(event) {
     event.preventDefault();
@@ -77,7 +77,7 @@ function NewCampground() {
   }
 
   return (
-    <div className="margin-top-50">
+    <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">Create a New Campground</h1>
         <br />
@@ -94,11 +94,12 @@ function NewCampground() {
               />
             </div>
             <div className="form-group">
-              <input
-                className="form-control"
+              <textarea
+                className="form-control inputTextBox"
                 type="text"
                 name="description"
                 placeholder="Description"
+                rows="5"
                 onChange={handleChange}
                 value={description}
               />
@@ -153,7 +154,7 @@ function NewCampground() {
               <Button
                 size="sm"
                 variant="link"
-                className="marginBtm float-left"
+                className="float-left"
               >
                 Go Back
               </Button>

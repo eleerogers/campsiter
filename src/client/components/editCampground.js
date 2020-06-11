@@ -42,10 +42,10 @@ function EditCampground() {
   const nameRef = useRef(name);
 
   useEffect(() => {
-    if (loggedInAsId === '') {
+    if (!localStorage.userId) {
       push('/campgroundsHome');
     }
-  }, [loggedInAsId, push]);
+  }, [push]);
 
   async function submitForm(event) {
     event.preventDefault();
@@ -106,7 +106,7 @@ function EditCampground() {
   }
 
   return (
-    <div className="margin-top-50">
+    <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">
           Edit Campground:
@@ -127,11 +127,12 @@ function EditCampground() {
               />
             </div>
             <div className="form-group">
-              <input
-                className="form-control"
+              <textarea
+                className="form-control inputTextBox"
                 type="text"
                 name="description"
                 placeholder="Description"
+                rows="5"
                 onChange={handleChange}
                 value={description}
               />
@@ -192,7 +193,7 @@ function EditCampground() {
               <Button
                 size="sm"
                 variant="link"
-                className="marginBtm float-left"
+                className="float-left"
               >
                 Go Back
               </Button>

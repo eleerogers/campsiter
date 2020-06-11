@@ -166,7 +166,7 @@ function CampgroundPage() {
               <h4>
                 <a href="#campground">{name}</a>
               </h4>
-              <p>{description}</p>
+              <p className="keepTextSpacing">{description}</p>
               <p>
                 <em>
                   Submitted by:

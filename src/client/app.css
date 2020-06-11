@@ -333,3 +333,11 @@ a:hover {
 .marginBtm {
   margin-bottom: 5em;
 }
+
+.keepTextSpacing {
+  white-space: pre-line;
+}
+
+.inputTextBox {
+  min-height: 39px;
+}
