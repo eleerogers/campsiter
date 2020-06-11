@@ -232,7 +232,14 @@ function Signup() {
               Submit
             </Button>
           </div>
-          <Button onClick={goBack} className="float-left" size="sm" variant="link">Go Back</Button>
+          <Button 
+            onClick={goBack} 
+            className="float-left marginBtm" 
+            size="sm" 
+            variant="link"
+          >
+            Go Back
+          </Button>
         </form>
       </Container>
     </div>

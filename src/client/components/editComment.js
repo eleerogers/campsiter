@@ -92,7 +92,13 @@ function EditComment() {
             }
           }}
           >
-            <Button size="sm" variant="link">Go Back</Button>
+            <Button
+              size="sm"
+              variant="link"
+              className="marginBtm float-left"
+            >
+              Go Back
+            </Button>
           </Link>
         </form>
       </Container>

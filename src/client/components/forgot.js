@@ -72,6 +72,7 @@ function Forgot() {
             <Button
               size="sm"
               variant="link"
+              className="float-left marginBtm"
             >
               Go Back
             </Button>

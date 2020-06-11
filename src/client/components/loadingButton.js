@@ -52,6 +52,7 @@ export default function LoadingButton({ isLoading, children, ...props }) {
       {...props}
       // className="loading-button"
       ref={ref}
+      size="lg"
       style={
         showLoader
           ? {

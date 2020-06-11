@@ -211,7 +211,13 @@ function EditUser() {
             }
           }}
           >
-            <Button size="sm" variant="link">Go Back</Button>
+            <Button
+              size="sm"
+              variant="link"
+              className="float-left marginBtm"
+            >
+              Go Back
+            </Button>
           </Link>
         </form>
       </Container>

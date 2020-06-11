@@ -192,6 +192,7 @@ function EditCampground() {
               <Button
                 size="sm"
                 variant="link"
+                className="marginBtm float-left"
               >
                 Go Back
               </Button>
