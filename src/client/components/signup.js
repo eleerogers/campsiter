@@ -129,7 +129,7 @@ function Signup() {
       </Row>
     </Container>
   ) : (
-    <div className="margin-top-50">
+    <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">Create your account</h1>
         <br />
@@ -234,7 +234,7 @@ function Signup() {
           </div>
           <Button 
             onClick={goBack} 
-            className="float-left marginBtm" 
+            className="float-left" 
             size="sm" 
             variant="link"
           >

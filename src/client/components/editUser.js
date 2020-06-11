@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import '../app.css';
 import axios from 'axios';
@@ -22,6 +22,7 @@ function EditUser() {
   } = useContext(LoggedInAsContext);
   const {
     push,
+    goBack,
     location: {
       state: {
         author
@@ -48,13 +49,6 @@ function EditUser() {
   } = useGetFileName(initBtnMessage);
 
   const loggedInAsThisUser = loggedInAsId === id
-
-  // useEffect(() => {
-  //   if (loggedInAsId.length === 0 || !loggedInAsThisUser && !loggedInAsAdmin) {
-  //     push('/campgroundsHome');
-  //   }
-  //   return () => { mountedRef.current = false }
-  // }, [loggedInAsId.length, push, loggedInAsAdmin, loggedInAsThisUser]);
 
   useEffect(() => {
     if (!localStorage.userId) {
@@ -143,7 +137,7 @@ function EditUser() {
   }
 
   return (
-    <div className="margin-top-50">
+    <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">
           Edit account details:
@@ -211,21 +205,14 @@ function EditUser() {
               Submit
             </LoadingButton>
           </div>
-          <Link to={{
-            pathname: `/ycusers/${id}`,
-            state: {
-              author
-            }
-          }}
+          <Button
+            onClick={goBack}
+            size="sm"
+            variant="link"
+            className="float-left"
           >
-            <Button
-              size="sm"
-              variant="link"
-              className="float-left marginBtm"
-            >
-              Go Back
-            </Button>
-          </Link>
+            Go Back
+          </Button>
         </form>
       </Container>
     </div>
