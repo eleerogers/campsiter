@@ -6,7 +6,7 @@ function Footer() {
   return (
   <Navbar bg="dark" variant="light" sticky="bottom">
     <Container className="footer-copyright text-center pb-1 pt-1 footer">
-      <div className="grey-text ml-auto">
+      <div className="text-muted font-size-14 ml-auto">
         © {new Date().getFullYear()} CampSiter
       </div>
     </Container>

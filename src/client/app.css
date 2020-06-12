@@ -265,7 +265,7 @@ a:hover {
 }
 
 .user-cg-box {
-  margin-top: 52px;
+  margin-top: 55px;
 }
 
 .email-position {
@@ -342,8 +342,7 @@ a:hover {
   min-height: 39px;
 }
 
-.grey-text {
-  color: grey;
+.font-size-14 {
   font-size: 14px;
 }
 

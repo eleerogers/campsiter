@@ -4,9 +4,14 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useLoading from '../hooks/useLoading';
+import useHover from '../hooks/useHover';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEnvelope as fasEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope as farEnvelope } from '@fortawesome/free-regular-svg-icons'
 
 function UserPicDisplay({ author, userId }) {
   const [loading, setLoadingFalse] = useLoading();
+  const [hovered, ref] = useHover();
   const {
     loggedInAs: {
       id: loggedInAsId,
@@ -56,26 +61,23 @@ function UserPicDisplay({ author, userId }) {
     >
       <h1>{username}</h1>
       {' '}
-      <div className="thumbnail">
+      <div className="card">
         <img
-          className="img-fluid"
+          className="card-img-top"
           src={image}
           alt={email}
           onLoad={setLoadingFalse}
         />
-        <h6 className="float-left">
-          {firstName}
-          {' '}
-          {lNameOrInitial}
-        </h6>
-        <div className="email-position caption float-left">
-          <i className="float-left">
-            contact:
-            {' '}
-            <a href={mailTo}>
-              {email}
+        <div className="card-body">
+          <p className="card-text">
+            {firstName}
+            &nbsp;
+            {lNameOrInitial}
+            &nbsp;&nbsp;
+            <a ref={ref} href={mailTo}>
+              <FontAwesomeIcon icon={hovered ? fasEnvelope : farEnvelope} />
             </a>
-          </i>
+          </p>
         </div>
       </div>
       {renderEditButton()}
