@@ -7,8 +7,10 @@ function useSearchFilter(search, initArr = []) {
     const searchLC = search.toLowerCase();
     const filteredItems = initArr.filter((item) => {
       const itemNamePropertyLC = item.name.toLowerCase();
+      const itemDescriptionLC = item.description.toLowerCase();
       return (search === ''
-      || itemNamePropertyLC.indexOf(searchLC) !== -1);
+      || itemNamePropertyLC.indexOf(searchLC) !== -1
+      || itemDescriptionLC.indexOf(searchLC)) !== -1;
     });
     setItemsArr([]);
     setItemsArr(filteredItems);

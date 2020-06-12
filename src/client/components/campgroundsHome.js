@@ -26,7 +26,11 @@ function CampgroundsHome() {
   const pages = [];
   for (let number = 1; number <= maxPage; number += 1) {
     pages.push(
-      <Pagination.Item key={number} active={number === currentPage} onClick={() => jump(number)}>
+      <Pagination.Item
+        key={number}
+        active={number === currentPage}
+        onClick={() => jump(number)}
+      >
         {number}
       </Pagination.Item>,
     );
@@ -43,7 +47,9 @@ function CampgroundsHome() {
   function handleSearchChange(e) {
     e.preventDefault();
     setSearch(e.target.value);
-    jump(1);
+    if (pages.length) {
+      jump(1);
+    }
   }
 
   const {

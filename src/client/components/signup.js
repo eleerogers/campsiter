@@ -30,7 +30,6 @@ function Signup() {
     email: '',
     password1: '',
     password2: '',
-    adminCode: '',
   };
   const { values, handleChange } = useForm(initFormData);
   const {
@@ -40,7 +39,6 @@ function Signup() {
     email,
     password1,
     password2,
-    adminCode,
   } = values;
   const initBtnMessage = 'Select avatar image (optional)';
   const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
@@ -61,7 +59,6 @@ function Signup() {
       fd.append('firstName', firstName);
       fd.append('lastName', lNameNoPeriod);
       fd.append('email', email);
-      fd.append('adminCode', adminCode);
       if (imageFile) {
         fd.append('image', imageFile);
       }
@@ -184,16 +181,6 @@ function Signup() {
               />
               <span>{btnMessage}</span>
             </label>
-          </div>
-          <div className="form-group">
-            <input
-              className="form-control"
-              type="text"
-              name="adminCode"
-              placeholder="Admin Code (if applicable)"
-              value={adminCode}
-              onChange={handleChange}
-            />
           </div>
           <br />
           <div className="form-group">
