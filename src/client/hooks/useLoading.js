@@ -6,10 +6,8 @@ function useLoading(initLoadingState = true) {
 
   useEffect(() => {
     mountedRef.current = true;
-    // console.log('useLoading mountedRef: ', mountedRef.current);
     return () => { 
       mountedRef.current = false;
-      // console.log('useLoading mountedRef: ', mountedRef.current);
     }
   }, [])
 
