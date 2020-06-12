@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import './app.css';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Header from './components/header';
@@ -20,6 +20,7 @@ import Forgot from './components/forgot';
 import Reset from './components/resetPassword';
 import Footer from './components/footer';
 import ErrorBoundary from './components/errorBoundary';
+import useListenPath from './hooks/useListenPath';
 import { LoadScriptNext } from '@react-google-maps/api';
 
 toast.configure();
@@ -27,13 +28,7 @@ toast.configure();
 
 function App() {
   // keeping track of path to update errorBoundary key so it will reset when you click a link
-  const [path, setPath] = useState('');
-  const { listen } = useHistory();
-  useEffect(() => {
-    listen(({ pathname }) => {
-      setPath(pathname);
-    });
-  }, [path, listen]);
+  const [path] = useListenPath();
 
   return (
     <div className="app-outer">
