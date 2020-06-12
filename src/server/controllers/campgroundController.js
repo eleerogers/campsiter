@@ -94,7 +94,7 @@ const updateCampground = async (request, response, next) => {
       formattedAddress
     }] = await geocoder.geocode(campLocation);
     const { rows: [campground] } = await pool.query(
-      'UPDATE campgrounds SET name = $1, image = $2, image_id = $3, description = $4, price = $5, lat = $6, lng = $7, location = $8 WHERE id = $9 RETURNING *',
+      'WITH updated AS (UPDATE campgrounds SET name = $1, image = $2, image_id = $3, description = $4, price = $5, lat = $6, lng = $7, location = $8 WHERE id = $9 RETURNING *) SELECT updated.*, ycusers.username FROM updated, ycusers WHERE updated.user_id = ycusers.id',
       [name, image, imageId, description, price, latitude, longitude, formattedAddress, id]
     );
     response.locals.campground = campground;
