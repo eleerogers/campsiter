@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 
-function useLoading() {
+function useLoading(initLoadingState = true) {
   const mountedRef = useRef(true);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(initLoadingState);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -19,7 +19,13 @@ function useLoading() {
     }
   }
 
-  return [loading, setLoadingFalse];
+  function setLoadingTrue() {
+    if (mountedRef.current) {
+      setLoading(true);
+    }
+  }
+
+  return [loading, setLoadingFalse, setLoadingTrue];
 }
 
 export default useLoading;

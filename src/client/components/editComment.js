@@ -6,7 +6,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Button, Container } from 'react-bootstrap';
 import useForm from '../hooks/useForm';
-import '../app.css';
+import useLoading from '../hooks/useLoading';
+import LoadingButton from './loadingButton';
 
 function EditComment() {
   const {
@@ -26,6 +27,8 @@ function EditComment() {
 
   const { id } = useParams();
 
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
+
   const initFormData = {
     commentId,
     userId,
@@ -38,6 +41,7 @@ function EditComment() {
 
   async function submitForm(event) {
     event.preventDefault();
+    setLoadingTrue();
     const url = `/api/comments/${id}`;
     try {
       const { data, status } = await axios.put(url, values);
@@ -53,13 +57,15 @@ function EditComment() {
     } catch (err) {
       const { response: { status, data } } = err;
       toast.error(`${data} (${status})`);
+    } finally {
+      setLoadingFalse();
     }
   }
 
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
-        <h1 className="text-center">Comment on This Campground</h1>
+        <h1 className="text-center">Edit Comment on {campground.name}</h1>
         <br />
         <form
           className="entryBox centered"
@@ -78,13 +84,14 @@ function EditComment() {
           </div>
           <br />
           <div className="form-group">
-            <Button
-              className="btn-block"
+            <LoadingButton
+              isLoading={loading}
+              className="btn-block loading-button"
               variant="primary"
               type="submit"
             >
               Submit
-            </Button>
+            </LoadingButton>
           </div>
           <Link to={{
             pathname: `/campgrounds/${id}`,

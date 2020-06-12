@@ -1,21 +1,19 @@
 import React, {
-  useEffect, useContext, useState, useRef
-} from 'react';
+  useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  Button, Container, Row, Col, Spinner
-} from 'react-bootstrap';
-import '../app.css';
+  Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
+import useLoading from '../hooks/useLoading';
+import LoadingButton from './loadingButton';
 
 
 function Signup() {
-  const mountedRef = useRef(true);
-  const [waiting, setWaiting] = useState(false);
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
   const {
     loggedInAs: {
       id: loggedInAsId
@@ -47,10 +45,6 @@ function Signup() {
   const initBtnMessage = 'Select avatar image (optional)';
   const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
 
-  useEffect(() => (
-    () => { mountedRef.current = false; }
-  ), []);
-
   useEffect(() => {
     if (loggedInAsId.length > 0) {
       push('/campgroundsHome');
@@ -78,7 +72,7 @@ function Signup() {
         }
       };
       try {
-        setWaiting(true);
+        setLoadingTrue();
         const {
           status,
           data: {
@@ -100,35 +94,14 @@ function Signup() {
         const { response: { status, data: message } } = err;
         toast.error(`${message} (${status})`);
       } finally {
-        if (mountedRef.current) {
-          setWaiting(false);
-        }
+        setLoadingFalse();
       }
     } else {
       toast.error('Passwords do not match');
     }
   }
 
-  return waiting ? (
-    <Container>
-      <Row
-        // style={spinnerStyle}
-        key={1}
-      >
-        <Col style={{
-          textAlign: 'center',
-          top: '7em'
-        }}
-        >
-          <Spinner
-            animation="border"
-            variant="primary"
-            size="xl"
-          />
-        </Col>
-      </Row>
-    </Container>
-  ) : (
+  return (
     <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">Create your account</h1>
@@ -224,13 +197,14 @@ function Signup() {
           </div>
           <br />
           <div className="form-group">
-            <Button
-              className="btn-block"
+            <LoadingButton
+              isLoading={loading}
+              className="btn-block loading-button"
               variant="primary"
               type="submit"
             >
               Submit
-            </Button>
+            </LoadingButton>
           </div>
           <Button 
             onClick={goBack} 

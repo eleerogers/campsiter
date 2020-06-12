@@ -4,7 +4,8 @@ import { Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
-import '../app.css';
+import useLoading from '../hooks/useLoading';
+import LoadingButton from './loadingButton';
 
 function Forgot() {
   const [email, setEmail] = useState('');
@@ -14,6 +15,8 @@ function Forgot() {
       id: loggedInAsId
     }
   } = useContext(LoggedInAsContext);
+
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
   useEffect(() => {
     if (loggedInAsId.length > 0) {
@@ -27,6 +30,7 @@ function Forgot() {
 
   async function submitEmailReset(event) {
     event.preventDefault();
+    setLoadingTrue();
     try {
       const { data, status } = await axios.post('api/users/forgot', { email });
       if (status === 200) {
@@ -36,6 +40,8 @@ function Forgot() {
     } catch (err) {
       const { response: { status, statusText } } = err;
       toast.error(`${statusText} (${status})`);
+    } finally {
+      setLoadingFalse();
     }
   }
 
@@ -60,13 +66,14 @@ function Forgot() {
           </div>
           <br />
           <div className="form-group">
-            <Button
-              className="btn-block"
+            <LoadingButton
+              isLoading={loading}
+              className="btn-block loading-button"
               variant="primary"
               type="submit"
             >
               Reset Password
-            </Button>
+            </LoadingButton>
           </div>
           <Link to="/login">
             <Button

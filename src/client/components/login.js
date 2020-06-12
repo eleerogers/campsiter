@@ -1,11 +1,13 @@
 import React, { useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
-import '../app.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
+import useLoading from '../hooks/useLoading';
+import LoadingButton from './loadingButton';
+
 
 
 function Login() {
@@ -28,6 +30,8 @@ function Login() {
   } = useHistory();
   const { loggedInAs, setLoggedInAs } = useContext(LoggedInAsContext);
 
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
+
   useEffect(() => {
     if (loggedInAs.id.length > 0) {
       push('/campgroundsHome');
@@ -47,6 +51,7 @@ function Login() {
 
   async function submitLogin(event) {
     event.preventDefault();
+    setLoadingTrue();
     try {
       const loginInfo = {
         email: emailForm,
@@ -59,6 +64,8 @@ function Login() {
     } catch (err) {
       const { response: { status, data: message } } = err;
       toast.error(`${message} (${status})`);
+    } finally {
+      setLoadingFalse();
     }
   }
 
@@ -97,13 +104,14 @@ function Login() {
           <br />
           <br />
           <div className="form-group">
-            <Button
-              className="btn-block"
+            <LoadingButton
+              isLoading={loading}
+              className="btn-block loading-button"
               variant="primary"
               type="submit"
             >
               Submit
-            </Button>
+            </LoadingButton>
           </div>
           <Button
             onClick={goBackOrToCampgrounds}

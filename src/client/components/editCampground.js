@@ -1,19 +1,17 @@
 import React, { useEffect, useRef, useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
-import '../app.css';
+import useLoading from '../hooks/useLoading';
+import LoadingButton from './loadingButton';
 
 function EditCampground() {
   const {
-    loggedInAs: {
-      admin,
-      id: loggedInAsId
-    }
+    loggedInAs: { admin }
   } = useContext(LoggedInAsContext);
   const {
     location: {
@@ -21,7 +19,8 @@ function EditCampground() {
         campground
       }
     },
-    push
+    push,
+    goBack
   } = useHistory();
 
   const initBtnMessage = 'Change Campground Image';
@@ -39,6 +38,9 @@ function EditCampground() {
     location
   } = values;
 
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
+
+  // so the name at the top of the page doesn't change while you're editing the form:
   const nameRef = useRef(name);
 
   useEffect(() => {
@@ -49,6 +51,7 @@ function EditCampground() {
 
   async function submitForm(event) {
     event.preventDefault();
+    setLoadingTrue();
     const priceNoDollarSign = price.replace(/\$/gi, '');
     const fd = new FormData();
     const config = {
@@ -102,6 +105,8 @@ function EditCampground() {
         }
       } = err;
       toast.error(`${data} (${status})`);
+    } finally {
+      setLoadingFalse();
     }
   }
 
@@ -174,30 +179,24 @@ function EditCampground() {
             </div>
             <br />
             <div className="form-group">
-              <Button
-                className="btn-block"
+              <LoadingButton
+                isLoading={loading}
+                className="btn-block loading-button"
                 variant="primary"
                 type="submit"
                 size="lg"
               >
                 Submit
-              </Button>
+              </LoadingButton>
             </div>
-            <Link to={{
-              pathname: `/campgrounds/${campgroundId}`,
-              state: {
-                campground
-              }
-            }}
+            <Button
+              onClick={goBack}
+              size="sm"
+              variant="link"
+              className="float-left"
             >
-              <Button
-                size="sm"
-                variant="link"
-                className="float-left"
-              >
-                Go Back
-              </Button>
-            </Link>
+              Go Back
+            </Button>
           </div>
         </form>
       </Container>

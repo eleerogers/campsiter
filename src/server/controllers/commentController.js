@@ -4,7 +4,7 @@ const pool = require('../pool');
 const getComments = (request, response, next) => {
   const { campgroundId } = request.params;
 
-  pool.query('SELECT email, comment, comment_id, user_id, comments.created_at FROM comments JOIN ycusers ON ycusers.id=comments.user_id WHERE comments.campground_id=$1 ORDER BY comment_id ASC', [campgroundId], (error, results) => {
+  pool.query('SELECT username, comment, comment_id, user_id, comments.created_at FROM comments JOIN ycusers ON ycusers.id=comments.user_id WHERE comments.campground_id=$1 ORDER BY comment_id ASC', [campgroundId], (error, results) => {
     if (error) {
       console.error(error);
       throw error;

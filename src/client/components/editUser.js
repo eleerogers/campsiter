@@ -1,18 +1,17 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Container } from 'react-bootstrap';
-import '../app.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
+import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
 
 
 function EditUser() {
-  const [isLoading, setIsLoading] = useState(false);
-  const mountedRef = useRef(true);
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
   const {
     setLoggedInAs,
     loggedInAs: {
@@ -54,12 +53,11 @@ function EditUser() {
     if (!localStorage.userId) {
       push('/campgroundsHome');
     }
-    return () => { mountedRef.current = false }
   }, [push]);
 
   async function submitForm(event) {
     event.preventDefault();
-    setIsLoading(true);
+    setLoadingTrue();
     const lNameNoPeriod = lastName.replace(/\.$/, "");
 
     const fd = new FormData();
@@ -93,7 +91,7 @@ function EditUser() {
         }
       } = await axios.put('/api/users', fd, config);
       if (status === 201) {
-        if (loggedInAsThisUser && mountedRef.current) {
+        if (loggedInAsThisUser) {
           setLoggedInAs({
             admin: updatedAdmin,
             id,
@@ -112,9 +110,7 @@ function EditUser() {
       const { response: { status, data: message } } = err;
       toast.error(`${message} (${status})`);
     } finally {
-      if (mountedRef.current) {
-        setIsLoading(false);
-      }
+      setLoadingFalse();
     }
   }
 
@@ -197,7 +193,7 @@ function EditUser() {
           {renderAdminBox()}
           <div className="form-group">
             <LoadingButton
-              isLoading={isLoading}
+              isLoading={loading}
               className="btn-block loading-button"
               variant="primary"
               type="submit"

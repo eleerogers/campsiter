@@ -4,13 +4,21 @@ import { Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';
-import '../app.css';
+import useLoading from '../hooks/useLoading';
+import LoadingButton from './loadingButton';
 
 
 function Reset() {
   const [rPEmail, setRPEmail] = useState();
   const { push } = useHistory();
   const { reset_password_token: resetPasswordToken } = useParams();
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
+
+  useEffect(() => {
+    if (localStorage.userId) {
+      push('/campgroundsHome');
+    }
+  }, [push]);
 
   useEffect(() => {
     axios.get(`/api/users/token/${resetPasswordToken}`)
@@ -24,6 +32,7 @@ function Reset() {
 
   async function submitEmailReset(event) {
     event.preventDefault();
+    setLoadingTrue();
     try {
       if (password1 !== '') {
         if (password1 === password2) {
@@ -47,6 +56,8 @@ function Reset() {
     } catch (err) {
       const { response: { status, data } } = err;
       toast.error(`${data} (${status})`);
+    } finally {
+      setLoadingFalse();
     }
   }
 
@@ -82,14 +93,16 @@ function Reset() {
               onChange={handleChange}
             />
           </div>
+          <br />
           <div className="form-group">
-            <Button
-              className="btn-block"
+            <LoadingButton
+              isLoading={loading}
+              className="btn-block loading-button"
               variant="primary"
               type="submit"
             >
               Reset Password
-            </Button>
+            </LoadingButton>
           </div>
         </form>
       </Container>

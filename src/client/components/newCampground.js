@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
-import '../app.css';
+import useLoading from '../hooks/useLoading';
+import LoadingButton from './loadingButton';
 
 
 function NewCampground() {
@@ -16,8 +17,10 @@ function NewCampground() {
       id: loggedInAsId
     }
   } = useContext(LoggedInAsContext);
+
   const initBtnMessage = 'Select Campground Image (Required)';
   const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
+
   const initData = {
     name: '',
     description: '',
@@ -29,6 +32,8 @@ function NewCampground() {
     price, name, description, campLocation
   } = values;
 
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
+
   useEffect(() => {
     if (!localStorage.userId) {
       push('/campgroundsHome');
@@ -37,6 +42,7 @@ function NewCampground() {
 
   async function submitForm(event) {
     event.preventDefault();
+    setLoadingTrue();
     const priceNoDollarSign = price.replace(/\$/gi, '');
     const fd = new FormData();
     const config = {
@@ -73,6 +79,8 @@ function NewCampground() {
         }
       } = err;
       toast.error(`${data} (${status})`);
+    } finally {
+      setLoadingFalse();
     }
   }
 
@@ -141,14 +149,15 @@ function NewCampground() {
             </div>
             <br />
             <div className="form-group">
-              <Button
-                className="btn-block"
+              <LoadingButton
+                isLoading={loading}
+                className="btn-block loading-button"
                 variant="primary"
                 type="submit"
                 size="lg"
               >
                 Submit
-              </Button>
+              </LoadingButton>
             </div>
             <Link to="/campgroundsHome">
               <Button

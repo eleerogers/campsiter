@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Figure, Button } from 'react-bootstrap';
 import useLoading from '../hooks/useLoading';
-import '../app.css';
 
 
 function Campground({ campground, className }) {

@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import {
   Col, Container, Row, Spinner
 } from 'react-bootstrap';
-import '../app.css';
 import useGetCGs from '../hooks/useGetCGs';
 import Campgrounds from './campgrounds';
 import UserPicDisplay from './userPicDisplay';

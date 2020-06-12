@@ -7,7 +7,8 @@ import { toast } from 'react-toastify';
 import { Button, Container } from 'react-bootstrap';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
-import '../app.css';
+import useLoading from '../hooks/useLoading';
+import LoadingButton from './loadingButton';
 
 function NewComment() {
   const {
@@ -27,8 +28,11 @@ function NewComment() {
   } = useHistory();
   const { id } = useParams();
 
+  const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
+
   async function submitForm(event) {
     event.preventDefault();
+    setLoadingTrue();
     const url = `/api/comments/${id}`;
     try {
       const { data, status } = await axios.post(url, values);
@@ -44,13 +48,15 @@ function NewComment() {
     } catch (err) {
       const { response: { status, data } } = err;
       toast.error(`${data} (${status})`);
+    } finally {
+      setLoadingFalse();
     }
   }
 
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
-        <h1 className="text-center">Comment on This Campground</h1>
+        <h1 className="text-center">Comment on {campground.name}</h1>
         <br />
         <form
           className="entryBox centered"
@@ -69,13 +75,14 @@ function NewComment() {
           </div>
           <br />
           <div className="form-group">
-            <Button
-              className="btn-block"
+            <LoadingButton
+              isLoading={loading}
+              className="btn-block loading-button"
               variant="primary"
               type="submit"
             >
               Submit
-            </Button>
+            </LoadingButton>
           </div>
           <Link to={{
             pathname: `/campgrounds/${id}`,

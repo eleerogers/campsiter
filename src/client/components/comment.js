@@ -64,7 +64,7 @@ function Comment({
       <div className="card">
         <div className="card-body">
           <p className="card-title">
-            <strong>{comment.email}</strong>
+            <strong>{comment.username}</strong>
             <span className="float-right">
               {moment(comment.created_at).fromNow()}
             </span>
@@ -86,7 +86,7 @@ Comment.propTypes = {
   comment: PropTypes.shape({
     comment_id: PropTypes.number.isRequired,
     comment: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
     created_at: PropTypes.string.isRequired
   }).isRequired,
   deleteComment: PropTypes.func.isRequired
