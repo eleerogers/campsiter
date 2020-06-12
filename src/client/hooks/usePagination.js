@@ -12,15 +12,19 @@ function usePagination(data, itemsPerPage) {
 
   function next() {
     setCurrentPage((currPage) => Math.min(currPage + 1, maxPage));
+    window.scrollTo(0, 100);
   }
 
   function prev() {
     setCurrentPage((currPage) => Math.max(currPage - 1, 1));
+    window.scrollTo(0, 100);
   }
 
   function jump(page) {
     const pageNumber = Math.max(1, page);
     setCurrentPage(Math.min(pageNumber, maxPage));
+    console.log('scroll')
+    window.scrollTo(0, 100);
   }
 
   return {

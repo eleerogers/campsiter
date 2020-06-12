@@ -38,7 +38,7 @@ function App() {
         >
           <Header />
         </Route>
-        <Container className="min-height-container">
+        <Container className="min-height-container mb-5">
           <ErrorBoundary key={path}>
             <Switch>
               <Route
