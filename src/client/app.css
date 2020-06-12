@@ -341,3 +341,17 @@ a:hover {
 .inputTextBox {
   min-height: 39px;
 }
+
+.grey-text {
+  color: grey;
+  font-size: 14px;
+}
+
+.footer-box {
+  justify-content: end;
+  display: flex;
+}
+
+.min-height-container {
+  min-height: 100vh;
+}

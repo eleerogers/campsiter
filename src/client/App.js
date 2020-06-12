@@ -18,6 +18,7 @@ import UserProfile from './components/userProfile';
 import EditUser from './components/editUser';
 import Forgot from './components/forgot';
 import Reset from './components/resetPassword';
+import Footer from './components/footer';
 import ErrorBoundary from './components/errorBoundary';
 import { LoadScriptNext } from '@react-google-maps/api';
 
@@ -42,7 +43,7 @@ function App() {
         >
           <Header />
         </Route>
-        <Container>
+        <Container className="min-height-container">
           <ErrorBoundary key={path}>
             <Switch>
               <Route
@@ -125,6 +126,11 @@ function App() {
             </Switch>
           </ErrorBoundary>
         </Container>
+        <Route
+          path="/"
+        >
+          <Footer />
+        </Route>
       </div>
     </div>
   );

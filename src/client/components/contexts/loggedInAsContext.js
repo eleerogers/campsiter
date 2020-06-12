@@ -58,7 +58,7 @@ function LoggedInAsContextProvider({ children }) {
           toast.error(`${message} (${status})`);
         });
     }
-  }, [localStorage.userId]);
+  }, []);
 
   async function logoutUser(path, push) {
     try {
