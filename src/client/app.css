@@ -45,7 +45,7 @@
   z-index: 1;
   position: relative;
   text-align: center;
-  padding-top: 40vh;
+  padding-top: 30vh;
 }
 
 .landing-header h1 {
@@ -386,8 +386,4 @@ a:hover {
 
 ul {
   padding-inline-start: 0;
-}
-
-.min-width-270  {
-  min-width: 270px;
 }
