@@ -12,7 +12,8 @@
 }
 
 .entryBox {
-  width: 30%
+  width: 30%;
+  min-width: 270px;
 }
 
 .centered {
@@ -385,4 +386,8 @@ a:hover {
 
 ul {
   padding-inline-start: 0;
+}
+
+.min-width-270  {
+  min-width: 270px;
 }
