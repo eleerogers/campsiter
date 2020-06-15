@@ -262,7 +262,7 @@ a:hover {
 }
 
 .navMinHeight {
-  min-height: 95px;
+  min-height: 70px;
 }
 
 .user-cg-box {
@@ -279,6 +279,8 @@ a:hover {
 
 .jumbotron {
   min-width: 265px;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
 }
 
 .vertical-center {
@@ -354,6 +356,7 @@ a:hover {
 
 .min-height-container {
   min-height: 90vh;
+  margin-top: 2rem;
 }
 
 .text-align-center {
@@ -378,4 +381,8 @@ a:hover {
   .text-align-center {
     margin: auto;
   }
+}
+
+ul {
+  padding-inline-start: 0;
 }

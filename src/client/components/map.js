@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { GoogleMap, LoadScriptNext } from '@react-google-maps/api';
+import React from 'react';
+import { GoogleMap } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 
 
@@ -10,18 +10,18 @@ const containerStyle = {
 
 function MapContainer({ lat, lng }) {
   const center = { lat, lng };
-  const [map, setMap] = React.useState(null);
+  // const [map, setMap] = React.useState(null);
 
-  const onUnmount = React.useCallback((map) => {
-    setMap(null);
-  }, []);
+  // const onUnmount = React.useCallback((map) => {
+  //   setMap(null);
+  // }, []);
 
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
       zoom={15}
-      onUnmount={onUnmount}
+      // onUnmount={onUnmount}
     />
   );
 }
