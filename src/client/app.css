@@ -254,6 +254,7 @@ a:hover {
   height: 111px;
   width: 153px;
   object-fit: cover;
+  padding: 0;
 }
 
 .campgroundBtn {
