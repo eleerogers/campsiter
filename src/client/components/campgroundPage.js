@@ -112,7 +112,7 @@ function CampgroundPage() {
     : { display: 'none' };
 
   return (
-    <div className="container">
+    <div>
       <div className="row my-3">
         <div className="col-md-3">
           <div className="map col-md-12 d-none d-md-block">

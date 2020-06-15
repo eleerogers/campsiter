@@ -16,9 +16,9 @@ function UserProfile() {
   const campgroundsDisplayConfig = {
     campClass: 'campgroundUserThumb',
     colClass: 'mb-4',
-    sm: 6,
-    md: 4,
-    lg: 3
+    sm: 12,
+    md: 6,
+    lg: 4
   };
 
   const spinnerStyle = isLoading ? { left: '50%' } : { display: 'none' };
@@ -32,7 +32,7 @@ function UserProfile() {
   }, [errMsg]);
 
   return (
-    <div className="row">
+    <div className="row" style={{"minWidth": "296px"}}>
       <Container>
         <Row
           style={spinnerStyle}
@@ -62,7 +62,7 @@ function UserProfile() {
         />
       </div>
       <div className="user-cg-box col-md-8">
-        <Container>
+        <Container className="text-align-center">
           <Row key={2} style={loadedDisplay}>
             <Campgrounds
               campgrounds={campgrounds}

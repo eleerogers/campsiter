@@ -139,6 +139,9 @@ function CampgroundsHome() {
           </Row>
           <Row
             key={2}
+            style={{
+              'minWidth': '296px'
+            }}
           >
             <Campgrounds
               campgrounds={thisPageCGs}

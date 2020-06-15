@@ -356,13 +356,25 @@ a:hover {
 }
 
 .text-align-center {
-  text-align: center
+  text-align: center;
 }
 
 @media only screen and (max-width: 575px) {
   .campgroundThumb {
     height: auto;
-    width: 100%;
-    min-width: 265px;
+    width: 85%;
+    min-width: 225.25px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .campgroundUserThumb {
+    height: auto;
+    width: 85%;
+    min-width: 225.25px;
+  }
+
+  .text-align-center {
+    margin: auto;
   }
 }
