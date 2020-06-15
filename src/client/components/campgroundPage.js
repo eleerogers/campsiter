@@ -172,7 +172,9 @@ function CampgroundPage() {
                   Submitted by:
                   {' '}
                   <Link to={`/ycusers/${userId}`}>
-                    {authorUsername}
+                    <strong>
+                      {authorUsername}
+                    </strong>
                   </Link>
                   {' '}
                   {moment(createdAt).fromNow()}

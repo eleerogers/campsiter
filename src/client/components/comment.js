@@ -64,7 +64,11 @@ function Comment({
       <div className="card">
         <div className="card-body">
           <p className="card-title">
-            <strong>{comment.username}</strong>
+          <Link to={`/ycusers/${comment.user_id}`}>
+            <strong>
+              {comment.username}
+            </strong>
+          </Link>
             <span className="float-right">
               {moment(comment.created_at).fromNow()}
             </span>
@@ -87,7 +91,8 @@ Comment.propTypes = {
     comment_id: PropTypes.number.isRequired,
     comment: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-    created_at: PropTypes.string.isRequired
+    created_at: PropTypes.string.isRequired,
+    user_id: PropTypes.number.isRequired
   }).isRequired,
   deleteComment: PropTypes.func.isRequired
 };

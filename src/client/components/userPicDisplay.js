@@ -75,7 +75,7 @@ function UserPicDisplay({ author, userId }) {
             {lNameOrInitial}
             &nbsp;&nbsp;
             <a ref={ref} href={mailTo}>
-              <FontAwesomeIcon icon={hovered ? fasEnvelope : farEnvelope} />
+              <FontAwesomeIcon color="dodgerblue" icon={hovered ? fasEnvelope : farEnvelope} />
             </a>
           </p>
         </div>

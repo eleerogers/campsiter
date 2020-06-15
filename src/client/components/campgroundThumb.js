@@ -5,7 +5,7 @@ import { Figure, Button } from 'react-bootstrap';
 import useLoading from '../hooks/useLoading';
 
 
-function Campground({ campground, className }) {
+function CampgroundThumb({ campground, className }) {
   const { id, name, image } = campground;
   const [loading, setLoadingFalse] = useLoading();
 
@@ -44,7 +44,7 @@ function Campground({ campground, className }) {
   );
 }
 
-Campground.propTypes = {
+CampgroundThumb.propTypes = {
   campground: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
@@ -53,4 +53,4 @@ Campground.propTypes = {
   className: PropTypes.string.isRequired
 };
 
-export default Campground;
+export default CampgroundThumb;

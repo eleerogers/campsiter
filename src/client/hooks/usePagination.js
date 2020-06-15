@@ -23,7 +23,6 @@ function usePagination(data, itemsPerPage) {
   function jump(page) {
     const pageNumber = Math.max(1, page);
     setCurrentPage(Math.min(pageNumber, maxPage));
-    console.log('scroll')
     window.scrollTo(0, 100);
   }
 

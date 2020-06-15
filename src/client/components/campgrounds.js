@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
-import Campground from './campground';
+import CampgroundThumb from './CampgroundThumb';
 
 function Campgrounds({ campgrounds, configObj }) {
   const {
@@ -16,7 +16,7 @@ function Campgrounds({ campgrounds, configObj }) {
         lg={lg}
         className={colClass}
       >
-        <Campground
+        <CampgroundThumb
           campground={campground}
           className={campClass}
         />

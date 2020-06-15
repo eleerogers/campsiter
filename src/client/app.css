@@ -352,5 +352,17 @@ a:hover {
 }
 
 .min-height-container {
-  min-height: 80vh;
+  min-height: 90vh;
+}
+
+.text-align-center {
+  text-align: center
+}
+
+@media only screen and (max-width: 575px) {
+  .campgroundThumb {
+    height: auto;
+    width: 100%;
+    min-width: 265px;
+  }
 }

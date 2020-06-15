@@ -15,6 +15,7 @@ function UserProfile() {
 
   const campgroundsDisplayConfig = {
     campClass: 'campgroundUserThumb',
+    colClass: 'mb-4',
     sm: 6,
     md: 4,
     lg: 3

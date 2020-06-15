@@ -120,14 +120,13 @@ function CampgroundsHome() {
             </form>
           </Jumbotron>
         </Container>
-        <Container>
+        <Container className="text-align-center">
           <Row
             style={spinnerStyle}
             key={1}
           >
             <Col
               style={{
-                textAlign: 'center',
                 top: '5em'
               }}
             >
