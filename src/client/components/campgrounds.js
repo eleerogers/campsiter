@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
-import CampgroundThumb from './CampgroundThumb';
+import CampgroundThumb from './campgroundThumb';
 
 function Campgrounds({ campgrounds, configObj }) {
   const {
