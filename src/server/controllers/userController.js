@@ -139,7 +139,7 @@ const resetPassword = async (req, res, next) => {
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: 'edwinleerogers@gmail.com',
+        user: 'campsiter@gmail.com',
         pass: process.env.GMAILPW
       },
       port: 587,
@@ -150,7 +150,7 @@ const resetPassword = async (req, res, next) => {
       from: 'CampSiter@example.com',
       subject: 'CampSiter Password Reset',
       text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your CampSiter account.\n\n'
-      + 'Please click on the following link, or paste this into your browser to complete the process:\n\n'
+      + 'If this was you please click on the following link, or paste this into your browser to complete the process:\n\n'
       + 'http://'}${req.headers.host}/reset/${token}\n\n`
       + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
     });
