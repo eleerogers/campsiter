@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import {
-  Link, useHistory, useParams
-} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Button, Container } from 'react-bootstrap';
@@ -53,12 +51,15 @@ function Contact() {
         <h1 className="text-center">
           Contact CampSiter
         </h1>
+        <p className="text-center"><i>
+          Comments? Questions? Get in touch!
+        </i></p>
         <br />
         <form
           className="entryBox centered"
           onSubmit={submitForm}
         >
-          <div className="form-group">
+          {/* <div className="form-group">
             <input
               className="form-control"
               type="text"
@@ -90,7 +91,7 @@ function Contact() {
               value={values.email}
               required
             />
-          </div>
+          </div> */}
           <div className="form-group">
             <textarea
               className="form-control inputTextBox"

@@ -109,11 +109,6 @@ router.put('/',
     res.status(201).json({
       message,
       admin: updatedAdmin,
-      // id,
-      // username,
-      // first_name: firstName,
-      // last_name: lastName,
-      // email,
       image,
       image_id: imageId
     });
@@ -133,7 +128,7 @@ router.post('/contact',
   userController.contact,
   (req, res) => {
     res.status(201).json({
-      message: 'Your message has been sent!'
+      message: 'Your message has been sent! CampSiter will respond to you soon.'
     })
   })
 
