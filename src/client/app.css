@@ -387,3 +387,7 @@ a:hover {
 ul {
   padding-inline-start: 0;
 }
+
+.flex {
+  display: flex;
+}

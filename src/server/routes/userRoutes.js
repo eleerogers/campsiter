@@ -129,5 +129,13 @@ router.get('/token/:reset_password_token',
     });
   });
 
+router.post('/contact',
+  userController.contact,
+  (req, res) => {
+    res.status(201).json({
+      message: 'Your message has been sent!'
+    })
+  })
+
 
 module.exports = router;

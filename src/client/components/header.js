@@ -28,14 +28,22 @@ function Header() {
 
   const showLoginOrLoggedInAs = username.length > 0
     ? (
-      <div>
-        Logged in as
-        {' '}
-        <Link to={`/ycusers/${id}`}>
-          {username}
+      <div className="flex">
+        <Link
+          className="nav-link"
+          to="/contact"
+        >
+          Contact
         </Link>
-        {' '}
-        {admin && '(admin)'}
+        <div className="nav-link">
+          Logged in as
+          {' '}
+          <Link to={`/ycusers/${id}`}>
+            {username}
+          </Link>
+          {' '}
+          {admin && '(admin)'}
+        </div>
         <Button
           size="sm"
           className="float-right ml-3"

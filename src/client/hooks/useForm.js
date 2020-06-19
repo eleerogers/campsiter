@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 const useForm = (initialFormStateObj) => {
   const [values, setValues] = useState(initialFormStateObj || {});
@@ -15,10 +15,15 @@ const useForm = (initialFormStateObj) => {
     setValues(initialFormStateObj || {});
   };
 
+  const set = useCallback((newInit) => {
+    setValues(newInit);
+  }, []);
+
   return {
     handleChange,
     values,
-    reset
+    reset,
+    set
   };
 };
 

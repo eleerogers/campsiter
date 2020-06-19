@@ -1,14 +1,13 @@
 require('dotenv').config();
 
 const express = require('express');
-const bodyParser = require('body-parser');
-const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const cors = require('cors');
 const campgrounds = require('./routes/campgroundRoutes');
 const users = require('./routes/userRoutes');
 const comments = require('./routes/commentRoutes');
+const expressSanitizer = require('express-sanitizer');
 
 const app = express();
 
@@ -19,13 +18,13 @@ app.use(expressSession({
 }));
 
 app.use(express.static('dist'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser('keyboard_cat'));
 app.use(cors({
   credentials: true
 }));
-app.use(flash());
+app.use(expressSanitizer());
 
 app.use('/api/campgrounds', campgrounds);
 app.use('/api/comments', comments);

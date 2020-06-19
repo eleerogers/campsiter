@@ -17,6 +17,7 @@ import EditCampground from './components/editCampground';
 import UserProfile from './components/userProfile';
 import EditUser from './components/editUser';
 import Forgot from './components/forgot';
+import Contact from './components/contact';
 import Reset from './components/resetPassword';
 import Footer from './components/footer';
 import ErrorBoundary from './components/errorBoundary';
@@ -111,6 +112,12 @@ function App() {
                 exact
               >
                 <Forgot />
+              </Route>
+              <Route
+                path="/contact"
+                exact
+              >
+                <Contact />
               </Route>
               <Route
                 path="/reset/:reset_password_token"

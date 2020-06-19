@@ -186,6 +186,50 @@ const getUserByToken = (req, res, next) => {
   });
 };
 
+const contact = async (req, res, next) => {
+  const { firstName, lastName, email, message } = req.body;
+  const saniFName = req.sanitize(firstName);
+  const saniLName = req.sanitize(lastName);
+  const saniEmail = req.sanitize(email);
+  const saniMessage = req.sanitize(message);
+  const timeStamp = new Date().toString();
+  const html = `
+  <h3>A message from CampSiter user ${saniFName} ${saniLName}:</h3>
+  <p>${saniMessage}</p>
+  <p><i>sent via CampSiter ${timeStamp}</i></p>
+  <p>(You can reply to this message)</p>
+`
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.SITE_EMAIL,
+        pass: process.env.GMAILPW
+      },
+      port: 587,
+      secure: false, // true for 465, false for other ports
+    });
+    await transporter.sendMail({
+      to: process.env.ADMIN_EMAIL,
+      replyTo: saniEmail,
+      subject: 'CampSiter user contact',
+      text: saniMessage,
+      html
+    });
+    next();
+  } catch (error) {
+    console.error(error);
+ 
+    if (error.response) {
+      console.error(error.response.body)
+      res.status(400).send(`Unable to send: ${error.response.body}`);
+    } else {
+      res.status(400).send(`Unable to send.`);
+    }
+  }
+};
+
 
 module.exports = {
   getUsers,
@@ -196,5 +240,6 @@ module.exports = {
   logout,
   resetPassword,
   updatePassword,
-  getUserByToken
+  getUserByToken,
+  contact
 };
