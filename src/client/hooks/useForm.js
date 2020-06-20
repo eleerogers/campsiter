@@ -16,7 +16,12 @@ const useForm = (initialFormStateObj) => {
   };
 
   const set = useCallback((newInit) => {
-    setValues(newInit);
+    setValues((vals) => {
+      return ({
+        ...vals,
+        ...newInit
+      })
+    });
   }, []);
 
   return {

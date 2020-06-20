@@ -68,7 +68,6 @@ const register = async (req, res, next) => {
 const update = (req, res, next) => {
   const {
     id,
-    // username,
     firstName,
     lastName,
     email,
@@ -85,13 +84,12 @@ const update = (req, res, next) => {
   const queryString = 'UPDATE ycusers SET first_name=$1, last_name=$2, email=$3, image=$4, image_id=$5, admin=$6 WHERE id=$7 RETURNING *';
   const valueArr = [firstName, lastName, email, image, imageId, updatedAdmin, id];
 
-  pool.query(queryString, valueArr, (error, results) => {
+  pool.query(queryString, valueArr, (error) => {
     if (error) {
       console.error(error);
       throw error;
     }
     res.locals.updatedAdmin = updatedAdmin;
-    // res.locals.userId = results.rows[0].id;
     next();
   });
 };
@@ -187,14 +185,11 @@ const getUserByToken = (req, res, next) => {
 };
 
 const contact = async (req, res, next) => {
-  const { firstName, lastName, email, message } = req.body;
-  const saniFName = req.sanitize(firstName);
-  const saniLName = req.sanitize(lastName);
-  const saniEmail = req.sanitize(email);
+  const { firstName, lastName, email, message, emailTo } = req.body;
   const saniMessage = req.sanitize(message);
   const timeStamp = new Date().toString();
   const html = `
-  <h3>A message from CampSiter user ${saniFName} ${saniLName}:</h3>
+  <h3>A message from CampSiter user ${firstName} ${lastName}:</h3>
   <p>${saniMessage}</p>
   <p><i>sent via CampSiter ${timeStamp}</i></p>
   <p>(You can reply to this message)</p>
@@ -211,8 +206,8 @@ const contact = async (req, res, next) => {
       secure: false, // true for 465, false for other ports
     });
     await transporter.sendMail({
-      to: process.env.ADMIN_EMAIL,
-      replyTo: saniEmail,
+      to: emailTo,
+      replyTo: email,
       subject: 'CampSiter user contact',
       text: saniMessage,
       html

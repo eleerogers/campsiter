@@ -52,7 +52,7 @@ function UserPicDisplay({ author, userId }) {
     email,
     username
   } = author;
-  const mailTo = `mailto:${email}`;
+  // const mailTo = `mailto:${email}`;
   const lNameOrInitial = lastName.length === 1 ? lastName + '.' : lastName;
 
   return (
@@ -74,9 +74,19 @@ function UserPicDisplay({ author, userId }) {
             &nbsp;
             {lNameOrInitial}
             &nbsp;&nbsp;
-            <a ref={ref} href={mailTo}>
-            {loggedInAsId && <FontAwesomeIcon color="dodgerblue" icon={hovered ? fasEnvelope : farEnvelope} />}
-            </a>
+            <Link 
+              to={{
+                pathname: '/contact',
+                state: { author }
+              }}
+              ref={ref}
+            >
+              {loggedInAsId &&
+              <FontAwesomeIcon
+                color="dodgerblue"
+                icon={hovered ? fasEnvelope : farEnvelope}
+              />}
+            </Link>
           </p>
         </div>
       </div>

@@ -9,28 +9,40 @@ import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
 
 function Contact() {
+  const {
+    goBack,
+    location: { state }
+  } = useHistory();
   const { loggedInAs } = useContext(LoggedInAsContext);
+
+  const emailTo = state && state.author && state.author.email || process.env.REACT_APP_ADMIN_EMAIL;
+  const usernameTo = state && state.author && state.author.username || 'CampSiter';
+  const subTitle = state && state.author 
+  ? `${state.author.first_name} ${state.author.last_name} will receive your email address to be able to respond directly`
+  : 'Comments? Questions? Get in touch!';
 
   const initData = {
     firstName: '',
     lastName: '',
     email: '',
-    message: ''
+    message: '',
+    emailTo,
+    usernameTo
   };
+
   const { values, handleChange, set } = useForm(initData);
   
   useEffect(() => {
+    console.log('inside useEffect. loggedInas: ', loggedInAs);
     set(loggedInAs);
   }, [loggedInAs, set]);
-
-  const { goBack } = useHistory();
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
   async function submitForm(event) {
     event.preventDefault();
     setLoadingTrue();
-    const url = `/api/users/contact`;
+    const url = '/api/users/contact';
     try {
       const { data: { message }, status } = await axios.post(url, values);
       if (status === 201) {
@@ -49,49 +61,16 @@ function Contact() {
     <div className="margin-top-50 marginBtm">
       <Container>
         <h1 className="text-center">
-          Contact CampSiter
+          Contact {usernameTo}
         </h1>
         <p className="text-center"><i>
-          Comments? Questions? Get in touch!
+          {subTitle}
         </i></p>
         <br />
         <form
           className="entryBox centered"
           onSubmit={submitForm}
         >
-          {/* <div className="form-group">
-            <input
-              className="form-control"
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              onChange={handleChange}
-              value={values.firstName}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <input
-              className="form-control"
-              type="text"
-              name="lastName"
-              placeholder="Last Name (or initial)"
-              onChange={handleChange}
-              value={values.lastName}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <input
-              className="form-control"
-              type="text"
-              name="email"
-              placeholder="Email"
-              onChange={handleChange}
-              value={values.email}
-              required
-            />
-          </div> */}
           <div className="form-group">
             <textarea
               className="form-control inputTextBox"

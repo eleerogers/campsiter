@@ -124,13 +124,14 @@ router.get('/token/:reset_password_token',
     });
   });
 
+
 router.post('/contact',
   userController.contact,
   (req, res) => {
     res.status(201).json({
-      message: 'Your message has been sent! CampSiter will respond to you soon.'
+      message: `Your message has been sent to ${req.body.usernameTo}!`
     })
-  })
+  });
 
 
 module.exports = router;
