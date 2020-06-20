@@ -33,7 +33,6 @@ function Contact() {
   const { values, handleChange, set } = useForm(initData);
   
   useEffect(() => {
-    console.log('inside useEffect. loggedInas: ', loggedInAs);
     set(loggedInAs);
   }, [loggedInAs, set]);
 
