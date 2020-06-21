@@ -41,7 +41,7 @@ export default function LoadingButton({ isLoading, children, ...props }) {
     if (ref.current && ref.current.getBoundingClientRect().height) {
       setHeight(ref.current.getBoundingClientRect().height);
     }
-  }, [children]);
+  }, [children, isLoading]);
 
   // Hooks used to fade in/out the loader or the button contents
   const fadeOutProps = useSpring({ opacity: showLoader ? 1 : 0 });
