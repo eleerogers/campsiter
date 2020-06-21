@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
@@ -13,6 +13,14 @@ function Reset() {
   const { push } = useHistory();
   const { reset_password_token: resetPasswordToken } = useParams();
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
+  const isMounted = useRef(null);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    }
+  }, []);
 
   useEffect(() => {
     if (localStorage.userId) {
@@ -23,7 +31,9 @@ function Reset() {
   useEffect(() => {
     axios.get(`/api/users/token/${resetPasswordToken}`)
       .then(({ data: { user: { email } } }) => {
-        setRPEmail(email);
+        if (isMounted.current) {
+          setRPEmail(email);
+        }
       });
   }, [resetPasswordToken]);
 
