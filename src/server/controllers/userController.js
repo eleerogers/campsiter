@@ -32,17 +32,21 @@ const getUserById = (request, response, next) => {
 
 
 const register = async (req, res, next) => {
-  const {
+  let {
     username,
     firstName,
     lastName,
     email,
-    adminCode
-  } = req.body;
-  let {
+    adminCode,
     image,
     imageId,
   } = req.body;
+  username = req.sanitize(username);
+  firstName = req.sanitize(firstName);
+  lastName = req.sanitize(lastName);
+  email = req.sanitize(email);
+  adminCode = req.sanitize(adminCode);
+  image = req.sanitize(image);
   if (!image) {
     image = 'https://res.cloudinary.com/eleerogers/image/upload/v1565769595/tg6i3wamwkkevynyqaoe.jpg';
     imageId = 'tg6i3wamwkkevynyqaoe';
@@ -66,7 +70,7 @@ const register = async (req, res, next) => {
 
 
 const update = (req, res, next) => {
-  const {
+  let {
     id,
     firstName,
     lastName,
@@ -76,6 +80,11 @@ const update = (req, res, next) => {
     admin,
     adminCode
   } = req.body;
+  firstName = req.sanitize(firstName);
+  lastName = req.sanitize(lastName);
+  email = req.sanitize(email);
+  adminCode = req.sanitize(adminCode);
+  image = req.sanitize(image);
   const updatedAdmin =
     adminCode === process.env.ADMIN_PASSWORD
     ? admin === 'false'
@@ -96,7 +105,9 @@ const update = (req, res, next) => {
 
 
 const login = (req, res, next) => {
-  const { password, user } = req.body;
+  let { password, user } = req.body;
+  password = req.sanitize(password);
+
   if (!user) {
     res.status(400).send('Invalid email');
   } else {
@@ -128,7 +139,10 @@ const logout = (req, res, next) => {
 
 
 const resetPassword = async (req, res, next) => {
-  res.locals.email = req.body.email;
+  let { email } = req.body;
+  email = req.sanitize(email);
+  res.locals.email = email;
+
   try {
     const buf = crypto.randomBytes(20);
     const token = buf.toString('hex');
@@ -162,7 +176,9 @@ const resetPassword = async (req, res, next) => {
 
 const updatePassword = async (req, res, next) => {
   try {
-    const password = await bcrypt.hash(req.body.password, 10);
+    let { password } = req.body;
+    password = req.sanitize(password);
+    password = await bcrypt.hash(password, 10);
     await pool.query('UPDATE ycusers SET password = $1 WHERE id = $2 RETURNING id', [password, req.body.user.id]);
     next();
   } catch (err) {
@@ -185,12 +201,15 @@ const getUserByToken = (req, res, next) => {
 };
 
 const contact = async (req, res, next) => {
-  const { firstName, lastName, email, message, emailTo } = req.body;
-  const saniMessage = req.sanitize(message);
+  let { firstName, lastName, email, message, emailTo } = req.body;
+  firstName = req.sanitize(firstName);
+  lastName = req.sanitize(lastName);
+  email = req.sanitize(email);
+  message = req.sanitize(message);
   const timeStamp = new Date().toString();
   const html = `
   <h3>A message from CampSiter user ${firstName} ${lastName}:</h3>
-  <p>${saniMessage}</p>
+  <p>${message}</p>
   <p><i>sent via CampSiter ${timeStamp}</i></p>
   <p>(You can reply to this message)</p>
 `
@@ -209,7 +228,7 @@ const contact = async (req, res, next) => {
       to: emailTo,
       replyTo: email,
       subject: 'CampSiter user contact',
-      text: saniMessage,
+      text: message,
       html
     });
     next();

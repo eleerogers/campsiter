@@ -134,7 +134,9 @@ const validEditUser = (req, res, next) => {
 
 
 const getUserByEmail = (req, res, next) => {
-  pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email], (error, results) => {
+  let { email } = req.body;
+  email = req.sanitize(email);
+  pool.query('SELECT * FROM ycusers WHERE email = $1', [email], (error, results) => {
     if (error || results.rows.length === 0) {
       res.status(404).send('User not found');
     } else {

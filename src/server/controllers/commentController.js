@@ -19,9 +19,10 @@ const createComment = (request, response, next) => {
   const {
     campgroundId
   } = request.params;
-  const {
+  let {
     userId, comment
   } = request.body;
+  comment = request.sanitize(comment);
   pool.query(
     'INSERT INTO comments (user_id, campground_id, comment) VALUES ($1, $2, $3)',
     [userId, campgroundId, comment],
@@ -37,9 +38,10 @@ const createComment = (request, response, next) => {
 
 
 const editComment = (request, response, next) => {
-  const {
+  let {
     commentId, comment
   } = request.body;
+  comment = request.sanitize(comment);
 
   pool.query(
     'UPDATE comments SET comment = $1 WHERE comment_id = $2',
