@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import {
   Button, Col, Container, Row, Spinner
 } from 'react-bootstrap';
@@ -10,10 +10,27 @@ import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import MapContainer from './map';
 import DeleteModal from './deleteModal';
 import useLoading from '../hooks/useLoading';
+import useGetCGs from '../hooks/useGetCGs';
 import Comments from './comments';
 
 function CampgroundPage() {
+  const emptyCGObj = {
+    id: 0,
+    user_id: '',
+    image_id: '',
+    name: '',
+    image,
+    description: '',
+    price: '',
+    created_at: '',
+    username: '',
+    lat: 0,
+    lng: 0
+  };
+  const [campground, setCampground] = useState(emptyCGObj)
+
   const [loading, setLoadingFalse] = useLoading();
+
   const {
     loggedInAs: {
       id: loggedInAsId,
@@ -21,14 +38,36 @@ function CampgroundPage() {
       email: loggedInAsEmail
     }
   } = useContext(LoggedInAsContext);
+
   const {
     location: {
-      state: {
-        campground
-      }
+      state
     },
     push,
   } = useHistory();
+
+  const { id } = useParams();
+  const fetchCGUrl = `/api/campgrounds/${id}`;
+  const { data: { campground: fetchedCG }, errMsg, isLoading } = useGetCGs(fetchCGUrl, !!state, emptyCGObj);
+
+  useEffect(() => {
+    if (errMsg) {
+      toast.error(errMsg);
+    }
+  }, [errMsg]);
+
+  useEffect(() => {
+    if (state) {
+      const { campground: cGFromHomePage } = state;
+      setCampground(cGFromHomePage);
+    } else {
+      if (!isLoading) {
+        console.log({ fetchedCG });
+        setCampground(fetchedCG);
+      }
+    }
+  }, [state, id, isLoading, fetchedCG]);
+
   const {
     id: campgroundId,
     user_id: userId,

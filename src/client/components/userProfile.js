@@ -26,7 +26,6 @@ function UserProfile() {
 
   useEffect(() => {
     if (errMsg) {
-      console.log({errMsg});
       toast.error(errMsg);
     }
   }, [errMsg]);

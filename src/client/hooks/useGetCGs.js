@@ -2,8 +2,9 @@
 import useDataApi from "./useDataApi";
 
 
-function useGetCGs(urlStr = '/api/campgrounds') {
+function useGetCGs(urlStr = '/api/campgrounds', alreadyHaveData, emptyCG) {
   const emptyCGObj = {
+    campground: emptyCG,
     campgrounds: [],
     user: {
       first_name: '',
@@ -14,7 +15,7 @@ function useGetCGs(urlStr = '/api/campgrounds') {
     }
   };
 
-  const [{ data, isLoading, isError: errMsg }] = useDataApi(urlStr, emptyCGObj);
+  const [{ data, isLoading, isError: errMsg }] = useDataApi(urlStr, emptyCGObj, alreadyHaveData);
 
   return { data, isLoading, errMsg };
 }
