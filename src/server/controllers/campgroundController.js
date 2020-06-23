@@ -40,7 +40,7 @@ const getCampgroundsByUser = (request, response, next) => {
 const getCampgroundById = (request, response, next) => {
   const id = parseInt(request.params.id, 10);
 
-  pool.query('SELECT * FROM campgrounds WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT campgrounds.id, campgrounds.name, campgrounds.image, campgrounds.description, campgrounds.user_id, campgrounds.price, campgrounds.location, campgrounds.lat, campgrounds.lng, campgrounds.created_at, campgrounds.image_id, ycusers.username FROM campgrounds LEFT OUTER JOIN ycusers ON campgrounds.user_id = ycusers.id WHERE id = $1', [id], (error, results) => {
     if (error) {
       console.error(error);
       throw error;

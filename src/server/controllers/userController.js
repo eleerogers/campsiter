@@ -44,7 +44,7 @@ const register = async (req, res, next) => {
   username = req.sanitize(username);
   firstName = req.sanitize(firstName);
   lastName = req.sanitize(lastName);
-  email = req.sanitize(email);
+  email = req.sanitize(email).toLowerCase();
   adminCode = req.sanitize(adminCode);
   image = req.sanitize(image);
   if (!image) {

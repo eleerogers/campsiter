@@ -68,7 +68,7 @@ router.post('/',
   userController.register,
   (req, res) => {
     const { correctAdminCode } = res.locals;
-    const message = correctAdminCode ? 'Succesfully created new admin account. Please login.' : 'Succesfully created new account (non-admin). Please login.';
+    const message = correctAdminCode ? 'Succesfully created new admin account. Please login.' : 'Succesfully created new account. Please login.';
     res.status(201).json({
       message
     });

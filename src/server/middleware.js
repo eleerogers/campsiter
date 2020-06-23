@@ -135,7 +135,7 @@ const validEditUser = (req, res, next) => {
 
 const getUserByEmail = (req, res, next) => {
   let { email } = req.body;
-  email = req.sanitize(email);
+  email = req.sanitize(email).toLowerCase();
   pool.query('SELECT * FROM ycusers WHERE email = $1', [email], (error, results) => {
     if (error || results.rows.length === 0) {
       res.status(404).send('User not found');
@@ -160,8 +160,10 @@ const getUserByToken = (req, res, next) => {
 
 
 const checkIfEmailInUse = async (req, res, next) => {
+  const { email } = req.body;
+  const emailLC = email.toLowerCase();
   try {
-    const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE email = $1', [req.body.email]);
+    const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE email = $1', [emailLC]);
     if (length > 0) {
       await unlinkAsync(req.file.path);
       res.status(409).send('Email address already in use');
