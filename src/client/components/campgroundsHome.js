@@ -81,27 +81,14 @@ function CampgroundsHome() {
           <Jumbotron>
             <h1>Welcome to CampSiter!</h1>
             <p>Post and review campsites from around the globe</p>
-            {loggedInAsEmail.length > 0
-              ? (
-                <Link to="/newCampground">
-                  <Button
-                    variant="primary"
-                    size="lg"
-                  >
-                    Add New Campground
-                  </Button>
-                </Link>
-              )
-              : (
-                <Link to="/login">
-                  <Button
-                    variant="primary"
-                    size="lg"
-                  >
-                    Login to Add New Campground
-                  </Button>
-                </Link>
-              )}
+            <Link to="/newCampground">
+              <Button
+                variant="primary"
+                size="lg"
+              >
+                Add New Campground
+              </Button>
+            </Link>
             <br />
             <br />
             <form

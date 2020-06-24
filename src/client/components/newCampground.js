@@ -36,7 +36,7 @@ function NewCampground() {
 
   useEffect(() => {
     if (!localStorage.userId) {
-      push('/campgroundsHome');
+      push('/login');
     }
   }, [push]);
 
