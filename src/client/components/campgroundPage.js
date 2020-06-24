@@ -62,7 +62,6 @@ function CampgroundPage() {
       setCampground(cGFromHomePage);
     } else {
       if (!isLoading) {
-        console.log({ fetchedCG });
         setCampground(fetchedCG);
       }
     }
@@ -152,9 +151,9 @@ function CampgroundPage() {
 
   return (
     <div>
-      <div className="row my-3">
+      <div className="row my-3 flex-dir-col-rev">
         <div className="col-md-3">
-          <div className="map col-md-12 d-none d-md-block">
+          <div className="map col-md-12 d-flex d-md-block">
             <MapContainer
               lat={lat}
               lng={lng}
@@ -222,7 +221,7 @@ function CampgroundPage() {
               {renderEditDeleteBtns()}
             </div>
           </div>
-          <div className="card card-body bg-light">
+          <div className="card card-body bg-light mb-3">
             <div className="text-right">
               {loggedInAsEmail && loggedInAsEmail.length > 0
                 ? (
