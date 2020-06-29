@@ -59,6 +59,7 @@
     "react-router-dom": "5.2.0",
     "react-spring": "^8.0.27",
     "react-toastify": "^6.0.5",
+    "serve-favicon": "^2.5.0",
     "style-loader": "^1.2.1",
     "url-loader": "^4.1.0",
     "util": "^0.12.3",
