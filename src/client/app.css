@@ -688,10 +688,6 @@ div > .figure > a > .img-thumbnail {
     border: 0 !important;
   }
 
-  /* .root-outer > .app-outer > div > .mb-5 {
-    margin-bottom: 0 !important;
-  } */
-
   .app-outer > div > .container > div > .row, .app-outer > div > .container > .row, .col-md-8 > .container > .row {
     margin: 0;
   }

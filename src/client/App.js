@@ -31,6 +31,7 @@ toast.configure();
 function App() {
   // keeping track of path to update errorBoundary key so it will reset when you click a link
   const [path] = useListenPath();
+  const pathArr = path.split('/');
 
   return (
     <div className="app-outer">
@@ -40,7 +41,7 @@ function App() {
         >
           <Header />
         </Route>
-        <Container className="min-height-container mb-5">
+        <Container className={`min-height-container ${pathArr[1] !== 'campgrounds' && 'mb-5'}`}>
           <ErrorBoundary key={path}>
             <Switch>
               <Route
