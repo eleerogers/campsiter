@@ -121,6 +121,12 @@ function App() {
                 <Contact />
               </Route>
               <Route
+                path="/contactAdmin"
+                exact
+              >
+                <Contact />
+              </Route>
+              <Route
                 path="/reset/:reset_password_token"
                 exact
               >

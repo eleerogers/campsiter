@@ -31,7 +31,7 @@ function Header() {
       <div className="flex">
         <Link
           className="nav-link padding-auto-0 dissapear-small"
-          to="/contact"
+          to="/contactAdmin"
         >
           Contact
         </Link>
@@ -58,7 +58,7 @@ function Header() {
       <div className="flex">
         <Link
           className="nav-link padding-auto-0 dissapear-small"
-          to="/contact"
+          to="/contactAdmin"
         >
           Contact
         </Link>
