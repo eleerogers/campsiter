@@ -87,13 +87,13 @@ function NewCampground() {
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
-        <h1 className="text-center">Create a New Campground</h1>
+        <h1 className="text-center">Create a New <br className="brnodisplay-md" />Campground</h1>
         <br />
         <form onSubmit={submitForm}>
           <div className="entryBox centered">
             <div className="form-group">
               <input
-                className="form-control"
+                className="form-control shadow-none"
                 type="text"
                 name="name"
                 placeholder="Name"
@@ -103,7 +103,7 @@ function NewCampground() {
             </div>
             <div className="form-group">
               <textarea
-                className="form-control inputTextBox"
+                className="form-control shadow-none inputTextBox"
                 type="text"
                 name="description"
                 placeholder="Description"
@@ -114,7 +114,7 @@ function NewCampground() {
             </div>
             <div className="form-group">
               <input
-                className="form-control"
+                className="form-control shadow-none"
                 type="text"
                 name="campLocation"
                 placeholder="Location"
@@ -124,7 +124,7 @@ function NewCampground() {
             </div>
             <div className="form-group">
               <input
-                className="form-control"
+                className="form-control shadow-none"
                 type="text"
                 name="price"
                 placeholder="Price ($/night)"
@@ -151,7 +151,7 @@ function NewCampground() {
             <div className="form-group">
               <LoadingButton
                 isLoading={loading}
-                className="btn-block loading-button"
+                className="btn-block loading-button btn-orange btn-square shadow-none"
                 variant="primary"
                 type="submit"
                 size="lg"
@@ -163,7 +163,7 @@ function NewCampground() {
               <Button
                 size="sm"
                 variant="link"
-                className="float-left"
+                className="float-left text-primary text-primary-hover"
               >
                 Go Back
               </Button>

@@ -1,12 +1,11 @@
 import React, {
-  useState, useContext, useEffect
+  useState, useEffect
 } from 'react';
 import {
   Button, Jumbotron, Container, Row, Col, Spinner, Pagination
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import usePagination from '../hooks/usePagination';
 import Campgrounds from './campgrounds';
 import useSearchFilter from '../hooks/useSearchFilter';
@@ -38,7 +37,7 @@ function CampgroundsHome() {
   const paginationDisplay = pages.length > 1
     && (
       <div>
-        <Pagination className="center-div">
+        <Pagination className="center-div pagination">
           {pages}
         </Pagination>
       </div>
@@ -51,12 +50,6 @@ function CampgroundsHome() {
       jump(1);
     }
   }
-
-  const {
-    loggedInAs: {
-      email: loggedInAsEmail
-    }
-  } = useContext(LoggedInAsContext);
 
   useEffect(() => {
     if (errMsg) {
@@ -80,11 +73,12 @@ function CampgroundsHome() {
         <Container>
           <Jumbotron>
             <h1>Welcome to CampSiter!</h1>
-            <p>Post and review campsites from around the globe</p>
+            <p>Post and review campsites <br className="brnodisplay" />from around the globe</p>
             <Link to="/newCampground">
               <Button
                 variant="primary"
                 size="lg"
+                className="btn-orange btn-square"
               >
                 Add New Campground
               </Button>
@@ -92,11 +86,11 @@ function CampgroundsHome() {
             <br />
             <br />
             <form
-              className="form-inline"
+              className="form-inline display-flex"
               onSubmit={(e) => { e.preventDefault(); }}
             >
               <input
-                className="form-control search-form"
+                className="form-control search-form mt-1"
                 type="text"
                 name="search"
                 placeholder="Search campgrounds..."

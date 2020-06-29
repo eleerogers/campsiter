@@ -18,7 +18,7 @@ function Contact() {
   const emailTo = state && state.author && state.author.email || process.env.REACT_APP_ADMIN_EMAIL;
   const usernameTo = state && state.author && state.author.username || 'CampSiter';
   const subTitle = state && state.author 
-  ? `${state.author.first_name} ${state.author.last_name} will receive your email address to be able to respond directly`
+  ? <>{state.author.first_name} {state.author.last_name} will receive your email address<br /> to be able to respond directly</>
   : 'Comments? Questions? Get in touch!';
 
   const initData = {
@@ -57,7 +57,7 @@ function Contact() {
   }
 
   return (
-    <div className="margin-top-50 marginBtm">
+    <div className="contact-padding-top marginBtm">
       <Container>
         <h1 className="text-center">
           Contact {usernameTo}
@@ -72,7 +72,7 @@ function Contact() {
         >
           <div className="form-group">
             <textarea
-              className="form-control inputTextBox"
+              className="form-control inputTextBox shadow-none"
               type="text"
               name="message"
               placeholder="Message"
@@ -86,7 +86,7 @@ function Contact() {
           <div className="form-group">
             <LoadingButton
               isLoading={loading}
-              className="btn-block loading-button"
+              className="btn-block loading-button btn-orange btn-square"
               variant="primary"
               type="submit"
             >
@@ -97,7 +97,7 @@ function Contact() {
             onClick={goBack}
             size="sm"
             variant="link"
-            className="float-left"
+            className="float-left go-back-btn"
           >
             Go Back
           </Button>

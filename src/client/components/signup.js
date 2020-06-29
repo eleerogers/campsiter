@@ -109,7 +109,7 @@ function Signup() {
         >
           <div className="form-group">
             <input
-              className="form-control"
+              className="form-control shadow-none"
               type="text"
               name="username"
               placeholder="Username"
@@ -119,7 +119,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control"
+              className="form-control shadow-none"
               type="password"
               name="password1"
               placeholder="Password"
@@ -129,7 +129,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control"
+              className="form-control shadow-none"
               type="password"
               name="password2"
               placeholder="Verify Password"
@@ -139,7 +139,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control"
+              className="form-control shadow-none"
               type="text"
               name="firstName"
               placeholder="First Name"
@@ -149,7 +149,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control"
+              className="form-control shadow-none"
               type="text"
               name="lastName"
               placeholder="Last Name (or initial)"
@@ -159,7 +159,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control"
+              className="form-control shadow-none"
               type="text"
               name="email"
               placeholder="Email"
@@ -170,7 +170,7 @@ function Signup() {
           <div className="form-group">
             <label
               htmlFor="file-upload"
-              className="btn btn-outline-primary btn-block"
+              className="btn btn-outline-info btn-block"
             >
               <input
                 id="file-upload"
@@ -186,7 +186,7 @@ function Signup() {
           <div className="form-group">
             <LoadingButton
               isLoading={loading}
-              className="btn-block loading-button"
+              className="btn-block loading-button btn-square btn-orange shadow-none"
               variant="primary"
               type="submit"
             >
@@ -195,7 +195,7 @@ function Signup() {
           </div>
           <Button 
             onClick={goBack} 
-            className="float-left" 
+            className="float-left go-back-btn" 
             size="sm" 
             variant="link"
           >

@@ -12,7 +12,7 @@ function CampgroundThumb({ campground, className }) {
   return (
     <div>
       <Figure
-        className={`centered campground transition ${loading ? 'loading' : 'done'}`}
+        className={`img-fluid w-100 centered campground transition ${loading ? 'loading' : 'done'}`}
       >
         <Link to={{
           pathname: `/campgrounds/${id}`,

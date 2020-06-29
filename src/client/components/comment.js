@@ -64,7 +64,7 @@ function Comment({
       <div className="card">
         <div className="card-body">
           <p className="card-title">
-          <Link to={`/ycusers/${comment.user_id}`}>
+          <Link className="text-primary" to={`/ycusers/${comment.user_id}`}>
             <strong>
               {comment.username}
             </strong>

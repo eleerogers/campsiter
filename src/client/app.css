@@ -1,3 +1,12 @@
+:root {
+  --main-dark-blue: #2d3f53;
+  --main-light-blue: #95afbf;
+  --main-btn-color: #cf4532;
+  --main-btn-focus-color: #a73727;
+  --main-beige-color: #e9e2d3;
+  --main-bg-color: #f6f4f2;
+}
+
 .test-div {
   padding-bottom:66%;
   background:#EEE;
@@ -220,9 +229,14 @@ a:hover {
   right: 2em; 
 }
 
+.display-flex {
+  display: flex !important;
+  justify-content: center;
+}
+
 .search-form {
-  width: 14em;
-  min-width: 14em;
+  width: 232.05px !important;
+  justify-content: flex-end;
 }
 
 .campground { 
@@ -283,6 +297,8 @@ a:hover {
   min-width: 265px;
   margin-bottom: 3rem;
   margin-top: 2rem;
+  background-color: var(--main-dark-blue);
+  color: var(--main-bg-color);
 }
 
 .vertical-center {
@@ -365,14 +381,6 @@ a:hover {
   text-align: center;
 }
 
-@media only screen and (max-width: 575px) {
-  .campgroundThumb {
-    height: auto;
-    width: 85%;
-    min-width: 225.25px;
-  }
-}
-
 @media only screen and (max-width: 767px) {
   .campgroundUserThumb {
     height: auto;
@@ -387,6 +395,10 @@ a:hover {
   .flex-dir-col-rev {
     flex-direction: column-reverse;
   }
+
+  .form-control {
+    display: inline-block !important;
+  }
 }
 
 ul {
@@ -395,4 +407,301 @@ ul {
 
 .flex {
   display: flex;
+}
+
+.jumbotron {
+  text-align: center;
+}
+
+.form-inline {
+  display: block !important;
+}
+
+.btn-max-ht {
+  margin: auto 0;
+}
+
+body {
+  background-color: var(--main-bg-color);
+  font-family: gtwalsheim,Avenir,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+
+  min-width: 378px;
+}
+
+.btn-orange {
+  background-color: var(--main-btn-color);
+  border-color: var(--main-btn-color);
+}
+
+.btn-orange:hover, .btn-orange:focus, .btn-orange:active {
+  background-color: var(--main-btn-focus-color);
+  border-color: var(--main-btn-focus-color);
+  box-shadow: none;
+  outline-offset: -2px !important;
+}
+
+.btn:focus {
+  box-shadow: none !important;
+}
+
+.entryBox > .form-group > .btn-orange:active {
+  background-color: var(--main-btn-focus-color);
+  border-color: var(--main-btn-focus-color);
+  box-shadow: none;
+  outline-offset: -2px !important;
+}
+
+ #basic-navbar-nav > .ml-auto > .flex > .btn-orange:active {
+  background-color: var(--main-btn-focus-color);
+  border-color: var(--main-btn-focus-color);
+  box-shadow: none;
+  outline-offset: -2px !important;
+}
+
+div > .container > .container > .jumbotron > a > .btn-orange:active {
+  background-color: var(--main-btn-focus-color);
+  border-color: var(--main-btn-focus-color);
+  box-shadow: none;
+  outline-offset: -2px !important;
+}
+
+.background-blue {
+  background-color: var(--main-light-blue) !important;
+}
+
+.background-beige {
+  background-color: var(--main-beige-color) !important;
+}
+
+.nav-link-custom {
+  display: block;
+  padding: .5rem 1rem;
+  color: rgba(0,0,0,.5);
+}
+
+.nav-link-custom:hover {
+  color: rgba(0,0,0,.7);
+}
+
+.nav-link-custom:focus {
+  color: rgba(0,0,0,.7);
+}
+
+.color-dark-blue {
+  color: var(--main-dark-blue) !important;
+}
+
+.nav-link-custom:hover .color-dark-blue {
+  font-weight: 500;
+}
+
+.nav-link-custom:focus .color-dark-blue {
+  font-weight: 500;
+}
+
+.go-back-btn {
+  color: var(--main-dark-blue);
+}
+
+.go-back-btn:hover, .go-back-btn:focus {
+  color: var(--main-dark-blue);
+  text-decoration: none;
+  font-weight: 450;
+}
+
+
+
+.btn-outline-info {
+  color: var(--main-dark-blue) !important;
+  border-color: var(--main-dark-blue) !important;
+  background-color: var(--main-bg-color) !important;
+}
+
+.btn-outline-info:hover, .btn-outline-info:active, .btn-outline-info:visited {
+  background-color: var(--main-dark-blue) !important;
+  color: var(--main-bg-color) !important;
+}
+
+.page-item.active .page-link {
+  /* z-index: 1;
+  color: #fff; */
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.page-link {
+  color: var(--primary);
+}
+
+.page-link:hover {
+  color: var(--primary);
+}
+
+.limit-pic-size {
+  height: 55px;
+  width: 55px;
+  margin: 5px 0;
+}
+
+.min-width-col {
+  min-width: 150px;
+  padding: 0 !important;
+}
+
+.btn-square {
+  border-radius: 0 !important;
+}
+
+#basic-navbar-nav > .ml-auto > div > .padding-auto-0 {
+  /* align-items: center;
+  justify-content: center; */
+  margin: auto 0;
+}
+
+.d-flex > .col {
+  padding: 0;
+}
+
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.min-width-125 {
+  min-width: 125px;
+}
+
+div > .figure > a > .img-thumbnail {
+  padding: 0;
+}
+
+.contact-padding-top {
+  padding-top: 27px;
+}
+
+.comment-padding-top {
+  padding-top: 27px;
+}
+
+@media only screen and (max-width: 475px) {
+  .dissapear-small {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .comment-padding-top {
+    padding-top: 60px;
+  }
+
+  .campgroundThumb {
+    height: calc(100vw * .75);
+    width: 100%;
+    min-width: 378px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    min-width: 225.25px;
+  }
+
+  body > .root-outer > .app-outer > div > .mb-3 {
+    margin-bottom: 0 !important;
+  }
+
+  .jumbotron {
+    margin: 0;
+    border-radius: 0;
+    padding-top: 140px;
+    padding-bottom: 70px;
+  }
+
+  .min-height-container {
+    margin: 0;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .navbar-styles {
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .navbar-page-styles {
+    width: 100%;
+    z-index: 10;
+  }
+
+  .container > .container > .row > div {
+    margin: 0;
+    padding: 0;
+  }
+
+  div > .container > .container > .row {
+    margin: 0;
+  }
+
+  /* .dissapear-small {
+    display: none;
+  } */
+
+  .navbar-brand {
+    margin: 0;
+  }
+
+  div > .container > div > .container > .container {
+    min-width: 378px !important;
+  }
+
+  .contact-padding-top {
+    padding-top: 60px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .row > .col-md-9 > .mb-3 {
+    margin-bottom: 0 !important;
+    border: 0 !important;
+  }
+
+  .root-outer > .app-outer > div > .mb-5 {
+    margin-bottom: 0 !important;
+  }
+}
+
+@media only screen and (min-width: 387px) { 
+  .brnodisplay {
+      display: none;
+  }
+}
+
+@media only screen and (min-width: 576px) { 
+  .brnodisplay-md {
+      display: none;
+  }
+}
+
+.nav-link-custom:hover .text-primary {
+  color: #1d3750 !important;
+}
+
+.text-primary-hover:hover {
+  color: #1d3750 !important;
+  text-decoration: none !important;
+  font-weight: 450;
+}
+
+.underline-hover:hover {
+  text-decoration: underline;
+}
+
+.navbar-brand {
+  padding-top: 1.15rem;
 }

@@ -12,7 +12,7 @@ function Header() {
     loggedInAs: {
       id,
       username,
-      admin
+      // admin
     }
   } = useContext(LoggedInAsContext);
   const {
@@ -30,23 +30,24 @@ function Header() {
     ? (
       <div className="flex">
         <Link
-          className="nav-link"
+          className="nav-link padding-auto-0 dissapear-small"
           to="/contact"
         >
           Contact
         </Link>
-        <div className="nav-link">
-          Logged in as
-          {' '}
-          <Link to={`/ycusers/${id}`}>
-            {username}
-          </Link>
-          {' '}
-          {admin && '(admin)'}
-        </div>
+        <Link to={`/ycusers/${id}`}>
+          <div className="nav-link-custom padding-auto-0 min-width-125">
+            Logged in as
+            {' '}
+              <span className="text-primary font-weight-500" 
+              >
+                {username}
+              </span>
+          </div>
+        </Link>
         <Button
           size="sm"
-          className="float-right ml-3"
+          className="float-right btn-max-ht btn-square ml-2 shadow-none"
           onClick={() => logout(pathname)}
         >
           Logout
@@ -54,28 +55,35 @@ function Header() {
       </div>
     )
     : (
-      <>
+      <div className="flex">
         <Link
-          className="nav-link"
+          className="nav-link padding-auto-0 dissapear-small"
+          to="/contact"
+        >
+          Contact
+        </Link>
+        <Link
+          className="nav-link padding-auto-0"
           to="/login"
         >
           Login
         </Link>
         <Link
-          className="nav-link"
+          className="nav-link padding-auto-0"
           to="/signup"
         >
           Signup
         </Link>
-      </>
+      </div>
     );
 
   return (
-    <Navbar className="mb-3 navMinHeight" bg="light" variant="light">
+    <Navbar className={`mb-3 navMinHeight background-beige ${pathname === '/campgroundsHome' && 'navbar-styles'}`} bg="light" variant="light">
       <Container className="d-flex justify-content-between">
-        <Col>
+        <Col className="min-width-col">
           <Link to="/campgroundsHome">
-            <Navbar.Brand>CampSiter</Navbar.Brand>
+            <img className="limit-pic-size" src="https://res.cloudinary.com/eleerogers/image/upload/v1593126696/noun_camping_location_710490_srkfky.png" />
+            <Navbar.Brand className="color-dark-blue">CampSiter</Navbar.Brand>
           </Link>
         </Col>
 

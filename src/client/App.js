@@ -1,5 +1,6 @@
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+import './bootstrap.colors.css';
 import './app.css';
 import { Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';

@@ -80,7 +80,7 @@ function Login() {
         >
           <div className="form-group">
             <input
-              className="form-control"
+              className="form-control shadow-none"
               type="text"
               name="emailForm"
               placeholder="Email"
@@ -90,7 +90,7 @@ function Login() {
           </div>
           <div className="form-group mb-1">
             <input
-              className="form-control"
+              className="form-control shadow-none"
               type="password"
               name="passwordForm"
               placeholder="Password"
@@ -99,14 +99,14 @@ function Login() {
             />
           </div>
           <Link to="/forgot">
-            <Button size="sm" variant="link">Forgot Password</Button>
+            <Button className="go-back-btn" size="sm" variant="link">Forgot Password</Button>
           </Link>
           <br />
           <br />
           <div className="form-group">
             <LoadingButton
               isLoading={loading}
-              className="btn-block loading-button"
+              className="btn-block loading-button btn-orange btn-square shadow-none"
               variant="primary"
               type="submit"
             >
@@ -115,7 +115,7 @@ function Login() {
           </div>
           <Button
             onClick={goBackOrToCampgrounds}
-            className="float-left marginBtm"
+            className="float-left marginBtm go-back-btn"
             size="sm"
             variant="link"
           >

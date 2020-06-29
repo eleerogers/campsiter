@@ -54,9 +54,9 @@ function NewComment() {
   }
 
   return (
-    <div className="margin-top-50 marginBtm">
+    <div className="comment-padding-top marginBtm">
       <Container>
-        <h1 className="text-center">Comment on {campground.name}</h1>
+        <h1 className="text-center">Comment on<br /> {campground.name}</h1>
         <br />
         <form
           className="entryBox centered"
@@ -77,7 +77,7 @@ function NewComment() {
           <div className="form-group">
             <LoadingButton
               isLoading={loading}
-              className="btn-block loading-button"
+              className="btn-block loading-button btn-orange btn-square"
               variant="primary"
               type="submit"
             >
@@ -94,7 +94,7 @@ function NewComment() {
             <Button
               size="sm"
               variant="link"
-              className="float-left"
+              className="float-left text-primary text-primary-hover"
             >
               Go Back
             </Button>

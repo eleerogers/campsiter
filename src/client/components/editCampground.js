@@ -115,7 +115,7 @@ function EditCampground() {
       <Container>
         <h1 className="text-center">
           Edit Campground:
-          {' '}
+          <br />
           {nameRef.current}
         </h1>
         <br />
@@ -181,7 +181,7 @@ function EditCampground() {
             <div className="form-group">
               <LoadingButton
                 isLoading={loading}
-                className="btn-block loading-button"
+                className="btn-block loading-button btn-orange btn-square"
                 variant="primary"
                 type="submit"
                 size="lg"
@@ -193,7 +193,7 @@ function EditCampground() {
               onClick={goBack}
               size="sm"
               variant="link"
-              className="float-left"
+              className="float-left text-primary text-primary-hover"
             >
               Go Back
             </Button>

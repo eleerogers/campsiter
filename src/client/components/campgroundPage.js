@@ -151,7 +151,7 @@ function CampgroundPage() {
 
   return (
     <div>
-      <div className="row my-3 flex-dir-col-rev">
+      <div className="row flex-dir-col-rev">
         <div className="col-md-3">
           <div className="map col-md-12 d-flex d-md-block">
             <MapContainer
@@ -201,18 +201,16 @@ function CampgroundPage() {
                 {price}
                 /night
               </h6>
-              <h4>
-                <a href="#campground">{name}</a>
+              <h4 className="color-dark-blue">
+                {name}
               </h4>
               <p className="keepTextSpacing">{description}</p>
               <p>
                 <em>
                   Submitted by:
                   {' '}
-                  <Link to={`/ycusers/${userId}`}>
-                    <strong>
-                      {authorUsername}
-                    </strong>
+                  <Link className="text-primary font-weight-600" to={`/ycusers/${userId}`}>
+                    {authorUsername}
                   </Link>
                   {' '}
                   {moment(createdAt).fromNow()}
