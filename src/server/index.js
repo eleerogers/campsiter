@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const favicon = require('express-favicon');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const cors = require('cors');
@@ -10,6 +11,8 @@ const comments = require('./routes/commentRoutes');
 const expressSanitizer = require('express-sanitizer');
 
 const app = express();
+
+app.use(favicon(__dirname + '/build/favicon.ico'));
 
 app.use(expressSession({
   secret: process.env.EXPRESS_SECRET,

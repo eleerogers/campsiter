@@ -37,6 +37,7 @@
     "dotenv-webpack": "^1.8.0",
     "eslint-plugin-react-perf": "^3.2.3",
     "express": "^4.17.1",
+    "express-favicon": "^2.0.1",
     "express-sanitizer": "^1.0.5",
     "express-session": "^1.17.1",
     "file-loader": "^6.0.0",
