@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope as fasEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope as farEnvelope } from '@fortawesome/free-regular-svg-icons'
 
-function UserPicDisplay({ author, userId }) {
-  const [loading, setLoadingFalse] = useLoading();
+function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse }) {
+  // const [loading, setLoadingFalse] = useLoading();
   const [hovered, ref] = useHover();
   const {
     loggedInAs: {
@@ -34,7 +34,7 @@ function UserPicDisplay({ author, userId }) {
             <Button
               size="sm"
               variant="warning"
-              className="mr-2 user-edit-btn"
+              className="mr-2 user-edit-btn btn-square"
             >
               Edit User
             </Button>
@@ -57,16 +57,16 @@ function UserPicDisplay({ author, userId }) {
 
   return (
     <div
-      className={`transition ${loading ? 'loading' : 'done'}`}
+      className={`transition ${userPicLoading ? 'loading' : 'done'}`}
     >
-      <h1>{username}</h1>
+      <h1 className="color-dark-blue user-h1-mobile">{username}</h1>
       {' '}
-      <div className="card">
+      <div className="card user-card">
         <img
           className="card-img-top"
           src={image}
           alt={email}
-          onLoad={setLoadingFalse}
+          onLoad={setUserPicLoadingFalse}
         />
         <div className="card-body">
           <p className="card-text">
@@ -83,7 +83,7 @@ function UserPicDisplay({ author, userId }) {
             >
               {loggedInAsId &&
               <FontAwesomeIcon
-                color="dodgerblue"
+                color="#29ABE0"
                 icon={hovered ? fasEnvelope : farEnvelope}
               />}
             </Link>

@@ -5,6 +5,7 @@ import {
   Col, Container, Row, Spinner
 } from 'react-bootstrap';
 import useGetCGs from '../hooks/useGetCGs';
+import useLoading from '../hooks/useLoading';
 import Campgrounds from './campgrounds';
 import UserPicDisplay from './userPicDisplay';
 
@@ -12,7 +13,8 @@ import UserPicDisplay from './userPicDisplay';
 function UserProfile() {
   const { id: userId } = useParams();
   const { data: { campgrounds, user: author }, errMsg, isLoading } = useGetCGs(`/api/campgrounds/user/${userId}`);
-
+  const [userPicLoading, setUserPicLoadingFalse] = useLoading();
+  
   const campgroundsDisplayConfig = {
     campClass: 'campgroundUserThumb',
     colClass: 'mb-4',
@@ -22,7 +24,7 @@ function UserProfile() {
   };
 
   const spinnerStyle = isLoading ? { left: '50%' } : { display: 'none' };
-  const loadedDisplay = isLoading ? { display: 'none' } : {};
+  const loadedDisplay = isLoading || userPicLoading ? { display: 'none' } : {};
 
   useEffect(() => {
     if (errMsg) {
@@ -58,9 +60,11 @@ function UserProfile() {
         <UserPicDisplay
           userId={userId}
           author={author}
+          userPicLoading={userPicLoading}
+          setUserPicLoadingFalse={setUserPicLoadingFalse}
         />
       </div>
-      <div className="user-cg-box col-md-8">
+      <div style={loadedDisplay} className={'user-cg-box col-md-8 border-top-mobile'}>
         <Container className="text-align-center">
           <Row key={2} style={loadedDisplay}>
             <Campgrounds

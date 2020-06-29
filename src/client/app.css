@@ -290,7 +290,7 @@ a:hover {
 }
 
 .user-edit-btn {
-  margin-top: 10px;
+  margin: 0.6rem 1rem 1rem 1rem;
 }
 
 .jumbotron {
@@ -593,11 +593,28 @@ div > .figure > a > .img-thumbnail {
 }
 
 @media only screen and (max-width: 575px) {
+  .card-img-top {
+    border-radius: 0;
+  }
+
+  .user-card {
+    border: 0;
+    border-radius: 0;
+  }
+
+  .user-h1-mobile {
+    margin: 1em 1em .5em 1em;
+  }
+
+  .border-top-mobile {
+    border-top: 10px solid var(--main-dark-blue);
+  }
+
   .comment-padding-top {
     padding-top: 60px;
   }
 
-  .campgroundThumb {
+  .campgroundThumb, .campgroundUserThumb {
     height: calc(100vw * .75);
     width: 100%;
     min-width: 378px;
@@ -605,6 +622,10 @@ div > .figure > a > .img-thumbnail {
     border: 0;
     border-radius: 0;
     min-width: 225.25px;
+  }
+
+  .user-cg-box {
+    margin: 0;
   }
 
   body > .root-outer > .app-outer > div > .mb-3 {
