@@ -662,7 +662,7 @@ div > .figure > a > .img-thumbnail {
     padding-top: 60px;
   }
 
-  body {
+  body, html {
     overflow-x: hidden;
   }
 
