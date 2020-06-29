@@ -34,8 +34,7 @@ function CampgroundPage() {
   const {
     loggedInAs: {
       id: loggedInAsId,
-      admin: loggedInAsAdmin,
-      email: loggedInAsEmail
+      admin: loggedInAsAdmin
     }
   } = useContext(LoggedInAsContext);
 
@@ -122,9 +121,9 @@ function CampgroundPage() {
             <Button
               size="sm"
               variant="warning"
-              className="mr-2"
+              className="mr-2 btn-square"
             >
-              Edit Campground
+              Edit
             </Button>
           </Link>
           <DeleteModal
@@ -133,7 +132,7 @@ function CampgroundPage() {
             handleDelete={deleteCampgroundAndRedirect}
             loggedInAsAdminBool={loggedInAsAdmin}
           >
-            Delete Campground
+            Delete
           </DeleteModal>
         </>
       );
@@ -221,33 +220,21 @@ function CampgroundPage() {
           </div>
           <div className="card card-body bg-light mb-3">
             <div className="text-right">
-              {loggedInAsEmail && loggedInAsEmail.length > 0
-                ? (
-                  <Link to={{
-                    pathname: `/campgrounds/${campgroundId}/comments/new`,
-                    state: {
-                      campground
-                    }
-                  }}
-                  >
-                    <Button
-                      size="sm"
-                      variant="success"
-                    >
-                      Add New Comment
-                    </Button>
-                  </Link>
-                )
-                : (
-                  <Link to="/login">
-                    <Button
-                      size="sm"
-                      variant="success"
-                    >
-                      Login to Comment
-                    </Button>
-                  </Link>
-                )}
+            <Link to={{
+              pathname: `/campgrounds/${campgroundId}/comments/new`,
+              state: {
+                campground
+              }
+            }}
+            >
+              <Button
+                size="sm"
+                className="btn-square"
+                variant="success"
+              >
+                Add New Comment
+              </Button>
+            </Link>
             </div>
             <hr />
             <div className="row">

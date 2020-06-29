@@ -65,7 +65,7 @@ function EditComment() {
   return (
     <div className="comment-padding-top marginBtm">
       <Container>
-        <h1 className="text-center">Edit Comment on<br /> {campground.name}</h1>
+        <h1 className="text-center color-dark-blue">Edit Comment on<br /> {campground.name}</h1>
         <br />
         <form
           className="entryBox centered"

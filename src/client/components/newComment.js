@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Link, useHistory, useParams
 } from 'react-router-dom';
@@ -18,6 +18,7 @@ function NewComment() {
   } = useContext(LoggedInAsContext);
   const initData = { comment: '', userId };
   const { values, handleChange } = useForm(initData);
+
   const {
     location: {
       state: {
@@ -26,7 +27,16 @@ function NewComment() {
     },
     push
   } = useHistory();
+
   const { id } = useParams();
+  
+  useEffect(() => {
+    console.log('inside useEffect')
+    if (!localStorage.userId) {
+      console.log('inside inside useEffect')
+      push('/login');
+    }
+  }, [push]);
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
@@ -56,7 +66,7 @@ function NewComment() {
   return (
     <div className="comment-padding-top marginBtm">
       <Container>
-        <h1 className="text-center">Comment on<br /> {campground.name}</h1>
+        <h1 className="text-center color-dark-blue">Comment on<br /> {campground.name}</h1>
         <br />
         <form
           className="entryBox centered"

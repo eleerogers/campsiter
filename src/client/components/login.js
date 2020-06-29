@@ -72,7 +72,8 @@ function Login() {
   return (
     <div className="margin-top-50">
       <Container>
-        <h1 className="text-center">Login to your account</h1>
+        <h1 className="text-center color-dark-blue">Login to your account</h1>
+        <p className="text-center color-dark-blue"><i>Don&apos;t have an account? <Link className="font-weight-500 color-cornflower-blue" to="/signup">Signup!</Link></i></p>
         <br />
         <form
           className="entryBox centered"

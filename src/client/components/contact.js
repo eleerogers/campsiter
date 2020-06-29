@@ -58,7 +58,7 @@ function Contact() {
 
   return (
     <div className="contact-padding-top marginBtm">
-      <Container>
+      <Container className="color-dark-blue">
         <h1 className="text-center">
           Contact {usernameTo}
         </h1>

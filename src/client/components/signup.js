@@ -101,7 +101,7 @@ function Signup() {
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
-        <h1 className="text-center">Create your account</h1>
+        <h1 className="text-center color-dark-blue">Create your account</h1>
         <br />
         <form
           className="entryBox centered"

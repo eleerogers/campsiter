@@ -87,7 +87,7 @@ function NewCampground() {
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
-        <h1 className="text-center">Create a New <br className="brnodisplay-md" />Campground</h1>
+        <h1 className="text-center color-dark-blue">Create a New <br className="brnodisplay-md" />Campground</h1>
         <br />
         <form onSubmit={submitForm}>
           <div className="entryBox centered">

@@ -22,6 +22,7 @@ function DeleteModal({
         size="sm"
         variant="danger"
         onClick={handleShow}
+        className="btn-square"
       >
         {children}
       </Button>

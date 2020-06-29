@@ -113,7 +113,7 @@ function EditCampground() {
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
-        <h1 className="text-center">
+        <h1 className="text-center color-dark-blue">
           Edit Campground:
           <br />
           {nameRef.current}

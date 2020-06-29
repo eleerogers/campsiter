@@ -42,7 +42,7 @@ function Comment({
               variant="warning"
               className="mr-2"
             >
-              Edit Comment
+              Edit
             </Button>
           </Link>
           <DeleteModal
@@ -51,7 +51,7 @@ function Comment({
             handleDelete={deleteComment}
             loggedInAsAdminBool={loggedInAsAdmin}
           >
-            Delete Comment
+            Delete
           </DeleteModal>
         </div>
       );
