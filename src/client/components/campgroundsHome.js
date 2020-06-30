@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect
+  useState, useEffect, Suspense
 } from 'react';
 import {
   Button, Jumbotron, Container, Row, Col, Spinner, Pagination
@@ -7,7 +7,8 @@ import {
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import usePagination from '../hooks/usePagination';
-import Campgrounds from './campgrounds';
+const Campgrounds = React.lazy(() => import('./campgrounds'));
+// import Campgrounds from './campgrounds';
 import useSearchFilter from '../hooks/useSearchFilter';
 import useGetCGs from '../hooks/useGetCGs';
 
@@ -124,10 +125,12 @@ function CampgroundsHome() {
               'minWidth': '296px'
             }}
           >
-            <Campgrounds
-              campgrounds={thisPageCGs}
-              configObj={campgroundsDisplayConfig}
-            />
+            <Suspense fallback={<div/>}>
+              <Campgrounds
+                campgrounds={thisPageCGs}
+                configObj={campgroundsDisplayConfig}
+              />
+            </Suspense>
           </Row>
         </Container>
         {paginationDisplay}

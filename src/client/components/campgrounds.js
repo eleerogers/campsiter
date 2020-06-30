@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Col } from 'react-bootstrap';
-import CampgroundThumb from './campgroundThumb';
+const CampgroundThumb = React.lazy(() => import('./campgroundThumb'))
+// import CampgroundThumb from './campgroundThumb';
 
 function Campgrounds({ campgrounds, configObj }) {
   const {
@@ -16,10 +17,12 @@ function Campgrounds({ campgrounds, configObj }) {
         lg={lg}
         className={colClass}
       >
-        <CampgroundThumb
-          campground={campground}
-          className={campClass}
-        />
+        <Suspense fallback={<div />}>
+          <CampgroundThumb
+            campground={campground}
+            className={campClass}
+          />
+        </Suspense>
       </Col>
     ))
   );
