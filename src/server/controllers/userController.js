@@ -207,8 +207,10 @@ const contact = async (req, res, next) => {
   email = req.sanitize(email);
   message = req.sanitize(message);
   const timeStamp = new Date().toString();
+  const enteredBothNames = firstName && lastName;
+  const fromMessage = enteredBothNames ? `CampSiter user ${firstName} ${lastName}` : 'a Campsiter user'
   const html = `
-  <h3>A message from CampSiter user ${firstName} ${lastName}:</h3>
+  <h3>A message from ${fromMessage}:</h3>
   <p>${message}</p>
   <p><i>sent via CampSiter ${timeStamp}</i></p>
   <p>(You can reply to this message)</p>

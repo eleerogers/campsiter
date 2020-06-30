@@ -70,6 +70,18 @@ function Contact() {
           className="entryBox centered"
           onSubmit={submitForm}
         >
+          {!localStorage.userId &&
+            <div className="form-group">
+              <input
+                className="form-control shadow-none"
+                type="text"
+                name="email"
+                placeholder="Your Email"
+                onChange={handleChange}
+                value={values.email}
+              />
+            </div>
+          }
           <div className="form-group">
             <textarea
               className="form-control inputTextBox shadow-none"
