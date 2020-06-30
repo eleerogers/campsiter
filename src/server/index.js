@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
-const expressSession = require('express-session');
+const cookieSession = require('cookie-session');
 const cors = require('cors');
 const campgrounds = require('./routes/campgroundRoutes');
 const users = require('./routes/userRoutes');
@@ -15,7 +15,7 @@ const app = express();
 
 app.use(favicon(path.join(__dirname, "..", "..", "public", "favicon.ico")))
 
-app.use(expressSession({
+app.use(cookieSession({
   secret: process.env.EXPRESS_SECRET,
   resave: false,
   saveUninitialized: false
