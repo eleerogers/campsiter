@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Figure from 'react-bootstrap/lib/Figure';
-import Button from 'react-bootstrap/lib/Button';
+import Figure from 'react-bootstrap/Figure';
+import Button from 'react-bootstrap/Button';
 import useLoading from '../hooks/useLoading';
 
 

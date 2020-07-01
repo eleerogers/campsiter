@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import Spinner from 'react-bootstrap/lib/Spinner';
-import Col from 'react-bootstrap/lib/Col';
-import Row from 'react-bootstrap/lib/Row';
-import Button from 'react-bootstrap/lib/Button';
-import Container from 'react-bootstrap/lib/Container';
+import Spinner from 'react-bootstrap/Spinner';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 import moment from 'moment';
 import axios from 'axios';
 import { toast } from 'react-toastify';

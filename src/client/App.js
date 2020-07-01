@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './bootstrap.colors.css';
 import './app.css';
 import { Switch, Route } from 'react-router-dom';
-import Container from 'react-bootstrap/lib/Container';
+import Container from 'react-bootstrap/Container';
 import { toast } from 'react-toastify';
 import Header from './components/header';
 import Landing from './components/landing';
