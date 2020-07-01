@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import moment from 'moment';
 import axios from 'axios';
-import toast from 'react-toastify/toast';
+import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import MapContainer from './map';
 import DeleteModal from './deleteModal';

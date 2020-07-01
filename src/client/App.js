@@ -4,7 +4,7 @@ import './bootstrap.colors.css';
 import './app.css';
 import { Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import toast from 'react-toastify/toast';
+import { toast } from 'react-toastify';
 import Header from './components/header';
 import Landing from './components/landing';
 import CampgroundsHome from './components/campgroundsHome';

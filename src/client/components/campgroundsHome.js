@@ -5,7 +5,7 @@ import {
   Button, Jumbotron, Container, Row, Col, Spinner, Pagination
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import toast from 'react-toastify/toast';
+import { toast } from 'react-toastify';
 import usePagination from '../hooks/usePagination';
 const Campgrounds = React.lazy(() => import('./campgrounds'));
 // import Campgrounds from './campgrounds';
