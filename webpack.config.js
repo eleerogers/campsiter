@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const outputDirectory = 'dist';
 
@@ -29,7 +30,7 @@ module.exports = {
     },
     {
       test: /\.css$/,
-      use: ['style-loader', 'css-loader']
+      use: [MiniCssExtractPlugin.loader, 'css-loader']
     },
     {
       test: /\.(png|woff|woff2|eot|ttf|svg)$/,
@@ -54,6 +55,7 @@ module.exports = {
     hot: true
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
