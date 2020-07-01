@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
+import Container from 'react-bootstrap/lib/Container';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';

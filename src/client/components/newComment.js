@@ -4,8 +4,8 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/lib/Button';
+import Container from 'react-bootstrap/lib/Container';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';

@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/lib/Button';
+import Container from 'react-bootstrap/lib/Container';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
