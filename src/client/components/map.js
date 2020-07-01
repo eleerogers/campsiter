@@ -1,6 +1,5 @@
-import React, { Suspense } from 'react';
-import lazy from 'react-lazy-named';
-const GoogleMap = lazy(() => import ('@react-google-maps/api'), 'GoogleMap');
+import React from 'react';
+import { GoogleMap } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 
 
@@ -18,15 +17,12 @@ function MapContainer({ lat, lng }) {
   // }, []);
 
   return (
-    <Suspense fallback={<div />}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={15}
-        // onUnmount={onUnmount}
-      />
-    </Suspense>
-
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={15}
+      // onUnmount={onUnmount}
+    />
   );
 }
 
