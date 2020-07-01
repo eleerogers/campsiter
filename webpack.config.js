@@ -14,6 +14,11 @@ module.exports = {
     chunkFilename: '[name].bundle.js',
     publicPath: '/'
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
   module: {
     rules: [{
       test: /\.(js|jsx)$/,
