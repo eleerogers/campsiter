@@ -4,8 +4,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const outputDirectory = 'dist';
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   devtool: false,
@@ -67,6 +69,9 @@ module.exports = {
       'process.env': {
         'REACT_APP_GOOGLE_API_KEY': JSON.stringify(process.env.REACT_APP_GOOGLE_API_KEY),
       }
-    })
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: isProd ? 'static' : 'disabled',
+  }),
   ]
 };
