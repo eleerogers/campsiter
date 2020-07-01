@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import toast from 'react-toastify/toast';
 import PropTypes from 'prop-types';
 
 const LoggedInAsContext = React.createContext();

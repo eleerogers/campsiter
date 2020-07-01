@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import {
   Button, Container } from 'react-bootstrap';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import toast from 'react-toastify/toast';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';

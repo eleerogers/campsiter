@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import toast from 'react-toastify/toast';
 import {
   Col, Container, Row, Spinner
 } from 'react-bootstrap';

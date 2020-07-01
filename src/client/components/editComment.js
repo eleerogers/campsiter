@@ -3,7 +3,7 @@ import {
   Link, useHistory, useParams
 } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import toast from 'react-toastify/toast';
 import { Button, Container } from 'react-bootstrap';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
