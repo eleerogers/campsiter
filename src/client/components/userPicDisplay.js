@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
-import useLoading from '../hooks/useLoading';
+// import useLoading from '../hooks/useLoading';
 import useHover from '../hooks/useHover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope as fasEnvelope } from '@fortawesome/free-solid-svg-icons'
@@ -103,7 +103,9 @@ UserPicDisplay.propTypes = {
     email: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired
   }).isRequired,
-  userId: PropTypes.string.isRequired
+  userId: PropTypes.string.isRequired,
+  userPicLoading: PropTypes.bool.isRequired,
+  setUserPicLoadingFalse: PropTypes.func.isRequired
 };
 
 export default UserPicDisplay;
