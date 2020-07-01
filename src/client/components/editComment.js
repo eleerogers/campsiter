@@ -4,8 +4,7 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Button from 'react-bootstrap/lib/Button';
-import Container from 'react-bootstrap/lib/Container';
+import { Button, Container } from 'react-bootstrap';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';

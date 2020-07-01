@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Container from 'react-bootstrap/lib/Container';
+import { Navbar, Container } from 'react-bootstrap';
 
 
 function Footer() {

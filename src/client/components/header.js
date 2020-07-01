@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
-import Nav from 'react-bootstrap/lib/Nav';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Col from 'react-bootstrap/lib/Col';
-import Button from 'react-bootstrap/lib/Button';
-import Container from 'react-bootstrap/lib/Container';
+import {
+  Nav, Navbar, Container, Button, Col
+} from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 

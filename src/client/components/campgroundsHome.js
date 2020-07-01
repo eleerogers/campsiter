@@ -1,13 +1,9 @@
 import React, {
   useState, useEffect, Suspense
 } from 'react';
-import Pagination from 'react-bootstrap/lib/Pagination';
-import Jumbotron from 'react-bootstrap/lib/Jumbotron';
-import Spinner from 'react-bootstrap/lib/Spinner';
-import Col from 'react-bootstrap/lib/Col';
-import Row from 'react-bootstrap/lib/Row';
-import Button from 'react-bootstrap/lib/Button';
-import Container from 'react-bootstrap/lib/Container';
+import {
+  Button, Jumbotron, Container, Row, Col, Spinner, Pagination
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import usePagination from '../hooks/usePagination';
