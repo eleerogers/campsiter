@@ -743,3 +743,7 @@ div > .figure > a > .img-thumbnail {
 .color-cornflower-blue {
   color: cornflowerblue;
 }
+
+.display-none {
+  display: none
+}
