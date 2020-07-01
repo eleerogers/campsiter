@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Container } from 'react-bootstrap';
+import Button from 'react-bootstrap/lib/Button';
+import Container from 'react-bootstrap/lib/Container';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
