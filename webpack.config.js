@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const outputDirectory = 'dist';
 
@@ -21,6 +22,7 @@ module.exports = {
       chunks: 'all',
       maxSize: 100000
     },
+    minimizer: [new UglifyJsPlugin()],
   },
   module: {
     rules: [{
