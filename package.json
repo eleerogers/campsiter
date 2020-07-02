@@ -27,6 +27,7 @@
     "babel-loader": "^8.1.0",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^5.0.0",
+    "chunks-webpack-plugin": "^6.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "cloudinary": "^1.22.0",
     "concurrently": "^5.2.0",
@@ -71,7 +72,6 @@
     "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
-    "chunks-webpack-plugin": "^6.1.0",
     "eslint": "^7.2.0",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.4"
