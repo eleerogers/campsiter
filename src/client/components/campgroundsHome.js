@@ -106,7 +106,7 @@ function CampgroundsHome() {
             </form>
           </Jumbotron>
         </Container>
-        <Container className="text-align-center">
+        <Container className="text-align-center min-height-50vh">
           <Row
             style={spinnerStyle}
             key={1}
