@@ -512,13 +512,13 @@ div > .container > .container > .jumbotron > a > .btn-orange:active {
 
 
 
-.btn-outline-info {
+.btn-outline-dark {
   color: var(--main-dark-blue) !important;
   border-color: var(--main-dark-blue) !important;
   background-color: var(--main-bg-color) !important;
 }
 
-.btn-outline-info:hover, .btn-outline-info:active, .btn-outline-info:visited {
+.btn-outline-dark:hover, .btn-outline-dark:active, .btn-outline-dark:visited {
   background-color: var(--main-dark-blue) !important;
   color: var(--main-bg-color) !important;
 }
@@ -746,4 +746,12 @@ div > .figure > a > .img-thumbnail {
 
 .display-none {
   display: none
+}
+
+.float-right {
+  float: right;
+}
+
+.align-items-center {
+  align-items: center;
 }

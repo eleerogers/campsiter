@@ -170,7 +170,7 @@ function Signup() {
           <div className="form-group">
             <label
               htmlFor="file-upload"
-              className="btn btn-outline-info btn-block"
+              className="btn btn-outline-dark btn-block"
             >
               <input
                 id="file-upload"

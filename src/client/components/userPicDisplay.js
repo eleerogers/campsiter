@@ -5,9 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 // import useLoading from '../hooks/useLoading';
 import useHover from '../hooks/useHover';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope as fasEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope'
-import { faEnvelope as farEnvelope } from '@fortawesome/free-regular-svg-icons/faEnvelope'
+import Envelope from 'react-bootstrap-icons/dist/icons/envelope-fill';
+
 
 function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse }) {
   // const [loading, setLoadingFalse] = useLoading();
@@ -81,11 +80,18 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
               }}
               ref={ref}
             >
-              {loggedInAsId &&
-              <FontAwesomeIcon
-                color="#29ABE0"
-                icon={hovered ? fasEnvelope : farEnvelope}
-              />}
+              {
+                loggedInAsId &&
+                <Button
+                  size="sm"
+                  variant="outline-info"
+                  className="float-right flex align-items-center"
+                >
+                  <Envelope className="mr-1" />
+                  {'  '}
+                  Contact
+                </Button>
+              }
             </Link>
           </p>
         </div>
