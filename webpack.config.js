@@ -7,12 +7,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackBundleAnalyzer = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 
-let devMode = process.env.devMode || true;
 const outputDirectory = 'dist';
 
 module.exports = {
   devtool: false,
-  mode: devMode ? "development" : "production",
+  mode: process.env.NODE_ENV || "development",
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
     path: path.join(__dirname, outputDirectory),
