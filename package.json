@@ -4,11 +4,14 @@
   "description": "Boilerplate to build a full stack web application using React, Node.js, Express and Webpack.",
   "main": "src/server/index.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "rm -rf ./dist && webpack -p",
     "start": "npm run build && node src/server/index.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "webpack": "webpack --profile --json > compilation-stats.json",
+    "dev:analyze": "npm run dev -- --env.addons=bundleanalyzer",
+    "build:analyze": "npm run build -- --env.addons=bundleanalyzer"
   },
   "author": "Sandeep Raveesh",
   "license": "ISC",

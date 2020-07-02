@@ -4,27 +4,36 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const outputDirectory = 'dist';
 
 module.exports = {
-  mode: 'production',
   devtool: false,
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
     path: path.join(__dirname, outputDirectory),
-    filename: 'bundle.js',
+    filename: "static/[name].[hash].js",
     chunkFilename: '[name].bundle.js',
     publicPath: '/'
   },
   optimization: {
+    moduleIds: "hashed",
+    runtimeChunk: {
+      name: "manifest",
+    },    
     splitChunks: {
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           name: "vendor",
           chunks: "all"
-        }
+        },
+        common: {
+          test: /[\\/]src[\\/]components[\\/]/,
+          chunks: "all",
+          minSize: 0,
+        },
       }
     }
   },
@@ -57,7 +66,9 @@ module.exports = {
     hot: true
   },
   plugins: [
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "styles/[name].[hash].css",
+    }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
@@ -67,6 +78,7 @@ module.exports = {
       'process.env': {
         'REACT_APP_GOOGLE_API_KEY': JSON.stringify(process.env.REACT_APP_GOOGLE_API_KEY),
       }
-    })
+    }),
+    new BundleAnalyzerPlugin()
   ]
 };
