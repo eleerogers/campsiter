@@ -5,6 +5,7 @@ const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const ChunksWebpackPlugin = require("chunks-webpack-plugin");
 
 const outputDirectory = 'dist';
 
@@ -27,6 +28,7 @@ module.exports = {
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
+          minChunks: 2,
           name: "vendor",
           chunks: "all"
         },
@@ -67,6 +69,7 @@ module.exports = {
     hot: true
   },
   plugins: [
+    new ChunksWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "styles/[name].[hash].css",
     }),
