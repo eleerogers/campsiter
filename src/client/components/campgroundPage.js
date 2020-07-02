@@ -3,7 +3,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import {
   Button, Col, Container, Row, Spinner
 } from 'react-bootstrap';
-import moment from 'moment';
+import moment from 'moment-mini';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
