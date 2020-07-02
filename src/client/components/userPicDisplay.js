@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 // import useLoading from '../hooks/useLoading';
 import useHover from '../hooks/useHover';

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {
-  Col, Container, Row, Spinner
-} from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Spinner from 'react-bootstrap/Spinner';
 import useGetCGs from '../hooks/useGetCGs';
 import useLoading from '../hooks/useLoading';
 import Campgrounds from './campgrounds';
