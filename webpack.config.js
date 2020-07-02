@@ -4,8 +4,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WebpackBundleAnalyzer = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
 
 const outputDirectory = 'dist';
 
@@ -68,7 +66,6 @@ module.exports = {
       'process.env': {
         'REACT_APP_GOOGLE_API_KEY': JSON.stringify(process.env.REACT_APP_GOOGLE_API_KEY),
       }
-    }),
-    new WebpackBundleAnalyzer()
+    })
   ]
 };
