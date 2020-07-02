@@ -20,9 +20,14 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      chunks: 'all',
-      maxSize: 100000
-    },
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all"
+        }
+      }
+    }
   },
   module: {
     rules: [{
