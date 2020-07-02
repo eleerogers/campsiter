@@ -6,8 +6,8 @@ import { LoggedInAsContext } from './contexts/loggedInAsContext';
 // import useLoading from '../hooks/useLoading';
 import useHover from '../hooks/useHover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope as fasEnvelope } from '@fortawesome/free-solid-svg-icons'
-import { faEnvelope as farEnvelope } from '@fortawesome/free-regular-svg-icons'
+import { faEnvelope as fasEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope'
+import { faEnvelope as farEnvelope } from '@fortawesome/free-regular-svg-icons/faEnvelope'
 
 function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse }) {
   // const [loading, setLoadingFalse] = useLoading();
