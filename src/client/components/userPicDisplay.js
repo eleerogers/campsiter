@@ -4,13 +4,11 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 // import useLoading from '../hooks/useLoading';
-import useHover from '../hooks/useHover';
 import Envelope from 'react-bootstrap-icons/dist/icons/envelope-fill';
 
 
 function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse }) {
   // const [loading, setLoadingFalse] = useLoading();
-  const [hovered, ref] = useHover();
   const {
     loggedInAs: {
       id: loggedInAsId,
@@ -78,7 +76,6 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
                 pathname: '/contact',
                 state: { author }
               }}
-              ref={ref}
             >
               {
                 loggedInAsId &&
