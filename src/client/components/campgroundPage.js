@@ -15,6 +15,7 @@ import useLoading from '../hooks/useLoading';
 import useGetCGs from '../hooks/useGetCGs';
 import Comments from './comments';
 
+
 function CampgroundPage() {
   const emptyCGObj = {
     id: 0,

@@ -4,7 +4,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ChunksWebpackPlugin = require("chunks-webpack-plugin");
+const BrotliPlugin = require('brotli-webpack-plugin');
 
 const outputDirectory = 'dist';
 
@@ -29,14 +31,18 @@ module.exports = {
           test: /[\\/]node_modules[\\/]/,
           minChunks: 2,
           name: "vendor",
-          chunks: "all"
+          chunks: "all",
+          minSize: 10000,
+          maxSize: 244000,
         },
         common: {
           test: /[\\/]src[\\/]components[\\/]/,
           chunks: "all",
           minSize: 0,
         },
-      }
+      },
+      minSize: 10000,
+      maxSize: 250000,
     }
   },
   module: {
@@ -81,6 +87,19 @@ module.exports = {
       'process.env': {
         'REACT_APP_GOOGLE_API_KEY': JSON.stringify(process.env.REACT_APP_GOOGLE_API_KEY),
       }
-    })
-  ]
+    }),
+    new BundleAnalyzerPlugin(),
+    new BrotliPlugin({
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8
+    }),
+    new webpack.optimize.AggressiveMergingPlugin()
+  ],
+  performance: {
+    hints: "warning", // enum
+    maxAssetSize: 200000, // int (in bytes),
+    maxEntrypointSize: 200000, // int (in bytes)
+  }
 };

@@ -10,8 +10,11 @@ const campgrounds = require('./routes/campgroundRoutes');
 const users = require('./routes/userRoutes');
 const comments = require('./routes/commentRoutes');
 const expressSanitizer = require('express-sanitizer');
+const compression = require('compression');
 
 const app = express();
+
+app.use(compression());
 
 app.use(favicon(path.join(__dirname, "..", "..", "public", "favicon.ico")))
 

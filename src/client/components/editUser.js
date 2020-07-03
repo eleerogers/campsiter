@@ -206,7 +206,7 @@ function EditUser() {
             onClick={goBack}
             size="sm"
             variant="link"
-            className="float-left"
+            className="float-left text-primary text-primary-hover"
           >
             Go Back
           </Button>

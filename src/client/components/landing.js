@@ -13,7 +13,7 @@ function Landing() {
         <br />
         <ul>
           <Link to="/campgroundsHome">
-            <Button variant="info">Get Started</Button>
+            <Button className="box-shadow" variant="info">Get Started</Button>
           </Link>
         </ul>
       </div>

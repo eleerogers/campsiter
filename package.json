@@ -11,7 +11,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "webpack": "webpack --profile --json > compilation-stats.json",
     "dev:analyze": "npm run dev -- --env.addons=bundleanalyzer",
-    "build:analyze": "npm run build -- --env.addons=bundleanalyzer"
+    "build:analyze": "npm run build -- --env.addons=bundleanalyzer",
+    "wp-dev": "webpack --mode development",
+    "wp-build": "webpack --mode production"
   },
   "author": "Sandeep Raveesh",
   "license": "ISC",
@@ -27,9 +29,11 @@
     "babel-loader": "^8.1.0",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^5.0.0",
+    "brotli-webpack-plugin": "^1.1.0",
     "chunks-webpack-plugin": "^6.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "cloudinary": "^1.22.0",
+    "compression": "^1.7.4",
     "concurrently": "^5.2.0",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
@@ -58,7 +62,9 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-icons": "^1.0.3-alpha5",
+    "react-delay-render": "^0.1.2",
     "react-dom": "^16.13.1",
+    "react-imported-component": "^6.3.5",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-spring": "^8.0.27",
@@ -74,7 +80,8 @@
   "devDependencies": {
     "eslint": "^7.2.0",
     "eslint-plugin-react": "^7.20.0",
-    "eslint-plugin-react-hooks": "^4.0.4"
+    "eslint-plugin-react-hooks": "^4.0.4",
+    "webpack-bundle-analyzer": "^3.8.0"
   },
   "engines": {
     "node": "13.x",
