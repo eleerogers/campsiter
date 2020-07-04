@@ -6,10 +6,8 @@ import './bootstrap.colors.css';
 import './app.css';
 import { Switch, Route } from 'react-router-dom';
 import { toast } from 'react-toastify';
-const Landing = importedComponent(
-  () => import('./components/landing'),
-  { LoadingComponent: Loading }
-);
+// import lazyComponent from './utils/lazyComponent';
+// const CampgroundsHome = lazyComponent('../components/campgroundsHome');
 const CampgroundsHome = importedComponent(
   () => import('./components/campgroundsHome'),
   { LoadingComponent: Loading }
@@ -62,6 +60,7 @@ const Reset = importedComponent(
   () => import('./components/resetPassword'),
   { LoadingComponent: Loading }
 );
+import NoMatch from './components/noMatch';
 import { LoadScriptNext } from '@react-google-maps/api';
 import Layout from './components/layout';
 
@@ -71,13 +70,8 @@ toast.configure();
 function App() {
   return (
     <div className="app-outer">
-      <Switch>
-        <Route
-          path="/"
-          exact
-          component={Landing}
-        />
-        <Layout>
+      <Layout>
+        <Switch>
           <Route
             path="/campgroundsHome"
             exact
@@ -163,8 +157,9 @@ function App() {
           >
             <Reset />
           </Route>
-        </Layout>
-      </Switch>
+          <Route component={NoMatch} />
+        </Switch>
+      </Layout>
     </div>
   );
 }

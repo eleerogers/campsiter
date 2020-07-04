@@ -11,7 +11,7 @@ const BrotliPlugin = require('brotli-webpack-plugin');
 const outputDirectory = 'dist';
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   devtool: false,
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
