@@ -17,7 +17,7 @@ function Layout({ children }) {
   // keeping track of path to update errorBoundary key so it will reset when you click a link
   const [path] = useListenPath();
   const pathArr = path.split('/');
-  const landingPath = pathArr.length === 1;
+  const landingPath = path === '/';
 
   return landingPath ? <Landing /> : (
     <div>
