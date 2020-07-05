@@ -1,17 +1,25 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { hydrate, render } from "react-dom";
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import { LoggedInAsContextProvider } from './components/contexts/loggedInAsContext';
 // import { MapKeyContextProvider } from './components/contexts/mapKeyContext';
 
-ReactDOM.render(
-  // <MapKeyContextProvider>
+const rootElement = document.getElementById("root");
+if (rootElement.hasChildNodes()) {
+  hydrate(
     <LoggedInAsContextProvider>
       <Router>
         <App />
       </Router>
     </LoggedInAsContextProvider>,
-  // </MapKeyContextProvider>,
-  document.getElementById('root')
-);
+    rootElement);
+} else {
+  render(
+    <LoggedInAsContextProvider>
+      <Router>
+        <App />
+      </Router>
+    </LoggedInAsContextProvider>,
+    rootElement);
+}
