@@ -5,21 +5,22 @@ import Footer from '../components/footer';
 import ErrorBoundary from '../components/errorBoundary';
 import useListenPath from '../hooks/useListenPath';
 import PropTypes from 'prop-types';
-import importedComponent from 'react-imported-component';
-import Loading from './loading';
-const Landing = importedComponent(
-  () => import('./landing'),
-  { LoadingComponent: Loading }
-);
+import { lazy, LazyBoundary } from 'react-imported-component';
+// import Loading from './loading';
+const Landing = lazy(() => import('./landing'));
 
 
 function Layout({ children }) {
   // keeping track of path to update errorBoundary key so it will reset when you click a link
   const [path] = useListenPath();
   const pathArr = path.split('/');
-  const landingPath = path === '/';
+  const landingPath = path === '';
 
-  return landingPath ? <Landing /> : (
+  return landingPath ? (
+    <LazyBoundary fallback={<div />}>
+      <Landing />
+    </LazyBoundary>
+  ) : (
     <div>
       <Header />
       <Container
