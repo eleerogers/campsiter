@@ -52,9 +52,9 @@ function EditUser() {
 
   useEffect(() => {
     if (!localStorage.userId) {
-      push('/campgroundsHome');
+      goBack();
     }
-  }, [push]);
+  }, [push, loggedInAsId]);
 
   async function submitForm(event) {
     event.preventDefault();

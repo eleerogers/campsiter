@@ -16,6 +16,30 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
     }
   } = useContext(LoggedInAsContext);
 
+  function renderContactButton() {
+    return loggedInAsId !== userId && (
+      <Link 
+        to={{
+          pathname: '/contact',
+          state: { author }
+        }}
+      >
+        {
+          loggedInAsId &&
+          <Button
+            size="sm"
+            variant="outline-info"
+            className="ml-2 float-right flex align-items-center"
+          >
+            <Envelope className="mr-1" />
+            {'  '}
+            Contact
+          </Button>
+        }
+      </Link>
+    )
+  }
+
   function renderEditButton() {
     if (
       loggedInAsId === userId
@@ -31,9 +55,9 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
             <Button
               size="sm"
               variant="warning"
-              className="mr-2 user-edit-btn btn-square"
+              className="btn-square float-right flex align-items-center"
             >
-              Edit User
+              Edit
             </Button>
           </Link>
         </>
@@ -71,29 +95,11 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
             &nbsp;
             {lNameOrInitial}
             &nbsp;&nbsp;
-            <Link 
-              to={{
-                pathname: '/contact',
-                state: { author }
-              }}
-            >
-              {
-                loggedInAsId &&
-                <Button
-                  size="sm"
-                  variant="outline-info"
-                  className="float-right flex align-items-center"
-                >
-                  <Envelope className="mr-1" />
-                  {'  '}
-                  Contact
-                </Button>
-              }
-            </Link>
+            {renderContactButton()}
+            {renderEditButton()}
           </p>
         </div>
       </div>
-      {renderEditButton()}
     </div>
   );
 }

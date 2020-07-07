@@ -442,7 +442,7 @@ body {
 }
 
 .btn:focus, .btn-info:not(:disabled):not(.disabled):active:focus {
-  box-shadow: none;
+  box-shadow: none !important; 
 }
 
 .box-shadow, .box-shadow:focus {
