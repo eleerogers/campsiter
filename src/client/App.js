@@ -4,7 +4,7 @@ import { lazy, LazyBoundary } from 'react-imported-component';
 import 'react-toastify/dist/ReactToastify.css';
 import './bootstrap.colors.css';
 import './app.css';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 // import lazyComponent from './utils/lazyComponent';
 // const CampgroundsHome = lazyComponent('../components/campgroundsHome');
@@ -119,7 +119,7 @@ function App() {
             >
               <Reset />
             </Route>
-            <Route component={NoMatch} />
+            <Redirect to={"/campgroundsHome"} />
           </Switch>
         </LazyBoundary>
       </Layout>
