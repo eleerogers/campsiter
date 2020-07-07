@@ -1,13 +1,11 @@
 import React from 'react';
 import { lazy, LazyBoundary } from 'react-imported-component';
-// import Loading from './components/loading';
+import Loading from './components/loading';
 import 'react-toastify/dist/ReactToastify.css';
 import './bootstrap.colors.css';
 import './app.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
-// import lazyComponent from './utils/lazyComponent';
-// const CampgroundsHome = lazyComponent('../components/campgroundsHome');
 const CampgroundsHome = lazy(() => import('./components/campgroundsHome'));
 const NewCampground = lazy(() => import('./components/newCampground'));
 const CampgroundPage = lazy(() => import('./components/campgroundPage'));
@@ -21,7 +19,6 @@ const EditUser = lazy(() => import('./components/editUser'));
 const Forgot = lazy(() => import('./components/forgot'));
 const Contact = lazy(() => import('./components/contact'));
 const Reset = lazy(() => import('./components/resetPassword'));
-import NoMatch from './components/noMatch';
 import { LoadScriptNext } from '@react-google-maps/api';
 import Layout from './components/layout';
 
@@ -32,7 +29,7 @@ function App() {
   return (
     <div className="app-outer">
       <Layout>
-        <LazyBoundary fallback={<div />}>
+        <LazyBoundary fallback={<Loading />}>
           <Switch>
             <Route
               path="/campgroundsHome"
