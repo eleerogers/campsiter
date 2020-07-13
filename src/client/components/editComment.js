@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
+import StarRating from './starRating';
 
 
 function EditComment() {
@@ -16,11 +17,12 @@ function EditComment() {
     location: {
       state: {
         campground,
-        adminBool,
+        loggedInAsAdmin: adminBool,
         commentObj: {
           comment_id: commentId,
           user_id: userId,
-          comment
+          comment,
+          rating
         }
       }
     },
@@ -37,9 +39,10 @@ function EditComment() {
     campgroundId: id,
     comment,
     user: { id: userId },
-    adminBool
+    adminBool,
+    rating
   };
-  const { values, handleChange } = useForm(initFormData);
+  const { values, handleChange, changeRating } = useForm(initFormData);
 
   async function submitForm(event) {
     event.preventDefault();
@@ -67,13 +70,20 @@ function EditComment() {
   return (
     <div className="comment-padding-top marginBtm">
       <Container>
-        <h1 className="text-center color-dark-blue">Edit Comment on<br /> {campground.name}</h1>
+        <h1 className="text-center color-dark-blue">Edit Review of<br />{campground.name}</h1>
         <br />
         <form
           className="entryBox centered"
           onSubmit={submitForm}
         >
           <div className="form-group">
+            <StarRating
+              currRating={values.rating.toString()}
+              handleChange={changeRating}
+              readonly={false}
+              className="star-lg m-1"
+              centered={true}
+            />
             <textarea
               className="form-control inputTextBox"
               type="text"

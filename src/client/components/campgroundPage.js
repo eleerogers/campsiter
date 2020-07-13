@@ -14,6 +14,8 @@ import DeleteModal from './deleteModal';
 import useLoading from '../hooks/useLoading';
 import useGetCGs from '../hooks/useGetCGs';
 import Comments from './comments';
+import useGetAndDeleteComments from '../hooks/useGetAndDeleteComments';
+import StarRating from './starRating';
 
 
 function CampgroundPage() {
@@ -27,12 +29,33 @@ function CampgroundPage() {
     price: '',
     created_at: '',
     username: '',
+    rating: '',
     lat: 0,
     lng: 0
   };
-  const [campground, setCampground] = useState(emptyCGObj)
+  const {
+    push,
+  } = useHistory();
 
+  const { id } = useParams();
+  const fetchCGUrl = `/api/campgrounds/${id}`;
+  const { data: { campground }, errMsg } = useGetCGs(fetchCGUrl, emptyCGObj);
+
+  const [comments, deleteComment, currAvgRating] = useGetAndDeleteComments(campground);
+  
   const [loading, setLoadingFalse] = useLoading();
+  const [hasAlreadyReviewed, setHasAlreadyReviewed] = useState(false);
+  const [numRatings, setNumRatings] = useState();
+
+  useEffect(() => {
+    // How many star ratings are there
+    const nRatings = comments.reduce((a, b) => {
+      return b.rating > 0 ? a + 1 : a;
+    }, 0)
+    if (nRatings !== numRatings) {
+      setNumRatings(nRatings);
+    }
+  }, [comments, numRatings])
 
   const {
     loggedInAs: {
@@ -41,33 +64,19 @@ function CampgroundPage() {
     }
   } = useContext(LoggedInAsContext);
 
-  const {
-    location: {
-      state
-    },
-    push,
-  } = useHistory();
-
-  const { id } = useParams();
-  const fetchCGUrl = `/api/campgrounds/${id}`;
-  const { data: { campground: fetchedCG }, errMsg, isLoading } = useGetCGs(fetchCGUrl, !!state, emptyCGObj);
+  useEffect(() => {
+    // determine if user has already reviewed this site
+    const alreadyReviewed = comments.some(comment => {
+      return comment.user_id === Number(loggedInAsId);
+    });
+    setHasAlreadyReviewed(alreadyReviewed);
+  }, [comments, loggedInAsId]);  
 
   useEffect(() => {
     if (errMsg) {
       toast.error(errMsg);
     }
   }, [errMsg]);
-
-  useEffect(() => {
-    if (state) {
-      const { campground: cGFromHomePage } = state;
-      setCampground(cGFromHomePage);
-    } else {
-      if (!isLoading) {
-        setCampground(fetchedCG);
-      }
-    }
-  }, [state, id, isLoading, fetchedCG]);
 
   const {
     id: campgroundId,
@@ -79,6 +88,7 @@ function CampgroundPage() {
     price,
     created_at: createdAt,
     username: authorUsername,
+    // rating,
     lat,
     lng
   } = campground;
@@ -222,27 +232,49 @@ function CampgroundPage() {
             </div>
           </div>
           <div className="card card-body bg-light mb-3">
-            <div className="text-right">
-            <Link to={{
-              pathname: `/campgrounds/${campgroundId}/comments/new`,
-              state: {
-                campground
+            <div className="flex space-between">
+                <div className="float-left">
+                  {
+                    numRatings > 0 &&
+                    <div>
+                      <StarRating
+                        currRating={currAvgRating}
+                        readonly={true}
+                        className="star-cg-avg"
+                        numRatings={numRatings}
+                      />
+                      <p>Current campground rating: <b>{currAvgRating}</b></p>
+                    </div>
+                  }
+                </div>
+              <span className="text-right float-right">
+              { 
+                !hasAlreadyReviewed &&
+                <Link to={{
+                  pathname: `/campgrounds/${campgroundId}/comments/new`,
+                  state: {
+                    campground,
+                    comments,
+                  }
+                }}
+                >
+                  <Button
+                    size="sm"
+                    className="btn-square ml-2 min-width-134"
+                    variant="success"
+                  >
+                    Add Your Review
+                  </Button>
+                </Link>
               }
-            }}
-            >
-              <Button
-                size="sm"
-                className="btn-square"
-                variant="success"
-              >
-                Add New Comment
-              </Button>
-            </Link>
+              </span>
             </div>
             <hr />
             <div className="row">
               <Comments
                 campground={campground}
+                comments={comments}
+                deleteComment={deleteComment}
               />
             </div>
           </div>

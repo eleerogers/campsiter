@@ -65,6 +65,7 @@
     "react-delay-render": "^0.1.2",
     "react-dom": "^16.13.1",
     "react-imported-component": "^6.3.5",
+    "react-rating": "^2.0.5",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-spring": "^8.0.27",

@@ -11,6 +11,20 @@ const useForm = (initialFormStateObj) => {
     }));
   };
 
+  const changeRating = (rating) => {
+    setValues((vals) => ({
+      ...vals,
+      rating
+    }));
+  }
+
+  const changeAvgRating = (avgRating) => {
+    setValues((vals) => ({
+      ...vals,
+      avgRating
+    }))
+  }
+
   const reset = () => {
     setValues(initialFormStateObj || {});
   };
@@ -26,6 +40,8 @@ const useForm = (initialFormStateObj) => {
 
   return {
     handleChange,
+    changeRating,
+    changeAvgRating,
     values,
     reset,
     set

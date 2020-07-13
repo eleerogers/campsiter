@@ -5,6 +5,7 @@
   --main-btn-focus-color: #a73727;
   --main-beige-color: #e9e2d3;
   --main-bg-color: #f6f4f2;
+  --main-yellow-color: #ffc107;
 }
 
 .test-div {
@@ -29,6 +30,10 @@
   float: none;
   margin: 0 auto;
   text-align: center;
+}
+
+.justify-centered {
+  justify-content: center;
 }
 
 .margin-top-50 {
@@ -757,10 +762,48 @@ div > .figure > a > .img-thumbnail {
   float: right;
 }
 
+.float-left {
+  float: left;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .align-items-center {
   align-items: center;
 }
 
 .min-height-50vh {
   min-height: 50vh;
+}
+
+.star-lg {
+  height: 2em;
+  width: 2em;
+  color: var(--main-yellow-color);
+}
+
+.star-sm {
+  margin: .11em;
+  color: var(--main-yellow-color);
+}
+
+.star-cg-avg {
+  height: 1.5em;
+  width: 1.5em;
+  color: var(--main-yellow-color);
+  margin: .13em;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.min-width-134 {
+  min-width: 134px;
 }

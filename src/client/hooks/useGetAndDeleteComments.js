@@ -5,21 +5,44 @@ import { toast } from 'react-toastify';
 
 function useGetAndDeleteComments(campground) {
   const [comments, setComments] = useState([]);
+  const [currAvgRating, setCurrAvgRating] = useState();
   const {
     id: campgroundId,
+    rating
   } = campground;
 
   useEffect(() => {
     let mounted = true;
     axios.get(`/api/comments/${campgroundId}`)
       .then(({ data: { comments: incomingComments } }) => {
-        if (mounted) {
+        if (mounted && comments.length !== incomingComments.length) {
           setComments(incomingComments);
+        }
+      })
+      .then(() => {
+        if (comments.length) {
+          const avgRating = comments.reduce((a, b) => {
+            return a + b.rating;
+          }, 0) / comments.length;
+          setCurrAvgRating(avgRating.toFixed(2));
+        } else {
+          setCurrAvgRating("0");
         }
       })
       .catch((err) => { console.error(err); });
     return () => { mounted = false; };
-  }, [campgroundId]);
+  }, [campgroundId, comments]);
+
+  useEffect(() => {
+    if (currAvgRating !== rating) {
+      const url = `/api/campgrounds/rating/${campgroundId}`;
+      const updatedCG = {
+        ...campground,
+        rating: currAvgRating
+      }
+      axios.put(url, updatedCG);
+    }
+  }, [campground, campgroundId, currAvgRating, rating])
 
   async function deleteComment(commentObj, loggedInAsAdmin) {
     try {
@@ -47,7 +70,7 @@ function useGetAndDeleteComments(campground) {
     }
   }
 
-  return [comments, deleteComment];
+  return [comments, deleteComment, currAvgRating];
 
 }
 

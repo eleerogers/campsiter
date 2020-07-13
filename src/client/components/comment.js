@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import DeleteModal from './deleteModal';
+import StarRating from './starRating';
+
 
 function Comment({
   comment, deleteComment, campground
@@ -63,12 +65,19 @@ function Comment({
     <div className="col-md-12 mb-2" key={comment.comment_id}>
       <div className="card">
         <div className="card-body">
+          {comment.rating && <div>
+            <StarRating
+              currRating={comment.rating.toString()}
+              readonly={true}
+              className="star-sm"
+            />
+          </div>}
           <p className="card-title">
-          <Link className="text-primary" to={`/ycusers/${comment.user_id}`}>
-            <strong>
-              {comment.username}
-            </strong>
-          </Link>
+            <Link className="text-primary" to={`/ycusers/${comment.user_id}`}>
+              <strong>
+                {comment.username}
+              </strong>
+            </Link>
             <span className="float-right">
               {moment(comment.created_at).fromNow()}
             </span>
@@ -92,7 +101,8 @@ Comment.propTypes = {
     comment: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     created_at: PropTypes.string.isRequired,
-    user_id: PropTypes.number.isRequired
+    user_id: PropTypes.number.isRequired,
+    rating: PropTypes.number
   }).isRequired,
   deleteComment: PropTypes.func.isRequired
 };

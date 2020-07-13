@@ -15,13 +15,7 @@ function CampgroundThumb({ campground, className }) {
       <Figure
         className={`img-fluid w-100 centered campground transition ${loading ? 'loading' : 'done'}`}
       >
-        <Link to={{
-          pathname: `/campgrounds/${id}`,
-          state: {
-            campground
-          }
-        }}
-        >
+        <Link to={`/campgrounds/${id}`}>
           <Figure.Image
             alt={name}
             src={image}

@@ -19,7 +19,7 @@ router.post('/:campgroundId',
   commentController.createComment,
   (req, res) => {
     res.status(200).send(
-      'Successfully added comment'
+      'Successfully added review'
     );
   });
 
@@ -29,7 +29,7 @@ router.put('/:campgroundId',
   middleware.validComment,
   commentController.editComment,
   (req, res) => {
-    res.status(200).send('Successfully edited comment');
+    res.status(200).send('Successfully edited review');
   });
 
 
@@ -38,7 +38,7 @@ router.delete('/:campgroundId',
   commentController.deleteComment,
   commentController.getComments,
   (req, res) => {
-    const message = 'Comment successfully deleted';
+    const message = 'Review successfully deleted';
     const { comments } = res.locals;
     res.status(200).json({ comments, message });
   });

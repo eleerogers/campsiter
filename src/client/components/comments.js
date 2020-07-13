@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Comment from './comment';
-import useGetAndDeleteComments from '../hooks/useGetAndDeleteComments';
 
 
-function Comments({ campground }) {
-  const [comments, deleteComment] = useGetAndDeleteComments(campground);
-
+function Comments({ campground, comments, deleteComment }) {
   return (
     <>
       {comments.map((comment) => (
@@ -24,7 +21,9 @@ function Comments({ campground }) {
 Comments.propTypes = {
   campground: PropTypes.shape({
     id: PropTypes.number.isRequired
-  }).isRequired
+  }).isRequired,
+  comments: PropTypes.array,
+  deleteComment: PropTypes.func.isRequired
 };
 
 export default Comments;

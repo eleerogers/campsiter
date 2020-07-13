@@ -10,6 +10,7 @@ import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
+import StarRating from './starRating';
 
 
 function NewComment() {
@@ -18,13 +19,30 @@ function NewComment() {
       id: userId
     }
   } = useContext(LoggedInAsContext);
-  const initData = { comment: '', userId };
-  const { values, handleChange } = useForm(initData);
+  const initData = {
+    rating: 0,
+    comment: '',
+    userId,
+    avgRating: null
+  };
+  const {
+      values,
+      handleChange,
+      changeRating,
+      set
+  } = useForm(initData);
+  
+  useEffect(() => {
+    if (initData.userId !== values.userId) {
+      set(initData);
+    }
+  }, [set, initData, values.userId]);
 
   const {
     location: {
       state: {
-        campground
+        campground,
+        comments
       }
     },
     push
@@ -33,12 +51,26 @@ function NewComment() {
   const { id } = useParams();
   
   useEffect(() => {
-    console.log('inside useEffect')
     if (!localStorage.userId) {
-      console.log('inside inside useEffect')
       push('/login');
     }
   }, [push]);
+
+  useEffect(() => {
+    const prevReview = comments.find(comment => {
+      return comment.user_id === Number(userId);
+    });
+    if (prevReview) {
+      push({
+        pathname: `/campgrounds/${campground.id}/comments/edit`,
+        state: {
+          campground,
+          loggedInAsId: userId,
+          commentObj: prevReview
+        }
+      })
+    }
+  }, [push, campground, comments, userId]);  
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
@@ -68,15 +100,22 @@ function NewComment() {
   return (
     <div className="comment-padding-top marginBtm">
       <Container>
-        <h1 className="text-center color-dark-blue">Comment on<br /> {campground.name}</h1>
+        <h1 className="text-center color-dark-blue">Review<br /> {campground.name}</h1>
         <br />
         <form
           className="entryBox centered"
           onSubmit={submitForm}
         >
           <div className="form-group">
+            <StarRating
+              currRating={values.rating.toString()}
+              handleChange={changeRating}
+              readonly={false}
+              className="star-lg m-1"
+              centered={true}
+            />
             <textarea
-              className="form-control inputTextBox"
+              className="form-control inputTextBox mt-4"
               type="text"
               name="comment"
               placeholder="Comment"

@@ -4,7 +4,7 @@ const pool = require('../pool');
 const getComments = (request, response, next) => {
   const { campgroundId } = request.params;
 
-  pool.query('SELECT username, comment, comment_id, user_id, comments.created_at FROM comments JOIN ycusers ON ycusers.id=comments.user_id WHERE comments.campground_id=$1 ORDER BY comment_id ASC', [campgroundId], (error, results) => {
+  pool.query('SELECT username, comment, comment_id, user_id, comments.created_at, rating FROM comments JOIN ycusers ON ycusers.id=comments.user_id WHERE comments.campground_id=$1 ORDER BY comment_id ASC', [campgroundId], (error, results) => {
     if (error) {
       console.error(error);
       throw error;
@@ -20,12 +20,12 @@ const createComment = (request, response, next) => {
     campgroundId
   } = request.params;
   let {
-    userId, comment
+    userId, comment, rating
   } = request.body;
   comment = request.sanitize(comment);
   pool.query(
-    'INSERT INTO comments (user_id, campground_id, comment) VALUES ($1, $2, $3)',
-    [userId, campgroundId, comment],
+    'INSERT INTO comments (user_id, campground_id, comment, rating) VALUES ($1, $2, $3, $4)',
+    [userId, campgroundId, comment, rating],
     (error) => {
       if (error) {
         console.error(error);
@@ -39,16 +39,16 @@ const createComment = (request, response, next) => {
 
 const editComment = (request, response, next) => {
   let {
-    commentId, comment
+    commentId, comment, rating
   } = request.body;
   comment = request.sanitize(comment);
 
   pool.query(
-    'UPDATE comments SET comment = $1 WHERE comment_id = $2',
-    [comment, commentId],
+    'UPDATE comments SET comment=$1, rating=$2 WHERE comment_id=$3',
+    [comment, rating, commentId],
     (error) => {
       if (error) {
-        console.error(error);
+        console.error(error);  
         throw error;
       }
       next();

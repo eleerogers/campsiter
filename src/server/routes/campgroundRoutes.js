@@ -50,6 +50,15 @@ router.put('/:id',
   middleware.picUploader,
   campgroundController.updateCampground,
   (req, res) => {
+    const { campground } = res.locals; 
+    const message = 'Successfully edited campground';
+    res.status(200).json({ campground, message });
+  });
+
+
+  router.put('/rating/:id',
+  campgroundController.updateCampgroundRating,
+  (req, res) => {
     const { campground } = res.locals;
     const message = 'Successfully edited campground';
     res.status(200).json({ campground, message });

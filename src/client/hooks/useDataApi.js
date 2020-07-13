@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
  
-const useDataApi = (initialUrl, initialData, alreadyHaveData) => {
+const useDataApi = (initialUrl, initialData) => {
   const [data, setData] = useState(initialData);
   const [url, setUrl] = useState(initialUrl);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
  
   useEffect(() => {
-    if (!alreadyHaveData) {
+    // if (!alreadyHaveData) {
       let mounted = true;
       const fetchData = async () => {
           setIsError(false);
           setIsLoading(true);
    
         try {
-          const result = await axios(url);
           if (mounted) {
+            const result = await axios(url);
             setData(result.data);
           }
         } catch (err) {
@@ -25,6 +25,7 @@ const useDataApi = (initialUrl, initialData, alreadyHaveData) => {
             setIsError(`${message} (${status})`);
           }
         }
+        
         if (mounted) {
           setIsLoading(false);
         }
@@ -32,8 +33,8 @@ const useDataApi = (initialUrl, initialData, alreadyHaveData) => {
    
       fetchData();
       return () => { mounted = false }
-    }
-  }, [url, alreadyHaveData]);
+    // }
+  }, [url]);
  
   return [{ data, isLoading, isError }, setUrl];
 };
