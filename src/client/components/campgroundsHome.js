@@ -95,7 +95,7 @@ function CampgroundsHome() {
               onSubmit={(e) => { e.preventDefault(); }}
             >
               <input
-                className="form-control search-form mt-1"
+                className="form-control search-form mt-1 input"
                 type="text"
                 name="search"
                 placeholder="Search campgrounds..."
