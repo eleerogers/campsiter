@@ -112,7 +112,7 @@ function NewComment() {
               handleChange={changeRating}
               readonly={false}
               className="star-lg m-1"
-              centered={true}
+              divClassName="justify-centered mb-3"
             />
             <textarea
               className="form-control inputTextBox mt-4"

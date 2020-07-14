@@ -6,6 +6,7 @@
   --main-beige-color: #e9e2d3;
   --main-bg-color: #f6f4f2;
   --main-yellow-color: #ffc107;
+  --main-grey: #6c757d;
 }
 
 .test-div {
@@ -814,4 +815,12 @@ div > .figure > a > .img-thumbnail {
 
 .min-width-134 {
   min-width: 134px;
+}
+
+.thumb-rating {
+  margin-top: .5em;
+}
+
+.color-grey, .color-grey:focus, .color-grey:hover {
+  color: var(--main-grey)
 }

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
 import useLoading from '../hooks/useLoading';
+import StarRating from './starRating';
 
 
 function CampgroundThumb({ campground, className }) {
-  const { id, name, image } = campground;
+  const { id, name, image, rating } = campground;
   const [loading, setLoadingFalse] = useLoading();
-
   return (
     <div>
       <Figure
@@ -23,13 +23,29 @@ function CampgroundThumb({ campground, className }) {
             className={className}
             thumbnail
           />
-          <Figure.Caption className="text-center">
+        </Link>
+        <Figure.Caption className="text-center">
+          <Link className="color-grey" to={`/campgrounds/${id}`}>
             {name}
-          </Figure.Caption>
+          </Link>
+          <div className="centered thumb-rating">
+          {
+            (rating && rating > 0) ?
+            <StarRating
+              currRating={rating.toString()}
+              readonly={true}
+              className="star-sm"
+              divClassName="justify-centered mb-1"
+            />
+            : <p className="mb-1"><i>No reviews yet</i></p>
+          }
+          </div>
+        </Figure.Caption>
+        <Link to={`/campgrounds/${id}`}>
           <Button
             size="sm"
             variant="outline-primary"
-            className="campgroundBtn"
+            className="mt-1"
           >
             More Info
           </Button>
@@ -43,7 +59,8 @@ CampgroundThumb.propTypes = {
   campground: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired
+    image: PropTypes.string.isRequired,
+    rating: PropTypes.string
   }).isRequired,
   className: PropTypes.string.isRequired
 };

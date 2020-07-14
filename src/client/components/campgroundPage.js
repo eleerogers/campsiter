@@ -241,6 +241,7 @@ function CampgroundPage() {
                         currRating={currAvgRating}
                         readonly={true}
                         className="star-cg-avg"
+                        divClassName="mb-2"
                         numRatings={numRatings}
                       />
                       <p>Current campground rating: <b>{currAvgRating}</b></p>

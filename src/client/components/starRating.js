@@ -9,11 +9,11 @@ function StarRating({
     handleChange,
     readonly,
     className,
-    numRatings,
-    centered
+    divClassName,
+    numRatings
   }) {
   return (
-    <div className={`flex flex-wrap align-end ${centered ? 'justify-centered mb-3' : 'mb-2'}`}>
+    <div className={`flex flex-wrap align-end ${divClassName}`}>
       <Rating
         fractions={1}
         name="rating"
@@ -34,7 +34,7 @@ StarRating.propTypes = {
   readonly: PropTypes.bool,
   className: PropTypes.string,
   numRatings: PropTypes.number,
-  centered: PropTypes.bool
+  divClassName: PropTypes.string
 }
 
 export default StarRating;

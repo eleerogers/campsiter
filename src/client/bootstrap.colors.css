@@ -185,14 +185,14 @@
 
 .btn-danger:hover {
   color: #fff;
-  background-color: #d23430;
-  border-color: #c9302c;
+  background-color: #d23430e0;
+  border-color: #d23430e0;
 }
 
 .btn-danger:focus, .btn-danger.focus {
   color: #fff;
-  background-color: #d23430;
-  border-color: #c9302c;
+  background-color: #d23430e0;
+  border-color: #d23430e0;
 }
 
 .btn-danger.disabled, .btn-danger:disabled {

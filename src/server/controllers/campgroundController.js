@@ -65,7 +65,7 @@ const createCampground = async (request, response, next) => {
   image = request.sanitize(image);
   description = request.sanitize(description);
   price = request.sanitize(price);
-  campLocation = request.sanitize(campLocation); 
+  campLocation = request.sanitize(campLocation);
 
   try {
     const [{

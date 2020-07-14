@@ -20,6 +20,15 @@ function Comment({
   const {
     id: campgroundId,
   } = campground;
+  const {
+    comment_id,
+    rating,
+    user_id,
+    username,
+    created_at,
+    comment: commentText
+  } = comment;
+  
 
   function renderCommentButtons(commentObj) {
     const loggedInAsIdInteger = parseInt(loggedInAsId, 10);
@@ -62,27 +71,31 @@ function Comment({
   }
 
   return (
-    <div className="col-md-12 mb-2" key={comment.comment_id}>
+    <div className="col-md-12 mb-2" key={comment_id}>
       <div className="card">
         <div className="card-body">
-          {comment.rating && <div>
-            <StarRating
-              currRating={comment.rating.toString()}
-              readonly={true}
-              className="star-sm"
-            />
-          </div>}
+          {
+            rating > 0 &&
+            <div>
+              <StarRating
+                currRating={rating.toString()}
+                readonly={true}
+                className="star-sm"
+                divClassName="mb-2"
+              />
+            </div>
+          }
           <p className="card-title">
-            <Link className="text-primary" to={`/ycusers/${comment.user_id}`}>
+            <Link className="text-primary" to={`/ycusers/${user_id}`}>
               <strong>
-                {comment.username}
+                {username}
               </strong>
             </Link>
             <span className="float-right">
-              {moment(comment.created_at).fromNow()}
+              {moment(created_at).fromNow()}
             </span>
           </p>
-          <p className="card-text float-left keepTextSpacing">{comment.comment}</p>
+          <p className="card-text float-left keepTextSpacing">{commentText}</p>
           <div className="float-right">
             {renderCommentButtons(comment)}
           </div>
