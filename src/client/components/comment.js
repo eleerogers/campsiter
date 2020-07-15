@@ -57,7 +57,7 @@ function Comment({
             </Button>
           </Link>
           <DeleteModal
-            itemType="comment"
+            itemType="review"
             itemObj={commentObj}
             handleDelete={deleteComment}
             loggedInAsAdminBool={loggedInAsAdmin}
