@@ -821,6 +821,28 @@ div > .figure > a > .img-thumbnail {
   margin-top: .5em;
 }
 
-.color-grey, .color-grey:focus, .color-grey:hover {
+.color-grey,
+.color-grey:focus,
+.color-grey:hover
+{
   color: var(--main-grey)
+}
+
+.sort-dropdown {
+  margin-top: 2em;
+}
+
+.sort-dropdown > button {
+  width: 85px;
+}
+
+.jumbotron > .container > .sort-dropdown > button {
+  background-color: #325D88;
+  border-color: #325D88;
+}
+
+.jumbotron > .container > .sort-dropdown > .dropdown-toggle:active,
+.jumbotron > .container > .sort-dropdown > .dropdown-toggle:hover {
+  background-color: #2f5881 !important;
+  border-color: #2f5881 !important;
 }

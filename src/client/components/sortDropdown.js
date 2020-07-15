@@ -22,7 +22,8 @@ function SortDropdown({value, setValue}) {
         title={keyObj[value]}
         onSelect={handleSelect}
         size="sm"
-        className="btn-square mt-5"
+        className="btn-square sort-dropdown"
+        // variant="secondary"
       >
         <Dropdown.Item eventKey="recent">Recent</Dropdown.Item>
         <Dropdown.Item eventKey="alpha">Name</Dropdown.Item>
