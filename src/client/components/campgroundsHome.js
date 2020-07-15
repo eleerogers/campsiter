@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, Suspense
+  useState, useEffect, Suspense, useCallback, useRef
 } from 'react';
 import Button from 'react-bootstrap/Button';
 import Jumbotron from 'react-bootstrap/Jumbotron';
@@ -24,11 +24,16 @@ function CampgroundsHome() {
   const [search, setSearch] = useState('');
   const { data: { campgrounds }, errMsg, isLoading } = useGetCGs();
   const filteredCGs = useSearchFilter(search, campgrounds);
-  const sortedCGs = useSort(sortStyle, filteredCGs);
+  const sortedCGs = useSort(sortStyle, filteredCGs, jump);
   const CAMPGROUNDS_PER_PAGE = 12;
   const {
     jump, currentData, currentPage, maxPage
   } = usePagination(sortedCGs, CAMPGROUNDS_PER_PAGE);
+  const jumpRef = useRef(jump);
+  useEffect(() => {
+    jumpRef.current = jump;
+  }, [jump]);
+  const jumpCallback = useCallback(() => { jumpRef.current(1); }, [jumpRef])
   const thisPageCGs = currentData();
 
   const pages = [];
@@ -59,6 +64,12 @@ function CampgroundsHome() {
       jump(1);
     }
   }
+
+  useEffect(() => {
+    if (pages.length) {
+      jumpCallback();
+    }
+  }, [sortStyle, pages.length, jumpCallback]);
 
   useEffect(() => {
     if (errMsg) {

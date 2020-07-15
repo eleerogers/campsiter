@@ -5,12 +5,8 @@ import PropTypes from 'prop-types';
 
 
 function SortDropdown({value, setValue}) {
-  const handleSelect = (e, event) => {
-    console.log(event)
-    console.log(event.target)
-    console.log(event.target.value)
+  const handleSelect = (e) => {
     const newString = e + '';
-    console.log(newString);
     setValue(newString);
   }
   const keyObj = {
@@ -23,9 +19,7 @@ function SortDropdown({value, setValue}) {
     <div className="App container">
       
       <DropdownButton
-        // alignRight
         title={keyObj[value]}
-        // id="dropdown-menu-align-right"
         onSelect={handleSelect}
         size="sm"
         className="btn-square mt-5"
