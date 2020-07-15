@@ -15,16 +15,20 @@ const Campgrounds = React.lazy(() => import('./campgrounds'));
 // import Campgrounds from './campgrounds';
 import useSearchFilter from '../hooks/useSearchFilter';
 import useGetCGs from '../hooks/useGetCGs';
+import useSort from '../hooks/useSort';
+import SortDropdown from './sortDropdown';
 
 
 function CampgroundsHome() {
+  const [sortStyle, setSortStyle] = useState('recent');
   const [search, setSearch] = useState('');
   const { data: { campgrounds }, errMsg, isLoading } = useGetCGs();
   const filteredCGs = useSearchFilter(search, campgrounds);
+  const sortedCGs = useSort(sortStyle, filteredCGs);
   const CAMPGROUNDS_PER_PAGE = 12;
   const {
     jump, currentData, currentPage, maxPage
-  } = usePagination(filteredCGs, CAMPGROUNDS_PER_PAGE);
+  } = usePagination(sortedCGs, CAMPGROUNDS_PER_PAGE);
   const thisPageCGs = currentData();
 
   const pages = [];
@@ -83,7 +87,7 @@ function CampgroundsHome() {
               <Button
                 variant="primary"
                 size="lg"
-                className="btn-orange btn-square"
+                className="btn-orange btn-square mt-3 mb-1"
               >
                 Add New Campground
               </Button>
@@ -104,6 +108,10 @@ function CampgroundsHome() {
                 autoComplete="off"
               />
             </form>
+            <SortDropdown
+              value={sortStyle}
+              setValue={setSortStyle}
+            />
           </Jumbotron>
         </Container>
         <Container className="text-align-center min-height-50vh">
