@@ -6,8 +6,7 @@ import PropTypes from 'prop-types';
 // import Loader from "./Loader";
 
 export default function LoadingButton({ isLoading, children, ...props }) {
-  /* showLoader is used to stay in the "isLoading state" a bit longer to avoid loading flashes
-   if the loading state is too short. */
+  /* showLoader is used to stay in the "isLoading state" a bit longer to avoid loading flashes if the loading state is too short. */
   const [showLoader, setShowLoader] = React.useState(false);
 
   React.useEffect(() => {
@@ -28,8 +27,7 @@ export default function LoadingButton({ isLoading, children, ...props }) {
   }, [isLoading, showLoader]);
 
   /* Capture the dimensions of the button before the loading happens
-  so it doesn’t change size.
-  These hooks can be put in a seprate file. */
+  so it doesn’t change size. */
   const [width, setWidth] = React.useState(0);
   const [height, setHeight] = React.useState(0);
   const ref = React.useRef(null);
@@ -50,7 +48,6 @@ export default function LoadingButton({ isLoading, children, ...props }) {
   return (
     <Button
       {...props}
-      // className="loading-button"
       ref={ref}
       size="lg"
       style={

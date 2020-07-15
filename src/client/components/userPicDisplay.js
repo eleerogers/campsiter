@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
-// import useLoading from '../hooks/useLoading';
 import Envelope from 'react-bootstrap-icons/dist/icons/envelope-fill';
 
 
 function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse }) {
-  // const [loading, setLoadingFalse] = useLoading();
   const {
     loggedInAs: {
       id: loggedInAsId,
@@ -73,7 +71,6 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
     email,
     username
   } = author;
-  // const mailTo = `mailto:${email}`;
   const lNameOrInitial = lastName.length === 1 ? lastName + '.' : lastName;
 
   return (

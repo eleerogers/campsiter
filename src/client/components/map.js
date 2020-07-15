@@ -10,18 +10,12 @@ const containerStyle = {
 
 function MapContainer({ lat, lng }) {
   const center = { lat, lng };
-  // const [map, setMap] = React.useState(null);
-
-  // const onUnmount = React.useCallback((map) => {
-  //   setMap(null);
-  // }, []);
 
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
       zoom={15}
-      // onUnmount={onUnmount}
     />
   );
 }

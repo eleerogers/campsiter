@@ -4,7 +4,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ChunksWebpackPlugin = require("chunks-webpack-plugin");
 const BrotliPlugin = require('brotli-webpack-plugin');
 
@@ -88,7 +87,6 @@ module.exports = {
         'REACT_APP_GOOGLE_API_KEY': JSON.stringify(process.env.REACT_APP_GOOGLE_API_KEY),
       }
     }),
-    // new BundleAnalyzerPlugin(),
     new BrotliPlugin({
       asset: '[path].br[query]',
       test: /\.(js|css|html|svg)$/,

@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import Col from 'react-bootstrap/Col';
 const CampgroundThumb = React.lazy(() => import('./campgroundThumb'))
-// import CampgroundThumb from './campgroundThumb';
+
 
 function Campgrounds({ campgrounds, configObj }) {
   const {

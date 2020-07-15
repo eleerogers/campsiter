@@ -1,4 +1,3 @@
-//the new useCampgrounds hook
 import useDataApi from "./useDataApi";
 
 

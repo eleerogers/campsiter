@@ -13,8 +13,7 @@ function Header() {
     logoutUser,
     loggedInAs: {
       id,
-      username,
-      // admin
+      username
     }
   } = useContext(LoggedInAsContext);
   const {

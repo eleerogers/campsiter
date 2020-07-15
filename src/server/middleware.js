@@ -74,8 +74,7 @@ const picUploader = async (req, res, next) => {
 
 const picDeleter = async (req, res, next) => {
   try {
-    // req.body.delete signals that it should still delete the picture
-    // even though there isn't another picture to replace it
+    // req.body.delete signals that it should still delete the picture even though there isn't another picture to replace it
     if ((req.file || req.body.delete) && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
       const { result } = await cloudinary.uploader.destroy(req.body.imageId);
       if (result === 'not found') {
@@ -88,6 +87,7 @@ const picDeleter = async (req, res, next) => {
     res.status(400).send('Bad request');
   }
 };
+
 
 const validUser = async (req, res, next) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
@@ -117,12 +117,10 @@ const validUser = async (req, res, next) => {
 
 const validEditUser = (req, res, next) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
-  // const validUsername = typeof req.body.username === 'string' && req.body.username.trim() !== '';
   const validFirstName = typeof req.body.firstName === 'string' && req.body.firstName.trim() !== '';
   const validLastName = typeof req.body.lastName === 'string' && req.body.lastName.trim() !== '';
   if (
     validEmail
-    // && validUsername
     && validFirstName
     && validLastName
   ) {
@@ -272,7 +270,6 @@ const checkTokenExpiration = (req, res, next) => {
 module.exports = {
   fileConverter,
   picUploader,
-  // picReplacer,
   picDeleter,
   validUser,
   validEditUser,

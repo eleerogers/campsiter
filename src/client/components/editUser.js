@@ -54,7 +54,7 @@ function EditUser() {
     if (!localStorage.userId) {
       goBack();
     }
-  }, [push, loggedInAsId]);
+  }, [push, loggedInAsId, goBack]);
 
   async function submitForm(event) {
     event.preventDefault();

@@ -11,12 +11,11 @@ import Pagination from 'react-bootstrap/Pagination';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import usePagination from '../hooks/usePagination';
-const Campgrounds = React.lazy(() => import('./campgrounds'));
-// import Campgrounds from './campgrounds';
 import useSearchFilter from '../hooks/useSearchFilter';
 import useGetCGs from '../hooks/useGetCGs';
 import useSort from '../hooks/useSort';
 import SortDropdown from './sortDropdown';
+const Campgrounds = React.lazy(() => import('./campgrounds'));
 
 
 function CampgroundsHome() {
