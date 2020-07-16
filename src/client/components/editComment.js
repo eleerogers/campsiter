@@ -78,14 +78,14 @@ function EditComment() {
         >
           <div className="form-group">
             <StarRating
-              currRating={values.rating.toString()}
+              currRating={values.rating && values.rating.toString()}
               handleChange={changeRating}
               readonly={false}
               className="star-lg m-1"
               divClassName="justify-centered mb-3"
             />
             <textarea
-              className="form-control inputTextBox"
+              className="form-control inputTextBox shadow-none"
               type="text"
               name="comment"
               placeholder="Comment"

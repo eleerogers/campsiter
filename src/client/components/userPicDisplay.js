@@ -87,14 +87,15 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
           onLoad={setUserPicLoadingFalse}
         />
         <div className="card-body">
-          <p className="card-text">
+          <p className="card-text mr-1 display-inline-block">
             {firstName}
             &nbsp;
             {lNameOrInitial}
-            &nbsp;&nbsp;
-            {renderContactButton()}
-            {renderEditButton()}
           </p>
+          <div className="float-right flex align-items-center">
+            {renderEditButton()}
+            {renderContactButton()}
+          </div>
         </div>
       </div>
     </div>

@@ -35,7 +35,7 @@ function Contact() {
   const { values, handleChange, set } = useForm(initData);
 
   useEffect(() => {
-    if (window.pageYOffset > 84) {
+    if (window.pageYOffset > 115) {
       window.scrollTo(0, 0);
     }
   }, []);

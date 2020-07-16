@@ -51,6 +51,12 @@ function EditCampground() {
     }
   }, [push]);
 
+  useEffect(() => {
+    if (window.pageYOffset > 115) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   async function submitForm(event) {
     event.preventDefault();
     setLoadingTrue();

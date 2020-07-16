@@ -623,6 +623,7 @@ div > .figure > a > .img-thumbnail {
 
   .user-h1-mobile {
     margin: 1em 1em .5em 1em;
+    font-size: 1.6rem;
   }
 
   .border-top-mobile {
@@ -844,4 +845,12 @@ div > .figure > a > .img-thumbnail {
 .jumbotron > .container > .sort-dropdown > .dropdown-toggle:hover {
   background-color: #2f5881 !important;
   border-color: #2f5881 !important;
+}
+
+.cg-card-body {
+  min-height: 187px;
+}
+
+.display-inline-block {
+  display: inline-block;
 }

@@ -155,13 +155,13 @@
 .btn-warning:hover {
   color: #fff;
   background-color: #ecaa1b;
-  border-color: #e7a413;
+  border-color: #ecaa1b;
 }
 
 .btn-warning:focus, .btn-warning.focus {
   color: #fff;
   background-color: #ecaa1b;
-  border-color: #e7a413;
+  border-color: #ecaa1b;
 }
 
 .btn-warning.disabled, .btn-warning:disabled {

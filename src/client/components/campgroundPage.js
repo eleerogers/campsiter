@@ -207,7 +207,7 @@ function CampgroundPage() {
                 onLoad={setLoadingFalse}
               />
             </div>
-            <div className="card-body">
+            <div className="card-body cg-card-body">
               { !cgIsLoading && <div>
               <h6 className="float-right">
                 $

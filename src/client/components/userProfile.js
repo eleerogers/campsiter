@@ -33,6 +33,12 @@ function UserProfile() {
     }
   }, [errMsg]);
 
+  useEffect(() => {
+    if (window.pageYOffset > 115) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   return (
     <div className="row" style={{"minWidth": "296px"}}>
       <Container>
