@@ -51,7 +51,7 @@ function Comment({
             <Button
               size="sm"
               variant="warning"
-              className="mr-2"
+              className="mr-2 btn-square"
             >
               Edit
             </Button>

@@ -78,6 +78,12 @@ function CampgroundPage() {
     }
   }, [errMsg]);
 
+  useEffect(() => {
+    if (window.pageYOffset > 115) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   const {
     id: campgroundId,
     user_id: userId,
