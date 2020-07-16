@@ -854,3 +854,7 @@ div > .figure > a > .img-thumbnail {
 .display-inline-block {
   display: inline-block;
 }
+
+.page-link:focus {
+  box-shadow: none;
+}

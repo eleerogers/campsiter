@@ -93,13 +93,13 @@
 .btn-success:hover {
   color: #fff;
   background-color: #80b139;
-  border-color: #79a736;
+  border-color: #80b139;
 }
 
 .btn-success:focus, .btn-success.focus {
   color: #fff;
   background-color: #80b139;
-  border-color: #79a736;
+  border-color: #80b139;
 }
 
 .btn-success.disabled, .btn-success:disabled {

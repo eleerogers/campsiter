@@ -65,6 +65,12 @@ function CampgroundsHome() {
   }
 
   useEffect(() => {
+    if (window.pageYOffset > 115) {
+      window.scrollTo(0, 115);
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
     if (pages.length) {
       jumpCallback();
     }
