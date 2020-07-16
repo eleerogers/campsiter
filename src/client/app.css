@@ -152,7 +152,7 @@ input, input:focus {
   box-shadow: none;
 }
 
-#main-searchbar {
+#main-searchbar, #main-searchbar:focus {
   outline:none;
   box-shadow: none;
   border: none !important;
