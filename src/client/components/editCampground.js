@@ -125,7 +125,7 @@ function EditCampground() {
           <div className="entryBox centered">
             <div className="form-group">
               <input
-                className="form-control"
+                className="form-control shadow-none"
                 type="text"
                 name="name"
                 placeholder="Name"
@@ -135,7 +135,7 @@ function EditCampground() {
             </div>
             <div className="form-group">
               <textarea
-                className="form-control inputTextBox"
+                className="form-control shadow-none inputTextBox"
                 type="text"
                 name="description"
                 placeholder="Description"
@@ -146,7 +146,7 @@ function EditCampground() {
             </div>
             <div className="form-group">
               <input
-                className="form-control"
+                className="form-control shadow-none"
                 type="text"
                 name="location"
                 placeholder="Location"
@@ -156,7 +156,7 @@ function EditCampground() {
             </div>
             <div className="form-group">
               <input
-                className="form-control"
+                className="form-control shadow-none"
                 type="text"
                 name="price"
                 placeholder="Price ($/night)"

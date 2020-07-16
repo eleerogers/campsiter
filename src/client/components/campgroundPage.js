@@ -39,7 +39,7 @@ function CampgroundPage() {
 
   const { id } = useParams();
   const fetchCGUrl = `/api/campgrounds/${id}`;
-  const { data: { campground }, errMsg } = useGetCGs(fetchCGUrl, emptyCGObj);
+  const { data: { campground }, isLoading: cgIsLoading, errMsg } = useGetCGs(fetchCGUrl, emptyCGObj);
 
   const [comments, deleteComment, currAvgRating] = useGetAndDeleteComments(campground);
   
@@ -208,6 +208,7 @@ function CampgroundPage() {
               />
             </div>
             <div className="card-body">
+              { !cgIsLoading && <div>
               <h6 className="float-right">
                 $
                 {price}
@@ -229,6 +230,7 @@ function CampgroundPage() {
                 </em>
               </p>
               {renderEditDeleteBtns()}
+              </div> }
             </div>
           </div>
           <div className="card card-body bg-light mb-3">
