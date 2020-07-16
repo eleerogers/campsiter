@@ -110,6 +110,7 @@ function CampgroundsHome() {
             >
               <input
                 className="form-control search-form mt-1 input"
+                id="main-searchbar"
                 type="text"
                 name="search"
                 placeholder="Search campgrounds..."
