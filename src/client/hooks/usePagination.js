@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function usePagination(data, itemsPerPage) {
+function usePagination(data, itemsPerPage, jumbotronHeight) {
   const [currentPage, setCurrentPage] = useState(1);
   const maxPage = Math.ceil(data.length / itemsPerPage);
 
@@ -23,8 +23,15 @@ function usePagination(data, itemsPerPage) {
   function jump(page) {
     const pageNumber = Math.max(1, page);
     setCurrentPage(Math.min(pageNumber, maxPage));
-    if (window.pageYOffset > 115) {
-      window.scrollTo(0, 115);
+
+    const jumboHtMinusNavHt = jumbotronHeight - 84;
+    const jumboHtPlusNav = jumbotronHeight + 140;
+
+    if (window.innerWidth < 576 
+      && window.pageYOffset > jumboHtMinusNavHt) {
+      window.scrollTo(0, jumboHtMinusNavHt);
+    } else if (window.pageYOffset > jumboHtPlusNav) {
+      window.scrollTo(0, jumboHtPlusNav);
     }
   }
 
