@@ -40,8 +40,8 @@ function Forgot() {
         push('/campgroundsHome');
       }
     } catch (err) {
-      const { response: { status, statusText } } = err;
-      toast.error(`${statusText} (${status})`);
+      const { response: { statusText } } = err;
+      toast.error(`${statusText}`);
     } finally {
       setLoadingFalse();
     }

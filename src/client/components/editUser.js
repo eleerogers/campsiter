@@ -108,8 +108,8 @@ function EditUser() {
         push(`/ycusers/${id}`);
       }
     } catch (err) {
-      const { response: { status, data: message } } = err;
-      toast.error(`${message} (${status})`);
+      const { response: { data: message } } = err;
+      toast.error(`${message}`);
     } finally {
       setLoadingFalse();
     }

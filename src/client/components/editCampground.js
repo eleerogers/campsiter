@@ -99,20 +99,13 @@ function EditCampground() {
         });
       } else {
         const error = new Error();
-        error.response = {
-          status: 400,
-          data: 'Unsuccessful request'
-        };
         throw error;
       }
     } catch (err) {
       const {
-        response: {
-          status,
-          data
-        }
+        response: { data }
       } = err;
-      toast.error(`${data} (${status})`);
+      toast.error(`${data}`);
     } finally {
       setLoadingFalse();
     }

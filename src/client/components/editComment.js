@@ -60,8 +60,8 @@ function EditComment() {
         });
       }
     } catch (err) {
-      const { response: { status, data } } = err;
-      toast.error(`${data} (${status})`);
+      const { response: { data } } = err;
+      toast.error(`${data}`);
     } finally {
       setLoadingFalse();
     }

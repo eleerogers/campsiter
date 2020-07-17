@@ -109,7 +109,7 @@ const validUser = async (req, res, next) => {
     } catch (err) {
       console.error(err);
     } finally {
-      res.status(400).send('Invalid account information');
+      res.status(400).send('Error: Be sure to enter all required fields');
     }
   }
 };
@@ -126,7 +126,7 @@ const validEditUser = (req, res, next) => {
   ) {
     next();
   } else {
-    res.status(400).send('invalid account information!');
+    res.status(400).send('Error: Be sure to enter all required fields');
   }
 };
 
@@ -240,7 +240,7 @@ const validCampground = (req, res, next) => {
   ) {
     next();
   } else {
-    res.status(400).send('Invalid campground information');
+    res.status(400).send('Error: Be sure to enter all required fields');
   }
 };
 

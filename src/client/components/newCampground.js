@@ -74,12 +74,9 @@ function NewCampground() {
       }
     } catch (err) {
       const {
-        response: {
-          status,
-          data
-        }
+        response: { data }
       } = err;
-      toast.error(`${data} (${status})`);
+      toast.error(`${data}`);
     } finally {
       setLoadingFalse();
     }
