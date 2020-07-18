@@ -204,11 +204,14 @@ const getUserByToken = (req, res, next) => {
 };
 
 const contact = async (req, res, next) => {
+  console.log(req.body);
   let { firstName, lastName, email, message, emailTo } = req.body;
   firstName = req.sanitize(firstName);
   lastName = req.sanitize(lastName);
   email = req.sanitize(email);
+  console.log({message})
   message = req.sanitize(message);
+  console.log({message})
   const timeStamp = new Date().toString();
   const enteredBothNames = firstName && lastName;
   const fromMessage = enteredBothNames ? `CampSiter user ${firstName} ${lastName}` : 'a Campsiter user'
@@ -229,6 +232,7 @@ const contact = async (req, res, next) => {
       port: 587,
       secure: false, // true for 465, false for other ports
     });
+    console.log('before await');
     await transporter.sendMail({
       to: emailTo,
       replyTo: email,
@@ -236,6 +240,7 @@ const contact = async (req, res, next) => {
       text: message,
       html
     });
+    console.log('after await');
     next();
   } catch (error) {
     console.error(error);
