@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -99,7 +99,17 @@ function CampgroundPage() {
     lng
   } = campground;
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function deleteCampgroundAndRedirect() {
+    cancelTokenRef.current = axios.CancelToken.source()
     try {
       const delUrl = `/api/campgrounds/${campgroundId}`;
       const data = {
@@ -108,18 +118,23 @@ function CampgroundPage() {
         imageId,
         delete: true
       };
+      const cancelToken = cancelTokenRef.current.token;
       const {
         status,
         data: message
-      } = await axios.delete(delUrl, { data });
+      } = await axios.delete(delUrl, { data, cancelToken });
 
       if (status === 200) {
         toast.success(message);
         push('/campgroundsHome');
       }
     } catch (err) {
-      const { response: { status, data: message } } = err;
-      toast.error(`${message} (${status})`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     }
   }
 

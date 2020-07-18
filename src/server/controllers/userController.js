@@ -106,6 +106,9 @@ const update = (req, res, next) => {
 
 const login = (req, res, next) => {
   let { password, user } = req.body;
+  if (password === '') {
+    res.status(400).send('Enter password');
+  }
   password = req.sanitize(password);
 
   if (!user) {

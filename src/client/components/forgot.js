@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -30,18 +30,33 @@ function Forgot() {
     setEmail(event.target.value);
   }
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function submitEmailReset(event) {
     event.preventDefault();
     setLoadingTrue();
+    cancelTokenRef.current = axios.CancelToken.source();
+    const cancelToken = cancelTokenRef.current.token;
     try {
-      const { data, status } = await axios.post('api/users/forgot', { email });
+      const { data, status } = await axios.post('api/users/forgot', { email }, { cancelToken });
       if (status === 200) {
         toast.success(data);
         push('/campgroundsHome');
       }
     } catch (err) {
-      const { response: { statusText } } = err;
-      toast.error(`${statusText}`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { statusText } } = err;
+        toast.error(`${statusText}`);
+      }
     } finally {
       setLoadingFalse();
     }
@@ -59,7 +74,7 @@ function Forgot() {
           <div className="form-group">
             <input
               className="form-control"
-              type="text"
+              type="email"
               name="email"
               placeholder="Email"
               value={email}
@@ -81,7 +96,7 @@ function Forgot() {
             <Button
               size="sm"
               variant="link"
-              className="float-left"
+              className="float-left go-back-btn"
             >
               Go Back
             </Button>

@@ -519,11 +519,11 @@ div > .container > .container > .jumbotron > a > .btn-orange:active {
 }
 
 .go-back-btn {
-  color: var(--main-dark-blue);
+  color: #325D88;
 }
 
 .go-back-btn:hover, .go-back-btn:focus {
-  color: var(--main-dark-blue);
+  color: #284a6c;
   text-decoration: none;
   font-weight: 450;
 }

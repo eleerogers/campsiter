@@ -8,30 +8,28 @@ const useDataApi = (initialUrl, initialData) => {
   const [isError, setIsError] = useState(false);
  
   useEffect(() => {
-    let mounted = true;
+    let source = axios.CancelToken.source();
     const fetchData = async () => {
-        setIsError(false);
-        setIsLoading(true);
+      setIsError(false);
+      setIsLoading(true);
   
       try {
-        if (mounted) {
-          const result = await axios(url);
-          setData(result.data);
-        }
+        const result = await axios(url, { cancelToken: source.token });
+        setData(result.data);
       } catch (err) {
-        const { response: { status, data: message } } = err;
-        if (mounted) {
-          setIsError(`${message} (${status})`);
+        if (axios.isCancel(err)) {
+          console.log(`axios call was cancelled`);
+        } else {
+          const { response: { data: message } } = err;
+          setIsError(`${message}`);
         }
-      }
-      
-      if (mounted) {
+      } finally {
         setIsLoading(false);
       }
     };
   
     fetchData();
-    return () => { mounted = false }
+    return () => { source.cancel(); }
   }, [url]);
  
   return [{ data, isLoading, isError }, setUrl];

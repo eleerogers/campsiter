@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -41,15 +41,26 @@ function NewCampground() {
     }
   }, [push]);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+
   async function submitForm(event) {
     event.preventDefault();
     setLoadingTrue();
+    cancelTokenRef.current = axios.CancelToken.source() 
     const priceNoDollarSign = price.replace(/\$/gi, '');
     const fd = new FormData();
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
-      }
+      },
+      cancelToken: cancelTokenRef.current.token
     };
     fd.append('image', imageFile);
     fd.append('name', name);
@@ -66,17 +77,15 @@ function NewCampground() {
         push('/campgroundsHome');
       } else {
         const error = new Error();
-        error.response = {
-          status: 400,
-          data: 'Unsuccessful request'
-        };
         throw error;
       }
     } catch (err) {
-      const {
-        response: { data }
-      } = err;
-      toast.error(`${data}`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     } finally {
       setLoadingFalse();
     }
@@ -161,7 +170,7 @@ function NewCampground() {
               <Button
                 size="sm"
                 variant="link"
-                className="float-left text-primary text-primary-hover"
+                className="float-left go-back-btn"
               >
                 Go Back
               </Button>

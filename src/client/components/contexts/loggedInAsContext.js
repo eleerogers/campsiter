@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
@@ -21,8 +21,9 @@ function LoggedInAsContextProvider({ children }) {
   const [loggedInAs, setLoggedInAs] = useState(loggedInAsInit);
 
   useEffect(() => {
+    let useEffectSource = axios.CancelToken.source();
     if (localStorage.userId) {
-      axios.get(`/api/users/${localStorage.userId}`)
+      axios.get(`/api/users/${localStorage.userId}`, { cancelToken: useEffectSource.token })
         .then(({
           data: {
             user: {
@@ -54,17 +55,33 @@ function LoggedInAsContextProvider({ children }) {
           setLoggedInAs(updatedLoggedInAs);
         })
         .catch((err) => {
-          const { response: { status, data: message } } = err;
-          toast.error(`${message} (${status})`);
+          if (axios.isCancel(err)) {
+            console.log(`axios call was cancelled`);
+          } else {
+            const { response: { data: message } } = err;
+            toast.error(`${message}`);
+          }
         });
     }
+    return () => { useEffectSource.cancel() };
   }, []);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function logoutUser(path, push) {
+    cancelTokenRef.current = axios.CancelToken.source();
+    const cancelToken = cancelTokenRef.current.token;
     try {
       const pathArr = path.split('/');
       const pathLast = pathArr.pop();
-      await axios.get('/api/users/logout');
+      await axios.get('/api/users/logout', { cancelToken });
       localStorage.removeItem('userId');
       setLoggedInAs(loggedInAsInit);
       if (
@@ -76,8 +93,12 @@ function LoggedInAsContextProvider({ children }) {
         push('/campgroundsHome');
       }
     } catch (err) {
-      const { response: { status, data: message } } = err;
-      toast.error(`${message} (${status})`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     }
   }
 

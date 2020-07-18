@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import {
   Link, useHistory, useParams
 } from 'react-router-dom';
@@ -74,12 +74,23 @@ function NewComment() {
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function submitForm(event) {
     event.preventDefault();
     setLoadingTrue();
     const url = `/api/comments/${id}`;
+    cancelTokenRef.current = axios.CancelToken.source();
+    const cancelToken = cancelTokenRef.current.token;
     try {
-      const { data, status } = await axios.post(url, values);
+      const { data, status } = await axios.post(url, values, { cancelToken });
       if (status === 200) {
         toast.success(data);
         push({
@@ -90,8 +101,12 @@ function NewComment() {
         });
       }
     } catch (err) {
-      const { response: { data } } = err;
-      toast.error(`${data}`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     } finally {
       setLoadingFalse();
     }
@@ -145,7 +160,7 @@ function NewComment() {
             <Button
               size="sm"
               variant="link"
-              className="float-left text-primary text-primary-hover"
+              className="float-left go-back-btn"
             >
               Go Back
             </Button>

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -49,21 +49,36 @@ function Login() {
     }
   }
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function submitLogin(event) {
     event.preventDefault();
     setLoadingTrue();
+    cancelTokenRef.current = axios.CancelToken.source();
+    const cancelToken = cancelTokenRef.current.token;
     try {
       const loginInfo = {
         email: emailForm,
         password: passwordForm
       };
-      const { data } = await axios.post('/api/users/login/', loginInfo);
+      const { data } = await axios.post('/api/users/login/', loginInfo, { cancelToken });
       localStorage.userId = data.id;
       setLoggedInAs(data);
       goBack();
     } catch (err) {
-      const { response: { data: message } } = err;
-      toast.error(`${message}`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     } finally {
       setLoadingFalse();
     }
@@ -82,7 +97,7 @@ function Login() {
           <div className="form-group">
             <input
               className="form-control shadow-none"
-              type="text"
+              type="email"
               name="emailForm"
               placeholder="Email"
               value={emailForm}

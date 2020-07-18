@@ -57,15 +57,26 @@ function EditCampground() {
     }
   }, []);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function submitForm(event) {
     event.preventDefault();
     setLoadingTrue();
     const priceNoDollarSign = price.replace(/\$/gi, '');
     const fd = new FormData();
+    cancelTokenRef.current = axios.CancelToken.source()
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
-      }
+      },
+      cancelToken: cancelTokenRef.current.token
     };
     if (imageFile) {
       fd.append('image', imageFile);
@@ -102,10 +113,12 @@ function EditCampground() {
         throw error;
       }
     } catch (err) {
-      const {
-        response: { data }
-      } = err;
-      toast.error(`${data}`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     } finally {
       setLoadingFalse();
     }
@@ -194,7 +207,7 @@ function EditCampground() {
               onClick={goBack}
               size="sm"
               variant="link"
-              className="float-left text-primary text-primary-hover"
+              className="float-left go-back-btn"
             >
               Go Back
             </Button>

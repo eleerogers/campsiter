@@ -133,6 +133,9 @@ const validEditUser = (req, res, next) => {
 
 const getUserByEmail = (req, res, next) => {
   let { email } = req.body;
+  if (email === '') {
+    res.status(400).send('Enter email address');
+  }
   email = req.sanitize(email).toLowerCase();
   pool.query('SELECT * FROM ycusers WHERE email = $1', [email], (error, results) => {
     if (error || results.rows.length === 0) {

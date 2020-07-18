@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Link, useHistory, useParams
 } from 'react-router-dom';
@@ -44,12 +44,23 @@ function EditComment() {
   };
   const { values, handleChange, changeRating } = useForm(initFormData);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function submitForm(event) {
     event.preventDefault();
     setLoadingTrue();
+    cancelTokenRef.current = axios.CancelToken.source()
+    const cancelToken = cancelTokenRef.current.token;
     const url = `/api/comments/${id}`;
     try {
-      const { data, status } = await axios.put(url, values);
+      const { data, status } = await axios.put(url, values, { cancelToken });
       if (status === 200) {
         toast.success(data);
         push({
@@ -60,8 +71,12 @@ function EditComment() {
         });
       }
     } catch (err) {
-      const { response: { data } } = err;
-      toast.error(`${data}`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     } finally {
       setLoadingFalse();
     }
@@ -115,7 +130,7 @@ function EditComment() {
             <Button
               size="sm"
               variant="link"
-              className="float-left text-primary text-primary-hover"
+              className="float-left go-back-btn"
             >
               Go Back
             </Button>

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -56,9 +56,19 @@ function EditUser() {
     }
   }, [push, loggedInAsId, goBack]);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function submitForm(event) {
     event.preventDefault();
     setLoadingTrue();
+    cancelTokenRef.current = axios.CancelToken.source()
     const lNameNoPeriod = lastName.replace(/\.$/, "");
 
     const fd = new FormData();
@@ -79,7 +89,8 @@ function EditUser() {
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
-      }
+      },
+      cancelToken: cancelTokenRef.current.token
     };
     try {
       const {
@@ -108,8 +119,12 @@ function EditUser() {
         push(`/ycusers/${id}`);
       }
     } catch (err) {
-      const { response: { data: message } } = err;
-      toast.error(`${message}`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     } finally {
       setLoadingFalse();
     }
@@ -169,7 +184,7 @@ function EditUser() {
           <div className="form-group">
             <input
               className="form-control shadow-none"
-              type="text"
+              type="email"
               name="email"
               value={email}
               placeholder="Email"
@@ -206,7 +221,7 @@ function EditUser() {
             onClick={goBack}
             size="sm"
             variant="link"
-            className="float-left text-primary text-primary-hover"
+            className="float-left go-back-btn"
           >
             Go Back
           </Button>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -12,10 +12,10 @@ function useGetAndDeleteComments(campground) {
   const [currAvgRating, setCurrAvgRating] = useState(null);
 
   useEffect(() => {
-    let mounted = true;
-    axios.get(`/api/comments/${campgroundId}`)
+    let useEffectSource = axios.CancelToken.source();
+    axios.get(`/api/comments/${campgroundId}`, { cancelToken: useEffectSource.token})
       .then(({ data: { comments: incomingComments } }) => {
-        if (mounted && comments.length !== incomingComments.length) {
+        if (comments.length !== incomingComments.length) {
           setComments(incomingComments);
         }
       })
@@ -46,14 +46,31 @@ function useGetAndDeleteComments(campground) {
             ...campground,
             rating: currAvgRating
           }
-          axios.put(url, updatedCG);
+          axios.put(url, updatedCG, { cancelToken: useEffectSource.token });
         }
       })
-      .catch((err) => { console.error(err); });
-    return () => { mounted = false; };
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log(`axios call was cancelled`);
+        } else {
+          console.error(err);
+        }
+      });
+    return () => { useEffectSource.cancel() };
   }, [campgroundId, comments, campground, currAvgRating, rating]);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function deleteComment(commentObj, loggedInAsAdmin) {
+    cancelTokenRef.current = axios.CancelToken.source();
+    const cancelToken = cancelTokenRef.current.token;
     try {
       const url = `/api/comments/${campgroundId}`;
       const {
@@ -70,12 +87,16 @@ function useGetAndDeleteComments(campground) {
           comments: updatedComments,
           message
         }
-      } = await axios.delete(url, { data: commentData });
+      } = await axios.delete(url, { data: commentData, cancelToken });
       setComments(updatedComments);
       toast.success(message);
     } catch (err) {
-      const { response: { status, statusText } } = err;
-      toast.error(`${statusText} (${status})`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     }
   }
 

@@ -1,5 +1,4 @@
-import React, {
-  useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -49,8 +48,18 @@ function Signup() {
     }
   }, [loggedInAsId, push]);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
   async function submitForm(event) {
     event.preventDefault();
+    cancelTokenRef.current = axios.CancelToken.source();
+    const cancelToken = cancelTokenRef.current.token;
     if (password1 === password2) {
       const lNameNoPeriod = lastName.replace(/\.$/, "");
       const fd = new FormData();
@@ -66,7 +75,8 @@ function Signup() {
       const config = {
         headers: {
           'content-type': 'multipart/form-data'
-        }
+        },
+        cancelToken
       };
       try {
         setLoadingTrue();
@@ -88,8 +98,12 @@ function Signup() {
           throw error;
         }
       } catch (err) {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (axios.isCancel(err)) {
+          console.log(`axios call was cancelled`);
+        } else {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       } finally {
         setLoadingFalse();
       }
@@ -160,7 +174,7 @@ function Signup() {
           <div className="form-group">
             <input
               className="form-control shadow-none"
-              type="text"
+              type="email"
               name="email"
               placeholder="Email"
               value={email}

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -46,19 +46,34 @@ function Contact() {
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
+  const cancelTokenRef = useRef();
+  useEffect(() => {
+    return () => {
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel();
+      }
+    }
+  }, []);
+  
   async function submitForm(event) {
     event.preventDefault();
     setLoadingTrue();
     const url = '/api/users/contact';
+    cancelTokenRef.current = axios.CancelToken.source()
+    const cancelToken = cancelTokenRef.current.token;
     try {
-      const { data: { message }, status } = await axios.post(url, values);
+      const { data: { message }, status } = await axios.post(url, values, { cancelToken });
       if (status === 201) {
         toast.success(message);
         goBack();
       }
     } catch (err) {
-      const { response: { data } } = err;
-      toast.error(`${data}`);
+      if (axios.isCancel(err)) {
+        console.log(`axios call was cancelled`);
+      } else {
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
+      }
     } finally {
       setLoadingFalse();
     }
@@ -82,11 +97,12 @@ function Contact() {
             <div className="form-group">
               <input
                 className="form-control shadow-none"
-                type="text"
+                type="email"
                 name="email"
                 placeholder="Your Email"
                 onChange={handleChange}
                 value={values.email}
+                required
               />
             </div>
           }
