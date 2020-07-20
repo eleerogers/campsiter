@@ -33,9 +33,9 @@ app.use(cors({
 }));
 app.use(expressSanitizer());
 
+app.use('/api/users', users);
 app.use('/api/campgrounds', campgrounds);
 app.use('/api/comments', comments);
-app.use('/api/users', users);
 
 app.get('*', (req, res) => {
   console.log('index catch-all');

@@ -58,6 +58,15 @@ router.post('/reset',
     res.status(201).send('Successfully changed password. Please login.');
   });
 
+router.post('/contact',
+userController.contact,
+(req, res) => {
+  console.log('contact')
+    res.status(201).json({
+      message: `Your message has been sent to ${req.body.usernameTo}!`
+    })
+  });
+
 
 router.post('/',
   middleware.fileConverter,
@@ -122,15 +131,6 @@ router.get('/token/:reset_password_token',
     res.json({
       user
     });
-  });
-
-
-router.post('/contact',
-  userController.contact,
-  (req, res) => {
-    res.status(201).json({
-      message: `Your message has been sent to ${req.body.usernameTo}!`
-    })
   });
 
 

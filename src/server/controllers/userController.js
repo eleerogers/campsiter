@@ -19,11 +19,12 @@ const getUsers = (request, response, next) => {
 const getUserById = (request, response, next) => {
   const id = parseInt(request.params.id, 10);
   pool.query('SELECT * FROM ycusers WHERE id = $1', [id], (error, results) => {
-    if (error) {
+    if (error || !results || !response || !response.locals || !response.locals.user) {
       console.error(error);
       response.status(404).json({
         error: 'User not found'
       });
+      return;
     }
     [response.locals.user] = results.rows;
     next();
