@@ -142,7 +142,7 @@ function CampgroundsHome() {
             <br />
             <br />
             <form
-              className="form-inline display-flex"
+              className="display-flex"
               onSubmit={(e) => { e.preventDefault(); }}
             >
               <input

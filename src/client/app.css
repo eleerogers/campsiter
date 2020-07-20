@@ -241,6 +241,9 @@ a:hover {
   top: 2em;
   right: 2em; 
 }
+.Toastify__close-button:focus {
+  outline: none !important;
+}
 
 .display-flex {
   display: flex !important;
@@ -409,10 +412,10 @@ a:hover {
     flex-direction: column-reverse;
     margin-bottom: 2em;
   }
+}
 
-  .form-control {
-    display: inline-block !important;
-  }
+.flex-dir-col {
+  flex-direction: column;
 }
 
 ul {

@@ -38,7 +38,9 @@ router.post('/',
   middleware.picUploader,
   campgroundController.createCampground,
   (req, res) => {
-    res.status(201).send('Successfully added campground');
+    const {id} = res.locals;
+    const message = 'Successfully added campground.';
+    res.status(201).json({ message, id });
   });
 
 

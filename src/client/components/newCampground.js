@@ -25,12 +25,11 @@ function NewCampground() {
   const initData = {
     name: '',
     description: '',
-    campLocation: '',
     price: '',
   };
   const { values, handleChange } = useForm(initData);
   const {
-    price, name, description, campLocation
+    price, name, description
   } = values;
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
@@ -65,16 +64,24 @@ function NewCampground() {
     fd.append('image', imageFile);
     fd.append('name', name);
     fd.append('description', description);
-    fd.append('campLocation', campLocation);
+    fd.append('campLocation', name);
     fd.append('price', priceNoDollarSign);
     fd.append('userId', loggedInAsId);
     const url = '/api/campgrounds';
 
     try {
-      const { status, data } = await axios.post(url, fd, config);
+      const {
+        status,
+        data: {
+          message,
+          id
+        }
+      } = await axios.post(url, fd, config);
       if (status === 201) {
-        toast.success(data);
-        push('/campgroundsHome');
+        toast.success(message);
+        toast.warning('Check that map displays correct location (if not click "Edit" to modify).', {delay: 4000});
+        toast('Be sure to rate/review your campground! 👇', {delay: 8000});
+        push(`/campgrounds/${id}`);
       } else {
         const error = new Error();
         throw error;
@@ -97,7 +104,7 @@ function NewCampground() {
         <h1 className="text-center color-dark-blue">Create a New <br className="brnodisplay-md" />Campground</h1>
         <br />
         <form onSubmit={submitForm}>
-          <div className="entryBox centered">
+          <div className="entryBox centered flex flex-dir-col">
             <div className="form-group">
               <input
                 className="form-control shadow-none"
@@ -117,16 +124,6 @@ function NewCampground() {
                 rows="5"
                 onChange={handleChange}
                 value={description}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                className="form-control shadow-none"
-                type="text"
-                name="campLocation"
-                placeholder="Location"
-                onChange={handleChange}
-                value={campLocation}
               />
             </div>
             <div className="form-group">

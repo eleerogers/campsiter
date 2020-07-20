@@ -287,7 +287,7 @@ function CampgroundPage() {
                     className="btn-square ml-2 min-width-134"
                     variant="success"
                   >
-                    Add Your Review
+                    Rate/Review
                   </Button>
                 </Link>
               }
