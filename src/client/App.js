@@ -1,6 +1,5 @@
 import React from 'react';
 import { lazy, LazyBoundary } from 'react-imported-component';
-import Loading from './components/loading';
 import 'react-toastify/dist/ReactToastify.css';
 import './bootstrap.colors.css';
 import './app.css';
@@ -29,7 +28,7 @@ function App() {
   return (
     <div className="app-outer">
       <Layout>
-        <LazyBoundary fallback={<Loading />}>
+        <LazyBoundary fallback={<div />}>
           <Switch>
             <Route
               path="/campgroundsHome"

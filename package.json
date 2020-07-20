@@ -61,7 +61,6 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-icons": "^1.0.3-alpha5",
-    "react-delay-render": "^0.1.2",
     "react-dom": "^16.13.1",
     "react-imported-component": "^6.3.5",
     "react-rating": "^2.0.5",
