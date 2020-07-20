@@ -88,7 +88,7 @@ const updateCampground = async (request, response, next) => {
   } = request.body;
 
   try {
-    const [{
+    const [{ 
       latitude,
       longitude,
       formattedAddress
