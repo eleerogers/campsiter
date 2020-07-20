@@ -19,7 +19,7 @@ const getUsers = (request, response, next) => {
 const getUserById = (request, response, next) => {
   const id = parseInt(request.params.id, 10);
   pool.query('SELECT * FROM ycusers WHERE id = $1', [id], (error, results) => {
-    if (error || !results || !response || !response.locals || !response.locals.user) {
+    if (error) {
       console.error(error);
       response.status(404).json({
         error: 'User not found'
@@ -205,14 +205,11 @@ const getUserByToken = (req, res, next) => {
 };
 
 const contact = async (req, res, next) => {
-  console.log(req.body);
   let { firstName, lastName, email, message, emailTo } = req.body;
   firstName = req.sanitize(firstName);
   lastName = req.sanitize(lastName);
   email = req.sanitize(email);
-  console.log({message})
   message = req.sanitize(message);
-  console.log({message})
   const timeStamp = new Date().toString();
   const enteredBothNames = firstName && lastName;
   const fromMessage = enteredBothNames ? `CampSiter user ${firstName} ${lastName}` : 'a Campsiter user'
@@ -233,7 +230,6 @@ const contact = async (req, res, next) => {
       port: 587,
       secure: false, // true for 465, false for other ports
     });
-    console.log('before await');
     await transporter.sendMail({
       to: emailTo,
       replyTo: email,
@@ -241,7 +237,6 @@ const contact = async (req, res, next) => {
       text: message,
       html
     });
-    console.log('after await');
     next();
   } catch (error) {
     console.error(error);

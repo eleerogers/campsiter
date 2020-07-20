@@ -68,7 +68,6 @@ function Contact() {
         goBack();
       }
     } catch (err) {
-      console.log(err);
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {

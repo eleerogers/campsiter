@@ -518,7 +518,7 @@ div > .container > .container > .jumbotron > a > .btn-orange:active {
   font-weight: 500;
 }
 
-.container > .entryBox > .go-back-btn {
+.container > .entryBox > .go-back-btn, .go-back-btn {
   color: #325D88;
   padding-left: .1em;
 }

@@ -61,7 +61,6 @@ router.post('/reset',
 router.post('/contact',
 userController.contact,
 (req, res) => {
-  console.log('contact')
     res.status(201).json({
       message: `Your message has been sent to ${req.body.usernameTo}!`
     })
