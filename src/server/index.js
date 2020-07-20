@@ -9,7 +9,6 @@ const cors = require('cors');
 const campgrounds = require('./routes/campgroundRoutes');
 const users = require('./routes/userRoutes');
 const comments = require('./routes/commentRoutes');
-const expressSanitizer = require('express-sanitizer');
 const compression = require('compression');
 
 const app = express();
@@ -31,7 +30,6 @@ app.use(cookieParser('keyboard_cat'));
 app.use(cors({
   credentials: true
 }));
-app.use(expressSanitizer());
 
 app.use('/api/users', users);
 app.use('/api/campgrounds', campgrounds);

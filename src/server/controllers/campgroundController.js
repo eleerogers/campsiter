@@ -52,7 +52,7 @@ const getCampgroundById = (request, response, next) => {
 
 
 const createCampground = async (request, response, next) => {
-  let {
+  const {
     name,
     image,
     imageId,
@@ -61,11 +61,6 @@ const createCampground = async (request, response, next) => {
     price,
     campLocation,
   } = request.body;
-  name = request.sanitize(name);
-  image = request.sanitize(image);
-  description = request.sanitize(description);
-  price = request.sanitize(price);
-  campLocation = request.sanitize(campLocation);
 
   try {
     const [{
@@ -88,14 +83,9 @@ const createCampground = async (request, response, next) => {
 
 const updateCampground = async (request, response, next) => {
   const id = parseInt(request.params.id, 10);
-  let {
+  const {
     name, image, imageId, description, price, campLocation, rating
   } = request.body;
-  name = request.sanitize(name);
-  image = request.sanitize(image);
-  description = request.sanitize(description);
-  price = request.sanitize(price);
-  campLocation = request.sanitize(campLocation);
 
   try {
     const [{

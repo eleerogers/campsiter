@@ -42,12 +42,7 @@ const register = async (req, res, next) => {
     image,
     imageId,
   } = req.body;
-  username = req.sanitize(username);
-  firstName = req.sanitize(firstName);
-  lastName = req.sanitize(lastName);
-  email = req.sanitize(email).toLowerCase();
-  adminCode = req.sanitize(adminCode);
-  image = req.sanitize(image);
+
   if (!image) {
     image = 'https://res.cloudinary.com/eleerogers/image/upload/v1565769595/tg6i3wamwkkevynyqaoe.jpg';
     imageId = 'tg6i3wamwkkevynyqaoe';
@@ -71,7 +66,7 @@ const register = async (req, res, next) => {
 
 
 const update = (req, res, next) => {
-  let {
+  const {
     id,
     firstName,
     lastName,
@@ -81,11 +76,7 @@ const update = (req, res, next) => {
     admin,
     adminCode
   } = req.body;
-  firstName = req.sanitize(firstName);
-  lastName = req.sanitize(lastName);
-  email = req.sanitize(email);
-  adminCode = req.sanitize(adminCode);
-  image = req.sanitize(image);
+
   const updatedAdmin =
     adminCode === process.env.ADMIN_PASSWORD
     ? admin === 'false'
@@ -106,11 +97,10 @@ const update = (req, res, next) => {
 
 
 const login = (req, res, next) => {
-  let { password, user } = req.body;
+  const { password, user } = req.body;
   if (password === '') {
     res.status(400).send('Enter password');
   }
-  password = req.sanitize(password);
 
   if (!user) {
     res.status(400).send('Invalid email');
@@ -143,8 +133,7 @@ const logout = (req, res, next) => {
 
 
 const resetPassword = async (req, res, next) => {
-  let { email } = req.body;
-  email = req.sanitize(email);
+  const { email } = req.body;
   res.locals.email = email;
 
   try {
@@ -181,7 +170,6 @@ const resetPassword = async (req, res, next) => {
 const updatePassword = async (req, res, next) => {
   try {
     let { password } = req.body;
-    password = req.sanitize(password);
     password = await bcrypt.hash(password, 10);
     await pool.query('UPDATE ycusers SET password = $1 WHERE id = $2 RETURNING id', [password, req.body.user.id]);
     next();
@@ -205,11 +193,7 @@ const getUserByToken = (req, res, next) => {
 };
 
 const contact = async (req, res, next) => {
-  let { firstName, lastName, email, message, emailTo } = req.body;
-  firstName = req.sanitize(firstName);
-  lastName = req.sanitize(lastName);
-  email = req.sanitize(email);
-  message = req.sanitize(message);
+  const { firstName, lastName, email, message, emailTo } = req.body;
   const timeStamp = new Date().toString();
   const enteredBothNames = firstName && lastName;
   const fromMessage = enteredBothNames ? `CampSiter user ${firstName} ${lastName}` : 'a Campsiter user'
