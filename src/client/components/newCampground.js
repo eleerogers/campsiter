@@ -92,6 +92,7 @@ function NewCampground() {
       } else {
         const { response } = err;
         console.log({response});
+        console.log(response.data);
         toast.error(`didn't work`);
       }
     } finally {

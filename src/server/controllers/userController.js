@@ -8,7 +8,8 @@ const getUsers = (request, response, next) => {
   pool.query('SELECT * FROM ycusers ORDER BY id ASC', (error, results) => {
     if (error) {
       console.error(error);
-      throw error;
+      response.status(400).send('Problem getting users');
+      return;
     }
     response.locals.users = results.rows;
     next();
@@ -60,7 +61,8 @@ const register = async (req, res, next) => {
     next();
   } catch (err) {
     console.error(err);
-    throw err;
+    res.status(400).send('Problem registering user');
+      return;
   }
 };
 
@@ -88,7 +90,8 @@ const update = (req, res, next) => {
   pool.query(queryString, valueArr, (error) => {
     if (error) {
       console.error(error);
-      throw error;
+      res.status(400).send('Problem updating user');
+      return;
     }
     res.locals.updatedAdmin = updatedAdmin;
     next();

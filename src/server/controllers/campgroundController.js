@@ -29,7 +29,8 @@ const getCampgroundsByUser = (request, response, next) => {
   pool.query('SELECT campgrounds.id, campgrounds.name, campgrounds.image, campgrounds.description, campgrounds.user_id, campgrounds.price, campgrounds.location, campgrounds.lat, campgrounds.lng, campgrounds.rating, campgrounds.created_at, campgrounds.image_id, ycusers.username FROM campgrounds LEFT OUTER JOIN ycusers ON campgrounds.user_id = ycusers.id WHERE user_id = $1 ORDER BY campgrounds.id ASC', [id], (error, results) => {
     if (error) {
       console.error(error);
-      throw new Error(error);
+      response.status(404).send('Problem fetching campgrounds');
+      return;
     }
     response.locals.campgrounds = results.rows;
     next();
@@ -43,7 +44,8 @@ const getCampgroundById = (request, response, next) => {
   pool.query('SELECT campgrounds.id, campgrounds.name, campgrounds.image, campgrounds.description, campgrounds.user_id, campgrounds.price, campgrounds.location, campgrounds.lat, campgrounds.lng, campgrounds.rating, campgrounds.created_at, campgrounds.image_id, ycusers.username FROM campgrounds LEFT OUTER JOIN ycusers ON campgrounds.user_id = ycusers.id WHERE campgrounds.id = $1', [id], (error, results) => {
     if (error) {
       console.error(error);
-      throw error;
+      response.status(404).send('Problem fetching campground');
+      return;
     }
     response.locals.campground = results.rows[0];
     next();
@@ -78,7 +80,7 @@ const createCampground = async (request, response, next) => {
   } catch (err) {
     console.log('create campground error');
     console.error(err);
-    throw err;
+    response.status(404).send('Problem creating campground');
   }
 };
 
@@ -103,7 +105,7 @@ const updateCampground = async (request, response, next) => {
     next();
   } catch (err) {
     console.error(err);
-    throw err;
+    response.status(404).send('Problem updating campground');
   }
 };
 
@@ -120,7 +122,7 @@ const updateCampgroundRating = async (request, response, next) => {
     next();
   } catch (err) {
     console.error(err);
-    throw err;
+    response.status(404).send('Problem updating rating');
   }
 };
 
@@ -130,7 +132,7 @@ const deleteCampground = (request, response, next) => {
   pool.query('DELETE FROM campgrounds WHERE id = $1', [id], (error) => {
     if (error) {
       console.error(error);
-      throw error;
+      response.status(404).send('Problem deleting campground');
     }
     next();
   });

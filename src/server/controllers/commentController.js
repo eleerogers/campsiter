@@ -7,7 +7,8 @@ const getComments = (request, response, next) => {
   pool.query('SELECT username, comment, comment_id, user_id, comments.created_at, rating FROM comments JOIN ycusers ON ycusers.id=comments.user_id WHERE comments.campground_id=$1 ORDER BY comment_id ASC', [campgroundId], (error, results) => {
     if (error) {
       console.error(error);
-      throw error;
+      response.status(400).send('Problem fetching comments');
+      return;
     }
     response.locals.comments = results.rows;
     next();
@@ -28,7 +29,8 @@ const createComment = (request, response, next) => {
     (error) => {
       if (error) {
         console.error(error);
-        throw error;
+        response.status(400).send('Problem creating comment');
+        return;
       }
       next();
     }
@@ -47,7 +49,8 @@ const editComment = (request, response, next) => {
     (error) => {
       if (error) {
         console.error(error);  
-        throw error;
+        response.status(404).send('Problem editing comment');
+        return;
       }
       next();
     }
@@ -63,7 +66,7 @@ const deleteComment = (request, response, next) => {
     (error) => {
       if (error) {
         console.error(error);
-        throw error;
+        response.status(400).send('Problem deleting comment');
       }
       next();
     }
