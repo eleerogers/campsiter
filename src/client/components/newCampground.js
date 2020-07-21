@@ -70,7 +70,6 @@ function NewCampground() {
     const url = '/api/campgrounds';
 
     try {
-      throw error;
       const {
         status,
         data: {
@@ -92,11 +91,9 @@ function NewCampground() {
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        console.log(err);
-        const { response } = err;
-        console.log({response});
-        console.log(response.data);
-        toast.error(`didn't work`);
+        const { statusText } = err;
+        const errMsg = statusText || err;
+        toast.error(errMsg);
       }
     } finally {
       setLoadingFalse();
