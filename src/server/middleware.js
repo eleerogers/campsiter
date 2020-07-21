@@ -66,6 +66,7 @@ const picUploader = async (req, res, next) => {
       await unlinkAsync(req.file.path);
     }
   } catch (err) {
+    console.log('picUploader error');
     console.error(err);
   } finally {
     next();
@@ -221,6 +222,7 @@ function allowAccess(req, res, next) {
   const cookieId = parseInt(req.signedCookies.userId, 10);
   const userId = parseInt(req.body.userId, 10);
   if (cookieId !== userId && !req.body.adminBool) {
+    console.log('allow access error')
     res.status(401).send('Unauthorized');
   } else {
     next();
