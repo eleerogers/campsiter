@@ -92,6 +92,7 @@ function NewCampground() {
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
+        console.log(err);
         const { response } = err;
         console.log({response});
         console.log(response.data);
