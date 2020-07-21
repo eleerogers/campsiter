@@ -66,14 +66,9 @@ const createCampground = async (request, response, next) => {
 
   try {
     const [geoResult] = await geocoder.geocode(campLocation);
-    let {
-      latitude,
-      longitude,
-      formattedAddress
-    } = geoResult;
-    latitude = latitude || 0;
-    longitude = longitude || 0;
-    formattedAddress = formattedAddress || '';
+    const latitude = geoResult.latitude || 0;
+    const longitude = geoResult.longitude || 0;
+    const formattedAddress = geoResult.formattedAddress || '';
 
     const { rows: [{id}] } = await pool.query(
       'INSERT INTO campgrounds (name, image, image_id, description, user_id, price, lat, lng, location) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id',
