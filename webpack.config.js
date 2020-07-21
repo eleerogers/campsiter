@@ -6,7 +6,6 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ChunksWebpackPlugin = require("chunks-webpack-plugin");
 const BrotliPlugin = require('brotli-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const outputDirectory = 'dist';
 
@@ -96,8 +95,7 @@ module.exports = {
       minRatio: 0.8
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new BundleAnalyzerPlugin()
+    new webpack.optimize.ModuleConcatenationPlugin()
   ],
   performance: {
     hints: "warning", // enum
