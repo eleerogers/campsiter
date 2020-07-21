@@ -111,7 +111,8 @@ const login = (req, res, next) => {
         if (result) {
           res.cookie('userId', user.id, {
             httpOnly: true,
-            signed: true
+            signed: true,
+            secure: true
           });
           res.locals.user = user;
           next();
