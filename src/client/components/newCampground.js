@@ -70,6 +70,7 @@ function NewCampground() {
     const url = '/api/campgrounds';
 
     try {
+      throw error;
       const {
         status,
         data: {
@@ -77,6 +78,7 @@ function NewCampground() {
           id
         }
       } = await axios.post(url, fd, config);
+      
       if (status === 201) {
         toast.success(message);
         toast.warning('Check that map displays correct location (if not click "Edit" to modify).', {delay: 4000});
