@@ -95,7 +95,7 @@ module.exports = {
       minRatio: 0.8
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
-    webpack.optimize.ModuleConcatenationPlugin()
+    new webpack.optimize.ModuleConcatenationPlugin()
   ],
   performance: {
     hints: "warning", // enum
