@@ -80,7 +80,7 @@ function NewCampground() {
       
       if (status === 201) {
         toast.success(message);
-        toast.warning('Check that map displays correct location (if not click "Edit" to modify).', {delay: 4000, autoClose: 6000});
+        toast.warning('Check that map displays correct location (if not click "Edit" to modify).', {delay: 4000, autoClose: 10000});
         toast('Be sure to rate/review your campground! 👇', {delay: 9000});
         push(`/campgrounds/${id}`);
       } else {
