@@ -10,7 +10,7 @@ const BrotliPlugin = require('brotli-webpack-plugin');
 const outputDirectory = 'dist';
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   devtool: false,
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
@@ -94,7 +94,8 @@ module.exports = {
       threshold: 10240,
       minRatio: 0.8
     }),
-    new webpack.optimize.AggressiveMergingPlugin()
+    new webpack.optimize.AggressiveMergingPlugin(),
+    webpack.optimize.ModuleConcatenationPlugin()
   ],
   performance: {
     hints: "warning", // enum
