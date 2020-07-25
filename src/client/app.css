@@ -95,26 +95,26 @@
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595715027/op69ohhvki8zushuh5jw_eahct7.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/dusk_jwzjiw.jpg);
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/c_scale,q_100,w_1366/v1595715503/zach-betten-K9olx8OF36A-unsplash_spprwv.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/coffee_laqtrv.jpg);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/c_scale,q_100,w_1366/v1566550279/campground3.1_ijvbxq.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/snowy_f9c77f.jpg);
   animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595715027/uijdp0mxekipvxrpujcj_mp5kag.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/spooky_cvzrjz.jpg);
   animation-delay: 30s; 
 }
 .slideshow li:nth-child(5) {
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/c_scale,q_100,w_1366/v1595715482/tommy-lisbin-2DH-qMX6M4E-unsplash_k9lq1w.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717589/sunny_dx2ldo.jpg);
   animation-delay: 40s;
 }
 .slideshow li:nth-child(6) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595715027/gxj0mwita4ts2ugbl4qe_mkfgsi.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/spotty_gusopy.jpg);
   animation-delay: 50s; 
 }
 
