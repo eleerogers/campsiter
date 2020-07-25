@@ -91,28 +91,33 @@
   background-repeat: no-repeat;
   opacity: 0;
   z-index: 0;
-  animation: imageAnimation 50s linear infinite; 
+  animation: imageAnimation 60s linear infinite; 
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1567127415/starry_camp_dq3dzc.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595715027/op69ohhvki8zushuh5jw_eahct7.jpg);
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550279/campground3_ijvbxq.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/c_scale,q_100,w_1366/v1595715503/zach-betten-K9olx8OF36A-unsplash_spprwv.jpg);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550277/campground7_nvgjpa.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/c_scale,q_100,w_1366/v1566550279/campground3.1_ijvbxq.jpg);
   animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550275/campground5_jdaxgj.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595715027/uijdp0mxekipvxrpujcj_mp5kag.jpg);
   animation-delay: 30s; 
 }
-.slideshow li:nth-child(5) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1566550274/campground4_pzeyad.jpg);
-  animation-delay: 40s; 
+.slideshow li:nth-child(5) {
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/c_scale,q_100,w_1366/v1595715482/tommy-lisbin-2DH-qMX6M4E-unsplash_k9lq1w.jpg);
+  animation-delay: 40s;
 }
+.slideshow li:nth-child(6) { 
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595715027/gxj0mwita4ts2ugbl4qe_mkfgsi.jpg);
+  animation-delay: 50s; 
+}
+
 
 @keyframes imageAnimation { 
   0% { 
