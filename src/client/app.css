@@ -623,7 +623,7 @@ div > .figure > a > .img-thumbnail {
   }
 }
 
-@media only screen and (max-width: 419px) {
+@media only screen and (max-width: 430px) {
   .landing-header {
     padding-top: 18.4vh;
   }
