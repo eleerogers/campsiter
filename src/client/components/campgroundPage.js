@@ -97,7 +97,6 @@ function CampgroundPage() {
     price,
     created_at: createdAt,
     username: authorUsername,
-    // rating,
     lat,
     lng
   } = campground;
