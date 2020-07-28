@@ -623,6 +623,12 @@ div > .figure > a > .img-thumbnail {
   }
 }
 
+@media only screen and (max-width: 419px) {
+  .landing-header {
+    padding-top: 18.4vh;
+  }
+}
+
 @media only screen and (max-width: 575px) {
   .card-img-top {
     border-radius: 0;
