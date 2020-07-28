@@ -68,6 +68,10 @@
   text-shadow: 2px 2px 10px rgba(0,0,0,.9)
 }
 
+.landing-outer > .landing-header > ul {
+  margin-top: .5rem;
+}
+
 .slideshow { 
   position: fixed;
   width: 100%;
@@ -91,31 +95,27 @@
   background-repeat: no-repeat;
   opacity: 0;
   z-index: 0;
-  animation: imageAnimation 60s linear infinite; 
+  animation: imageAnimation 50s linear infinite; 
 }
 
 .slideshow li:nth-child(1) { 
   background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/dusk_jwzjiw.jpg);
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/coffee_laqtrv.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/snowy_f9c77f.jpg);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/snowy_f9c77f.jpg);
+  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/spooky_cvzrjz.jpg);
   animation-delay: 20s; 
 }
-.slideshow li:nth-child(4) { 
-  background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/spooky_cvzrjz.jpg);
-  animation-delay: 30s; 
-}
-.slideshow li:nth-child(5) {
+.slideshow li:nth-child(4) {
   background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717589/sunny_dx2ldo.jpg);
-  animation-delay: 40s;
+  animation-delay: 30s;
 }
-.slideshow li:nth-child(6) { 
+.slideshow li:nth-child(5) { 
   background-image: url(https://res.cloudinary.com/eleerogers/image/upload/v1595717588/spotty_gusopy.jpg);
-  animation-delay: 50s; 
+  animation-delay: 40s; 
 }
 
 

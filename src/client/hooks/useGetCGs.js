@@ -14,7 +14,9 @@ function useGetCGs(urlStr = '/api/campgrounds', emptyCG) {
     }
   };
 
-  const [{ data, isLoading, isError: errMsg }] = useDataApi(urlStr, emptyCGObj);
+  const [{
+    data, isLoading, isError: errMsg
+  }] = useDataApi(urlStr, emptyCGObj);
 
   return { data, isLoading, errMsg };
 }

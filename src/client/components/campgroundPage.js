@@ -39,7 +39,10 @@ function CampgroundPage() {
 
   const { id } = useParams();
   const fetchCGUrl = `/api/campgrounds/${id}`;
-  const { data: { campground }, isLoading: cgIsLoading, errMsg } = useGetCGs(fetchCGUrl, emptyCGObj);
+  const {
+    data: { campground },
+    isLoading: cgIsLoading, errMsg
+  } = useGetCGs(fetchCGUrl, emptyCGObj);
 
   const [comments, deleteComment, currAvgRating] = useGetAndDeleteComments(campground);
   

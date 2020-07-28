@@ -10,7 +10,6 @@ function Landing() {
         <h1>Welcome to CampSiter!</h1>
         <br />
         <br />
-        <br />
         <ul>
           <Link to="/campgroundsHome">
             <Button
@@ -23,7 +22,6 @@ function Landing() {
         </ul>
       </div>
       <ul className="slideshow">
-        <li />
         <li />
         <li />
         <li />

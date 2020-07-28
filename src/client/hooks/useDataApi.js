@@ -32,7 +32,10 @@ const useDataApi = (initialUrl, initialData) => {
     return () => { source.cancel(); }
   }, [url]);
  
-  return [{ data, isLoading, isError }, setUrl];
+  return [
+    { data, isLoading, isError },
+    setUrl
+  ];
 };
 
 export default useDataApi;
