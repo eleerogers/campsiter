@@ -61,7 +61,6 @@ router.put('/:id',
   router.put('/rating/:id',
   campgroundController.updateCampgroundRating,
   (req, res) => {
-    console.log('end up PUT');
     const { campground } = res.locals;
     const message = 'Successfully edited campground';
     res.status(200).json({ campground, message });

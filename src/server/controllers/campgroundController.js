@@ -115,19 +115,15 @@ const updateCampground = async (request, response, next) => {
 const updateCampgroundRating = async (request, response, next) => {
   const id = parseInt(request.params.id, 10);
   let { rating } = request.body;
-  console.log('controller: updating rating 1')
   try {
     
     const { rows: [campground] } = await pool.query(
       'UPDATE campgrounds SET rating = $1 WHERE id = $2 RETURNING *',
       [rating, id]
     );
-    console.log('controller: updating rating 2')
     response.locals.campground = campground;
-    console.log('campground.rating from controller:', campground.rating)
     next();
   } catch (err) {
-    console.log('controller: updating rating ERROR')
     console.error(err);
     response.status(404).send('Problem updating rating');
   }
