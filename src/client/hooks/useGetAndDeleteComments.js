@@ -8,7 +8,8 @@ function useGetAndDeleteComments(campground) {
     id: campgroundId
   } = campground;
   const [comments, setComments] = useState([]);
-  const [currAvgRating, setCurrAvgRating] = useState(null);
+  const [currAvgRating, setCurrAvgRating] = useState();
+  const [avgCalculated, setAvgCalculated] = useState(false);
 
   useEffect(() => {
     let useEffectSource = axios.CancelToken.source();
@@ -49,13 +50,14 @@ function useGetAndDeleteComments(campground) {
     } else {
       setCurrAvgRating("0");
     }
+    setAvgCalculated(true);
   }, [comments, currAvgRating]);
 
   useEffect(() => {
     let useEffectSource = axios.CancelToken.source();
     console.log('campground.rating: ', campground.rating);
     console.log('currAvgRating: ', currAvgRating);
-    if (campground.rating !== currAvgRating) {
+    if (avgCalculated && campground.rating !== currAvgRating) {
       console.log("useEffect updating campground rating")
       const url = `/api/campgrounds/rating/${campgroundId}`;
       const updatedCG = {
@@ -69,7 +71,7 @@ function useGetAndDeleteComments(campground) {
       .catch((err) => { console.log("problem updating campground", err) });
     }
     return () => { useEffectSource.cancel() };
-  }, [currAvgRating, campground, campgroundId]);
+  }, [currAvgRating, campground, campgroundId, avgCalculated]);
 
 
   const cancelTokenRef = useRef();
