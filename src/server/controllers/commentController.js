@@ -67,6 +67,7 @@ const deleteComment = (request, response, next) => {
       if (error) {
         console.error(error);
         response.status(400).send('Problem deleting comment');
+        return;
       }
       next();
     }
