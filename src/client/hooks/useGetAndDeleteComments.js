@@ -54,6 +54,7 @@ function useGetAndDeleteComments(campground) {
   useEffect(() => {
     let useEffectSource = axios.CancelToken.source();
     if (campground.rating !== currAvgRating) {
+      console.log("useEffect updating campground rating")
       const url = `/api/campgrounds/rating/${campgroundId}`;
       const updatedCG = {
         ...campground,
@@ -63,7 +64,7 @@ function useGetAndDeleteComments(campground) {
         url, updatedCG, 
         { cancelToken: useEffectSource.token }
       )
-      .catch((err) => { console.log("problem updating campground", err) });
+      .catch((err) => { console.log("problem updating campground.", err) });
     }
     return () => { useEffectSource.cancel() };
   }, [currAvgRating, campground, campgroundId]);
