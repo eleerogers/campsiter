@@ -1,17 +1,11 @@
-const { Pool } = require('pg');
+const pool = require('./pool');
 const multer = require('multer');
 const path = require('path');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const { promisify } = require('util');
-
 const unlinkAsync = promisify(fs.unlink);
 
-const connectionString = process.env.CONNECTION_STRING;
-
-const pool = new Pool({
-  connectionString
-});
 
 cloudinary.config({
   cloud_name: 'eleerogers',
