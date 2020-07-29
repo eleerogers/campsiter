@@ -16,13 +16,15 @@ import StarRating from './starRating';
 function NewComment() {
   const {
     loggedInAs: {
-      id: userId
+      id: userId,
+      admin: adminBool
     }
   } = useContext(LoggedInAsContext);
   const initData = {
     rating: 0,
     comment: '',
     userId,
+    adminBool,
     avgRating: null
   };
   const {

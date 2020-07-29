@@ -13,41 +13,11 @@ function useGetAndDeleteComments(campground) {
 
   useEffect(() => {
     let useEffectSource = axios.CancelToken.source();
-    if (campgroundId > 0) {
+    if (campgroundId > 0 && comments.length === 0) {
       axios.get(`/api/comments/${campgroundId}`, { cancelToken: useEffectSource.token})
         .then(({ data: { comments: incomingComments } }) => {
           if (comments.length !== incomingComments.length) {
             setComments(incomingComments);
-          }
-        })
-        .then(() => {
-          if (comments.length > 0) {
-            let numRatings = 0;
-            const avgRating = comments.reduce((a, b) => {
-              const bNumRating = Number(b.rating);
-              if (bNumRating > 0) {
-                numRatings += 1;
-                return a + bNumRating;
-              } else {
-                return a;
-              }
-            }, 0) / numRatings;
-            setCurrAvgRating(avgRating.toFixed(2));
-          } else {
-            setCurrAvgRating("0");
-          }
-        })
-        .then(() => {
-          if (
-            Number(currAvgRating) > 0
-            || currAvgRating === "0" && comments.length === 0
-          ) {
-            const url = `/api/campgrounds/rating/${campgroundId}`;
-            const updatedCG = {
-              ...campground,
-              rating: currAvgRating
-            }
-            axios.put(url, updatedCG, { cancelToken: useEffectSource.token });
           }
         })
         .catch((err) => {
@@ -59,7 +29,95 @@ function useGetAndDeleteComments(campground) {
         });
     }
     return () => { useEffectSource.cancel() };
-  }, [campgroundId, comments, campground, currAvgRating, rating]);
+  }, [campgroundId, comments.length]);
+
+  useEffect(() => {
+    if (comments.length > 0) {
+      let numRatings = 0;
+      const avgRating = comments.reduce((a, b) => {
+        const bNumRating = Number(b.rating);
+        if (bNumRating > 0) {
+          numRatings += 1;
+          return a + bNumRating;
+        } else {
+          return a;
+        }
+      }, 0) / numRatings;
+      setCurrAvgRating(avgRating.toFixed(2));
+    } else {
+      setCurrAvgRating("0");
+    }
+  }, [comments]);
+
+  useEffect(() => {
+    if (campground.rating !== currAvgRating) {
+      const url = `/api/campgrounds/rating/${campgroundId}`;
+      const updatedCG = {
+        ...campground,
+        rating: currAvgRating
+      }
+      console.log(url);
+      console.log(updatedCG);
+      axios.put(
+        url, updatedCG, 
+        // { cancelToken: useEffectSource.token }
+      )
+      .catch((err) => { console.log("problem updating campground", err) });
+    }
+  }, [currAvgRating, campground, campgroundId]);
+
+  // useEffect(() => {
+  //   let useEffectSource = axios.CancelToken.source();
+  //   if (campgroundId > 0 && comments.length === 0) {
+  //     axios.get(`/api/comments/${campgroundId}`, { cancelToken: useEffectSource.token})
+  //       .then(({ data: { comments: incomingComments } }) => {
+  //         if (comments.length !== incomingComments.length) {
+  //           setComments(incomingComments);
+  //         }
+  //       })
+  //       .then(() => {
+  //         if (comments.length > 0) {
+  //           let numRatings = 0;
+  //           const avgRating = comments.reduce((a, b) => {
+  //             const bNumRating = Number(b.rating);
+  //             if (bNumRating > 0) {
+  //               numRatings += 1;
+  //               return a + bNumRating;
+  //             } else {
+  //               return a;
+  //             }
+  //           }, 0) / numRatings;
+  //           setCurrAvgRating(avgRating.toFixed(2));
+  //         } else {
+  //           setCurrAvgRating("0");
+  //         }
+  //       })
+  //       .then(() => {
+  //         if (
+  //           Number(currAvgRating) > 0
+  //           || currAvgRating === "0" && comments.length === 0
+  //         ) {
+  //           const url = `/api/campgrounds/rating/${campgroundId}`;
+  //           const updatedCG = {
+  //             ...campground,
+  //             rating: currAvgRating
+  //           }
+  //           console.log(url);
+  //           console.log(updatedCG);
+  //           axios.put(url, updatedCG, { cancelToken: useEffectSource.token })
+  //           .catch((err) => { console.log("problem updating campground", err) });
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         if (axios.isCancel(err)) {
+  //           console.log(`axios call was cancelled`);
+  //         } else {
+  //           console.error(err);
+  //         }
+  //       });
+  //   }
+  //   return () => { useEffectSource.cancel() };
+  // }, [campgroundId, comments, campground, currAvgRating, rating]);
 
   const cancelTokenRef = useRef();
   useEffect(() => {
@@ -71,6 +129,7 @@ function useGetAndDeleteComments(campground) {
   }, []);
   
   async function deleteComment(commentObj, loggedInAsAdmin) {
+    console.log('deleteComment');
     cancelTokenRef.current = axios.CancelToken.source();
     const cancelToken = cancelTokenRef.current.token;
     try {
@@ -93,6 +152,7 @@ function useGetAndDeleteComments(campground) {
       setComments(updatedComments);
       toast.success(message);
     } catch (err) {
+      console.log('error here???')
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
