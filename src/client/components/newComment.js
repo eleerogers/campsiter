@@ -132,7 +132,7 @@ function NewComment() {
               divClassName="justify-centered mb-3"
             />
             <textarea
-              className="form-control inputTextBox mt-4"
+              className="shadow-none form-control inputTextBox mt-4"
               type="text"
               name="comment"
               placeholder="Comment"

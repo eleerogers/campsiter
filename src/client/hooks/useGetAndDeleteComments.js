@@ -42,11 +42,14 @@ function useGetAndDeleteComments(campground) {
           return a;
         }
       }, 0) / numRatings;
-      setCurrAvgRating(avgRating.toFixed(2));
+      const avgRatingFixed = avgRating.toFixed(2);
+      if (currAvgRating !== avgRatingFixed) {
+        setCurrAvgRating(avgRatingFixed);
+      }
     } else {
       setCurrAvgRating("0");
     }
-  }, [comments]);
+  }, [comments, currAvgRating]);
 
   useEffect(() => {
     let useEffectSource = axios.CancelToken.source();
