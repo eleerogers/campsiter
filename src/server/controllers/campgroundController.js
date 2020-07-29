@@ -124,7 +124,7 @@ const updateCampgroundRating = async (request, response, next) => {
     );
     console.log('controller: updating rating 2')
     response.locals.campground = campground;
-    console.log({campground})
+    console.log('campground.rating from controller:', campground.rating)
     next();
   } catch (err) {
     console.log('controller: updating rating ERROR')
