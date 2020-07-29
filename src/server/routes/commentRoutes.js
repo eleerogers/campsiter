@@ -38,7 +38,6 @@ router.delete('/:campgroundId',
   commentController.deleteComment,
   commentController.getComments,
   (req, res) => {
-    console.log("end of delete comment route");
     const message = 'Review successfully deleted';
     const { comments } = res.locals;
     res.status(200).json({ comments, message });

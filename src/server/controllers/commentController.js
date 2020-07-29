@@ -11,7 +11,6 @@ const getComments = (request, response, next) => {
       return;
     }
     response.locals.comments = results.rows;
-    console.log("we got the comments")
     next();
   });
 };
@@ -70,7 +69,6 @@ const deleteComment = (request, response, next) => {
         response.status(400).send('Problem deleting comment');
         return;
       }
-      console.log("deleted comment successfully")
       next();
     }
   );

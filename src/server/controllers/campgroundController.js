@@ -82,7 +82,6 @@ const createCampground = async (request, response, next) => {
     response.locals.id = id;
     next();
   } catch (err) {
-    console.log('create campground error');
     console.error(err);
     response.status(404).send('Problem creating campground');
   }

@@ -60,7 +60,6 @@ const picUploader = async (req, res, next) => {
       await unlinkAsync(req.file.path);
     }
   } catch (err) {
-    console.log('picUploader error');
     console.error(err);
   } finally {
     next();
