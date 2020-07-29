@@ -47,10 +47,11 @@ function useGetAndDeleteComments(campground) {
       if (currAvgRating !== avgRatingFixed) {
         setCurrAvgRating(avgRatingFixed);
       }
+      setAvgCalculated(true);
     } else {
       setCurrAvgRating("0");
     }
-    setAvgCalculated(true);
+    
   }, [comments, currAvgRating]);
 
   useEffect(() => {
