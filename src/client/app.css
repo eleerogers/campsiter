@@ -337,15 +337,6 @@ a:hover {
   padding-bottom: 3em;
 }
 
-.loading-button {
-  /* padding: 1rem 2rem; */
-  /* font-size: 16px;
-  color: #ffffff;
-  font-weight: 600;
-  border-radius: 6px;
-  background-color: #2080df; */
-}
-
 .loading-button > div {
   display: flex;
   justify-content: center;
@@ -584,8 +575,6 @@ div > .container > .container > .jumbotron > a > .btn-orange:active {
 }
 
 #basic-navbar-nav > .ml-auto > div > .padding-auto-0 {
-  /* align-items: center;
-  justify-content: center; */
   margin: auto 0;
 }
 
@@ -704,10 +693,6 @@ div > .figure > a > .img-thumbnail {
   div > .container > .container > .row {
     margin: 0;
   }
-
-  /* .dissapear-small {
-    display: none;
-  } */
 
   .navbar-brand {
     margin: 0;
