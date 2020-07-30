@@ -80,6 +80,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      favicon: "./public/favicon.ico"
     }),
     process.env.NODE_ENV === 'dev' ?
     new Dotenv({ path: './.env' }) :
