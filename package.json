@@ -8,7 +8,7 @@
     "start": "npm run build && node src/server/index.js",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "export NODE_ENV=dev && concurrently \"npm run server\" \"npm run client\"",
     "webpack": "webpack -p --mode=production --profile --json > compilation-stats.json",
     "dev:analyze": "npm run dev -- --env.addons=bundleanalyzer",
     "build:analyze": "npm run build -- --env.addons=bundleanalyzer",

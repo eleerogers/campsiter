@@ -115,7 +115,7 @@ const login = (req, res, next) => {
           res.cookie('userId', user.id, {
             httpOnly: true,
             signed: true,
-            secure: true
+            secure: process.env.NODE_ENV === 'dev' ? false : true
           });
           res.locals.user = user;
           next();
