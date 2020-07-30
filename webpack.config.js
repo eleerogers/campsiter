@@ -81,7 +81,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    process.env.NODE_ENV === 'dev' ? new Dotenv({ path: './.env' }) : new Dotenv(),
+    process.env.NODE_ENV === 'dev' ?
+    new Dotenv({ path: './.env' }) :
     new webpack.DefinePlugin({
       'process.env': {
         'REACT_APP_GOOGLE_API_KEY': JSON.stringify(process.env.REACT_APP_GOOGLE_API_KEY),
