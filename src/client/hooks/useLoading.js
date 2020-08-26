@@ -8,8 +8,8 @@ function useLoading(initLoadingState = true) {
     mountedRef.current = true;
     return () => { 
       mountedRef.current = false;
-    }
-  }, [])
+    };
+  }, []);
 
   function setLoadingFalse() {
     if (mountedRef.current) {

@@ -13,7 +13,8 @@
     "dev:analyze": "npm run dev -- --env.addons=bundleanalyzer",
     "build:analyze": "npm run build -- --env.addons=bundleanalyzer",
     "wp-dev": "webpack --mode development",
-    "wp-build": "webpack --mode production"
+    "wp-build": "webpack --mode production",
+    "test": "jest"
   },
   "author": "Sandeep Raveesh",
   "license": "ISC",
@@ -21,7 +22,6 @@
     "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
     "@mars/heroku-js-runtime-env": "^3.0.2",
     "@react-google-maps/api": "^1.9.5",
@@ -41,6 +41,9 @@
     "css-loader": "^3.5.3",
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^1.8.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.3",
+    "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-react-perf": "^3.2.3",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
@@ -67,6 +70,7 @@
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-spring": "^8.0.27",
+    "react-test-renderer": "^16.13.1",
     "react-toastify": "^6.0.5",
     "serve-favicon": "^2.5.0",
     "style-loader": "^1.2.1",
@@ -77,9 +81,12 @@
     "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.11.0",
+    "babel-jest": "^26.3.0",
     "eslint": "^7.2.0",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.4",
+    "jest": "^26.4.2",
     "webpack-bundle-analyzer": "^3.8.0"
   },
   "engines": {
@@ -88,5 +95,8 @@
   },
   "plugins": [
     "react-perf"
+  ],
+  "setupFiles": [
+    "./src/setupTests.js"
   ]
 }
