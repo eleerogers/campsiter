@@ -14,7 +14,7 @@
     "build:analyze": "npm run build -- --env.addons=bundleanalyzer",
     "wp-dev": "webpack --mode development",
     "wp-build": "webpack --mode production",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "author": "Sandeep Raveesh",
   "license": "ISC",

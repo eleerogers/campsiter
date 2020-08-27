@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import moment from 'moment-mini';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-import { LoggedInAsContext } from './contexts/loggedInAsContext';
+import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import DeleteModal from './deleteModal';
 import StarRating from './starRating';
 
@@ -16,7 +16,7 @@ function Comment({
       id: loggedInAsId,
       admin: loggedInAsAdmin
     }
-  } = useContext(LoggedInAsContext);
+  } = useLoggedInAsContext();
   const {
     id: campgroundId,
   } = campground;

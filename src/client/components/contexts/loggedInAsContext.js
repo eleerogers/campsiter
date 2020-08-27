@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
@@ -111,8 +111,12 @@ function LoggedInAsContextProvider({ children }) {
   );
 }
 
+const useLoggedInAsContext = () => {
+  return useContext(LoggedInAsContext);
+};
+
 LoggedInAsContextProvider.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export { LoggedInAsContextProvider, LoggedInAsContext };
+export { LoggedInAsContextProvider, LoggedInAsContext, useLoggedInAsContext };
