@@ -6,6 +6,7 @@ import * as LoggedInAsContext from '../contexts/loggedInAsContext';
 
 
 describe('App tests', () => {
+  let
 
   it('should not render header and footer on landing page', () => {
     const wrapper = mount(
@@ -15,6 +16,10 @@ describe('App tests', () => {
     );
     const landingDiv = wrapper.find('div.landing-outer');
     expect(landingDiv.exists()).toBe(true);
+    const navs = wrapper.find('nav');
+    expect(navs.length).toBe(0);
+    const footer = wrapper.find('div.footer')
+    expect(footer.exists()).toBe(false);
   })
 
   it('should render header and footer on campgroundsHome page', () => {
