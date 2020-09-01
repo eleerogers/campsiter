@@ -59,7 +59,6 @@
     "pg": "^8.2.1",
     "preact": "^10.4.8",
     "preact-cli": "^3.0.1",
-    "preact-compat": "^3.19.0",
     "preact-render-to-string": "^5.1.10",
     "preact-router": "^3.2.1",
     "prop-types": "^15.7.2",
