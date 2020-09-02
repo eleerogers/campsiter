@@ -38,7 +38,7 @@ app.use('/api/comments', comments);
 app.get('*', (req, res) => {
   console.log('index catch-all');
   res.sendFile('/app/dist/index.html');
-});
+}); 
 
 // error handler middleware
 app.use((error, req, res) => {
