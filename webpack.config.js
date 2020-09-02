@@ -10,7 +10,7 @@ const BrotliPlugin = require('brotli-webpack-plugin');
 const outputDirectory = 'dist';
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   devtool: false,
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
@@ -18,6 +18,13 @@ module.exports = {
     filename: "static/[name].[hash].js",
     chunkFilename: '[name].bundle.js',
     publicPath: '/'
+  },
+  resolve: {
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+      "react-dom/test-utils": "preact/test-utils"
+    }
   },
   optimization: {
     moduleIds: "hashed",
@@ -97,7 +104,10 @@ module.exports = {
       minRatio: 0.8
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin()
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.ProvidePlugin({
+      h: ['preact', 'h'],
+    })
   ],
   performance: {
     hints: "warning", // enum

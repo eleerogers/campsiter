@@ -1,6 +1,7 @@
 
 
 module.exports = {
+  preset: 'jest-preset-preact',
   transform: {
     "^.+\\.jsx?$": "babel-jest"
   },

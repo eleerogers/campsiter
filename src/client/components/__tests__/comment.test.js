@@ -1,7 +1,8 @@
 import React from 'react';
-import { shallow } from '../../../enzyme';
+import { shallow, mount } from '../../../enzyme';
 import Comment from '../comment';
 import * as LoggedInAsContext from '../contexts/loggedInAsContext';
+import { MemoryRouter } from 'react-router-dom';
 
 
 describe('Comment tests', () => {
@@ -52,12 +53,14 @@ describe('Comment tests', () => {
   })
 
   it('should render the username', () => {
-    const wrapper = shallow(
-      <Comment
-        comment={exampleComment}
-        campground={campground}
-        deleteComment={deleteComment}
-      />
+    const wrapper = mount(
+      <MemoryRouter initialEntries={[ '/campgrounds/205' ]}>
+        <Comment
+          comment={exampleComment}
+          campground={campground}
+          deleteComment={deleteComment}
+        />
+      </MemoryRouter>
     );
     const commentTextP = wrapper.find('p.card-title > .text-primary');
 

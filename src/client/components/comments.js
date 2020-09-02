@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Comment from './comment';
 
 
 function Comments({ campground, comments, deleteComment }) {
   return (
-    <>
+    <Fragment>
       {comments.map((comment) => (
         <Comment
           comment={comment}
@@ -14,7 +14,7 @@ function Comments({ campground, comments, deleteComment }) {
           key={comment.comment_id}
         />
       ))}
-    </>
+    </Fragment>
   );
 }
 
