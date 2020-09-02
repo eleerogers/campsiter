@@ -6,7 +6,6 @@ import * as LoggedInAsContext from '../contexts/loggedInAsContext';
 
 
 describe('App tests', () => {
-  let
 
   it('should not render header and footer on landing page', () => {
     const wrapper = mount(
