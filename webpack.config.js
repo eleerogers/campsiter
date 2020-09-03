@@ -19,13 +19,13 @@ module.exports = {
     chunkFilename: '[name].bundle.js',
     publicPath: '/'
   },
-  resolve: {
-    alias: {
-      react: "preact/compat",
-      "react-dom": "preact/compat",
-      "react-dom/test-utils": "preact/test-utils"
-    }
-  },
+  // resolve: {
+  //   alias: {
+  //     react: "preact/compat",
+  //     "react-dom": "preact/compat",
+  //     "react-dom/test-utils": "preact/test-utils"
+  //   }
+  // },
   optimization: {
     moduleIds: "hashed",
     runtimeChunk: {
