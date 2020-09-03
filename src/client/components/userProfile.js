@@ -8,7 +8,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import useGetCGs from '../hooks/useGetCGs';
 import useLoading from '../hooks/useLoading';
 import Campgrounds from './campgrounds';
-import UserPicDisplay from './userPicDisplay';
+import UserPicDisplay from './userPicDisplay'; 
 
 
 function UserProfile() {
