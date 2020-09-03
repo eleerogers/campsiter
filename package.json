@@ -61,7 +61,6 @@
     "preact-cli": "^3.0.1",
     "preact-router": "^3.2.1",
     "prop-types": "^15.7.2",
-    "react-dom": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-icons": "^1.0.3-alpha5",
     "react-imported-component": "^6.3.5",
@@ -98,6 +97,7 @@
     "preact-test-utils": "^0.1.4",
     "preact-transition-group": "^2.0.0",
     "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "webpack-bundle-analyzer": "^3.8.0"
   },
   "engines": {
