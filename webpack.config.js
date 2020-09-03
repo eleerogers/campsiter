@@ -84,7 +84,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "styles/[name].[hash].css",
     }),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: "./public/favicon.ico"
@@ -109,9 +109,9 @@ module.exports = {
       h: ['preact', 'h'],
     })
   ],
-  performance: {
-    hints: "warning", // enum
-    maxAssetSize: 200000, // int (in bytes),
-    maxEntrypointSize: 200000, // int (in bytes)
-  }
+  // performance: {
+  //   hints: "warning", // enum
+  //   maxAssetSize: 200000, // int (in bytes),
+  //   maxEntrypointSize: 200000, // int (in bytes)
+  // }
 };
