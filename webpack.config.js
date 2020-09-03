@@ -23,7 +23,8 @@ module.exports = {
     alias: {
       react: "preact/compat",
       "react-dom": "preact/compat",
-      "react-dom/test-utils": "preact/test-utils"
+      "react-dom/test-utils": "preact/test-utils",
+      "react-router-dom": "preact-router"
     }
   },
   optimization: {
