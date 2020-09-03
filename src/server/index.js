@@ -37,7 +37,7 @@ app.use('/api/comments', comments);
 
 app.get('*', (req, res) => {
   console.log('index catch-all');
-  const index = path.join(__dirname, 'build', 'index.html');
+  const index = path.join(__dirname, 'src', 'server', 'client', 'build', 'index.html');
   res.sendFile(index);
 }); 
 
