@@ -37,10 +37,8 @@ app.use('/api/comments', comments);
 
 app.get('*', (req, res) => {
   console.log('index catch-all');
-  const index = path.join(__dirname, 'build', 'index.html');
-  console.log({index})
-  res.sendFile(index);
-}); 
+  res.sendFile('/app/dist/index.html');
+});
 
 // error handler middleware
 app.use((error, req, res) => {
