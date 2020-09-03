@@ -2,6 +2,7 @@
   "name": "simple-react-full-stack",
   "version": "1.0.0",
   "description": "Campsiter is a full stack web application using React, Node.js, Express and Webpack.",
+  "private": true,
   "main": "src/server/index.js",
   "scripts": {
     "build": "rm -rf ./dist && webpack -p",
@@ -58,7 +59,7 @@
     "path": "^0.12.7",
     "pg": "^8.2.1",
     "preact": "^10.4.8",
-    "preact-cli": "^3.0.1",
+    "preact-render-to-string": "^5.1.10",
     "preact-router": "^3.2.1",
     "prop-types": "^15.7.2",
     "react-bootstrap": "^1.0.1",
@@ -76,7 +77,9 @@
     "util": "^0.12.3",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "devDependencies": {
     "@babel/preset-env": "^7.11.0",
     "babel-jest": "^26.3.0",
     "enzyme": "^3.11.0",
@@ -90,16 +93,10 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.0.1-alpha.0",
     "jest-preset-preact": "^4.0.2",
-    "preact-compat-enzyme": "^0.2.5",
-    "preact-render-to-string": "^5.1.10",
-    "preact-test-utils": "^0.1.4",
     "preact-transition-group": "^2.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "webpack-bundle-analyzer": "^3.8.0"
-  },
-  "devDependencies": {
-    
   },
   "engines": {
     "node": "13.x",

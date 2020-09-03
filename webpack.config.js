@@ -105,9 +105,9 @@ module.exports = {
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    // new webpack.ProvidePlugin({
-    //   h: ['preact', 'h'],
-    // })
+    new webpack.ProvidePlugin({
+      h: ['preact', 'h'],
+    })
   ],
   performance: {
     hints: "warning", // enum
