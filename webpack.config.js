@@ -31,25 +31,25 @@ module.exports = {
     runtimeChunk: {
       name: "manifest",
     },    
-    // splitChunks: {
-    //   cacheGroups: {
-    //     vendors: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       minChunks: 2,
-    //       name: "vendor",
-    //       chunks: "all",
-    //       minSize: 10000,
-    //       maxSize: 244000,
-    //     },
-    //     common: {
-    //       test: /[\\/]src[\\/]components[\\/]/,
-    //       chunks: "all",
-    //       minSize: 0,
-    //     },
-    //   },
-    //   minSize: 10000,
-    //   maxSize: 250000,
-    // }
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          minChunks: 2,
+          name: "vendor",
+          chunks: "all",
+          minSize: 10000,
+          maxSize: 244000,
+        },
+        common: {
+          test: /[\\/]src[\\/]components[\\/]/,
+          chunks: "all",
+          minSize: 0,
+        },
+      },
+      minSize: 10000,
+      maxSize: 250000,
+    }
   },
   module: {
     rules: [{
@@ -80,11 +80,11 @@ module.exports = {
     hot: true
   },
   plugins: [
-    // new ChunksWebpackPlugin(),
+    new ChunksWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "styles/[name].[hash].css",
     }),
-    // new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: "./public/favicon.ico"
@@ -97,21 +97,21 @@ module.exports = {
         'REACT_APP_ADMIN_EMAIL': JSON.stringify(process.env.REACT_APP_ADMIN_EMAIL),
       }
     }),
-    // new BrotliPlugin({
-    //   asset: '[path].br[query]',
-    //   test: /\.(js|css|html|svg)$/,
-    //   threshold: 10240,
-    //   minRatio: 0.8
-    // }),
-    // new webpack.optimize.AggressiveMergingPlugin(),
-    // new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.ProvidePlugin({
-      h: ['preact', 'h'],
-    })
+    new BrotliPlugin({
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8
+    }),
+    new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    // new webpack.ProvidePlugin({
+    //   h: ['preact', 'h'],
+    // })
   ],
-  // performance: {
-  //   hints: "warning", // enum
-  //   maxAssetSize: 200000, // int (in bytes),
-  //   maxEntrypointSize: 200000, // int (in bytes)
-  // }
+  performance: {
+    hints: "warning", // enum
+    maxAssetSize: 200000, // int (in bytes),
+    maxEntrypointSize: 200000, // int (in bytes)
+  }
 };
