@@ -5,8 +5,9 @@ import Header from '../components/header';
 import Footer from '../components/footer';
 import ErrorBoundary from '../components/errorBoundary';
 import PropTypes from 'prop-types';
-import { lazy, LazyBoundary } from 'react-imported-component';
-const Landing = lazy(() => import('./landing'));
+// import { lazy, LazyBoundary } from 'react-imported-component';
+// const Landing = lazy(() => import('./landing'));
+import Landing from './landing';
 
 
 function Layout({ children }) {
@@ -16,9 +17,9 @@ function Layout({ children }) {
   const landingPath = pathArr[1] === "";
 
   return landingPath ? (
-    <LazyBoundary fallback={<div />}>
+    // <LazyBoundary fallback={<div />}>
       <Landing />
-    </LazyBoundary>
+    // </LazyBoundary>
   ) : (
     <div>
       <Header />
