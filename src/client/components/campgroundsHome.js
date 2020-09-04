@@ -17,8 +17,9 @@ import useGetCGs from '../hooks/useGetCGs';
 import useSort from '../hooks/useSort';
 import SortDropdown from './sortDropdown';
 import debounce from '../utils/debounce';
-import { lazy, LazyBoundary } from 'react-imported-component';
-const Campgrounds = lazy(() => import('./campgrounds'));
+// import { lazy, LazyBoundary } from 'react-imported-component';
+// const Campgrounds = lazy(() => import('./campgrounds'));
+import Campgrounds from './campgrounds';
 
 
 function CampgroundsHome() {
@@ -186,12 +187,12 @@ function CampgroundsHome() {
               'minWidth': '296px'
             }}
           >
-            <LazyBoundary fallback={<div/>}>
+            {/* <LazyBoundary fallback={<div/>}> */}
               <Campgrounds
                 campgrounds={thisPageCGs}
                 configObj={campgroundsDisplayConfig}
               />
-            </LazyBoundary>
+            {/* </LazyBoundary> */}
           </Row>
         </Container>
         {paginationDisplay}
