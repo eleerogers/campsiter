@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useCallback, useRef
+  useState, useEffect, useCallback, useRef, lazy, Suspense
 } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -17,9 +17,7 @@ import useGetCGs from '../hooks/useGetCGs';
 import useSort from '../hooks/useSort';
 import SortDropdown from './sortDropdown';
 import debounce from '../utils/debounce';
-// import { lazy, LazyBoundary } from 'react-imported-component';
-// const Campgrounds = lazy(() => import('./campgrounds'));
-import Campgrounds from './campgrounds';
+const Campgrounds = lazy(() => import('./campgrounds'));
 
 
 function CampgroundsHome() {
@@ -187,12 +185,12 @@ function CampgroundsHome() {
               'minWidth': '296px'
             }}
           >
-            {/* <LazyBoundary fallback={<div/>}> */}
+            <Suspense fallback={<div/>}>
               <Campgrounds
                 campgrounds={thisPageCGs}
                 configObj={campgroundsDisplayConfig}
               />
-            {/* </LazyBoundary> */}
+            </Suspense>
           </Row>
         </Container>
         {paginationDisplay}

@@ -1,39 +1,34 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import './bootstrap.colors.css';
 import './app.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Landing from './components/landing';
-import CampgroundsHome from './components/campgroundsHome';
-import NewCampground from './components/newCampground';
-import CampgroundPage from './components/campgroundPage';
-import NewComment from './components/newComment';
-import EditComment from './components/editComment';
-import Login from './components/login';
-import Signup from './components/signup';
-import EditCampground from './components/editCampground';
-import UserProfile from './components/userProfile';
-import EditUser from './components/editUser';
-import Forgot from './components/forgot';
-import Contact from './components/contact';
-import Reset from './components/resetPassword';
+const CampgroundsHome = lazy(() => import('./components/campgroundsHome'));
+const NewCampground = lazy(() => import('./components/newCampground'));
+const CampgroundPage = lazy(() => import('./components/campgroundPage'));
+const NewComment = lazy(() => import('./components/newComment'));
+const EditComment = lazy(() => import('./components/editComment'));
+const Login = lazy(() => import('./components/login'));
+const Signup = lazy(() => import('./components/signup'));
+const EditCampground = lazy(() => import('./components/editCampground'));
+const UserProfile = lazy(() => import('./components/userProfile'));
+const EditUser = lazy(() => import('./components/editUser'));
+const Forgot = lazy(() => import('./components/forgot'));
+const Contact = lazy(() => import('./components/contact'));
+const Reset = lazy(() => import('./components/resetPassword'));
 import { LoadScriptNext } from '@react-google-maps/api';
 import Layout from './components/layout';
+
 toast.configure();
 
 
 function App() {
-
   return (
     <div className="app-outer">
       <Layout>
+        <Suspense fallback={<div />}>
           <Switch>
-            <Route
-              path="/"
-              exact
-              component={Landing}
-            />
             <Route
               path="/campgroundsHome"
               exact
@@ -121,6 +116,7 @@ function App() {
             </Route>
             <Redirect to={"/campgroundsHome"} />
           </Switch>
+        </Suspense>
       </Layout>
     </div>
   );

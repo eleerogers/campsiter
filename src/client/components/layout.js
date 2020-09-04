@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import ErrorBoundary from '../components/errorBoundary';
 import PropTypes from 'prop-types';
-import { lazy, Suspense } from 'react';
 const Landing = lazy(() => import('./landing'));
-// import Landing from './landing';
 
 
 function Layout({ children }) {

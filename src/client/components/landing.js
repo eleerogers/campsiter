@@ -1,14 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
 
 function Landing() {
-  useEffect(() => {
-    return () => {
-      console.log('unmounting');
-    }
-  }, []);
 
   return (
     <div className="landing-outer">
