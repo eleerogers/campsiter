@@ -3,53 +3,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ChunksWebpackPlugin = require("chunks-webpack-plugin");
-const BrotliPlugin = require('brotli-webpack-plugin');
 
 const outputDirectory = 'dist';
 
 module.exports = {
-  mode: 'production',
-  devtool: false,
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
     path: path.join(__dirname, outputDirectory),
-    filename: "static/[name].[hash].js",
-    chunkFilename: '[name].bundle.js',
+    filename: 'bundle.js',
     publicPath: '/'
-  },
-  resolve: {
-    alias: {
-      react: "preact/compat",
-      "react-dom": "preact/compat",
-      "react-dom/test-utils": "preact/test-utils"
-    }
-  },
-  optimization: {
-    moduleIds: "hashed",
-    runtimeChunk: {
-      name: "manifest",
-    },    
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          minChunks: 2,
-          name: "vendor",
-          chunks: "all",
-          minSize: 10000,
-          maxSize: 244000,
-        },
-        common: {
-          test: /[\\/]src[\\/]components[\\/]/,
-          chunks: "all",
-          minSize: 0,
-        },
-      },
-      minSize: 10000,
-      maxSize: 250000,
-    }
   },
   module: {
     rules: [{
@@ -61,13 +23,20 @@ module.exports = {
     },
     {
       test: /\.css$/,
-      use: [MiniCssExtractPlugin.loader, 'css-loader']
+      use: ['style-loader', 'css-loader']
     },
     {
       test: /\.(png|woff|woff2|eot|ttf|svg)$/,
       loader: 'url-loader?limit=100000'
     }
     ]
+  },
+  resolve: {
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+      "react-dom/test-utils": "preact/test-utils"
+    }
   },
   devServer: {
     port: 3000,
@@ -80,10 +49,6 @@ module.exports = {
     hot: true
   },
   plugins: [
-    new ChunksWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: "styles/[name].[hash].css",
-    }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
@@ -97,21 +62,8 @@ module.exports = {
         'REACT_APP_ADMIN_EMAIL': JSON.stringify(process.env.REACT_APP_ADMIN_EMAIL),
       }
     }),
-    new BrotliPlugin({
-      asset: '[path].br[query]',
-      test: /\.(js|css|html|svg)$/,
-      threshold: 10240,
-      minRatio: 0.8
-    }),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.ProvidePlugin({
       h: ['preact', 'h'],
     })
-  ],
-  performance: {
-    hints: "warning", // enum
-    maxAssetSize: 200000, // int (in bytes),
-    maxEntrypointSize: 200000, // int (in bytes)
-  }
+  ]
 };

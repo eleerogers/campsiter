@@ -1,11 +1,11 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
-import Header from '../components/header';
-import Footer from '../components/footer';
+import Header from './header';
+import Footer from './footer';
 import ErrorBoundary from '../components/errorBoundary';
 import PropTypes from 'prop-types';
-const Landing = lazy(() => import('./landing'));
+import Landing from './landing';
 
 
 function Layout({ children }) {
@@ -15,9 +15,7 @@ function Layout({ children }) {
   const landingPath = pathArr[1] === "";
 
   return landingPath ? (
-    <Suspense fallback={<div />}>
-      <Landing />
-    </Suspense>
+    <Landing />
   ) : (
     <div>
       <Header />
