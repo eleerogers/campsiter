@@ -17,8 +17,7 @@
     "wp-build": "webpack --mode production",
     "test": "jest --verbose"
   },
-  "author": "Sandeep Raveesh",
-  "license": "ISC",
+  "author": "Lee Rogers",
   "dependencies": {
     "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
@@ -86,6 +85,7 @@
     "enzyme-to-json": "^3.5.0",
     "eslint": "^7.2.0",
     "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.4",
     "eslint-plugin-react-perf": "^3.2.4",

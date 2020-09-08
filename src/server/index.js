@@ -35,7 +35,6 @@ app.use('/api/users', users);
 app.use('/api/campgrounds', campgrounds);
 app.use('/api/comments', comments);
 
-console.log('ENVironment: ', process.env.NODE_ENV);
 
 app.get('*', (req, res) => {
   console.log('index catch-all');
