@@ -148,6 +148,16 @@ function EditUser() {
     return null;
   }
 
+  useEffect(() => {
+    const customFileUpload = document.getElementById('custom-file-upload');
+    const fileUpload = document.getElementById('file-upload');
+    customFileUpload.addEventListener('keyup', (event) => {
+      if (event.keyCode === 13) {
+        fileUpload.click();
+      }
+    })
+  }, []);
+
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
@@ -195,6 +205,9 @@ function EditUser() {
             <label
               htmlFor="file-upload"
               className="btn btn-outline-primary btn-block"
+              id="custom-file-upload"
+              // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+              tabIndex="0"
             >
               <input
                 id="file-upload"
