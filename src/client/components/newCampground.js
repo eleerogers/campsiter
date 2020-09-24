@@ -100,6 +100,16 @@ function NewCampground() {
     }
   }
 
+  useEffect(() => {
+    const customFileUpload = document.getElementById('custom-file-upload');
+    const fileUpload = document.getElementById('file-upload');
+    customFileUpload.addEventListener('keyup', (event) => {
+      if (event.keyCode === 13) {
+        fileUpload.click();
+      }
+    })
+  }, []);
+
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
@@ -109,17 +119,18 @@ function NewCampground() {
           <div className="entryBox centered flex flex-dir-col">
             <div className="form-group">
               <input
-                className="form-control shadow-none"
+                className="form-control"
                 type="text"
                 name="name"
                 placeholder="Name"
                 onChange={handleChange}
                 value={name}
+                autoComplete="off"
               />
             </div>
             <div className="form-group">
               <textarea
-                className="form-control shadow-none inputTextBox"
+                className="form-control inputTextBox"
                 type="text"
                 name="description"
                 placeholder="Description"
@@ -130,18 +141,22 @@ function NewCampground() {
             </div>
             <div className="form-group">
               <input
-                className="form-control shadow-none"
+                className="form-control"
                 type="text"
                 name="price"
                 placeholder="Price ($/night)"
                 onChange={handleChange}
                 value={price}
+                autoComplete="off"
               />
             </div>
             <div className="form-group">
               <label
+                id="custom-file-upload"
                 htmlFor="file-upload"
                 className="btn btn-outline-primary btn-block"
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+                tabIndex="0"
               >
                 <input
                   id="file-upload"
@@ -157,7 +172,7 @@ function NewCampground() {
             <div className="form-group">
               <LoadingButton
                 isLoading={loading}
-                className="btn-block loading-button btn-orange btn-square shadow-none"
+                className="btn-block loading-button btn-orange btn-square"
                 variant="primary"
                 type="submit"
                 size="lg"
