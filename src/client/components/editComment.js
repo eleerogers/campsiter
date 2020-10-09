@@ -100,7 +100,7 @@ function EditComment() {
               divClassName="justify-centered mb-3"
             />
             <textarea
-              className="form-control inputTextBox shadow-none"
+              className="form-control inputTextBox"
               type="text"
               name="comment"
               placeholder="Comment"

@@ -135,7 +135,7 @@ function EditUser() {
       return (
         <div className="form-group">
           <input
-            className="form-control shadow-none"
+            className="form-control"
             type="text"
             name="adminCode"
             placeholder="Enter admin code to toggle admin status"
@@ -173,7 +173,7 @@ function EditUser() {
         >
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="text"
               name="first_name"
               value={firstName}
@@ -183,7 +183,7 @@ function EditUser() {
           </div>
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="text"
               name="last_name"
               value={lastName}
@@ -193,7 +193,7 @@ function EditUser() {
           </div>
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="email"
               name="email"
               value={email}

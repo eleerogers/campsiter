@@ -124,6 +124,16 @@ function EditCampground() {
     }
   }
 
+  useEffect(() => {
+    const customFileUpload = document.getElementById('custom-file-upload');
+    const fileUpload = document.getElementById('file-upload');
+    customFileUpload.addEventListener('keyup', (event) => {
+      if (event.keyCode === 13) {
+        fileUpload.click();
+      }
+    })
+  }, []);
+
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
@@ -137,7 +147,7 @@ function EditCampground() {
           <div className="entryBox centered">
             <div className="form-group">
               <input
-                className="form-control shadow-none"
+                className="form-control"
                 type="text"
                 name="name"
                 placeholder="Name"
@@ -147,7 +157,7 @@ function EditCampground() {
             </div>
             <div className="form-group">
               <textarea
-                className="form-control shadow-none inputTextBox"
+                className="form-control inputTextBox"
                 type="text"
                 name="description"
                 placeholder="Description"
@@ -158,7 +168,7 @@ function EditCampground() {
             </div>
             <div className="form-group">
               <input
-                className="form-control shadow-none"
+                className="form-control"
                 type="text"
                 name="location"
                 placeholder="Location"
@@ -168,7 +178,7 @@ function EditCampground() {
             </div>
             <div className="form-group">
               <input
-                className="form-control shadow-none"
+                className="form-control"
                 type="text"
                 name="price"
                 placeholder="Price ($/night)"
@@ -178,8 +188,11 @@ function EditCampground() {
             </div>
             <div className="form-group">
               <label
+                id="custom-file-upload"
                 htmlFor="file-upload"
                 className="btn btn-outline-primary btn-block"
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+                tabIndex="0"
               >
                 <input
                   id="file-upload"

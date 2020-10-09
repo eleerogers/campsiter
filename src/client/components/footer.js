@@ -17,6 +17,7 @@ function Footer() {
         <Link
           className="text-muted font-size-14 mr-auto underline-hover"
           to="/contactAdmin"
+          tabIndex="2"
         >
           Contact Us
         </Link>

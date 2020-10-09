@@ -112,6 +112,16 @@ function Signup() {
     }
   }
 
+  useEffect(() => {
+    const customFileUpload = document.getElementById('custom-file-upload');
+    const fileUpload = document.getElementById('file-upload');
+    customFileUpload.addEventListener('keyup', (event) => {
+      if (event.keyCode === 13) {
+        fileUpload.click();
+      }
+    })
+  }, []);
+
   return (
     <div className="margin-top-50 marginBtm">
       <Container>
@@ -123,7 +133,7 @@ function Signup() {
         >
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="text"
               name="username"
               placeholder="Username"
@@ -133,7 +143,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="password"
               name="password1"
               placeholder="Password"
@@ -143,7 +153,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="password"
               name="password2"
               placeholder="Verify Password"
@@ -153,7 +163,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="text"
               name="firstName"
               placeholder="First Name"
@@ -163,7 +173,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="text"
               name="lastName"
               placeholder="Last Name (or initial)"
@@ -173,7 +183,7 @@ function Signup() {
           </div>
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="email"
               name="email"
               placeholder="Email"
@@ -184,7 +194,10 @@ function Signup() {
           <div className="form-group">
             <label
               htmlFor="file-upload"
-              className="btn btn-outline-dark btn-block"
+              className="btn btn-outline-primary btn-block"
+              id="custom-file-upload"
+              // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+              tabIndex="0"
             >
               <input
                 id="file-upload"
@@ -200,7 +213,7 @@ function Signup() {
           <div className="form-group">
             <LoadingButton
               isLoading={loading}
-              className="btn-block loading-button btn-square btn-orange shadow-none"
+              className="btn-block loading-button btn-square btn-orange"
               variant="primary"
               type="submit"
             >

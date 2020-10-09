@@ -48,7 +48,7 @@ function Header() {
         </Link>
         <Button
           size="sm"
-          className="float-right btn-max-ht btn-square ml-2 shadow-none logout-btn"
+          className="float-right btn-max-ht btn-square ml-2 logout-btn"
           onClick={() => logout(pathname)}
         >
           Logout

@@ -96,7 +96,7 @@ function Contact() {
           {!localStorage.userId &&
             <div className="form-group">
               <input
-                className="form-control shadow-none"
+                className="form-control"
                 type="email"
                 name="email"
                 placeholder="Your Email"
@@ -108,7 +108,7 @@ function Contact() {
           }
           <div className="form-group">
             <textarea
-              className="form-control inputTextBox shadow-none"
+              className="form-control inputTextBox"
               type="text"
               name="message"
               placeholder="Message"

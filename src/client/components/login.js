@@ -96,7 +96,7 @@ function Login() {
         >
           <div className="form-group">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="email"
               name="emailForm"
               placeholder="Email"
@@ -106,7 +106,7 @@ function Login() {
           </div>
           <div className="form-group mb-1">
             <input
-              className="form-control shadow-none"
+              className="form-control"
               type="password"
               name="passwordForm"
               placeholder="Password"
@@ -122,7 +122,7 @@ function Login() {
           <div className="form-group">
             <LoadingButton
               isLoading={loading}
-              className="btn-block loading-button btn-orange btn-square shadow-none"
+              className="btn-block loading-button btn-orange btn-square"
               variant="primary"
               type="submit"
             >
