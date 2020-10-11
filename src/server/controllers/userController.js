@@ -103,9 +103,7 @@ const login = (req, res, next) => {
   const { password, user } = req.body;
   if (password === '') {
     res.status(400).send('Enter password');
-  }
-
-  if (!user) {
+  } else if (!user) {
     res.status(400).send('Invalid email');
   } else {
     bcrypt

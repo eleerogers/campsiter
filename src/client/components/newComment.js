@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useMemo } from 'react';
 import {
   Link, useHistory, useParams
 } from 'react-router-dom';
@@ -20,13 +20,15 @@ function NewComment() {
       admin: adminBool
     }
   } = useContext(LoggedInAsContext);
-  const initData = {
-    rating: 0,
-    comment: '',
-    userId,
-    adminBool,
-    avgRating: null
-  };
+  const initData = useMemo(() => {
+    return {
+      rating: 0,
+      comment: '',
+      userId,
+      adminBool,
+      avgRating: null
+    }
+  }, [adminBool, userId]);
   const {
       values,
       handleChange,

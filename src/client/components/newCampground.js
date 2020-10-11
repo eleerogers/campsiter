@@ -91,9 +91,8 @@ function NewCampground() {
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { statusText } = err;
-        const errMsg = statusText || err;
-        toast.error(errMsg);
+        const { response: { data: message } } = err;
+        toast.error(`${message}`);
       }
     } finally {
       setLoadingFalse();
