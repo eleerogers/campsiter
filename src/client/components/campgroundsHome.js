@@ -154,6 +154,7 @@ function CampgroundsHome() {
                 value={search}
                 onChange={handleSearchChange}
                 autoComplete="off"
+                aria-label="Search campgrounds"
               />
             </form>
             <SortDropdown

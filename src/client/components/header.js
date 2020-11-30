@@ -79,7 +79,7 @@ function Header() {
     );
 
   return (
-    <Navbar className={`mb-3 navMinHeight background-beige ${pathname === '/campgroundsHome' && 'navbar-styles'}`} bg="light" variant="light">
+    <Navbar className={`mb-3 navMinHeight background-beige ${pathname === '/campgroundsHome' && 'navbar-styles'}`} bg="light" variant="light" aria-label="header">
       <Container className="d-flex justify-content-between">
         <Col className="min-width-col">
           <Link to="/campgroundsHome">
