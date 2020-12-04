@@ -8,20 +8,22 @@ function Landing() {
   return (
     <div className="landing-outer">
       <div className="landing-header">
-        <h1>Welcome to CampSiter!</h1>
+        <h1 className="hhh">Welcome to CampSiter!</h1>
         <br />
         <br />
         <ul>
           <Link to="/campgroundsHome">
             <Button
-              className="box-shadow"
+              className="box-shadow enter-app-button"
               variant="info"
+              id="enter-app-button"
             >
               Get Started
             </Button>
           </Link>
         </ul>
       </div>
+      <button id="clicker" onClick={() => console.log("clicked!")}>click me</button>
       <ul className="slideshow">
         <li />
         <li />

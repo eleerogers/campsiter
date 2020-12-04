@@ -66,12 +66,14 @@ function Header() {
         <Link
           className="nav-link padding-auto-0"
           to="/login"
+          id="login-link"
         >
           Login
         </Link>
         <Link
           className="nav-link padding-auto-0"
           to="/signup"
+          id="signup-link"
         >
           Signup
         </Link>

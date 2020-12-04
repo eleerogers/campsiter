@@ -133,4 +133,11 @@ router.get('/token/:reset_password_token',
   });
 
 
+router.deleteTestUser('/',
+  userController.deleteTestUser,
+  (req, res) => {
+    res.status(200);
+  });
+
+
 module.exports = router;

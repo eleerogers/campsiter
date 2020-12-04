@@ -24,6 +24,9 @@
         "jest",
         "jsx-a11y"
     ],
+    "globals": {
+        "cy": true
+    },
     "rules": {
     }
 }

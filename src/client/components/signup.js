@@ -214,6 +214,7 @@ function Signup() {
             <LoadingButton
               isLoading={loading}
               className="btn-block loading-button btn-square btn-orange"
+              id="signup-button"
               variant="primary"
               type="submit"
             >

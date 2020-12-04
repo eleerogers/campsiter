@@ -1,3 +1,23 @@
+
+const { clearTestUser } = require('../../server/db')
+// const userSeed = require('../../server/seed/users')
+
+module.exports = (on, config) => {
+  on('task', {
+    'clear:testUser': () => {
+      return clearTestUser()
+    }
+  })
+
+  // on('task', {
+  //   'seed:db': (data) => {
+  //     return seedDatabase(data)
+  //   }
+  // })
+}
+
+
+
 /// <reference types="cypress" />
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
@@ -15,7 +35,7 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-module.exports = (on, config) => {
+// module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-}
+// }

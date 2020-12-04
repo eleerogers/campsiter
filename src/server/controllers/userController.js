@@ -236,6 +236,16 @@ const contact = async (req, res, next) => {
   }
 };
 
+const deleteTestUser = (request, response, next) => {
+  pool.query('DELETE FROM campgrounds WHERE username = testuser@testuser.com', (error) => {
+    if (error) {
+      console.error(error);
+      response.status(404).send('Problem deleting test user');
+    }
+    next();
+  });
+};
+
 
 module.exports = {
   getUsers,
@@ -247,5 +257,6 @@ module.exports = {
   resetPassword,
   updatePassword,
   getUserByToken,
-  contact
+  contact,
+  deleteTestUser
 };

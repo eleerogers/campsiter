@@ -125,6 +125,7 @@ function Login() {
               className="btn-block loading-button btn-orange btn-square"
               variant="primary"
               type="submit"
+              id="login-button"
             >
               Submit
             </LoadingButton>

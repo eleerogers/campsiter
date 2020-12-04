@@ -198,14 +198,18 @@ const checkIfUsernameInUse = async (req, res, next) => {
   try {
     const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE username = $1', [req.body.username]);
     if (length > 0) {
-      await unlinkAsync(req.file.path);
+      if (req.file && req.file.path) {
+        await unlinkAsync(req.file.path);
+      }
       res.status(409).send('Username already in use.');
     } else {
       next();
     }
   } catch (err) {
     console.error(err);
-    await unlinkAsync(req.file.path);
+    if (req.file && req.file.path) {
+      await unlinkAsync(req.file.path);
+    }
     res.status(400).send('Bad request');
   }
 };
