@@ -133,7 +133,7 @@ router.get('/token/:reset_password_token',
   });
 
 
-router.deleteTestUser('/',
+router.delete('/',
   userController.deleteTestUser,
   (req, res) => {
     res.status(200);

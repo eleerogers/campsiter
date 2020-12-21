@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
-import { LoggedInAsContext } from './contexts/loggedInAsContext';
+import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import Envelope from 'react-bootstrap-icons/dist/icons/envelope-fill';
 
 
@@ -12,7 +12,7 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
       id: loggedInAsId,
       admin: loggedInAsAdmin
     }
-  } = useContext(LoggedInAsContext);
+  } = useLoggedInAsContext();
 
   function renderContactButton() {
     return loggedInAsId !== userId && (

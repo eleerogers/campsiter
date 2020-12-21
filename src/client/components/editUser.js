@@ -1,10 +1,10 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { LoggedInAsContext } from './contexts/loggedInAsContext';
+import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import useLoading from '../hooks/useLoading';
@@ -19,7 +19,7 @@ function EditUser() {
       id: loggedInAsId,
       admin: loggedInAsAdmin
     }
-  } = useContext(LoggedInAsContext);
+  } = useLoggedInAsContext();
   const {
     push,
     goBack,

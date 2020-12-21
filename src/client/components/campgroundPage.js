@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -8,7 +8,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import moment from 'moment-mini';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { LoggedInAsContext } from './contexts/loggedInAsContext';
+import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import MapContainer from './map';
 import DeleteModal from './deleteModal';
 import useLoading from '../hooks/useLoading';
@@ -65,7 +65,7 @@ function CampgroundPage() {
       id: loggedInAsId,
       admin: loggedInAsAdmin
     }
-  } = useContext(LoggedInAsContext);
+  } = useLoggedInAsContext();
 
   useEffect(() => {
     // determine if user has already reviewed this site

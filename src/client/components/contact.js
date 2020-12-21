@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import { LoggedInAsContext } from './contexts/loggedInAsContext';
+import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
@@ -15,7 +15,7 @@ function Contact() {
     goBack,
     location: { state }
   } = useHistory();
-  const { loggedInAs } = useContext(LoggedInAsContext);
+  const { loggedInAs } = useLoggedInAsContext();
 
   const emailTo = state && state.author && state.author.email || process.env.REACT_APP_ADMIN_EMAIL;
   const usernameTo = state && state.author && state.author.username || 'CampSiter';

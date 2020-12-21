@@ -1,10 +1,10 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { LoggedInAsContext } from './contexts/loggedInAsContext';
+import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
@@ -28,7 +28,7 @@ function Login() {
     goBack,
     length
   } = useHistory();
-  const { loggedInAs, setLoggedInAs } = useContext(LoggedInAsContext);
+  const { loggedInAs, setLoggedInAs } = useLoggedInAsContext();
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 

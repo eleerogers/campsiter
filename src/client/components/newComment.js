@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import {
   Link, useHistory, useParams
 } from 'react-router-dom';
@@ -6,7 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import { LoggedInAsContext } from './contexts/loggedInAsContext';
+import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
@@ -19,7 +19,7 @@ function NewComment() {
       id: userId,
       admin: adminBool
     }
-  } = useContext(LoggedInAsContext);
+  } = useLoggedInAsContext();
   const initData = useMemo(() => {
     return {
       rating: 0,
