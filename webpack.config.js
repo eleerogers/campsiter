@@ -28,7 +28,12 @@ module.exports = {
     {
       test: /\.(png|woff|woff2|eot|ttf|svg)$/,
       loader: 'url-loader?limit=100000'
-    }
+    },
+    {
+      test: /\.tsx?$/,
+      use: 'ts-loader',
+      exclude: /node_modules/,
+    },
     ]
   },
   resolve: {
@@ -36,7 +41,8 @@ module.exports = {
       react: "preact/compat",
       "react-dom": "preact/compat",
       "react-dom/test-utils": "preact/test-utils"
-    }
+    },
+    extensions: ['.ts', '.tsx', '.js', '.json']
   },
   devServer: {
     port: 3000,

@@ -7,7 +7,21 @@ import useLoading from '../hooks/useLoading';
 import StarRating from './starRating';
 
 
-function CampgroundThumb({ campground, className }) {
+interface Props {
+  campground: {
+    id: number;
+    name: string;
+    image: string;
+    rating: string;
+  }
+  className: string
+}
+
+function CampgroundThumb({ campground, className }: Props) {
+  React.useEffect(() => {
+    console.log({campground})
+  }, [])
+
   const { id, name, image, rating } = campground;
   const [loading, setLoadingFalse] = useLoading();
   return (
@@ -30,7 +44,7 @@ function CampgroundThumb({ campground, className }) {
           </Link>
           <div className="centered thumb-rating">
           {
-            (rating && rating > 0) ?
+            (rating && +rating > 0) ?
             <StarRating
               currRating={rating.toString()}
               readonly={true}

@@ -4,6 +4,16 @@ import StarEmpty from 'react-bootstrap-icons/dist/icons/star';
 import StarFill from 'react-bootstrap-icons/dist/icons/star-fill';
 import PropTypes from 'prop-types';
 
+
+interface Props {
+  currRating: string,
+  handleChange: () => {},
+  readonly: boolean,
+  className: string,
+  divClassName: string,
+  numRatings: number
+}
+
 function StarRating({
     currRating,
     handleChange,
@@ -11,7 +21,7 @@ function StarRating({
     className,
     divClassName,
     numRatings
-  }) {
+  }: Props): JSX.Element {
   return (
     <div className={`flex flex-wrap align-end ${divClassName}`}>
       <Rating
