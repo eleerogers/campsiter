@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 
 interface Props {
   currRating: string,
-  handleChange: () => {},
+  handleChange?: () => {},
   readonly: boolean,
   className: string,
   divClassName: string,
-  numRatings: number
+  numRatings?: number
 }
 
 function StarRating({
@@ -21,12 +21,12 @@ function StarRating({
     className,
     divClassName,
     numRatings
-  }: Props) {
+  }: Props): JSX.Element {
   return (
     <div className={`flex flex-wrap align-end ${divClassName}`}>
       <Rating
         fractions={1}
-        name="rating"
+        // name="rating"
         initialRating={+currRating}
         onChange={handleChange}
         emptySymbol={<StarEmpty className={className} />}
