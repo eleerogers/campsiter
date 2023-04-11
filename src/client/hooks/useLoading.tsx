@@ -23,7 +23,7 @@ function useLoading(initLoadingState = true) {
     }
   }
 
-  return [loading, setLoadingFalse, setLoadingTrue];
+  return [loading, setLoadingFalse, setLoadingTrue] as const;
 }
 
 export default useLoading;

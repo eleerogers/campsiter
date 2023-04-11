@@ -21,13 +21,13 @@ function StarRating({
     className,
     divClassName,
     numRatings
-  }: Props): JSX.Element {
+  }: Props) {
   return (
     <div className={`flex flex-wrap align-end ${divClassName}`}>
       <Rating
         fractions={1}
         name="rating"
-        initialRating={currRating}
+        initialRating={+currRating}
         onChange={handleChange}
         emptySymbol={<StarEmpty className={className} />}
         fullSymbol={<StarFill className={className} />}
