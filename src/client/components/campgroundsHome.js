@@ -38,6 +38,7 @@ function CampgroundsHome() {
   const jumpRef = useRef(jump);
   useEffect(() => {
     jumpRef.current = jump;
+    console.log({thisPageCGs})
   }, [jump]);
   const jumpCallback = useCallback(() => { jumpRef.current(1); }, [jumpRef])
 

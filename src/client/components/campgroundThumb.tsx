@@ -12,7 +12,7 @@ interface Props {
     id: number;
     name: string;
     image: string;
-    rating: string;
+    rating?: string;
   }
   className: string
 }
