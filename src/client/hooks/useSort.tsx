@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import { CampgroundInterface } from '../interfaces';
 
-function useSort(sortStyle, initArr = []) {
-  const [itemsArr, setItemsArr] = useState([]);
+function useSort(sortStyle: string, initArr: CampgroundInterface[] = []) {
+  const [itemsArr, setItemsArr] = useState<CampgroundInterface[]>([]);
 
   useEffect(() => {
     if (sortStyle === 'alpha') {

@@ -1,7 +1,8 @@
 import useDataApi from "./useDataApi";
+import { CampgroundInterface } from "../interfaces";
 
 
-function useGetCGs(urlStr = '/api/campgrounds', emptyCG) {
+function useGetCGs(urlStr: string = '/api/campgrounds', emptyCG: CampgroundInterface) {
   const emptyCGObj = {
     campground: emptyCG,
     campgrounds: [],

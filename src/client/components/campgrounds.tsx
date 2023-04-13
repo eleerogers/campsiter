@@ -1,22 +1,10 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import CampgroundThumb from './campgroundThumb';
+import { CampgroundInterface } from '../interfaces';
 
 interface Props {
-  campgrounds: {
-    created_at: string;
-    id: number;
-    image: string;
-    image_id: string;
-    lat: number;
-    lng: number;
-    location: string;
-    name: string;
-    price: string;
-    rating?: string;
-    user_id: number;
-    username: string;
-  }[];
+  campgrounds: CampgroundInterface[];
   configObj: {
     sm: number,
     md: number,

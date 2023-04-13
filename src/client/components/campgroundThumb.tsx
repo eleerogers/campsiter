@@ -5,25 +5,18 @@ import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
 import useLoading from '../hooks/useLoading';
 import StarRating from './starRating';
+import { CampgroundInterface } from '../interfaces';
 
 
 interface Props {
-  campground: {
-    id: number;
-    name: string;
-    image: string;
-    rating?: string;
-  }
-  className: string
+  campground: CampgroundInterface;
+  className: string;
 }
 
 function CampgroundThumb({ campground, className }: Props) {
-  React.useEffect(() => {
-    console.log({campground})
-  }, [])
-
   const { id, name, image, rating } = campground;
   const [loading, setLoadingFalse] = useLoading();
+
   return (
     <div>
       <Figure
