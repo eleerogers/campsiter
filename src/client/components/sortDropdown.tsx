@@ -3,9 +3,13 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown'
 import PropTypes from 'prop-types';
 
+interface Props {
+  value: "recent" | "alpha" | "rating";
+  setValue: (newString: string) => void;
+}
 
-function SortDropdown({value, setValue}) {
-  const handleSelect = (e) => {
+function SortDropdown({value, setValue}: Props) {
+  const handleSelect = (e: string | null) => {
     const newString = e + '';
     setValue(newString);
   }
@@ -23,7 +27,6 @@ function SortDropdown({value, setValue}) {
         onSelect={handleSelect}
         size="sm"
         className="btn-square sort-dropdown"
-        // variant="secondary"
       >
         <Dropdown.Item eventKey="recent">Recent</Dropdown.Item>
         <Dropdown.Item eventKey="alpha">Name</Dropdown.Item>
