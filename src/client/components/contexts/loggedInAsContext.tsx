@@ -1,23 +1,53 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useRef, useContext, ReactNode, Dispatch, SetStateAction } from 'react';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
-const LoggedInAsContext = React.createContext();
 
-function LoggedInAsContextProvider({ children }) {
-  const loggedInAsInit = {
-    id: '',
-    password: '',
-    email: '',
-    created_at: '',
-    admin: false,
-    image: '',
-    imageId: '',
-    firstName: '',
-    lastName: '',
-    username: ''
-  };
+interface ILoggedInAs {
+  id: string;
+  password: string;
+  email: string;
+  createdAt: string;
+  admin: boolean,
+  image: string;
+  imageId: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+}
+
+interface ILoggedInAsContext {
+  loggedInAs: ILoggedInAs;
+  setLoggedInAs?: Dispatch<SetStateAction<ILoggedInAs>>;
+  logoutUser?: (path: string, push: (route: string) => void) => Promise<void>
+}
+
+const loggedInAsInit: ILoggedInAs = {
+  id: '',
+  password: '',
+  email: '',
+  createdAt: '',
+  admin: false,
+  image: '',
+  imageId: '',
+  firstName: '',
+  lastName: '',
+  username: ''
+};
+
+const defaultState = {
+  loggedInAs: loggedInAsInit
+}
+
+interface Props {
+  children?: ReactNode;
+}
+
+const LoggedInAsContext = React.createContext<ILoggedInAsContext>(defaultState);
+
+function LoggedInAsContextProvider({ children }: Props) {
+  
   const [loggedInAs, setLoggedInAs] = useState(loggedInAsInit);
 
   useEffect(() => {
@@ -40,7 +70,7 @@ function LoggedInAsContextProvider({ children }) {
             }
           }
         }) => {
-          const updatedLoggedInAs = {
+          const updatedLoggedInAs: ILoggedInAs = {
             admin,
             createdAt,
             email,
@@ -66,7 +96,7 @@ function LoggedInAsContextProvider({ children }) {
     return () => { useEffectSource.cancel() };
   }, []);
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<any>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -75,7 +105,7 @@ function LoggedInAsContextProvider({ children }) {
     }
   }, []);
   
-  async function logoutUser(path, push) {
+  async function logoutUser(path: string, push: (route: string) => void) {
     cancelTokenRef.current = axios.CancelToken.source();
     const cancelToken = cancelTokenRef.current.token;
     try {
@@ -92,12 +122,15 @@ function LoggedInAsContextProvider({ children }) {
       ) {
         push('/campgroundsHome');
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     }
   }
