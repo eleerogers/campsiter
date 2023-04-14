@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { CampgroundInterface } from '../interfaces';
 
-function useSort(sortStyle: string, initArr: CampgroundInterface[] = []) {
+function useSort(sortStyle: string | null, initArr: CampgroundInterface[] = []) {
   const [itemsArr, setItemsArr] = useState<CampgroundInterface[]>([]);
 
   useEffect(() => {
-    if (sortStyle === 'alpha') {
+    if (sortStyle === 'Name') {
       const sortedArr = initArr.slice().sort((a, b) => {
         const textA = a.name.toUpperCase();
         const textB = b.name.toUpperCase();
@@ -13,7 +13,7 @@ function useSort(sortStyle: string, initArr: CampgroundInterface[] = []) {
       });
       setItemsArr([...sortedArr]);
     }
-    if (sortStyle === 'rating') {
+    if (sortStyle === 'Rating') {
       const sortedArr = initArr.slice().sort((a, b) => {
         const ratingA = Number(a.rating);
         const ratingB = Number(b.rating);
@@ -21,7 +21,7 @@ function useSort(sortStyle: string, initArr: CampgroundInterface[] = []) {
       });
       setItemsArr([...sortedArr]);
     }
-    if (sortStyle === 'recent') {
+    if (sortStyle === 'Recent') {
       setItemsArr([...initArr]);
     }
   }, [sortStyle, initArr]);

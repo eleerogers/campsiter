@@ -3,34 +3,31 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown'
 import PropTypes from 'prop-types';
 
+
 interface Props {
-  value: "recent" | "alpha" | "rating";
+  value: string;
   setValue: (newString: string) => void;
 }
 
 function SortDropdown({value, setValue}: Props) {
-  const handleSelect = (e: string | null) => {
-    const newString = e + '';
-    setValue(newString);
+  const handleSelect = (eventKey: string | null) => {
+    if (eventKey) {
+      setValue(eventKey);
+    }
   }
-  const keyObj = {
-    "recent": "Recent",
-    "alpha": "Name",
-    "rating": "Rating"
-  }
-
+ 
   return (
     <div className="App container">
       
       <DropdownButton
-        title={keyObj[value]}
+        title={value}
         onSelect={handleSelect}
         size="sm"
         className="btn-square sort-dropdown"
       >
-        <Dropdown.Item eventKey="recent">Recent</Dropdown.Item>
-        <Dropdown.Item eventKey="alpha">Name</Dropdown.Item>
-        <Dropdown.Item eventKey="rating">Rating</Dropdown.Item>
+        <Dropdown.Item eventKey="Recent">Recent</Dropdown.Item>
+        <Dropdown.Item eventKey="Name">Name</Dropdown.Item>
+        <Dropdown.Item eventKey="Rating">Rating</Dropdown.Item>
       </DropdownButton>
     </div>
   );

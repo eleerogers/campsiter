@@ -14,26 +14,28 @@ interface Props {
   }
 }
 
-function Campgrounds({ campgrounds, configObj }: Props) {
+function Campgrounds({ campgrounds, configObj }: Props): JSX.Element {
   const {
     sm, md, lg, colClass, campClass
   } = configObj;
 
   return (
-    campgrounds.map((campground) => (
-      <Col
-        key={campground.id}
-        sm={sm}
-        md={md}
-        lg={lg}
-        className={colClass}
-      >
-        <CampgroundThumb
-          campground={campground}
-          className={campClass}
-        />
-      </Col>
-    ))
+    <>
+      {campgrounds.map((campground) => (
+        <Col
+          key={campground.id}
+          sm={sm}
+          md={md}
+          lg={lg}
+          className={colClass}
+        >
+          <CampgroundThumb
+            campground={campground}
+            className={campClass}
+          />
+        </Col>
+      ))}
+    </>
   );
 }
 

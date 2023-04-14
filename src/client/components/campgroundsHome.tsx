@@ -21,15 +21,15 @@ import Campgrounds from './campgrounds';
 
 
 function CampgroundsHome() {
-  const [sortStyle, setSortStyle] = useState('recent');
+  const [sortStyle, setSortStyle] = useState<string>('Recent');
   const [search, setSearch] = useState('');
   const { data: { campgrounds }, errMsg, isLoading } = useGetCGs();
   const filteredCGs = useSearchFilter(search, campgrounds);
-  const sortedCGs = useSort(sortStyle, filteredCGs, jump);
+  const sortedCGs = useSort(sortStyle, filteredCGs);
   const CAMPGROUNDS_PER_PAGE = 12;
 
-  const [jumboOffsetHt, setJumboOffsetHt] = useState();
-  const jumbotronRef = useRef();
+  const [jumboOffsetHt, setJumboOffsetHt] = useState(0);
+  const jumbotronRef = useRef<any>();
 
   const {
     jump, currentData, currentPage, maxPage
@@ -77,7 +77,7 @@ function CampgroundsHome() {
       </div>
     );
 
-  function handleSearchChange(e) {
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setSearch(e.target.value);
     if (pages.length) {
@@ -176,7 +176,6 @@ function CampgroundsHome() {
               <Spinner
                 animation="border"
                 variant="primary"
-                size="xl"
               />
             </Col>
           </Row>
@@ -186,12 +185,10 @@ function CampgroundsHome() {
               'minWidth': '296px'
             }}
           >
-            {/* <Suspense fallback={<div/>}> */}
-              <Campgrounds
-                campgrounds={thisPageCGs}
-                configObj={campgroundsDisplayConfig}
-              />
-            {/* </Suspense> */}
+            <Campgrounds
+              campgrounds={thisPageCGs}
+              configObj={campgroundsDisplayConfig}
+            />
           </Row>
         </Container>
         {paginationDisplay}
