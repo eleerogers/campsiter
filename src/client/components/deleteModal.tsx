@@ -3,9 +3,18 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 
+
+interface Props {
+  itemType: string;
+  itemObj: {};
+  handleDelete: (itemObj: {}, loggedInAsAdminBool: boolean) => void;
+  loggedInAsAdminBool: boolean;
+  children: string;
+}
+
 function DeleteModal({
   itemType, itemObj, handleDelete, loggedInAsAdminBool, children
-}) {
+}: Props) {
   const [show, setShow] = useState(false);
 
   const handleShow = () => setShow(true);

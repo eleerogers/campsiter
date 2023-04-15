@@ -8,7 +8,12 @@ const containerStyle = {
   height: '400px'
 };
 
-function MapContainer({ lat, lng }) {
+interface Props {
+  lat: number;
+  lng: number;
+}
+
+function MapContainer({ lat, lng }: Props) {
   const center = { lat, lng };
 
   return (
