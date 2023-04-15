@@ -6,11 +6,20 @@ import Button from 'react-bootstrap/Button';
 import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import DeleteModal from './deleteModal';
 import StarRating from './starRating';
+import { IComment } from '../interfaces';
 
+
+interface Props {
+  campground: {
+    id: number;
+  };
+  comment: IComment;
+  deleteComment: () => void;
+}
 
 function Comment({
   comment, deleteComment, campground
-}) {
+}: Props) {
   const {
     loggedInAs: {
       id: loggedInAsId,
@@ -30,11 +39,10 @@ function Comment({
   } = comment;
   
 
-  function renderCommentButtons(commentObj) {
+  function renderCommentButtons(commentObj: IComment) {
     const loggedInAsIdInteger = parseInt(loggedInAsId, 10);
-    const commentUserId = parseInt(commentObj.user_id, 10);
     if (
-      loggedInAsIdInteger === commentUserId
+      loggedInAsIdInteger === commentObj.user_id
       || loggedInAsAdmin
     ) {
       return (
@@ -75,7 +83,7 @@ function Comment({
       <div className="card">
         <div className="card-body">
           {
-            rating > 0 &&
+            rating && rating > 0 &&
             <div>
               <StarRating
                 currRating={rating.toString()}

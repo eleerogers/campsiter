@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { CampgroundInterface } from '../interfaces';
+import axios, { AxiosError } from 'axios';
+import { ICampground } from '../interfaces';
 
 interface emptyCGInterface {
-  campgrounds: CampgroundInterface[];
+  campgrounds: ICampground[];
   user: {
     first_name: string;
     last_name: string;
@@ -27,12 +27,15 @@ const useDataApi = (initialUrl: string, initialData: emptyCGInterface): [{ data:
       try {
         const result = await axios(url, { cancelToken: source.token });
         setData(result.data);
-      } catch (err: Error | any) {
+      } catch (error) {
+        const err = error as AxiosError
         if (axios.isCancel(err)) {
           console.log(`axios call was cancelled`);
         } else {
-          const { response: { data: message } } = err;
-          setIsError(`${message}`);
+          if (err.response && err.response.data) {
+            const { response: { data: message } } = err;
+            setIsError(`${message}`);
+          }
         }
       } finally {
         setIsLoading(false);

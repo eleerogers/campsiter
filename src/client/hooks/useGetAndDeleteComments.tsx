@@ -1,14 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import { ICampground, IComment } from '../interfaces';
 
 
-function useGetAndDeleteComments(campground) {
+function useGetAndDeleteComments(campground: ICampground) {
   const {
     id: campgroundId
   } = campground;
-  const [comments, setComments] = useState([]);
-  const [currAvgRating, setCurrAvgRating] = useState();
+  const [comments, setComments] = useState<IComment[]>([]);
+  const [currAvgRating, setCurrAvgRating] = useState<string>();
   const [avgCalculated, setAvgCalculated] = useState(false);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ function useGetAndDeleteComments(campground) {
   }, [currAvgRating, campground, campgroundId, avgCalculated]);
 
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<any>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -81,7 +82,7 @@ function useGetAndDeleteComments(campground) {
     }
   }, []);
   
-  async function deleteComment(commentObj, loggedInAsAdmin) {
+  async function deleteComment(commentObj: IComment, loggedInAsAdmin: boolean) {
     cancelTokenRef.current = axios.CancelToken.source();
     const cancelToken = cancelTokenRef.current.token;
     try {
@@ -103,12 +104,15 @@ function useGetAndDeleteComments(campground) {
       } = await axios.delete(url, { data: commentData, cancelToken });
       setComments(updatedComments);
       toast.success(message);
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     }
   }

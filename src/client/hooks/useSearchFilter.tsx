@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { CampgroundInterface } from '../interfaces';
+import { ICampground } from '../interfaces';
 
-function useSearchFilter(search: string, initArr: CampgroundInterface[] = []) {
-  const [itemsArr, setItemsArr] = useState<CampgroundInterface[]>([]);
+function useSearchFilter(search: string, initArr: ICampground[] = []) {
+  const [itemsArr, setItemsArr] = useState<ICampground[]>([]);
 
   useEffect(() => {
     const searchLC = search.toLowerCase();

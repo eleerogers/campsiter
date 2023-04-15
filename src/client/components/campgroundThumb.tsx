@@ -5,11 +5,11 @@ import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
 import useLoading from '../hooks/useLoading';
 import StarRating from './starRating';
-import { CampgroundInterface } from '../interfaces';
+import { ICampground } from '../interfaces';
 
 
 interface Props {
-  campground: CampgroundInterface;
+  campground: ICampground;
   className: string;
 }
 

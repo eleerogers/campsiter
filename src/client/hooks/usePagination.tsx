@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { CampgroundInterface } from '../interfaces';
+import { ICampground } from '../interfaces';
 
-function usePagination(data: CampgroundInterface[], itemsPerPage: number, jumbotronHeight: number) {
+function usePagination(data: ICampground[], itemsPerPage: number, jumbotronHeight: number) {
   const [currentPage, setCurrentPage] = useState(1);
   const maxPage = Math.ceil(data.length / itemsPerPage);
 

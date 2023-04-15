@@ -1,9 +1,17 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Comment from './comment';
+import { IComment } from '../interfaces';
 
+interface Props {
+  campground: {
+    id: number
+  };
+  comments: IComment[];
+  deleteComment: () => void;
+}
 
-function Comments({ campground, comments, deleteComment }) {
+function Comments({ campground, comments, deleteComment }: Props) {
   return (
     <Fragment>
       {comments.map((comment) => (
