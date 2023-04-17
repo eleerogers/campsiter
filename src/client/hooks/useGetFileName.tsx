@@ -1,10 +1,20 @@
 import { useState } from 'react';
 
-function useGetFileName(initBtnMessage) {
-  const [imageFile, setImageFile] = useState(null);
+
+interface IImageFile {
+  lastModified: number;
+  lastModifiedDate?: {};
+  name: string;
+  size: number;
+  type: string;
+  webkitRelativePath: string;
+}
+
+function useGetFileName(initBtnMessage: string) {
+  const [imageFile, setImageFile] = useState<IImageFile>();
   const [btnMessage, setBtnMessage] = useState(initBtnMessage);
 
-  function handleFileChange(e) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { files, value } = e.target;
     let newBtnMessage;
     if (files && files.length > 1) {
@@ -15,7 +25,9 @@ function useGetFileName(initBtnMessage) {
     if (newBtnMessage) {
       setBtnMessage(newBtnMessage);
     }
-    setImageFile(e.target.files[0]);
+    if (e.target && e.target.files) {
+      setImageFile(e.target.files[0]);
+    }
   }
 
   return { imageFile, btnMessage, handleFileChange };
