@@ -9,7 +9,7 @@ function useGetAndDeleteComments(campground: ICampground) {
     id: campgroundId
   } = campground;
   const [comments, setComments] = useState<IComment[]>([]);
-  const [currAvgRating, setCurrAvgRating] = useState<string>();
+  const [currAvgRating, setCurrAvgRating] = useState('');
   const [avgCalculated, setAvgCalculated] = useState(false);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ function useGetAndDeleteComments(campground: ICampground) {
     }
   }
 
-  return [comments, deleteComment, currAvgRating];
+  return [comments, deleteComment, currAvgRating] as const;
 
 }
 

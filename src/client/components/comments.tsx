@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Comment from './comment';
-import { IComment } from '../interfaces';
+import { ICampground, IComment } from '../interfaces';
 
 interface Props {
   campground: {
     id: number
   };
   comments: IComment[];
-  deleteComment: () => void;
+  deleteComment: (commentObj: IComment, loggedInAsAdmin: boolean) => Promise<void>;
 }
 
 function Comments({ campground, comments, deleteComment }: Props) {

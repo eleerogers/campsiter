@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
+import { ICampground, IComment } from '../interfaces';
 
 
 interface Props {
   itemType: string;
-  itemObj: {};
-  handleDelete: (itemObj: {}, loggedInAsAdminBool: boolean) => void;
+  itemObj: IComment | ICampground;
+  handleDelete: (itemObj: IComment | ICampground, loggedInAsAdminBool: boolean) => Promise<void>;
   loggedInAsAdminBool: boolean;
   children: string;
 }

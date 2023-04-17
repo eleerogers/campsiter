@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 import { ICampground } from '../interfaces';
 
-interface emptyCGInterface {
+interface IEmptyCG {
+  campground: ICampground;
   campgrounds: ICampground[];
   user: {
     first_name: string;
@@ -12,7 +13,7 @@ interface emptyCGInterface {
   }
 }
  
-const useDataApi = (initialUrl: string, initialData: emptyCGInterface): [{ data: emptyCGInterface; isLoading: boolean; isError: string; }, React.Dispatch<React.SetStateAction<string>>] => {
+const useDataApi = (initialUrl: string, initialData: IEmptyCG): [{ data: IEmptyCG; isLoading: boolean; isError: string; }, React.Dispatch<React.SetStateAction<string>>] => {
   const [data, setData] = useState(initialData);
   const [url, setUrl] = useState(initialUrl);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,4 +54,3 @@ const useDataApi = (initialUrl: string, initialData: emptyCGInterface): [{ data:
 };
 
 export default useDataApi;
-``

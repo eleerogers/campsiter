@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import moment from 'moment-mini';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import MapContainer from './map';
@@ -24,36 +24,39 @@ function CampgroundPage() {
     user_id: '',
     image_id: '',
     name: '',
-    image,
+    image: '',
     description: '',
     price: '',
     created_at: '',
     username: '',
     rating: '',
     lat: 0,
-    lng: 0
+    lng: 0,
+    location: '',
   };
   const {
     push,
   } = useHistory();
 
-  const { id } = useParams();
+  type IdParam = {
+    id: string;
+  }
+  const { id } = useParams<IdParam>();
   const fetchCGUrl = `/api/campgrounds/${id}`;
   const {
     data: { campground },
     isLoading: cgIsLoading, errMsg
   } = useGetCGs(fetchCGUrl, emptyCGObj);
-
   const [comments, deleteComment, currAvgRating] = useGetAndDeleteComments(campground);
   
   const [loading, setLoadingFalse] = useLoading();
   const [hasAlreadyReviewed, setHasAlreadyReviewed] = useState(false);
-  const [numRatings, setNumRatings] = useState();
+  const [numRatings, setNumRatings] = useState(0);
 
   useEffect(() => {
     // How many star ratings are there
     const nRatings = comments.reduce((a, b) => {
-      return b.rating > 0 ? a + 1 : a;
+      return b.rating && b.rating > 0 ? a + 1 : a;
     }, 0)
     if (nRatings !== numRatings) {
       setNumRatings(nRatings);
@@ -101,7 +104,7 @@ function CampgroundPage() {
     lng
   } = campground;
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<any>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -130,12 +133,15 @@ function CampgroundPage() {
         toast.success(message);
         push('/campgroundsHome');
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     }
   }
@@ -217,7 +223,6 @@ function CampgroundPage() {
                       <Spinner
                         animation="border"
                         variant="primary"
-                        size="xl"
                       />
                     </Col>
                   </Row>

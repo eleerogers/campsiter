@@ -10,7 +10,7 @@ export interface ICampground {
   name: string;
   price: string;
   rating?: string;
-  user_id: number;
+  user_id: string;
   username: string;
 }
 

@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import DeleteModal from './deleteModal';
 import StarRating from './starRating';
-import { IComment } from '../interfaces';
+import { ICampground, IComment } from '../interfaces';
 
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
     id: number;
   };
   comment: IComment;
-  deleteComment: () => void;
+  deleteComment: (commentObj: IComment, loggedInAsAdmin: boolean) => Promise<void>;
 }
 
 function Comment({

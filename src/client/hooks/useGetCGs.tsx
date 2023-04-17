@@ -1,8 +1,23 @@
 import useDataApi from "./useDataApi";
 import { ICampground } from "../interfaces";
 
+const emptyCampground: ICampground = {
+  created_at: '',
+  description: '',
+  id: 0,
+  image: '',
+  image_id: '',
+  lat: 0,
+  lng: 0,
+  location: '',
+  name: '',
+  price: '',
+  rating: '',
+  user_id: '',
+  username: '',
+}
 
-function useGetCGs(urlStr: string = '/api/campgrounds', emptyCG?: ICampground) {
+function useGetCGs(urlStr: string = '/api/campgrounds', emptyCG: ICampground = emptyCampground) {
   const emptyCGObj = {
     campground: emptyCG,
     campgrounds: [],
