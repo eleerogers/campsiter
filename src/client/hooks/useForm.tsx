@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
 
-const useForm = (initialFormStateObj) => {
-  const [values, setValues] = useState(initialFormStateObj || {});
+const useForm = (initialFormStateObj = {}) => {
+  const [values, setValues] = useState(initialFormStateObj);
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
     setValues((vals) => ({
       ...vals,
@@ -11,14 +11,14 @@ const useForm = (initialFormStateObj) => {
     }));
   };
 
-  const changeRating = (rating) => {
+  const changeRating = (rating: number) => {
     setValues((vals) => ({
       ...vals,
       rating
     }));
   }
 
-  const changeAvgRating = (avgRating) => {
+  const changeAvgRating = (avgRating: number) => {
     setValues((vals) => ({
       ...vals,
       avgRating
