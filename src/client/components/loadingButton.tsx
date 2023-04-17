@@ -3,9 +3,13 @@ import { useSpring, animated } from "react-spring";
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
-// import Loader from "./Loader";
 
-export default function LoadingButton({ isLoading, children, ...props }) {
+interface Props {
+  isLoading: boolean;
+  children: React.ReactNode;
+}
+
+export default function LoadingButton({ isLoading, children, ...props }: Props) {
   /* showLoader is used to stay in the "isLoading state" a bit longer to avoid loading flashes if the loading state is too short. */
   const [showLoader, setShowLoader] = React.useState(false);
 
@@ -30,7 +34,7 @@ export default function LoadingButton({ isLoading, children, ...props }) {
   so it doesn’t change size. */
   const [width, setWidth] = React.useState(0);
   const [height, setHeight] = React.useState(0);
-  const ref = React.useRef(null);
+  const ref = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
     if (ref.current && ref.current.getBoundingClientRect().width) {
