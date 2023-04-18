@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -10,11 +10,21 @@ import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
 
 
+interface IHistory {
+  author: {
+    first_name: string;
+    last_name: string;
+    image: string;
+    email: string;
+    username: string;
+  }
+}
+
 function Contact() {
   const {
     goBack,
     location: { state }
-  } = useHistory();
+  } = useHistory<IHistory>();
   const { loggedInAs } = useContext(LoggedInAsContext);
 
   const emailTo = state && state.author && state.author.email || process.env.REACT_APP_ADMIN_EMAIL;
@@ -46,7 +56,7 @@ function Contact() {
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<any>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -55,7 +65,7 @@ function Contact() {
     }
   }, []);
   
-  async function submitForm(event) {
+  async function submitForm(event: React.FormEvent) {
     event.preventDefault();
     setLoadingTrue();
     const url = '/api/users/contact';
@@ -67,12 +77,15 @@ function Contact() {
         toast.success(message);
         goBack();
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     } finally {
       setLoadingFalse();
@@ -109,10 +122,9 @@ function Contact() {
           <div className="form-group">
             <textarea
               className="form-control inputTextBox"
-              type="text"
               name="message"
               placeholder="Message"
-              rows="5"
+              rows={5}
               onChange={handleChange}
               value={values.comment}
               required

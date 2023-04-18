@@ -7,6 +7,9 @@ import PropTypes from 'prop-types';
 interface Props {
   isLoading: boolean;
   children: React.ReactNode;
+  className?: string;
+  variant?: string;
+  type?: string;
 }
 
 export default function LoadingButton({ isLoading, children, ...props }: Props) {

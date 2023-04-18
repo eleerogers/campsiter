@@ -1,9 +1,15 @@
 import { useState, useCallback } from 'react';
 
-const useForm = (initialFormStateObj = {}) => {
+
+interface IInitialFormStateObj {
+  email?: string;
+  comment?: string;
+}
+
+const useForm = (initialFormStateObj: IInitialFormStateObj) => {
   const [values, setValues] = useState(initialFormStateObj);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     event.persist();
     setValues((vals) => ({
       ...vals,
