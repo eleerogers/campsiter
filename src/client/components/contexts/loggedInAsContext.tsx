@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext, ReactNode, Dispatch, SetStateAction } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
@@ -96,7 +96,7 @@ function LoggedInAsContextProvider({ children }: Props) {
     return () => { useEffectSource.cancel() };
   }, []);
 
-  const cancelTokenRef = useRef<any>();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {

@@ -1,12 +1,7 @@
 import { useState, useCallback } from 'react';
 
 
-interface IInitialFormStateObj {
-  email?: string;
-  comment?: string;
-}
-
-const useForm = (initialFormStateObj: IInitialFormStateObj) => {
+const useForm = <T,>(initialFormStateObj: T) => {
   const [values, setValues] = useState(initialFormStateObj);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -17,14 +12,14 @@ const useForm = (initialFormStateObj: IInitialFormStateObj) => {
     }));
   };
 
-  const changeRating = (rating: number) => {
+  const changeRating = (rating: string) => {
     setValues((vals) => ({
       ...vals,
       rating
     }));
   }
 
-  const changeAvgRating = (avgRating: number) => {
+  const changeAvgRating = (avgRating: string) => {
     setValues((vals) => ({
       ...vals,
       avgRating
@@ -32,7 +27,7 @@ const useForm = (initialFormStateObj: IInitialFormStateObj) => {
   }
 
   const reset = () => {
-    setValues(initialFormStateObj || {});
+    setValues(initialFormStateObj);
   };
 
   const set = useCallback((newInit) => {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import { ICampground, IComment } from '../interfaces';
 
@@ -73,7 +73,7 @@ function useGetAndDeleteComments(campground: ICampground) {
   }, [currAvgRating, campground, campgroundId, avgCalculated]);
 
 
-  const cancelTokenRef = useRef<any>();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {

@@ -1,17 +1,8 @@
 import { useState } from 'react';
 
 
-interface IImageFile {
-  lastModified: number;
-  lastModifiedDate?: {};
-  name: string;
-  size: number;
-  type: string;
-  webkitRelativePath: string;
-}
-
 function useGetFileName(initBtnMessage: string) {
-  const [imageFile, setImageFile] = useState<IImageFile>();
+  const [imageFile, setImageFile] = useState<Blob>();
   const [btnMessage, setBtnMessage] = useState(initBtnMessage);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {

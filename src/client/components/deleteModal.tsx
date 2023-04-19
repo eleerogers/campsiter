@@ -5,17 +5,17 @@ import PropTypes from 'prop-types';
 import { ICampground, IComment } from '../interfaces';
 
 
-interface Props {
+interface Props<T> {
   itemType: string;
-  itemObj: IComment | ICampground;
-  handleDelete: (itemObj: IComment | ICampground, loggedInAsAdminBool: boolean) => Promise<void>;
+  itemObj: T;
+  handleDelete: (itemObj: T, loggedInAsAdminBool: boolean) => Promise<void>
   loggedInAsAdminBool: boolean;
   children: string;
 }
 
-function DeleteModal({
+function DeleteModal<T>({
   itemType, itemObj, handleDelete, loggedInAsAdminBool, children
-}: Props) {
+}: Props<T>) {
   const [show, setShow] = useState(false);
 
   const handleShow = () => setShow(true);

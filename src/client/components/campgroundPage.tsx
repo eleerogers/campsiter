@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import moment from 'moment-mini';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import MapContainer from './map';
@@ -16,10 +16,11 @@ import useGetCGs from '../hooks/useGetCGs';
 import Comments from './comments';
 import useGetAndDeleteComments from '../hooks/useGetAndDeleteComments';
 import StarRating from './starRating';
+import { ICampground } from '../interfaces';
 
 
 function CampgroundPage() {
-  const emptyCGObj = {
+  const emptyCGObj: ICampground = {
     id: 0,
     user_id: '',
     image_id: '',
@@ -104,7 +105,7 @@ function CampgroundPage() {
     lng
   } = campground;
 
-  const cancelTokenRef = useRef<any>();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {

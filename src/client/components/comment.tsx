@@ -64,7 +64,7 @@ function Comment({
               Edit
             </Button>
           </Link>
-          <DeleteModal
+          <DeleteModal<IComment>
             itemType="review"
             itemObj={commentObj}
             handleDelete={deleteComment}
