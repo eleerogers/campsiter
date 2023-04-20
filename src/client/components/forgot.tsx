@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
+import { ILoggedInAsContext } from '../interfaces';
 
 
 function Forgot() {
@@ -16,7 +17,7 @@ function Forgot() {
     loggedInAs: {
       id: loggedInAsId
     }
-  } = useContext(LoggedInAsContext);
+  } = useContext(LoggedInAsContext) as ILoggedInAsContext;
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
@@ -26,11 +27,11 @@ function Forgot() {
     }
   }, [loggedInAsId, push]);
 
-  function onEmailFormChange(event) {
+  function onEmailFormChange(event: React.ChangeEvent<HTMLInputElement>) {
     setEmail(event.target.value);
   }
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -39,7 +40,7 @@ function Forgot() {
     }
   }, []);
   
-  async function submitEmailReset(event) {
+  async function submitEmailReset(event: React.FormEvent) {
     event.preventDefault();
     setLoadingTrue();
     cancelTokenRef.current = axios.CancelToken.source();
@@ -50,12 +51,15 @@ function Forgot() {
         toast.success(data);
         push('/campgroundsHome');
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { statusText } } = err;
-        toast.error(`${statusText}`);
+        if (err.response && err.response.statusText) {
+          const { response: { statusText } } = err;
+          toast.error(`${statusText}`);
+        }
       }
     } finally {
       setLoadingFalse();
