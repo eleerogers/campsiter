@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import { Link, useHistory } from 'react-router-dom';
 import { useLoggedInAsContext } from './contexts/loggedInAsContext';
+import { ILoggedInAsContext } from '../interfaces';
 
 
 function Header() {
@@ -15,7 +16,7 @@ function Header() {
       id,
       username
     }
-  } = useLoggedInAsContext();
+  } = useLoggedInAsContext() as ILoggedInAsContext;
   const {
     location: {
       pathname
@@ -23,8 +24,8 @@ function Header() {
     push
   } = useHistory();
 
-  function logout() {
-    logoutUser(pathname, push);
+  function logout(path: string) {
+    logoutUser(path, push);
   }
 
   const showLoginOrLoggedInAs = username.length > 0
