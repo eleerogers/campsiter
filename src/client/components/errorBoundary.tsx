@@ -1,14 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { ReactNode } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+
+interface Props {
+	children: ReactNode;
+}
+
+interface State {
+	hasError: boolean;
+}
+
+class ErrorBoundary extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error) {
     console.error(error);
     return { hasError: true };
   }
@@ -27,9 +35,5 @@ class ErrorBoundary extends React.Component {
     return children;
   }
 }
-
-ErrorBoundary.propTypes = {
-  children: PropTypes.element.isRequired
-};
 
 export default ErrorBoundary;
