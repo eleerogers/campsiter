@@ -12,7 +12,7 @@ function Footer() {
   } = useHistory();
 
   return pathname === '/' ? null : (
-    <Navbar bg="dark" variant="light" sticky="bottom" aria-label="footer">
+    <Navbar bg="dark" variant="light" aria-label="footer">
       <Container className="footer-copyright text-center pb-1 pt-1 footer">
         <Link
           className="text-muted font-size-14 mr-auto underline-hover"
