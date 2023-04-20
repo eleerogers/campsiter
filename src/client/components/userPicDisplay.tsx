@@ -4,15 +4,23 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import Envelope from 'react-bootstrap-icons/dist/icons/envelope-fill';
+import { IUser, ILoggedInAsContext } from '../interfaces';
 
 
-function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse }) {
+interface Props {
+  author: IUser;
+  userId: string;
+  userPicLoading: boolean;
+  setUserPicLoadingFalse: () => void;
+}
+
+function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse }: Props) {
   const {
     loggedInAs: {
       id: loggedInAsId,
       admin: loggedInAsAdmin
     }
-  } = useContext(LoggedInAsContext);
+  } = useContext(LoggedInAsContext) as ILoggedInAsContext;
 
   function renderContactButton() {
     return loggedInAsId !== userId && (

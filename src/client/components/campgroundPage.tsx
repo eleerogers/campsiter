@@ -16,7 +16,7 @@ import useGetCGs from '../hooks/useGetCGs';
 import Comments from './comments';
 import useGetAndDeleteComments from '../hooks/useGetAndDeleteComments';
 import StarRating from './starRating';
-import { ICampground } from '../interfaces';
+import { ICampground, ILoggedInAsContext } from '../interfaces';
 
 
 function CampgroundPage() {
@@ -69,7 +69,7 @@ function CampgroundPage() {
       id: loggedInAsId,
       admin: loggedInAsAdmin
     }
-  } = useContext(LoggedInAsContext);
+  } = useContext(LoggedInAsContext) as ILoggedInAsContext;
 
   useEffect(() => {
     // determine if user has already reviewed this site
@@ -269,7 +269,7 @@ function CampgroundPage() {
                     numRatings > 0 &&
                     <div>
                       <StarRating
-                        currRating={currAvgRating}
+                        currRating={+currAvgRating}
                         readonly={true}
                         className="star-cg-avg"
                         divClassName="mb-2"

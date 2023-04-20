@@ -2,14 +2,22 @@ import React, { useEffect, useContext, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
+import { ILoggedInAsContext } from '../interfaces';
 
+
+interface IError extends Error {
+  response?: {
+    status?: number;
+    data?: string;
+  }
+}
 
 function Signup() {
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
@@ -17,7 +25,7 @@ function Signup() {
     loggedInAs: {
       id: loggedInAsId
     }
-  } = useContext(LoggedInAsContext);
+  } = useContext(LoggedInAsContext) as ILoggedInAsContext;
   const {
     push,
     goBack
@@ -48,7 +56,7 @@ function Signup() {
     }
   }, [loggedInAsId, push]);
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -56,7 +64,7 @@ function Signup() {
       }
     }
   }, []);
-  async function submitForm(event) {
+  async function submitForm(event: React.FormEvent) {
     event.preventDefault();
     cancelTokenRef.current = axios.CancelToken.source();
     const cancelToken = cancelTokenRef.current.token;
@@ -90,19 +98,22 @@ function Signup() {
           toast.success(message);
           push('/login');
         } else {
-          const error = new Error();
+          const error: IError = new Error();
           error.response = {
             status: 400,
             data: 'Unsuccessful request'
           };
           throw error;
         }
-      } catch (err) {
+      } catch (error) {
+        const err = error as AxiosError
         if (axios.isCancel(err)) {
           console.log(`axios call was cancelled`);
         } else {
-          const { response: { data: message } } = err;
-          toast.error(`${message}`);
+          if (err.response && err.response.data) {
+            const { response: { data: message } } = err;
+            toast.error(`${message}`);
+          }
         }
       } finally {
         setLoadingFalse();
@@ -115,9 +126,9 @@ function Signup() {
   useEffect(() => {
     const customFileUpload = document.getElementById('custom-file-upload');
     const fileUpload = document.getElementById('file-upload');
-    customFileUpload.addEventListener('keyup', (event) => {
+    customFileUpload?.addEventListener('keyup', (event) => {
       if (event.keyCode === 13) {
-        fileUpload.click();
+        fileUpload?.click();
       }
     })
   }, []);
@@ -197,7 +208,7 @@ function Signup() {
               className="btn btn-outline-primary btn-block"
               id="custom-file-upload"
               // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-              tabIndex="0"
+              tabIndex={0}
             >
               <input
                 id="file-upload"

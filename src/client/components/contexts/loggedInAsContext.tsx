@@ -2,28 +2,10 @@ import React, { useState, useEffect, useRef, useContext, ReactNode, Dispatch, Se
 import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
+import { IUserCamelCase, ILoggedInAsContext } from '../../interfaces';
 
 
-interface ILoggedInAs {
-  id: string;
-  password: string;
-  email: string;
-  createdAt: string;
-  admin: boolean,
-  image: string;
-  imageId: string;
-  firstName: string;
-  lastName: string;
-  username: string;
-}
-
-interface ILoggedInAsContext {
-  loggedInAs: ILoggedInAs;
-  setLoggedInAs?: Dispatch<SetStateAction<ILoggedInAs>>;
-  logoutUser?: (path: string, push: (route: string) => void) => Promise<void>
-}
-
-const loggedInAsInit: ILoggedInAs = {
+const loggedInAsInit: IUserCamelCase = {
   id: '',
   password: '',
   email: '',
@@ -36,15 +18,11 @@ const loggedInAsInit: ILoggedInAs = {
   username: ''
 };
 
-const defaultState = {
-  loggedInAs: loggedInAsInit
-}
-
 interface Props {
   children?: ReactNode;
 }
 
-const LoggedInAsContext = React.createContext<ILoggedInAsContext>(defaultState);
+const LoggedInAsContext = React.createContext<ILoggedInAsContext | null>(null);
 
 function LoggedInAsContextProvider({ children }: Props) {
   
@@ -70,7 +48,7 @@ function LoggedInAsContextProvider({ children }: Props) {
             }
           }
         }) => {
-          const updatedLoggedInAs: ILoggedInAs = {
+          const updatedLoggedInAs: IUserCamelCase = {
             admin,
             createdAt,
             email,

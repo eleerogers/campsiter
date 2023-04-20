@@ -9,7 +9,7 @@ import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
-import { ICampground } from '../interfaces';
+import { ICampground, ILoggedInAsContext } from '../interfaces';
 
 
 interface IHistory {
@@ -19,7 +19,7 @@ interface IHistory {
 function EditCampground() {
   const {
     loggedInAs: { admin }
-  } = useContext(LoggedInAsContext);
+  } = useContext(LoggedInAsContext) as ILoggedInAsContext;
   const {
     location: {
       state: {

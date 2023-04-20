@@ -1,50 +1,97 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useMemo } from 'react';
 import {
   Link, useHistory, useParams
 } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
 import StarRating from './starRating';
+import { ICampground, IComment, ILoggedInAsContext } from '../interfaces';
 
 
-function EditComment() {
+interface IHistory {
+  campground: ICampground;
+  commentObj?: IComment;
+  comments?: IComment[];
+  loggedInAsId?: string;
+}
+
+function NewComment() {
+  const {
+    loggedInAs: {
+      id: userId,
+      admin: adminBool
+    }
+  } = useContext(LoggedInAsContext) as ILoggedInAsContext;
+  const initData = useMemo(() => {
+    return {
+      rating: 0,
+      comment: '',
+      userId,
+      adminBool,
+      avgRating: null
+    }
+  }, [adminBool, userId]);
+  const {
+      values,
+      handleChange,
+      changeRating,
+      set
+  } = useForm(initData);
+  
+  useEffect(() => {
+    if (initData.userId !== values.userId) {
+      set(initData);
+    }
+  }, [set, initData, values.userId]);
+
   const {
     location: {
       state: {
         campground,
-        loggedInAsAdmin: adminBool,
-        commentObj: {
-          comment_id: commentId,
-          user_id: userId,
-          comment,
-          rating
-        }
+        comments
       }
     },
     push
-  } = useHistory();
+  } = useHistory<IHistory>();
 
-  const { id } = useParams();
+  type IdParam = {
+    id: string;
+  }
+  const { id } = useParams<IdParam>();
+  
+  useEffect(() => {
+    if (!localStorage.userId) {
+      push('/login');
+    }
+  }, [push]);
+
+  useEffect(() => {
+    if (comments) {
+      var prevReview = comments.find(comment => {
+        return comment.user_id === Number(userId);
+      });
+    }
+    if (prevReview) {
+      push({
+        pathname: `/campgrounds/${campground.id}/comments/edit`,
+        state: {
+          campground,
+          loggedInAsId: userId,
+          commentObj: prevReview
+        }
+      })
+    }
+  }, [push, campground, comments, userId]);  
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
-  const initFormData = {
-    commentId,
-    userId,
-    campgroundId: id,
-    comment,
-    user: { id: userId },
-    adminBool,
-    rating
-  };
-  const { values, handleChange, changeRating } = useForm(initFormData);
-
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -53,14 +100,14 @@ function EditComment() {
     }
   }, []);
   
-  async function submitForm(event) {
+  async function submitForm(event: React.FormEvent) {
     event.preventDefault();
     setLoadingTrue();
-    cancelTokenRef.current = axios.CancelToken.source()
-    const cancelToken = cancelTokenRef.current.token;
     const url = `/api/comments/${id}`;
+    cancelTokenRef.current = axios.CancelToken.source();
+    const cancelToken = cancelTokenRef.current.token;
     try {
-      const { data, status } = await axios.put(url, values, { cancelToken });
+      const { data, status } = await axios.post(url, values, { cancelToken });
       if (status === 200) {
         toast.success(data);
         push({
@@ -70,12 +117,15 @@ function EditComment() {
           }
         });
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     } finally {
       setLoadingFalse();
@@ -85,7 +135,7 @@ function EditComment() {
   return (
     <div className="comment-padding-top marginBtm">
       <Container>
-        <h1 className="text-center color-dark-blue">Edit Review of<br />{campground.name}</h1>
+        <h1 className="text-center color-dark-blue">Review<br /> {campground.name}</h1>
         <br />
         <form
           className="entryBox centered"
@@ -93,20 +143,19 @@ function EditComment() {
         >
           <div className="form-group">
             <StarRating
-              currRating={values.rating && values.rating.toString()}
+              currRating={values.rating}
               handleChange={changeRating}
               readonly={false}
               className="star-lg m-1"
               divClassName="justify-centered mb-3"
             />
             <textarea
-              className="form-control inputTextBox"
-              type="text"
+              className="form-control inputTextBox mt-4"
               name="comment"
               placeholder="Comment"
-              rows="5"
+              rows={5}
               onChange={handleChange}
-              value={values.comment || ''}
+              value={values.comment}
             />
           </div>
           <br />
@@ -141,4 +190,4 @@ function EditComment() {
   );
 }
 
-export default EditComment;
+export default NewComment;

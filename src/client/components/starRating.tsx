@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 
 
 interface Props {
-  currRating: string,
-  handleChange?: () => {},
+  currRating: number,
+  handleChange?: (rating: number) => void,
   readonly: boolean,
   className: string,
   divClassName: string,
@@ -26,8 +26,7 @@ function StarRating({
     <div className={`flex flex-wrap align-end ${divClassName}`}>
       <Rating
         fractions={1}
-        // name="rating"
-        initialRating={+currRating}
+        initialRating={currRating}
         onChange={handleChange}
         emptySymbol={<StarEmpty className={className} />}
         fullSymbol={<StarFill className={className} />}

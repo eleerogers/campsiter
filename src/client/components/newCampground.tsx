@@ -2,13 +2,14 @@ import React, { useEffect, useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
+import axios, { CancelTokenSource, AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
+import { ILoggedInAsContext } from '../interfaces';
 
 
 function NewCampground() {
@@ -17,7 +18,7 @@ function NewCampground() {
     loggedInAs: {
       id: loggedInAsId
     }
-  } = useContext(LoggedInAsContext);
+  } = useContext(LoggedInAsContext) as ILoggedInAsContext;
 
   const initBtnMessage = 'Select Campground Image (Required)';
   const { imageFile, btnMessage, handleFileChange } = useGetFileName(initBtnMessage);
@@ -40,7 +41,7 @@ function NewCampground() {
     }
   }, [push]);
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -49,7 +50,7 @@ function NewCampground() {
     }
   }, []);
 
-  async function submitForm(event) {
+  async function submitForm(event: React.FormEvent) {
     event.preventDefault();
     setLoadingTrue();
     cancelTokenRef.current = axios.CancelToken.source() 
@@ -61,7 +62,9 @@ function NewCampground() {
       },
       cancelToken: cancelTokenRef.current.token
     };
-    fd.append('image', imageFile);
+    if (imageFile) {
+      fd.append('image', imageFile);
+    }
     fd.append('name', name);
     fd.append('description', description);
     fd.append('campLocation', name);
@@ -87,12 +90,15 @@ function NewCampground() {
         const error = new Error();
         throw error;
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     } finally {
       setLoadingFalse();
@@ -102,9 +108,9 @@ function NewCampground() {
   useEffect(() => {
     const customFileUpload = document.getElementById('custom-file-upload');
     const fileUpload = document.getElementById('file-upload');
-    customFileUpload.addEventListener('keyup', (event) => {
+    customFileUpload?.addEventListener('keyup', (event) => {
       if (event.keyCode === 13) {
-        fileUpload.click();
+        fileUpload?.click();
       }
     })
   }, []);
@@ -130,10 +136,9 @@ function NewCampground() {
             <div className="form-group">
               <textarea
                 className="form-control inputTextBox"
-                type="text"
                 name="description"
                 placeholder="Description"
-                rows="5"
+                rows={5}
                 onChange={handleChange}
                 value={description}
               />
@@ -155,7 +160,7 @@ function NewCampground() {
                 htmlFor="file-upload"
                 className="btn btn-outline-primary btn-block"
                 // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-                tabIndex="0"
+                tabIndex={0}
               >
                 <input
                   id="file-upload"
@@ -174,7 +179,6 @@ function NewCampground() {
                 className="btn-block loading-button btn-orange btn-square"
                 variant="primary"
                 type="submit"
-                size="lg"
               >
                 Submit
               </LoadingButton>

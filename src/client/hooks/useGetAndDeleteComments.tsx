@@ -36,10 +36,9 @@ function useGetAndDeleteComments(campground: ICampground) {
     if (comments.length > 0) {
       let numRatings = 0;
       const avgRating = comments.reduce((a, b) => {
-        const bNumRating = Number(b.rating);
-        if (bNumRating > 0) {
+        if (b.rating > 0) {
           numRatings += 1;
-          return a + bNumRating;
+          return a + b.rating;
         } else {
           return a;
         }

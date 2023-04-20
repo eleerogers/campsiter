@@ -12,7 +12,10 @@ import UserPicDisplay from './userPicDisplay';
 
 
 function UserProfile() {
-  const { id: userId } = useParams();
+  type IdParam = {
+    id: string;
+  }
+  const { id: userId } = useParams<IdParam>();
   const { data: { campgrounds, user: author }, errMsg, isLoading } = useGetCGs(`/api/campgrounds/user/${userId}`);
   const [userPicLoading, setUserPicLoadingFalse] = useLoading();
   
@@ -55,7 +58,6 @@ function UserProfile() {
             <Spinner
               animation="border"
               variant="primary"
-              size="xl"
             />
           </Col>
         </Row>

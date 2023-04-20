@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
-import { ICampground } from '../interfaces';
+import { ICampground, IUser } from '../interfaces';
 
 interface IEmptyCG {
   campground: ICampground;
   campgrounds: ICampground[];
-  user: {
-    first_name: string;
-    last_name: string;
-    image: string;
-    email: string;
-  }
+  user: IUser;
 }
  
 const useDataApi = (initialUrl: string, initialData: IEmptyCG): [{ data: IEmptyCG; isLoading: boolean; isError: string; }, React.Dispatch<React.SetStateAction<string>>] => {

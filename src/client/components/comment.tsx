@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useLoggedInAsContext } from './contexts/loggedInAsContext';
 import DeleteModal from './deleteModal';
 import StarRating from './starRating';
-import { ICampground, IComment } from '../interfaces';
+import { ICampground, IComment, ILoggedInAsContext } from '../interfaces';
 
 
 interface Props {
@@ -25,7 +25,7 @@ function Comment({
       id: loggedInAsId,
       admin: loggedInAsAdmin
     }
-  } = useLoggedInAsContext();
+  } = useLoggedInAsContext() as ILoggedInAsContext;
   const {
     id: campgroundId,
   } = campground;
@@ -86,7 +86,7 @@ function Comment({
             rating && rating > 0 &&
             <div>
               <StarRating
-                currRating={rating.toString()}
+                currRating={rating}
                 readonly={true}
                 className="star-sm"
                 divClassName="mb-2"

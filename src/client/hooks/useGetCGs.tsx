@@ -1,5 +1,12 @@
 import useDataApi from "./useDataApi";
-import { ICampground } from "../interfaces";
+import { ICampground, IUser } from "../interfaces";
+
+
+interface IEmptyCGObj {
+  campground: ICampground;
+  campgrounds: ICampground[];
+  user: IUser;
+}
 
 const emptyCampground: ICampground = {
   created_at: '',
@@ -18,7 +25,7 @@ const emptyCampground: ICampground = {
 }
 
 function useGetCGs(urlStr: string = '/api/campgrounds', emptyCG: ICampground = emptyCampground) {
-  const emptyCGObj = {
+  const emptyCGObj: IEmptyCGObj = {
     campground: emptyCG,
     campgrounds: [],
     user: {
@@ -27,6 +34,8 @@ function useGetCGs(urlStr: string = '/api/campgrounds', emptyCG: ICampground = e
       image: '',
       email: '',
       username: '',
+      id: '',
+      image_id: '',
     }
   };
 

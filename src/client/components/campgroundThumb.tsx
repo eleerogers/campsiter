@@ -39,7 +39,7 @@ function CampgroundThumb({ campground, className }: Props) {
           {
             (rating && +rating > 0) ?
             <StarRating
-              currRating={rating.toString()}
+              currRating={+rating}
               readonly={true}
               className="star-sm"
               divClassName="justify-centered mb-1"

@@ -12,7 +12,7 @@ const useForm = <T,>(initialFormStateObj: T) => {
     }));
   };
 
-  const changeRating = (rating: string) => {
+  const changeRating = (rating: number) => {
     setValues((vals) => ({
       ...vals,
       rating

@@ -8,6 +8,7 @@ import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
+import { ILoggedInAsContext } from '../interfaces';
 
 
 interface IHistory {
@@ -25,7 +26,7 @@ function Contact() {
     goBack,
     location: { state }
   } = useHistory<IHistory>();
-  const { loggedInAs } = useContext(LoggedInAsContext);
+  const { loggedInAs } = useContext(LoggedInAsContext) as ILoggedInAsContext;
 
   const emailTo = state && state.author && state.author.email || process.env.REACT_APP_ADMIN_EMAIL;
   const usernameTo = state && state.author && state.author.username || 'CampSiter';

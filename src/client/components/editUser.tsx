@@ -2,14 +2,19 @@ import React, { useEffect, useContext, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useGetFileName from '../hooks/useGetFileName';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
+import { IUser, ILoggedInAsContext } from '../interfaces';
 
+
+interface IHistory {
+  author: IUser
+}
 
 function EditUser() {
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
@@ -19,7 +24,7 @@ function EditUser() {
       id: loggedInAsId,
       admin: loggedInAsAdmin
     }
-  } = useContext(LoggedInAsContext);
+  } = useContext(LoggedInAsContext) as ILoggedInAsContext;
   const {
     push,
     goBack,
@@ -28,7 +33,7 @@ function EditUser() {
         author
       }
     }
-  } = useHistory();
+  } = useHistory<IHistory>();
   const { values, handleChange } = useForm({ ...author, adminCode: '' });
   const {
     id,
@@ -56,7 +61,7 @@ function EditUser() {
     }
   }, [push, loggedInAsId, goBack]);
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -65,7 +70,7 @@ function EditUser() {
     }
   }, []);
   
-  async function submitForm(event) {
+  async function submitForm(event: React.FormEvent) {
     event.preventDefault();
     setLoadingTrue();
     cancelTokenRef.current = axios.CancelToken.source()
@@ -77,7 +82,7 @@ function EditUser() {
     fd.append('firstName', firstName);
     fd.append('lastName', lNameNoPeriod);
     fd.append('email', email);
-    fd.append('admin', admin);
+    fd.append('admin', String(admin));
     fd.append('adminCode', adminCode);
     fd.append('imageId', imageId);
     if (imageFile) {
@@ -118,12 +123,15 @@ function EditUser() {
         toast.success(message);
         push(`/ycusers/${id}`);
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     } finally {
       setLoadingFalse();
@@ -151,9 +159,9 @@ function EditUser() {
   useEffect(() => {
     const customFileUpload = document.getElementById('custom-file-upload');
     const fileUpload = document.getElementById('file-upload');
-    customFileUpload.addEventListener('keyup', (event) => {
+    customFileUpload?.addEventListener('keyup', (event) => {
       if (event.keyCode === 13) {
-        fileUpload.click();
+        fileUpload?.click();
       }
     })
   }, []);
@@ -207,7 +215,7 @@ function EditUser() {
               className="btn btn-outline-primary btn-block"
               id="custom-file-upload"
               // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-              tabIndex="0"
+              tabIndex={0}
             >
               <input
                 id="file-upload"
