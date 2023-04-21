@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
 
 
+type TokenParam = {
+  reset_password_token: string
+}
+
 function Reset() {
   const [rPEmail, setRPEmail] = useState();
   const { push } = useHistory();
-  const { reset_password_token: resetPasswordToken } = useParams();
+  const { reset_password_token: resetPasswordToken } = useParams<TokenParam>();
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
   useEffect(() => {
@@ -21,7 +25,7 @@ function Reset() {
   }, [push]);
 
   useEffect(() => {
-    let source = axios.CancelToken.source;
+    let source = axios.CancelToken.source();
     axios.get(`/api/users/token/${resetPasswordToken}`, { cancelToken: source.token })
       .then(({ data: { user: { email } } }) => {
         setRPEmail(email);
@@ -38,7 +42,7 @@ function Reset() {
   const { values, handleChange } = useForm({ password1: '', password2: '' });
   const { password1, password2 } = values;
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -47,7 +51,7 @@ function Reset() {
     }
   }, []);
   
-  async function submitEmailReset(event) {
+  async function submitEmailReset(event: React.FormEvent) {
     event.preventDefault();
     setLoadingTrue();
     cancelTokenRef.current = axios.CancelToken.source();
@@ -72,12 +76,15 @@ function Reset() {
       } else {
         toast.error('Password cannot be blank');
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     } finally {
       setLoadingFalse();
