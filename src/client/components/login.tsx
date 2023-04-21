@@ -2,12 +2,13 @@ import React, { useEffect, useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
+import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import useForm from '../hooks/useForm';
 import useLoading from '../hooks/useLoading';
 import LoadingButton from './loadingButton';
+import { ILoggedInAsContext } from '../interfaces';
 
 
 function Login() {
@@ -28,7 +29,7 @@ function Login() {
     goBack,
     length
   } = useHistory();
-  const { loggedInAs, setLoggedInAs } = useContext(LoggedInAsContext);
+  const { loggedInAs, setLoggedInAs } = useContext(LoggedInAsContext) as ILoggedInAsContext;
 
   const [loading, setLoadingFalse, setLoadingTrue] = useLoading(false);
 
@@ -49,7 +50,7 @@ function Login() {
     }
   }
 
-  const cancelTokenRef = useRef();
+  const cancelTokenRef = useRef<CancelTokenSource>();
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -58,7 +59,7 @@ function Login() {
     }
   }, []);
   
-  async function submitLogin(event) {
+  async function submitLogin(event: React.FormEvent) {
     event.preventDefault();
     setLoadingTrue();
     cancelTokenRef.current = axios.CancelToken.source();
@@ -72,12 +73,15 @@ function Login() {
       localStorage.userId = data.id;
       setLoggedInAs(data);
       goBack();
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       if (axios.isCancel(err)) {
         console.log(`axios call was cancelled`);
       } else {
-        const { response: { data: message } } = err;
-        toast.error(`${message}`);
+        if (err.response && err.response.data) {
+          const { response: { data: message } } = err;
+          toast.error(`${message}`);
+        }
       }
     } finally {
       setLoadingFalse();
