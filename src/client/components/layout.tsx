@@ -3,12 +3,16 @@ import { useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Header from './header';
 import Footer from './footer';
-import ErrorBoundary from '../components/errorBoundary';
+import ErrorBoundary from './errorBoundary';
 import PropTypes from 'prop-types';
 import Landing from './landing';
 
 
-function Layout({ children }) {
+interface Props {
+  children: React.ReactNode;
+}
+
+function Layout({ children }: Props) {
   // keep track of path to update errorBoundary key so it will reset when you click a link
   const { pathname } = useLocation()
   const pathArr = pathname.split('/');
