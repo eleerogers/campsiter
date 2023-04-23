@@ -3,6 +3,7 @@ import { shallow, mount } from '../../../enzyme';
 import Comment from '../comment';
 import * as LoggedInAsContext from '../contexts/loggedInAsContext';
 import { MemoryRouter } from 'react-router-dom';
+import { ILoggedInAsContext } from '../../interfaces';
 
 
 describe('Comment tests', () => {
@@ -18,21 +19,23 @@ describe('Comment tests', () => {
     id: 1
   }
 
-  const deleteComment = () => {};
+  const deleteComment = async () => {};
 
-  const contextValues = {
+  const contextValues: ILoggedInAsContext = {
     loggedInAs: {
       id: '',
       password: '',
       email: '',
-      created_at: '',
+      createdAt: '',
       admin: false,
       image: '',
       imageId: '',
       firstName: '',
       lastName: '',
       username: ''
-    }
+    },
+    setLoggedInAs: () => {},
+    logoutUser: async () => {}
   };
 
   jest

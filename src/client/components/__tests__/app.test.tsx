@@ -3,6 +3,7 @@ import { mount } from '../../../enzyme';
 import App from '../../App';
 import { MemoryRouter } from 'react-router-dom';
 import * as LoggedInAsContext from '../contexts/loggedInAsContext';
+import { ILoggedInAsContext } from '../../interfaces';
 
 
 describe('App tests', () => {
@@ -22,20 +23,21 @@ describe('App tests', () => {
   })
 
   it('should render header and footer on campgroundsHome page', () => {
-    const contextValues = {
-      logoutUser: () => {},
+    const contextValues: ILoggedInAsContext = {
+      logoutUser: async () => {},
       loggedInAs: {
         id: '',
         password: '',
         email: '',
-        created_at: '',
+        createdAt: '',
         admin: false,
         image: '',
         imageId: '',
         firstName: '',
         lastName: '',
         username: ''
-      }
+      },
+      setLoggedInAs: () => {}
     };
   
     jest

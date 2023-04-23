@@ -24,7 +24,7 @@ const cg1 = {
   name: "Leo Carrillo",
   price: "12 parking per day",
   rating: "0",
-  user_id: 135,
+  user_id: "135",
   username: "melaniexoxo@hotmail.com"
 }
 
@@ -40,7 +40,7 @@ const cg2 = {
   name: "Franklin Lakes (mineral king)",
   price: "10",
   rating: "5.00",
-  user_id: 125,
+  user_id: "125",
   username: "wes"
 }
 
@@ -56,7 +56,7 @@ const cg3 = {
   name: "Sycamore Canyon",
   price: "50",
   rating: "5.00",
-  user_id: 134,
+  user_id: "134",
   username: "bkhwaja"
 }
 
