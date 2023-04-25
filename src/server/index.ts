@@ -1,7 +1,8 @@
 require('dotenv').config();
 
 const path = require('path');
-const express = require('express');
+import express, { Request, Response } from 'express'
+import type { ErrorRequestHandler } from "express";
 const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
@@ -36,19 +37,21 @@ app.use('/api/campgrounds', campgrounds);
 app.use('/api/comments', comments);
 
 
-app.get('*', (req, res) => {
+app.get('*', (req: Request, res: Response) => {
   console.log('index catch-all');
   res.sendFile('/app/dist/index.html');
 });
 
 // error handler middleware
-app.use((error, req, res) => {
+const errorHandler: ErrorRequestHandler = (error, req, res) => {
   res.status(error.status || 500).send({
     error: {
       status: error.status || 500,
       message: error.message || 'Internal Server Error',
     },
   });
-});
+}
+
+app.use(errorHandler);
 
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
