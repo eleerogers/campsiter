@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import Comment from './comment';
-import { ICampground, IComment } from '../interfaces';
+import { IComment } from '../interfaces';
 
 interface Props {
   campground: {
@@ -25,13 +24,5 @@ function Comments({ campground, comments, deleteComment }: Props) {
     </Fragment>
   );
 }
-
-Comments.propTypes = {
-  campground: PropTypes.shape({
-    id: PropTypes.number.isRequired
-  }).isRequired,
-  comments: PropTypes.array,
-  deleteComment: PropTypes.func.isRequired
-};
 
 export default Comments;

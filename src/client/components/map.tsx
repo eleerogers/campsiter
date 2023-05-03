@@ -1,6 +1,5 @@
 import React from 'react';
 import { GoogleMap } from '@react-google-maps/api';
-import PropTypes from 'prop-types';
 
 
 const containerStyle = {
@@ -24,10 +23,5 @@ function MapContainer({ lat, lng }: Props) {
     />
   );
 }
-
-MapContainer.propTypes = {
-  lat: PropTypes.number.isRequired,
-  lng: PropTypes.number.isRequired
-};
 
 export default React.memo(MapContainer);

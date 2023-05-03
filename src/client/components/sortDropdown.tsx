@@ -1,7 +1,6 @@
 import React from 'react';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown'
-import PropTypes from 'prop-types';
 
 
 interface Props {
@@ -32,10 +31,5 @@ function SortDropdown({value, setValue}: Props) {
     </div>
   );
 }
-
-SortDropdown.propTypes = {
-  value: PropTypes.string.isRequired,
-  setValue: PropTypes.func.isRequired
-};
 
 export default SortDropdown;

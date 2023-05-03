@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container';
 import Header from './header';
 import Footer from './footer';
 import ErrorBoundary from './errorBoundary';
-import PropTypes from 'prop-types';
 import Landing from './landing';
 
 
@@ -34,9 +33,5 @@ function Layout({ children }: Props) {
     </div>
   );
 }
-
-Layout.propTypes = {
-  children: PropTypes.element.isRequired
-};
 
 export default Layout;

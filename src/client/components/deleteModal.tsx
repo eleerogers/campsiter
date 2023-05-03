@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import PropTypes from 'prop-types';
-import { ICampground, IComment } from '../interfaces';
 
 
 interface Props<T> {
@@ -62,13 +60,5 @@ function DeleteModal<T>({
     </>
   );
 }
-
-DeleteModal.propTypes = {
-  children: PropTypes.string.isRequired,
-  itemType: PropTypes.string.isRequired,
-  itemObj: PropTypes.shape({}).isRequired,
-  handleDelete: PropTypes.func.isRequired,
-  loggedInAsAdminBool: PropTypes.bool.isRequired
-};
 
 export default DeleteModal;

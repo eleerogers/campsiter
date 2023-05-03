@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
@@ -61,15 +60,5 @@ function CampgroundThumb({ campground, className }: Props) {
     </div>
   );
 }
-
-CampgroundThumb.propTypes = {
-  campground: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    rating: PropTypes.string
-  }).isRequired,
-  className: PropTypes.string.isRequired
-};
 
 export default CampgroundThumb;

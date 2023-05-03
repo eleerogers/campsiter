@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import { LoggedInAsContext } from './contexts/loggedInAsContext';
 import Envelope from 'react-bootstrap-icons/dist/icons/envelope-fill';
@@ -109,18 +108,5 @@ function UserPicDisplay({ author, userId, userPicLoading, setUserPicLoadingFalse
     </div>
   );
 }
-
-UserPicDisplay.propTypes = {
-  author: PropTypes.shape({
-    first_name: PropTypes.string.isRequired,
-    last_name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired
-  }).isRequired,
-  userId: PropTypes.string.isRequired,
-  userPicLoading: PropTypes.bool.isRequired,
-  setUserPicLoadingFalse: PropTypes.func.isRequired
-};
 
 export default UserPicDisplay;

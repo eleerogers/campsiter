@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef, useContext, ReactNode, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect, useRef, useContext, ReactNode } from 'react';
 import axios, { AxiosError, CancelTokenSource } from 'axios';
 import { toast } from 'react-toastify';
-import PropTypes from 'prop-types';
 import { IUserCamelCase, ILoggedInAsContext } from '../../interfaces';
 
 
@@ -124,10 +123,6 @@ function LoggedInAsContextProvider({ children }: Props) {
 
 const useLoggedInAsContext = () => {
   return useContext(LoggedInAsContext);
-};
-
-LoggedInAsContextProvider.propTypes = {
-  children: PropTypes.node.isRequired
 };
 
 export { LoggedInAsContextProvider, LoggedInAsContext, useLoggedInAsContext };

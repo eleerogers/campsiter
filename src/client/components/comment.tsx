@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment-mini';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { useLoggedInAsContext } from './contexts/loggedInAsContext';
@@ -112,20 +111,5 @@ function Comment({
     </div>
   );
 }
-
-Comment.propTypes = {
-  campground: PropTypes.shape({
-    id: PropTypes.number.isRequired
-  }).isRequired,
-  comment: PropTypes.shape({
-    comment_id: PropTypes.number.isRequired,
-    comment: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    created_at: PropTypes.string.isRequired,
-    user_id: PropTypes.number.isRequired,
-    rating: PropTypes.number
-  }).isRequired,
-  deleteComment: PropTypes.func.isRequired
-};
 
 export default Comment;

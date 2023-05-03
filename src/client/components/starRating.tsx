@@ -2,7 +2,6 @@ import React from 'react';
 import Rating from 'react-rating';
 import StarEmpty from 'react-bootstrap-icons/dist/icons/star';
 import StarFill from 'react-bootstrap-icons/dist/icons/star-fill';
-import PropTypes from 'prop-types';
 
 
 interface Props {
@@ -35,15 +34,6 @@ function StarRating({
       { numRatings && <div className="ml-1"><i> (total reviews: {numRatings})</i></div> }
     </div>
   )
-}
-
-StarRating.propTypes = {
-  currRating: PropTypes.string,
-  handleChange: PropTypes.func,
-  readonly: PropTypes.bool,
-  className: PropTypes.string,
-  numRatings: PropTypes.number,
-  divClassName: PropTypes.string
 }
 
 export default StarRating;
