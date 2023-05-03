@@ -1,10 +1,11 @@
-const pool = require('../pool');
-const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
+import { Request, Response, NextFunction } from 'express';
+import pool from '../pool';
+import bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 
 
-const getUsers = (request, response, next) => {
+export const getUsers = (request: Request, response: Response, next: NextFunction) => {
   pool.query('SELECT * FROM ycusers ORDER BY id ASC', (error, results) => {
     if (error) {
       console.error(error);
@@ -17,7 +18,7 @@ const getUsers = (request, response, next) => {
 };
 
 
-const getUserById = (request, response, next) => {
+export const getUserById = (request: Request, response: Response, next: NextFunction) => {
   const id = parseInt(request.params.id, 10);
   pool.query('SELECT * FROM ycusers WHERE id = $1', [id], (error, results) => {
     if (error) {
@@ -33,7 +34,7 @@ const getUserById = (request, response, next) => {
 };
 
 
-const register = async (req, res, next) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
   let {
     username,
     firstName,
@@ -67,7 +68,7 @@ const register = async (req, res, next) => {
 };
 
 
-const update = (req, res, next) => {
+export const update = (req: Request, res: Response, next: NextFunction) => {
   const {
     id,
     firstName,
@@ -99,7 +100,7 @@ const update = (req, res, next) => {
 };
 
 
-const login = (req, res, next) => {
+export const login = (req: Request, res: Response, next: NextFunction) => {
   const { password, user } = req.body;
   if (password === '') {
     res.status(400).send('Enter password');
@@ -113,7 +114,7 @@ const login = (req, res, next) => {
           res.cookie('userId', user.id, {
             httpOnly: true,
             signed: true,
-            secure: process.env.NODE_ENV === 'dev' ? false : true
+            secure: process.env.NODE_ENV === 'development' ? false : true
           });
           res.locals.user = user;
           next();
@@ -128,13 +129,13 @@ const login = (req, res, next) => {
 };
 
 
-const logout = (req, res, next) => {
+export const logout = (req: Request, res: Response, next: NextFunction) => {
   res.clearCookie('userId');
   next();
 };
 
 
-const resetPassword = async (req, res, next) => {
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
   res.locals.email = email;
 
@@ -169,7 +170,7 @@ const resetPassword = async (req, res, next) => {
 };
 
 
-const updatePassword = async (req, res, next) => {
+export const updatePassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let { password } = req.body;
     password = await bcrypt.hash(password, 10);
@@ -181,7 +182,7 @@ const updatePassword = async (req, res, next) => {
 };
 
 
-const getUserByToken = (req, res, next) => {
+export const getUserByToken = (req: Request, res: Response, next: NextFunction) => {
   const resetPasswordToken = req.params.reset_password_token;
   pool.query('SELECT * FROM ycusers WHERE reset_password_token = $1', [resetPasswordToken], (error, results) => {
     if (error || results.rows.length === 0) {
@@ -194,7 +195,7 @@ const getUserByToken = (req, res, next) => {
   });
 };
 
-const contact = async (req, res, next) => {
+export const contact = async (req: Request, res: Response, next: NextFunction) => {
   const { firstName, lastName, email, message, emailTo } = req.body;
   const timeStamp = new Date().toString();
   const enteredBothNames = firstName && lastName;
@@ -226,26 +227,12 @@ const contact = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
- 
-    if (error.response) {
-      console.error(error.response.body)
-      res.status(400).send(`Unable to send: ${error.response.body}`);
+    let message;
+    if (error instanceof Error) {
+      message = `Unable to send: ${error.message}`
     } else {
-      res.status(400).send(`Unable to send.`);
+      message = `Unable to send.`
     }
+    res.status(400).send(message);
   }
-};
-
-
-module.exports = {
-  getUsers,
-  getUserById,
-  register,
-  update,
-  login,
-  logout,
-  resetPassword,
-  updatePassword,
-  getUserByToken,
-  contact
 };

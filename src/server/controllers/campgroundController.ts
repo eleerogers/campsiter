@@ -1,5 +1,6 @@
-const pool = require('../pool');
-const NodeGeocoder = require('node-geocoder');
+import { Request, Response, NextFunction } from 'express';
+import pool from '../pool';
+import NodeGeocoder from 'node-geocoder';
 
 const options = {
   provider: 'google',
@@ -8,10 +9,15 @@ const options = {
   formatter: null
 };
 
-const geocoder = NodeGeocoder(options);
+const geocoder = NodeGeocoder({
+  provider: 'google',
+  httpAdapter: 'https',
+  apiKey: process.env.GEOCODER_API_KEY,
+  formatter: null
+});
 
 
-const getCampgrounds = (request, response, next) => {
+export const getCampgrounds = (request: Request, response: Response, next: NextFunction) => {
   pool.query('SELECT campgrounds.id, campgrounds.name, campgrounds.image, campgrounds.description, campgrounds.user_id, campgrounds.price, campgrounds.location, campgrounds.lat, campgrounds.lng, campgrounds.rating, campgrounds.created_at, campgrounds.image_id, ycusers.username FROM campgrounds LEFT OUTER JOIN ycusers ON campgrounds.user_id = ycusers.id ORDER BY campgrounds.id DESC', (error, results) => {
     if (error) {
       console.error(error);
@@ -24,7 +30,7 @@ const getCampgrounds = (request, response, next) => {
 };
 
 
-const getCampgroundsByUser = (request, response, next) => {
+export const getCampgroundsByUser = (request: Request, response: Response, next: NextFunction) => {
   const id = parseInt(request.params.id, 10);
   pool.query('SELECT campgrounds.id, campgrounds.name, campgrounds.image, campgrounds.description, campgrounds.user_id, campgrounds.price, campgrounds.location, campgrounds.lat, campgrounds.lng, campgrounds.rating, campgrounds.created_at, campgrounds.image_id, ycusers.username FROM campgrounds LEFT OUTER JOIN ycusers ON campgrounds.user_id = ycusers.id WHERE user_id = $1 ORDER BY campgrounds.id ASC', [id], (error, results) => {
     if (error) {
@@ -38,7 +44,7 @@ const getCampgroundsByUser = (request, response, next) => {
 };
 
 
-const getCampgroundById = (request, response, next) => {
+export const getCampgroundById = (request: Request, response: Response, next: NextFunction) => {
   const id = parseInt(request.params.id, 10);
 
   pool.query('SELECT campgrounds.id, campgrounds.name, campgrounds.image, campgrounds.description, campgrounds.user_id, campgrounds.price, campgrounds.location, campgrounds.lat, campgrounds.lng, campgrounds.rating, campgrounds.created_at, campgrounds.image_id, ycusers.username FROM campgrounds LEFT OUTER JOIN ycusers ON campgrounds.user_id = ycusers.id WHERE campgrounds.id = $1', [id], (error, results) => {
@@ -53,7 +59,7 @@ const getCampgroundById = (request, response, next) => {
 };
 
 
-const createCampground = async (request, response, next) => {
+export const createCampground = async (request: Request, response: Response, next: NextFunction) => {
   const {
     name,
     image,
@@ -70,9 +76,15 @@ const createCampground = async (request, response, next) => {
     let longitude = 0;
     let formattedAddress = '';
     if (geoResult) {
-      latitude = geoResult.latitude;
-      longitude = geoResult.longitude;
-      formattedAddress = geoResult.formattedAddress;
+      if (geoResult.latitude) {
+        latitude = geoResult.latitude;
+      }
+      if (geoResult.longitude) {
+        longitude = geoResult.longitude;
+      }
+      if (geoResult.formattedAddress) {
+        formattedAddress = geoResult.formattedAddress;
+      }
     }
 
     const { rows: [{id}] } = await pool.query(
@@ -88,7 +100,7 @@ const createCampground = async (request, response, next) => {
 };
 
 
-const updateCampground = async (request, response, next) => {
+export const updateCampground = async (request: Request, response: Response, next: NextFunction) => {
   const id = parseInt(request.params.id, 10);
   const {
     name, image, imageId, description, price, campLocation, rating
@@ -112,7 +124,7 @@ const updateCampground = async (request, response, next) => {
   }
 };
 
-const updateCampgroundRating = async (request, response, next) => {
+export const updateCampgroundRating = async (request: Request, response: Response, next: NextFunction) => {
   const id = parseInt(request.params.id, 10);
   let { rating } = request.body;
   try {
@@ -130,7 +142,7 @@ const updateCampgroundRating = async (request, response, next) => {
 };
 
 
-const deleteCampground = (request, response, next) => {
+export const deleteCampground = (request: Request, response: Response, next: NextFunction) => {
   const id = parseInt(request.params.id, 10);
   pool.query('DELETE FROM campgrounds WHERE id = $1', [id], (error) => {
     if (error) {
@@ -139,15 +151,4 @@ const deleteCampground = (request, response, next) => {
     }
     next();
   });
-};
-
-
-module.exports = {
-  getCampgrounds,
-  getCampgroundsByUser,
-  getCampgroundById,
-  createCampground,
-  updateCampground,
-  updateCampgroundRating,
-  deleteCampground,
 };

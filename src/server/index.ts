@@ -1,16 +1,16 @@
 require('dotenv').config();
 
-const path = require('path');
+import path from 'path';
 import express, { Request, Response } from 'express'
 import type { ErrorRequestHandler } from "express";
-const favicon = require('serve-favicon');
-const cookieParser = require('cookie-parser');
-const cookieSession = require('cookie-session');
-const cors = require('cors');
-const campgrounds = require('./routes/campgroundRoutes');
-const users = require('./routes/userRoutes');
-const comments = require('./routes/commentRoutes');
-const compression = require('compression');
+import favicon from 'serve-favicon';
+import cookieParser from 'cookie-parser';
+import cookieSession from 'cookie-session';
+import cors from 'cors';
+import campgrounds from './routes/campgroundRoutes';
+import users from './routes/userRoutes';
+import comments from './routes/commentRoutes';
+import compression from 'compression';
 
 const app = express();
 
@@ -19,9 +19,7 @@ app.use(compression());
 app.use(favicon(path.join(__dirname, "..", "..", "public", "favicon.ico")))
 
 app.use(cookieSession({
-  secret: process.env.EXPRESS_SECRET,
-  resave: false,
-  saveUninitialized: false
+  secret: process.env.EXPRESS_SECRET
 }));
 
 app.use(express.static('dist'));

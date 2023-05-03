@@ -1,7 +1,9 @@
-const pool = require('../pool');
+import { Request, Response, NextFunction } from 'express';
+import pool from '../pool';
 
 
-const getComments = (request, response, next) => {
+
+export const getComments = (request: Request, response: Response, next: NextFunction) => {
   const { campgroundId } = request.params;
 
   pool.query('SELECT username, comment, comment_id, user_id, comments.created_at, rating FROM comments JOIN ycusers ON ycusers.id=comments.user_id WHERE comments.campground_id=$1 ORDER BY comment_id ASC', [campgroundId], (error, results) => {
@@ -16,7 +18,7 @@ const getComments = (request, response, next) => {
 };
 
 
-const createComment = (request, response, next) => {
+export const createComment = (request: Request, response: Response, next: NextFunction) => {
   const {
     campgroundId
   } = request.params;
@@ -38,7 +40,7 @@ const createComment = (request, response, next) => {
 };
 
 
-const editComment = (request, response, next) => {
+export const editComment = (request: Request, response: Response, next: NextFunction) => {
   const {
     commentId, comment, rating
   } = request.body;
@@ -58,7 +60,7 @@ const editComment = (request, response, next) => {
 };
 
 
-const deleteComment = (request, response, next) => {
+export const deleteComment = (request: Request, response: Response, next: NextFunction) => {
   const { commentId } = request.body;
   pool.query(
     'DELETE FROM comments WHERE comment_id = $1',
@@ -72,12 +74,4 @@ const deleteComment = (request, response, next) => {
       next();
     }
   );
-};
-
-
-module.exports = {
-  getComments,
-  createComment,
-  editComment,
-  deleteComment
 };

@@ -1,9 +1,10 @@
-const pool = require('./pool');
-const multer = require('multer');
-const path = require('path');
-const cloudinary = require('cloudinary').v2;
-const fs = require('fs');
-const { promisify } = require('util');
+import pool from './pool';
+import { Request, Response, NextFunction } from 'express';
+import multer, { FileFilterCallback } from 'multer';
+import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
+import { promisify } from 'util';
 const unlinkAsync = promisify(fs.unlink);
 
 
@@ -13,11 +14,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const imageFilter = (req, file, cb) => {
+interface RequestFile extends Request {
+  fileValidationError?: string
+}
+
+const imageFilter = (req: RequestFile, file: Express.Multer.File, cb: FileFilterCallback) => {
   // accept image files only
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
     req.fileValidationError = 'Only image files are allowed!';
-    return cb(null, false, new Error('Only image files are allowed!'));
+    return cb(null, false);
   }
   return cb(null, true);
 };
@@ -32,14 +37,10 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: { fileSize: 10000000 },
-  fileFilter: imageFilter,
-  onError: (err, next) => {
-    console.error(err);
-    next(err);
-  }
+  fileFilter: imageFilter
 }).single('image');
 
-const fileConverter = (req, res, next) => {
+export const fileConverter = (req: RequestFile, res: Response, next: NextFunction) => {
   upload(req, res, (err) => {
     if (req.fileValidationError || err) {
       return res.status(400).send(req.fileValidationError || err.message);
@@ -48,7 +49,7 @@ const fileConverter = (req, res, next) => {
   });
 };
 
-const picUploader = async (req, res, next) => {
+export const picUploader = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.file) {
       const {
@@ -66,7 +67,7 @@ const picUploader = async (req, res, next) => {
   }
 };
 
-const picDeleter = async (req, res, next) => {
+export const picDeleter = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // req.body.delete signals that it should still delete the picture even though there isn't another picture to replace it
     if ((req.file || req.body.delete) && req.body.imageId !== 'tg6i3wamwkkevynyqaoe') {
@@ -83,7 +84,7 @@ const picDeleter = async (req, res, next) => {
 };
 
 
-const validUser = async (req, res, next) => {
+export const validUser = async (req: Request, res: Response, next: NextFunction) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
   const validPassword = typeof req.body.password === 'string' && req.body.password.trim() !== '';
   const validUsername = typeof req.body.username === 'string' && req.body.username.trim() !== '';
@@ -99,7 +100,9 @@ const validUser = async (req, res, next) => {
     next();
   } else {
     try {
-      await unlinkAsync(req.file.path);
+      if (req.file) {
+        await unlinkAsync(req.file.path);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -109,7 +112,7 @@ const validUser = async (req, res, next) => {
 };
 
 
-const validEditUser = (req, res, next) => {
+export const validEditUser = (req: Request, res: Response, next: NextFunction) => {
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
   const validFirstName = typeof req.body.firstName === 'string' && req.body.firstName.trim() !== '';
   const validLastName = typeof req.body.lastName === 'string' && req.body.lastName.trim() !== '';
@@ -125,13 +128,13 @@ const validEditUser = (req, res, next) => {
 };
 
 
-const getUserByEmail = (req, res, next) => {
+export const getUserByEmail = (req: Request, res: Response, next: NextFunction) => {
   let { email } = req.body;
   if (email === '') {
     res.status(400).send('Enter email address');
   }
   email = email.toLowerCase();
-  pool.query('SELECT * FROM ycusers WHERE email = $1', [email], (error, results) => {
+  pool.query('SELECT * FROM ycusers WHERE email = $1', [email], (error: Error, results) => {
     if (error || results.rows.length === 0) {
       res.status(404).send('User not found');
     } else {
@@ -142,8 +145,8 @@ const getUserByEmail = (req, res, next) => {
 };
 
 
-const getUserByToken = (req, res, next) => {
-  pool.query('SELECT * FROM ycusers WHERE reset_password_token = $1', [req.body.reset_password_token], (error, results) => {
+export const getUserByToken = (req: Request, res: Response, next: NextFunction) => {
+  pool.query('SELECT * FROM ycusers WHERE reset_password_token = $1', [req.body.reset_password_token], (error: Error, results) => {
     if (error || results.rows.length === 0) {
       res.status(404).send(new Error('not found'));
     } else {
@@ -154,26 +157,29 @@ const getUserByToken = (req, res, next) => {
 };
 
 
-const checkIfEmailInUse = async (req, res, next) => {
+export const checkIfEmailInUse = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
   const emailLC = email.toLowerCase();
   try {
     const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE email = $1', [emailLC]);
-    if (length > 0) {
+    if (length > 0 && req.file) {
       await unlinkAsync(req.file.path);
       res.status(409).send('Email address already in use');
     } else {
+      req.body.email = emailLC;
       next();
     }
   } catch (err) {
     console.error(err);
-    await unlinkAsync(req.file.path);
+    if (req.file) {
+      await unlinkAsync(req.file.path);
+    }
     res.status(400).send('Bad request');
   }
 };
 
 
-const onUpdateCheckIfEmailInUse = async (req, res, next) => {
+export const onUpdateCheckIfEmailInUse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE email = $1 AND id != $2', [req.body.email, req.body.id]);
     if (length > 0) {
@@ -194,10 +200,10 @@ const onUpdateCheckIfEmailInUse = async (req, res, next) => {
 };
 
 
-const checkIfUsernameInUse = async (req, res, next) => {
+export const checkIfUsernameInUse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { rows: { length } } = await pool.query('SELECT * FROM ycusers WHERE username = $1', [req.body.username]);
-    if (length > 0) {
+    if (length > 0 && req.file) {
       await unlinkAsync(req.file.path);
       res.status(409).send('Username already in use.');
     } else {
@@ -205,13 +211,15 @@ const checkIfUsernameInUse = async (req, res, next) => {
     }
   } catch (err) {
     console.error(err);
-    await unlinkAsync(req.file.path);
+    if (req.file) {
+      await unlinkAsync(req.file.path);
+    }
     res.status(400).send('Bad request');
   }
 };
 
 
-function allowAccess(req, res, next) {
+export function allowAccess(req: Request, res: Response, next: NextFunction) {
   const cookieId = parseInt(req.signedCookies.userId, 10);
   const userId = parseInt(req.body.userId, 10);
   if (cookieId !== userId && !req.body.adminBool) {
@@ -223,7 +231,7 @@ function allowAccess(req, res, next) {
 }
 
 
-const validCampground = (req, res, next) => {
+export const validCampground = (req: Request, res: Response, next: NextFunction) => {
   const validName = typeof req.body.name === 'string' && req.body.name.trim() !== '';
   const validImage = req.body.imageId || (req.file && typeof req.file.path === 'string' && req.file.path.trim() !== '');
   const validDescription = typeof req.body.description === 'string' && req.body.description.trim() !== '';
@@ -243,7 +251,7 @@ const validCampground = (req, res, next) => {
 };
 
 
-const validComment = (req, res, next) => {
+export const validComment = (req: Request, res: Response, next: NextFunction) => {
   if (
     typeof req.body.comment === 'string'
     && req.body.comment.trim() !== ''
@@ -255,29 +263,11 @@ const validComment = (req, res, next) => {
 };
 
 
-const checkTokenExpiration = (req, res, next) => {
+export const checkTokenExpiration = (req: Request, res: Response, next: NextFunction) => {
   const currentTime = Date.now();
   if (currentTime < req.body.user.reset_password_expires) {
     next();
   } else {
     res.status(410).send('Reset link has expired');
   }
-};
-
-
-module.exports = {
-  fileConverter,
-  picUploader,
-  picDeleter,
-  validUser,
-  validEditUser,
-  getUserByEmail,
-  getUserByToken,
-  checkIfEmailInUse,
-  onUpdateCheckIfEmailInUse,
-  checkIfUsernameInUse,
-  allowAccess,
-  validCampground,
-  validComment,
-  checkTokenExpiration
 };

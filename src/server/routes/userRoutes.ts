@@ -1,12 +1,35 @@
-const express = require('express');
+import express, { Router } from 'express';
+import {
+  getUsers,
+  getUserById,
+  register,
+  update,
+  login,
+  logout,
+  resetPassword,
+  updatePassword,
+  getUserByToken,
+  contact
+} from '../controllers/userController';
+import {
+  fileConverter,
+  picUploader,
+  picDeleter,
+  validUser,
+  validEditUser,
+  getUserByEmail,
+  getUserByToken as getUserByTokenMW,
+  checkIfEmailInUse,
+  onUpdateCheckIfEmailInUse,
+  checkIfUsernameInUse,
+  checkTokenExpiration
+} from '../middleware';
 
-const router = express.Router();
-const userController = require('../controllers/userController');
-const middleware = require('../middleware');
+const router: Router = express.Router();
 
 
 router.get('/',
-  userController.getUsers,
+  getUsers,
   (req, res) => {
     const { users } = res.locals;
     res.status(200).json({ users });
@@ -14,8 +37,8 @@ router.get('/',
 
 
 router.post('/login',
-  middleware.getUserByEmail,
-  userController.login,
+  getUserByEmail,
+  login,
   (req, res) => {
     const { user } = res.locals;
     const {
@@ -42,8 +65,8 @@ router.post('/login',
 
 
 router.post('/forgot',
-  middleware.getUserByEmail,
-  userController.resetPassword,
+  getUserByEmail,
+  resetPassword,
   (req, res) => {
     const { email } = res.locals;
     res.status(200).send(`An e-mail has been sent to ${email} with further instructions.`);
@@ -51,15 +74,15 @@ router.post('/forgot',
 
 
 router.post('/reset',
-  middleware.getUserByToken,
-  middleware.checkTokenExpiration,
-  userController.updatePassword,
+  getUserByTokenMW,
+  checkTokenExpiration,
+  updatePassword,
   (req, res) => {
     res.status(201).send('Successfully changed password. Please login.');
   });
 
 router.post('/contact',
-userController.contact,
+contact,
 (req, res) => {
     res.status(201).json({
       message: `Your message has been sent to ${req.body.usernameTo}!`
@@ -68,12 +91,12 @@ userController.contact,
 
 
 router.post('/',
-  middleware.fileConverter,
-  middleware.validUser,
-  middleware.checkIfUsernameInUse,
-  middleware.checkIfEmailInUse,
-  middleware.picUploader,
-  userController.register,
+  fileConverter,
+  validUser,
+  checkIfUsernameInUse,
+  checkIfEmailInUse,
+  picUploader,
+  register,
   (req, res) => {
     const { correctAdminCode } = res.locals;
     const message = correctAdminCode ? 'Succesfully created new admin account. Please login.' : 'Succesfully created new account. Please login.';
@@ -84,7 +107,7 @@ router.post('/',
 
 
 router.get('/logout',
-  userController.logout,
+  logout,
   (req, res) => {
     res.json({
       message: 'userId cookie cleared',
@@ -93,7 +116,7 @@ router.get('/logout',
 
 
 router.get('/:id',
-  userController.getUserById,
+  getUserById,
   (req, res) => {
     const { user } = res.locals;
     res.status(200).json({ user });
@@ -101,12 +124,12 @@ router.get('/:id',
 
 
 router.put('/',
-  middleware.fileConverter,
-  middleware.validEditUser,
-  middleware.onUpdateCheckIfEmailInUse,
-  middleware.picDeleter,
-  middleware.picUploader,
-  userController.update,
+  fileConverter,
+  validEditUser,
+  onUpdateCheckIfEmailInUse,
+  picDeleter,
+  picUploader,
+  update,
   (req, res) => {
     const { updatedAdmin } = res.locals;
     const {
@@ -124,7 +147,7 @@ router.put('/',
 
 
 router.get('/token/:reset_password_token',
-  userController.getUserByToken,
+  getUserByToken,
   (req, res) => {
     const { user } = res.locals;
     res.json({
@@ -133,4 +156,4 @@ router.get('/token/:reset_password_token',
   });
 
 
-module.exports = router;
+export default router;

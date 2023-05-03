@@ -1,13 +1,27 @@
-const express = require('express');
+import express from 'express';
 
 const router = express.Router();
-const campgroundController = require('../controllers/campgroundController');
-const userController = require('../controllers/userController');
-const middleware = require('../middleware');
+import {
+  getCampgrounds,
+  getCampgroundsByUser,
+  getCampgroundById,
+  createCampground,
+  updateCampground,
+  updateCampgroundRating,
+  deleteCampground,
+} from '../controllers/campgroundController';
+import { getUserById } from '../controllers/userController';
+import {
+  fileConverter,
+  picUploader,
+  picDeleter,
+  allowAccess,
+  validCampground,
+} from '../middleware';
 
 
 router.get('/',
-  campgroundController.getCampgrounds,
+  getCampgrounds,
   (req, res) => {
     const { campgrounds } = res.locals;
     res.status(200).json({ campgrounds });
@@ -15,8 +29,8 @@ router.get('/',
 
 
 router.get('/user/:id',
-  campgroundController.getCampgroundsByUser,
-  userController.getUserById,
+  getCampgroundsByUser,
+  getUserById,
   (req, res) => {
     const { campgrounds, user } = res.locals;
     res.status(200).json({ campgrounds, user });
@@ -24,7 +38,7 @@ router.get('/user/:id',
 
 
 router.get('/:id',
-  campgroundController.getCampgroundById,
+  getCampgroundById,
   (req, res) => {
     const { campground } = res.locals;
     res.status(200).json({ campground });
@@ -32,11 +46,11 @@ router.get('/:id',
 
 
 router.post('/',
-  middleware.fileConverter,
-  middleware.allowAccess,
-  middleware.validCampground,
-  middleware.picUploader,
-  campgroundController.createCampground,
+  fileConverter,
+  allowAccess,
+  validCampground,
+  picUploader,
+  createCampground,
   (req, res) => {
     const {id} = res.locals;
     const message = 'Successfully added campground.';
@@ -45,12 +59,12 @@ router.post('/',
 
 
 router.put('/:id',
-  middleware.fileConverter,
-  middleware.allowAccess,
-  middleware.validCampground,
-  middleware.picDeleter,
-  middleware.picUploader,
-  campgroundController.updateCampground,
+  fileConverter,
+  allowAccess,
+  validCampground,
+  picDeleter,
+  picUploader,
+  updateCampground,
   (req, res) => {
     const { campground } = res.locals; 
     const message = 'Successfully edited campground';
@@ -59,7 +73,7 @@ router.put('/:id',
 
 
   router.put('/rating/:id',
-  campgroundController.updateCampgroundRating,
+  updateCampgroundRating,
   (req, res) => {
     const { campground } = res.locals;
     const message = 'Successfully edited campground';
@@ -68,12 +82,12 @@ router.put('/:id',
 
 
 router.delete('/:id',
-  middleware.allowAccess,
-  middleware.picDeleter,
-  campgroundController.deleteCampground,
+  allowAccess,
+  picDeleter,
+  deleteCampground,
   (req, res) => {
     res.status(200).send('Campground successfully deleted');
   });
 
 
-module.exports = router;
+export default router;
