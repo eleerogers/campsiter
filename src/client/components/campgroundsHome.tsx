@@ -29,7 +29,7 @@ function CampgroundsHome() {
   const CAMPGROUNDS_PER_PAGE = 12;
 
   const [jumboOffsetHt, setJumboOffsetHt] = useState(0);
-  const jumbotronRef = useRef<any>();
+  const jumbotronRef = useRef<HTMLDivElement>(null!);
 
   const {
     jump, currentData, currentPage, maxPage
