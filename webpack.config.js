@@ -7,7 +7,7 @@ const webpack = require('webpack');
 const outputDirectory = 'dist';
 
 module.exports = {
-  entry: ['babel-polyfill', './src/client/index.js'],
+  entry: ['babel-polyfill', './src/client/index.tsx'],
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
@@ -28,7 +28,12 @@ module.exports = {
     {
       test: /\.(png|woff|woff2|eot|ttf|svg)$/,
       loader: 'url-loader?limit=100000'
-    }
+    },
+    {
+      test: /\.tsx?$/,
+      use: 'ts-loader',
+      exclude: /node_modules/,
+    },
     ]
   },
   resolve: {
@@ -36,7 +41,8 @@ module.exports = {
       react: "preact/compat",
       "react-dom": "preact/compat",
       "react-dom/test-utils": "preact/test-utils"
-    }
+    },
+    extensions: ['.ts', '.tsx', '.js', '.json']
   },
   devServer: {
     port: 3000,
